@@ -1,0 +1,10 @@
+<h3>Add new language</h3>
+<input placeholder="Name" [(ngModel)]="name"/>
+<input placeholder="Code" [(ngModel)]="code"/>
+<button (click)="createLanguage()">Save</button>
+<h3>Current Languages</h3>
+<div *ngFor="let language of languages">
+  {{language.attributes.name}}
+  {{language.attributes.code}}
+  <button (click)="deleteLanguage(language)">Delete</button>
+</div>
