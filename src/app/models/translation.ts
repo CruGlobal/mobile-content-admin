@@ -4,5 +4,5 @@ export class Translation {
   id: number;
   code: string;
   language: Language;
-  relationships: {resource: Resource, language: Language};
+  resource: Resource;
 }

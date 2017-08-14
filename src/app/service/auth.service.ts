@@ -3,6 +3,7 @@ import {Http, RequestOptionsArgs, Headers} from '@angular/http';
 import {AuthToken} from '../models/auth-token';
 import {Constants} from '../constants';
 import {WindowRefService} from '../models/window-ref-service';
+import {JsonApiDataStore} from 'jsonapi-datastore';
 
 @Injectable()
 export class AuthService {
@@ -29,8 +30,8 @@ export class AuthService {
     return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, Constants.OPTIONS)
       .toPromise()
       .then(response => {
-        const token: AuthToken = response.json().data as AuthToken;
-        this.windowRef.nativeWindow.localStorage.setItem('Authorization', token.attributes.token);
+        const token: AuthToken = new JsonApiDataStore().sync(response.json());
+        this.windowRef.nativeWindow.localStorage.setItem('Authorization', token.token);
         return token;
       })
       .catch(this.handleError);

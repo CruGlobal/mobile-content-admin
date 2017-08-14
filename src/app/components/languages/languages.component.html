@@ -4,7 +4,7 @@
 <button (click)="createLanguage()">Save</button>
 <h3>Current Languages</h3>
 <div *ngFor="let language of languages">
-  {{language.attributes.name}}
-  {{language.attributes.code}}
+  {{language.name}}
+  {{language.code}}
   <button (click)="deleteLanguage(language)">Delete</button>
 </div>

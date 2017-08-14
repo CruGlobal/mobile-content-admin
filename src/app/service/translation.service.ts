@@ -3,6 +3,7 @@ import {Http} from '@angular/http';
 import {Translation} from '../models/translation';
 import {Constants} from '../constants';
 import {AuthService} from './auth.service';
+import {JsonApiDataStore} from 'jsonapi-datastore';
 
 @Injectable()
 export class DraftService {
@@ -20,7 +21,7 @@ export class DraftService {
 
     return this.http.post(this.draftsUrl, body, this.authService.getHttpOptions())
       .toPromise()
-      .then(response => response.json().data as Translation)
+      .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }
