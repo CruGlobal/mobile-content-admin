@@ -47,6 +47,6 @@ export class ResourcesComponent implements OnInit {
         });
       });
 
-    resource.showTranslations = true;
+    resource.showTranslations = true; // TODO remove this
   }
 }
