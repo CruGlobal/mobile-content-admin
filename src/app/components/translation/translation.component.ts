@@ -3,7 +3,7 @@ import {Translation} from '../../models/translation';
 import {DraftService} from '../../service/translation.service';
 
 @Component({
-  selector: 'translation',
+  selector: 'admin-translation',
   templateUrl: './translation.component.html',
 })
 export class TranslationComponent {

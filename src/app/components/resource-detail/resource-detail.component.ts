@@ -6,7 +6,7 @@ import {ResourceService} from '../../service/resource.service';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-  selector: 'resource-detail',
+  selector: 'admin-resource-detail',
   templateUrl: './resource-detail.component.html'
 })
 export class ResourceDetailComponent implements OnInit {

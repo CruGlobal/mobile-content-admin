@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
+  selector: 'admin-app',
   template: `
    <h1>{{title}}</h1>
    <nav>

@@ -6,7 +6,7 @@ import {Translation} from '../../models/translation';
 import {LanguageService} from '../../service/language.service';
 
 @Component({
-  selector: 'my-resources',
+  selector: 'admin-resources',
   templateUrl: './resources.component.html',
   styleUrls: ['./resources.component.css']
 })
