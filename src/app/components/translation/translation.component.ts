@@ -12,8 +12,8 @@ export class TranslationComponent {
   constructor(private draftService: DraftService) {}
 
   createDraft(): void {
-    const resourceId = this.translation.relationships.resource.data.id;
-    const languageId = this.translation.relationships.language.data.id;
+    const resourceId = this.translation.resource.id;
+    const languageId = this.translation.language.id;
     this.draftService.createDraft(resourceId, languageId).then((d) => {
 
     });

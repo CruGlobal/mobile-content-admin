@@ -1,7 +1,7 @@
 <div *ngIf="translation.language">
-  {{translation.language.attributes.name}}
-  {{translation.language.attributes.code}}
+  {{translation.language.name}}
+  {{translation.language.code}}
 </div>
-{{translation.attributes.version}}
+{{translation.version}}
 <button *ngIf="!translation.is_published">Publish</button>
 <button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>

@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import {Language} from '../models/language';
 import {Constants} from '../constants';
 import {AuthService} from './auth.service';
+import {JsonApiDataStore} from 'jsonapi-datastore';
 
 @Injectable()
 export class LanguageService {
@@ -19,21 +20,33 @@ export class LanguageService {
   getLanguages(): Promise<Language[]> {
     return this.http.get(this.languagesUrl)
       .toPromise()
-      .then(response => response.json().data as Language[])
+      .then(response => {
+        return new JsonApiDataStore().sync(response.json());
+      })
       .catch(this.handleError);
   }
   getLanguage(id: number): Promise<Language> {
     return this.http.get(`${this.languagesUrl}/${id}`)
       .toPromise()
-      .then(response => response.json().data as Language)
+      .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
   createLanguage(language: Language): Promise<Language> {
-    const body = `{"data": {"attributes": {"name":"${language.name}", "code":"${language.code}"}}}`;
+    const payload = {
+      data: {
+        type: 'language',
+        attributes: {
+          name: language.name,
+          code: language.code
+        }
+      }
+    };
 
-    return this.http.post(this.languagesUrl, body, this.authService.getHttpOptions())
+    return this.http.post(this.languagesUrl, payload, this.authService.getHttpOptions())
       .toPromise()
-      .then(response => response.json().data as Language)
+      .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
+
+    // TODO refresh list
   }
 }
