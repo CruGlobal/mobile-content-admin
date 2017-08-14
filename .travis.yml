@@ -9,6 +9,5 @@ script:
   - ng lint
 
 cache:
-  yarn: true
   directories:
   - node_modules
