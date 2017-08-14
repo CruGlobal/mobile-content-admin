@@ -16,6 +16,7 @@ import {DraftService} from './service/translation.service';
 import {AuthService} from './service/auth.service';
 import {LanguagesComponent} from './components/languages/languages.component';
 import {WindowRefService} from './models/window-ref-service';
+import {AttachmentsComponent} from './components/attachments/attachments.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {WindowRefService} from './models/window-ref-service';
     ResourceDetailComponent,
     DashboardComponent,
     TranslationComponent,
-    LanguagesComponent
+    LanguagesComponent,
+    AttachmentsComponent
   ],
   imports: [
     BrowserModule,

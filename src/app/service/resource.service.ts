@@ -17,7 +17,7 @@ export class ResourceService {
   }
 
   getResources(): Promise<Resource[]> {
-    return this.http.get(this.resourcesUrl)
+    return this.http.get(`${this.resourcesUrl}?include=attachments`) // TODO don't hardcode
       .toPromise()
       .then(response => {
         return new JsonApiDataStore().sync(response.json());

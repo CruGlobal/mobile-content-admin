@@ -1,0 +1,7 @@
+<h3>Attachments</h3>
+
+<div *ngFor="let resource of resources">
+  <div *ngFor="let attachment of resource.attachments">
+    {{attachment.file}}
+  </div>
+</div>
