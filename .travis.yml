@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - '7'
+
+before_script:
+  - npm install -g @angular/cli
+
+script:
+  - ng lint
+
+cache:
+  yarn: true
+  directories:
+  - node_modules
