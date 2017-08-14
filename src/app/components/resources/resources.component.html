@@ -7,7 +7,7 @@
     <div *ngIf="resource.showTranslations">
       Latest translations
       <div *ngFor="let translation of resource.latest">
-        <translation [translation]="translation"></translation>
+        <admin-translation [translation]="translation"></admin-translation>
       </div>
     </div>
   </div>
