@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
 
 @Component({
-  selector: 'my-dashboard',
+  selector: 'admin-dashboard',
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {

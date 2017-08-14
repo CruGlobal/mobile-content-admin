@@ -3,7 +3,7 @@ import {Language} from '../../models/language';
 import {LanguageService} from '../../service/language.service';
 
 @Component({
-  selector: 'languages',
+  selector: 'admin-languages',
   templateUrl: './languages.component.html'
 })
 export class LanguagesComponent implements OnInit {
