@@ -1,0 +1,20 @@
+<ul>
+  <div *ngFor="let resource of resources" (click)="onSelect(resource)">
+    <h3>
+      <span class="badge">{{resource.id}}</span> {{resource.attributes.name}}
+    </h3>
+    <button (click)="loadTranslations(resource)">Translations</button>
+    <div *ngIf="resource.showTranslations">
+      Latest translations
+      <div *ngFor="let translation of resource.latest">
+        <translation [translation]="translation"></translation>
+      </div>
+    </div>
+  </div>
+</ul>
+<div *ngIf="selectedResource">
+  <h2>
+    {{selectedResource.name | uppercase}} is my resource
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>
