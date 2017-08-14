@@ -1,7 +1,10 @@
 <h3>Attachments</h3>
 
 <div *ngFor="let resource of resources">
+  {{resource.name}}
   <div *ngFor="let attachment of resource.attachments">
-    {{attachment.file}}
+    {{attachment.id}}
+    <button (click)="attachment.show = !attachment.show">View</button>
+    <img src="{{attachment.file}}" *ngIf="attachment.show"/>
   </div>
 </div>
