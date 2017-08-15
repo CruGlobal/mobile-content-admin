@@ -3,11 +3,12 @@ node_js:
   - '7'
 
 before_script:
-  - npm install -g @angular/cli
+  - yarn add @angular/cli
 
 script:
   - ng lint
 
 cache:
+  yarn: true
   directories:
   - node_modules
