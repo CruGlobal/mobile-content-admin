@@ -3,7 +3,7 @@ node_js:
   - '7'
 
 before_script:
-  - yarn install @angular/cli
+  - yarn add @angular/cli
 
 script:
   - ng lint
