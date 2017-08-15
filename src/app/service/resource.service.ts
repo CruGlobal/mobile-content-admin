@@ -17,7 +17,7 @@ export class ResourceService {
   }
 
   getResources(): Promise<Resource[]> {
-    return this.http.get(`${this.resourcesUrl}?include=attachments`) // TODO don't hardcode
+    return this.http.get(`${this.resourcesUrl}?include=attachments`) // TODO don't hardcode include
       .toPromise()
       .then(response => {
         return new JsonApiDataStore().sync(response.json());
@@ -25,7 +25,7 @@ export class ResourceService {
       .catch(this.handleError);
   }
   getResource(id: number): Promise<Resource> {
-    const url = `${this.resourcesUrl}/${id}?include=translations`;
+    const url = `${this.resourcesUrl}/${id}?include=translations,pages`;
     return this.http.get(url)
       .toPromise()
       .then(function(response){

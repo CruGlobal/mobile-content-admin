@@ -3,5 +3,21 @@
   {{translation.language.code}}
 </div>
 {{translation.version}}
-<button *ngIf="!translation.is_published">Publish</button>
+<button (click)="translation.show = !translation.show" > <!-- TODO need to get drafts from API *ngIf="!translation.is_published">-->
+  Edit
+</button>
+<button *ngIf="!translation.is_published">
+  Publish
+</button>
 <button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>
+<ol *ngIf="translation.show">
+  <li *ngFor="let page of translation.resource.pages">
+    {{page.filename}}
+    <button (click)="page.show = !page.show">Edit</button>
+    <button *ngIf="page.show">Validate</button>
+    <button (click)="updateXml(page)" *ngIf="page.show">Save</button>
+    <div *ngIf="page.show">
+      <textarea [(ngModel)]="page.structure"></textarea>
+    </div>
+  </li>
+</ol>
