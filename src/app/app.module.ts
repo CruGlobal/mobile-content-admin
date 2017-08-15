@@ -17,6 +17,7 @@ import {AuthService} from './service/auth.service';
 import {LanguagesComponent} from './components/languages/languages.component';
 import {WindowRefService} from './models/window-ref-service';
 import {AttachmentsComponent} from './components/attachments/attachments.component';
+import {FileSelectDirective} from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {AttachmentsComponent} from './components/attachments/attachments.compone
     DashboardComponent,
     TranslationComponent,
     LanguagesComponent,
-    AttachmentsComponent
+    AttachmentsComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
