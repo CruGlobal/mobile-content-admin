@@ -1,7 +1,7 @@
 {{page.filename}}
 <button (click)="page.show = !page.show">Edit</button>
 <button *ngIf="page.show">Validate</button>
-<button (click)="updateXml(page)" *ngIf="page.show">Save</button>
+<button (click)="createCustomPage()" *ngIf="page.show">Save</button>
 <i>Note: any translated text entered here will be overwritten when Draft is published</i>
 <div *ngIf="page.show">
   <textarea [(ngModel)]="page.structure"></textarea>

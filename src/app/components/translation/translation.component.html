@@ -13,6 +13,6 @@
 <ol *ngIf="translation.show">
   <li *ngFor="let page of getPages()">
     <admin-page [page]="page" [translation]="translation" *ngIf="page.type === 'page'"></admin-page>
-    <admin-custom-page [customPage]="page" [translation]="translation" *ngIf="page.type === 'custom-page'"></admin-custom-page>
+    <admin-custom-page [customPage]="page" *ngIf="page.type === 'custom-page'"></admin-custom-page>
   </li>
 </ol>

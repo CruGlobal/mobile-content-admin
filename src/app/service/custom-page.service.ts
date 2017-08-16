@@ -16,15 +16,14 @@ export class CustomPageService {
     return Promise.reject(error.message || error);
   }
 
-  update(customPage: CustomPage): Promise<CustomPage> {
+  upsert(languageId: number, pageId: number, structure: string): Promise<CustomPage> {
     const payload = {
       data: {
-        id: customPage.id,
         type: 'custom_page',
         attributes: {
-          language_id: customPage.language.id,
-          page_id: customPage.page.id,
-          structure: customPage.structure
+          language_id: languageId,
+          page_id: pageId,
+          structure: structure
         }
       }
     };

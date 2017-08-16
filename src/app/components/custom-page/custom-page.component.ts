@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Translation} from '../../models/translation';
 import {CustomPage} from '../../models/custom-page';
 import {CustomPageService} from '../../service/custom-page.service';
 
@@ -9,7 +8,6 @@ import {CustomPageService} from '../../service/custom-page.service';
 })
 export class CustomPageComponent {
   @Input() customPage: CustomPage;
-  @Input() translation: Translation;
 
   constructor(private customPageService: CustomPageService) {}
 
@@ -19,6 +17,8 @@ export class CustomPageComponent {
   }
 
   updateCustomPage() {
-    this.customPageService.update(this.customPage).then();
+    this.customPageService.upsert(this.customPage.language.id, this.customPage.page.id, this.customPage.structure)
+      .then()
+      .catch(error => this.handleError(error));
   }
 }
