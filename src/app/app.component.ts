@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'admin-app',
@@ -14,5 +15,5 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
-  title = 'All resources';
+  title = 'Mobile Content Admin';
 }
