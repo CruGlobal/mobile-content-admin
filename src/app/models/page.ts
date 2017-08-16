@@ -1,8 +1,7 @@
 import {Resource} from './resource';
+import {AbstractPage} from './abstract-page';
 
-export class Page {
-  id: number;
+export class Page extends AbstractPage {
   filename: string;
-  structure: string;
   resource: Resource;
 }

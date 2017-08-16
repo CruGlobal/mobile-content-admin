@@ -20,6 +20,8 @@ import {AttachmentsComponent} from './components/attachments/attachments.compone
 import {FileSelectDirective} from 'ng2-file-upload';
 import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
+import {CustomPageComponent} from './components/custom-page/custom-page.component';
+import {CustomPageService} from './service/custom-page.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import {PageComponent} from './components/page/page.component';
     LanguagesComponent,
     AttachmentsComponent,
     FileSelectDirective,
-    PageComponent
+    PageComponent,
+    CustomPageComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import {PageComponent} from './components/page/page.component';
     DraftService,
     AuthService,
     WindowRefService,
-    PageService
+    PageService,
+    CustomPageService
   ],
   bootstrap: [AppComponent]
 })

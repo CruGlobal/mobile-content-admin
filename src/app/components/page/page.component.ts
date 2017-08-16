@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Page} from '../../models/page';
 import {DraftService} from '../../service/draft.service';
 import {Translation} from '../../models/translation';
@@ -7,7 +7,7 @@ import {Translation} from '../../models/translation';
   selector: 'admin-page',
   templateUrl: './page.component.html'
 })
-export class PageComponent implements OnInit {
+export class PageComponent {
   @Input() page: Page;
   @Input() translation: Translation;
 
@@ -18,9 +18,4 @@ export class PageComponent implements OnInit {
     return Promise.reject(error.message || error);
   }
 
-  ngOnInit(): void {
-    this.draftService.getPage(this.page, this.translation).then(response => {
-      this.page.structure = response;
-    }).catch(error => this.handleError(error));
-  }
 }

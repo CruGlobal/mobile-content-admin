@@ -1,0 +1,8 @@
+{{customPage.page.filename}}
+<button (click)="customPage.show = !customPage.show">Edit</button>
+<button *ngIf="customPage.show">Validate</button>
+<button (click)="updateCustomPage()" *ngIf="customPage.show">Save</button>
+<i>Note: any translated text entered here will be overwritten when Draft is published</i>
+<div *ngIf="customPage.show">
+  <textarea [(ngModel)]="customPage.structure"></textarea>
+</div>
