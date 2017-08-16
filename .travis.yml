@@ -20,7 +20,7 @@ before_script:
 
 script:
   - ng lint
-  - ng test
+  - ng test --watch=false
 
 cache:
   yarn: true
