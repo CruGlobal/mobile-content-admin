@@ -19,7 +19,7 @@ before_script:
   - yarn add @angular/cli
 
 script:
-  - ng lint
+  - ng lint --type-check
   - ng test --watch=false
 
 cache:

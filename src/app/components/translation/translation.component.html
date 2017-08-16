@@ -3,5 +3,16 @@
   {{translation.language.code}}
 </div>
 {{translation.version}}
-<button *ngIf="!translation.is_published">Publish</button>
+<button (click)="translation.show = !translation.show" > <!-- TODO need to get drafts from API *ngIf="!translation.is_published">-->
+  Edit
+</button>
+<button *ngIf="!translation.is_published">
+  Publish
+</button>
 <button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>
+<ol *ngIf="translation.show">
+  <li *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+    <admin-page [page]="page" [translation]="translation" *ngSwitchCase="'page'"></admin-page>
+    <admin-custom-page [customPage]="page" *ngSwitchCase="'custom-page'"></admin-custom-page>
+  </li>
+</ol>

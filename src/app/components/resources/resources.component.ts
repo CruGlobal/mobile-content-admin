@@ -7,8 +7,7 @@ import {LanguageService} from '../../service/language.service';
 
 @Component({
   selector: 'admin-resources',
-  templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.css']
+  templateUrl: './resources.component.html'
 })
 export class ResourcesComponent implements OnInit {
   resources: Resource[];

@@ -26,7 +26,7 @@ export class LanguageService {
       .catch(this.handleError);
   }
   getLanguage(id: number): Promise<Language> {
-    return this.http.get(`${this.languagesUrl}/${id}`)
+    return this.http.get(`${this.languagesUrl}/${id}?include=custom_pages`)
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

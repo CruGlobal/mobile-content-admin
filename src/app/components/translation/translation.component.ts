@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {Translation} from '../../models/translation';
-import {DraftService} from '../../service/translation.service';
+import {DraftService} from '../../service/draft.service';
+import {CustomPage} from '../../models/custom-page';
+import {AbstractPage} from '../../models/abstract-page';
 
 @Component({
   selector: 'admin-translation',
@@ -10,6 +12,13 @@ export class TranslationComponent {
   @Input() translation: Translation;
 
   constructor(private draftService: DraftService) {}
+
+  getPages(): AbstractPage[] {
+    return this.translation.resource.pages.map(page => {
+      const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
+      return customPage == null ? page : customPage;
+    });
+  }
 
   createDraft(): void {
     const resourceId = this.translation.resource.id;
