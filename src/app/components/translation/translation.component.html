@@ -11,8 +11,8 @@
 </button>
 <button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>
 <ol *ngIf="translation.show">
-  <li *ngFor="let page of getPages()">
-    <admin-page [page]="page" [translation]="translation" *ngIf="page.type === 'page'"></admin-page>
-    <admin-custom-page [customPage]="page" *ngIf="page.type === 'custom-page'"></admin-custom-page>
+  <li *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+    <admin-page [page]="page" [translation]="translation" *ngSwitchCase="'page'"></admin-page>
+    <admin-custom-page [customPage]="page" *ngSwitchCase="'custom-page'"></admin-custom-page>
   </li>
 </ol>

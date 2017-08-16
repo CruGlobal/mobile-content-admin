@@ -1,4 +1,4 @@
-{{customPage.page.filename}}
+{{customPage.page.filename}} <!-- TODO this is never set -->
 <button (click)="customPage.show = !customPage.show">Edit</button>
 <button *ngIf="customPage.show">Validate</button>
 <button (click)="updateCustomPage()" *ngIf="customPage.show">Save (this language only)</button>

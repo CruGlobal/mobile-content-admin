@@ -19,10 +19,8 @@ export class TranslationComponent {
     for (const page of this.translation.resource.pages) {
       const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
       if (customPage != null) {
-        customPage.type = 'custom-page';
         pages.push(customPage);
       } else {
-        page.type = 'page';
         pages.push(page);
       }
     }
