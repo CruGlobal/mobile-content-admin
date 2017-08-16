@@ -19,6 +19,7 @@ import {WindowRefService} from './models/window-ref-service';
 import {AttachmentsComponent} from './components/attachments/attachments.component';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {PageService} from './service/page.service';
+import {PageComponent} from './components/page/page.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {PageService} from './service/page.service';
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    PageComponent
   ],
   imports: [
     BrowserModule,

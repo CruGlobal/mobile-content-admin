@@ -4,9 +4,10 @@ import {Translation} from '../models/translation';
 import {Constants} from '../constants';
 import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
+import {Page} from '../models/page';
 
 @Injectable()
-export class DraftService {
+export class DraftService { // TODO rename file
   private readonly draftsUrl = Constants.BASE_URL + 'drafts';
 
   constructor(private http: Http, private authService: AuthService) { }
@@ -14,6 +15,15 @@ export class DraftService {
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
     return Promise.reject(error.message || error);
+  }
+
+  getPage(page: Page, translation: Translation): Promise<string> {
+    return this.http.get(`${this.draftsUrl}/${translation.id}/?page_id=${page.id}`, this.authService.getHttpOptions())
+      .toPromise()
+      .then(response => {
+        return response.text();
+      })
+      .catch(this.handleError);
   }
 
   createDraft(resourceId: number, languageId: number): Promise<Translation> {
