@@ -7,7 +7,7 @@ import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
 
 @Injectable()
-export class DraftService { // TODO rename file
+export class DraftService {
   private readonly draftsUrl = Constants.BASE_URL + 'drafts';
 
   constructor(private http: Http, private authService: AuthService) { }

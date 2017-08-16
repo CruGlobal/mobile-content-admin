@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Translation} from '../../models/translation';
-import {DraftService} from '../../service/translation.service';
+import {DraftService} from '../../service/draft.service';
 import {PageService} from '../../service/page.service';
 import {Page} from '../../models/page';
 

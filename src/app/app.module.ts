@@ -12,7 +12,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {HttpModule} from '@angular/http';
 import {LanguageService} from './service/language.service';
 import {TranslationComponent} from './components/translation/translation.component';
-import {DraftService} from './service/translation.service';
+import {DraftService} from './service/draft.service';
 import {AuthService} from './service/auth.service';
 import {LanguagesComponent} from './components/languages/languages.component';
 import {WindowRefService} from './models/window-ref-service';
