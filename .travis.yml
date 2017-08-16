@@ -6,7 +6,7 @@ before_script:
   - yarn add @angular/cli
 
 script:
-  - ng lint
+  - ng lint --type-check
 
 cache:
   yarn: true
