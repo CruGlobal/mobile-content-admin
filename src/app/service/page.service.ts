@@ -16,15 +16,15 @@ export class PageService {
     return Promise.reject(error.message || error);
   }
 
-  update(page: Page): Promise<Page> {
-    const url = `${this.pagesUrl}/${page.id}`;
+  update(pageId: number, structure: string): Promise<Page> {
+    const url = `${this.pagesUrl}/${pageId}`;
 
     const payload = {
       data: {
-        id: page.id,
+        id: pageId,
         type: 'page',
         attributes: {
-          structure: page.structure
+          structure: structure
         }
       }
     };
