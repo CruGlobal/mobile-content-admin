@@ -16,7 +16,13 @@ export class TranslationComponent {
   getPages(): AbstractPage[] {
     return this.translation.resource.pages.map(page => {
       const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
-      return customPage == null ? page : customPage;
+
+      if (customPage == null) {
+        return page;
+      } else {
+        customPage.page = page;
+        return customPage;
+      }
     });
   }
 
