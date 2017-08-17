@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {ResourcesComponent} from './components/resources/resources.component';
-import {ResourceDetailComponent} from './components/resource-detail/resource-detail.component';
 import {ResourceService} from './service/resource.service';
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
@@ -24,19 +23,20 @@ import {CustomPageComponent} from './components/custom-page/custom-page.componen
 import {CustomPageService} from './service/custom-page.service';
 import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
+import {EditResourceComponent} from './components/edit-resource/edit-resource.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ResourcesComponent,
-    ResourceDetailComponent,
     DashboardComponent,
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
     FileSelectDirective,
     PageComponent,
-    CustomPageComponent
+    CustomPageComponent,
+    EditResourceComponent
   ],
   imports: [
     BrowserModule,
