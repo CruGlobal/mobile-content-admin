@@ -23,7 +23,8 @@ import {CustomPageComponent} from './components/custom-page/custom-page.componen
 import {CustomPageService} from './service/custom-page.service';
 import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
-import {EditResourceComponent} from './components/edit-resource/edit-resource.component';
+import {UpdateResourceComponent} from './components/edit-resource/update-resource.component';
+import {CreateResourceComponent} from './components/edit-resource/create-resource.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {EditResourceComponent} from './components/edit-resource/edit-resource.co
     FileSelectDirective,
     PageComponent,
     CustomPageComponent,
-    EditResourceComponent
+    UpdateResourceComponent,
+    CreateResourceComponent
   ],
   imports: [
     BrowserModule,
