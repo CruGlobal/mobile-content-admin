@@ -22,6 +22,8 @@ import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
 import {CustomPageComponent} from './components/custom-page/custom-page.component';
 import {CustomPageService} from './service/custom-page.service';
+import {SystemService} from './service/system.service';
+import {ResourceTypeService} from './service/resource-type.service';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import {CustomPageService} from './service/custom-page.service';
     AuthService,
     WindowRefService,
     PageService,
-    CustomPageService
+    CustomPageService,
+    SystemService,
+    ResourceTypeService
   ],
   bootstrap: [AppComponent]
 })
