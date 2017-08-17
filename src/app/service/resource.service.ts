@@ -60,7 +60,7 @@ export class ResourceService {
           abbreviation: resource.abbreviation,
           system_id: resource.system.id,
           resource_type_id: resource.resourceType.id,
-          onesky: resource.onesky,
+          onesky_project_id: resource.oneskyProjectId,
           description: resource.description,
           manifest: resource.manifest
         }

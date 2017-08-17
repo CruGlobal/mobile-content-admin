@@ -29,6 +29,8 @@ export class UpdateResourceComponent implements OnInit {
       this.systems = systems;
       this.resource.system = this.systems.find(system => system.id === this.resource.system.id);
     });
+
+    this.resource.oneskyProjectId = this.resource['onesky-project-id'];
   }
 
   saveResource(): void {

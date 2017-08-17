@@ -9,7 +9,7 @@ export class Resource {
   abbreviation: string;
   system: System;
   resourceType: ResourceType;
-  onesky: string;
+  oneskyProjectId: number;
   description: string;
   manifest: string;
   showTranslations: boolean;

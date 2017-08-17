@@ -7,8 +7,8 @@
   <select [(ngModel)]="resource.resourceType">
     <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
   </select>
-  <input placeholder="OneSky Project ID" [(ngModel)]="resource.onesky" />
+  <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
   <input placeholder="Description" [(ngModel)]="resource.description" />
-  <input placeholder="Manifest File" [(ngModel)]="resource.manifest" />
+  <textarea placeholder="Manifest File" [(ngModel)]="resource.manifest" ></textarea>
   <button (click)="saveResource()">Save</button>
 </div>
