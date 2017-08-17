@@ -25,6 +25,7 @@ export class ResourceService {
       })
       .catch(this.handleError);
   }
+
   getResource(id: number): Promise<Resource> {
     const url = `${this.resourcesUrl}/${id}?include=translations,pages`;
     return this.http.get(url)
@@ -34,9 +35,25 @@ export class ResourceService {
       })
       .catch(this.handleError);
   }
+
   create(resource: Resource): Promise<Resource> {
-    const payload = {
+    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getHttpOptions())
+      .toPromise()
+      .then(response => new JsonApiDataStore().sync(response.json()))
+      .catch(this.handleError);
+  }
+
+  update(resource: Resource): Promise<Resource> {
+    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getHttpOptions())
+      .toPromise()
+      .then(() => resource)
+      .catch(this.handleError);
+  }
+
+  private getPayload(resource: Resource) {
+    return {
       data: {
+        id: resource.id,
         type: 'resource',
         attributes: {
           name: resource.name,
@@ -49,18 +66,5 @@ export class ResourceService {
         }
       }
     };
-
-    return this.http.post(this.resourcesUrl, payload, this.authService.getHttpOptions())
-      .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
-      .catch(this.handleError);
-  }
-  update(resource: Resource): Promise<Resource> {
-    const url = `${this.resourcesUrl}/${resource.id}`;
-    return this.http
-      .put(url, JSON.stringify(resource), Constants.OPTIONS)
-      .toPromise()
-      .then(() => resource)
-      .catch(this.handleError);
   }
 }

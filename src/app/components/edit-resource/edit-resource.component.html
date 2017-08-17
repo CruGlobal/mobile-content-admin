@@ -1,15 +1,15 @@
 <h3>Add new Resource</h3>
 <div>
-  <input placeholder="Name" [(ngModel)]="newResource.name"/>
-  <input placeholder="Abbreviation" [(ngModel)]="newResource.abbreviation" />
-  <select [(ngModel)]="newResource.system">
+  <input placeholder="Name" [(ngModel)]="resource.name"/>
+  <input placeholder="Abbreviation" [(ngModel)]="resource.abbreviation" />
+  <select [(ngModel)]="resource.system">
     <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
   </select>
-  <select [(ngModel)]="newResource.resourceType">
+  <select [(ngModel)]="resource.resourceType">
     <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
   </select>
-  <input placeholder="OneSky Project ID" [(ngModel)]="newResource.onesky" />
-  <input placeholder="Description" [(ngModel)]="newResource.description" />
-  <input placeholder="Manifest File" [(ngModel)]="newResource.manifest" />
-  <button (click)="createResource()">Create</button>
+  <input placeholder="OneSky Project ID" [(ngModel)]="resource.onesky" />
+  <input placeholder="Description" [(ngModel)]="resource.description" />
+  <input placeholder="Manifest File" [(ngModel)]="resource.manifest" />
+  <button (click)="saveResource()">Save</button>
 </div>

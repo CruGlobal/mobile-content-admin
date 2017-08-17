@@ -10,8 +10,8 @@ import {ResourceTypeService} from '../../service/resource-type.service';
   selector: 'admin-edit-resource',
   templateUrl: './edit-resource.component.html'
 })
-export class EditResourceComponent implements OnInit{
-  newResource: Resource = new Resource;
+export class EditResourceComponent implements OnInit {
+  @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
 
@@ -20,15 +20,30 @@ export class EditResourceComponent implements OnInit{
               private resourceTypeService: ResourceTypeService) {}
 
   ngOnInit(): void {
+    if (this.resource == null) {
+      this.resource = new Resource();
+    }
+
     this.resourceTypeService.getResourceTypes().then(types => this.resourceTypes = types);
     this.systemService.getSystems().then(systems => {
       this.systems = systems;
-      this.newResource.system = this.systems[0];
+      this.resource.system = this.systems[0];
     });
   }
 
-  createResource(): void {
-    console.log(this.newResource);
-    this.resourceService.create(this.newResource).then();
+  saveResource(): void {
+    if (this.resource.id == null) {
+      this.createResource();
+    } else {
+      this.updateResource();
+    }
+  }
+
+  private createResource(): void {
+    this.resourceService.create(this.resource).then();
+  }
+
+  private updateResource(): void {
+    this.resourceService.update(this.resource).then();
   }
 }
