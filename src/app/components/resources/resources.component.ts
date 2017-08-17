@@ -19,7 +19,7 @@ export class ResourcesComponent implements OnInit {
   loadTranslations(resource): void {
     let x = 0;
     this.resourceService.getResource(resource.id, 'translations,pages').then((r) => {
-      resource.latest = r['latest-translations'];
+      resource.latest = r['latest-drafts-translations'];
 
       resource.latest.forEach((translation) => {
         this.languageService.getLanguage(translation.language.id, 'custom_pages').then((language) => {

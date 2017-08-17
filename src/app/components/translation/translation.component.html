@@ -3,7 +3,7 @@
   {{translation.language.code}}
 </div>
 {{translation.version}}
-<button (click)="translation.show = !translation.show" > <!-- TODO need to get drafts from API *ngIf="!translation.is_published">-->
+<button (click)="translation.show = !translation.show" *ngIf="!translation.is_published">
   Edit
 </button>
 <button *ngIf="!translation.is_published">
