@@ -25,12 +25,14 @@ export class LanguageService {
       })
       .catch(this.handleError);
   }
-  getLanguage(id: number): Promise<Language> {
-    return this.http.get(`${this.languagesUrl}/${id}?include=custom_pages`)
+
+  getLanguage(id: number, include: string): Promise<Language> {
+    return this.http.get(`${this.languagesUrl}/${id}?include=${include}`)
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
+
   createLanguage(language: Language): Promise<Language> {
     const payload = {
       data: {

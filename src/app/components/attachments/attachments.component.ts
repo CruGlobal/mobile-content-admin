@@ -21,7 +21,7 @@ export class AttachmentsComponent implements OnInit {
               private windowRef: WindowRefService) {}
 
   ngOnInit(): void {
-    this.resourceService.getResources().then(resources => this.resources = resources);
+    this.resourceService.getResources('attachments').then(resources => this.resources = resources);
     this.is_zipped = false;
   }
 
