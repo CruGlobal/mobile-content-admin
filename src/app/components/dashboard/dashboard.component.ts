@@ -11,7 +11,6 @@ export class DashboardComponent {
   constructor(private authService: AuthService) {}
 
   createAuthToken(): void {
-    this.authService.createAuthToken(this.accessCode).then(token => {
-    });
+    this.authService.createAuthToken(this.accessCode).then();
   }
 }
