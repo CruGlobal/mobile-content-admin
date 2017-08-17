@@ -4,12 +4,13 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Constants} from '../constants';
 import {JsonApiDataStore} from 'jsonapi-datastore';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class ResourceService {
   private readonly resourcesUrl = Constants.BASE_URL + 'resources';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private authService: AuthService) { }
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
@@ -24,6 +25,7 @@ export class ResourceService {
       })
       .catch(this.handleError);
   }
+
   getResource(id: number): Promise<Resource> {
     const url = `${this.resourcesUrl}/${id}?include=translations,pages`;
     return this.http.get(url)
@@ -33,12 +35,36 @@ export class ResourceService {
       })
       .catch(this.handleError);
   }
+
+  create(resource: Resource): Promise<Resource> {
+    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getHttpOptions())
+      .toPromise()
+      .then(response => new JsonApiDataStore().sync(response.json()))
+      .catch(this.handleError);
+  }
+
   update(resource: Resource): Promise<Resource> {
-    const url = `${this.resourcesUrl}/${resource.id}`;
-    return this.http
-      .put(url, JSON.stringify(resource), Constants.OPTIONS)
+    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getHttpOptions())
       .toPromise()
       .then(() => resource)
       .catch(this.handleError);
+  }
+
+  private getPayload(resource: Resource) {
+    return {
+      data: {
+        id: resource.id,
+        type: 'resource',
+        attributes: {
+          name: resource.name,
+          abbreviation: resource.abbreviation,
+          system_id: resource.system.id,
+          resource_type_id: resource.resourceType.id,
+          onesky_project_id: resource.oneskyProjectId,
+          description: resource.description,
+          manifest: resource.manifest
+        }
+      }
+    };
   }
 }

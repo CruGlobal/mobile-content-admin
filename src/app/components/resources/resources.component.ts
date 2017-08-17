@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Resource} from '../../models/resource';
 import {ResourceService} from '../../service/resource.service';
-import {Router} from '@angular/router';
-import {Translation} from '../../models/translation';
 import {LanguageService} from '../../service/language.service';
 
 @Component({
@@ -11,24 +9,13 @@ import {LanguageService} from '../../service/language.service';
 })
 export class ResourcesComponent implements OnInit {
   resources: Resource[];
-  translations: Translation[];
-  selectedResource: Resource;
 
-  constructor(private resourceService: ResourceService,
-              private languageService: LanguageService,
-              private router: Router) {}
-  onSelect(resource: Resource): void {
-    this.selectedResource = resource;
-  }
+  constructor(private resourceService: ResourceService, private languageService: LanguageService) {}
+
   ngOnInit(): void {
-    this.getResources();
-  }
-  getResources(): void {
     this.resourceService.getResources().then(resources => this.resources = resources);
   }
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedResource.id]);
-  }
+
   loadTranslations(resource): void {
     this.resourceService.getResource(resource.id)
       .then((r) => {

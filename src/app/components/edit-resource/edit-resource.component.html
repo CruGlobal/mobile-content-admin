@@ -1,0 +1,14 @@
+<div>
+  <input placeholder="Name" [(ngModel)]="resource.name"/>
+  <input placeholder="Abbreviation" [(ngModel)]="resource.abbreviation" />
+  <select [(ngModel)]="resource.system">
+    <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
+  </select>
+  <select [(ngModel)]="resource.resourceType">
+    <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
+  </select>
+  <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
+  <input placeholder="Description" [(ngModel)]="resource.description" />
+  <textarea placeholder="Manifest File" [(ngModel)]="resource.manifest" ></textarea>
+  <button (click)="saveResource()">Save</button>
+</div>

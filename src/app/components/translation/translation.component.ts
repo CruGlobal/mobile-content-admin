@@ -23,8 +23,6 @@ export class TranslationComponent {
   createDraft(): void {
     const resourceId = this.translation.resource.id;
     const languageId = this.translation.language.id;
-    this.draftService.createDraft(resourceId, languageId).then((d) => {
-
-    });
+    this.draftService.createDraft(resourceId, languageId).then();
   }
 }

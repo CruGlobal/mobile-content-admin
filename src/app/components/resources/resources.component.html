@@ -1,8 +1,14 @@
+<admin-create-resource></admin-create-resource>
 <ul>
-  <div *ngFor="let resource of resources" (click)="onSelect(resource)">
+  <div *ngFor="let resource of resources">
     <h3>
       <span class="badge">{{resource.id}}</span> {{resource.name}}
     </h3>
+    <button (click)="resource.editing = !resource.editing">Edit</button>
+    <div *ngIf="resource.editing">
+      <admin-edit-resource [resource]="resource"></admin-edit-resource>
+    </div>
+    <br>
     <button (click)="loadTranslations(resource)">Translations</button>
     <div *ngIf="resource.showTranslations">
       Latest translations

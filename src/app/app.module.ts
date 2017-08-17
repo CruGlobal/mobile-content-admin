@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {ResourcesComponent} from './components/resources/resources.component';
-import {ResourceDetailComponent} from './components/resource-detail/resource-detail.component';
 import {ResourceService} from './service/resource.service';
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
@@ -22,19 +21,24 @@ import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
 import {CustomPageComponent} from './components/custom-page/custom-page.component';
 import {CustomPageService} from './service/custom-page.service';
+import {SystemService} from './service/system.service';
+import {ResourceTypeService} from './service/resource-type.service';
+import {UpdateResourceComponent} from './components/edit-resource/update-resource.component';
+import {CreateResourceComponent} from './components/edit-resource/create-resource.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ResourcesComponent,
-    ResourceDetailComponent,
     DashboardComponent,
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
     FileSelectDirective,
     PageComponent,
-    CustomPageComponent
+    CustomPageComponent,
+    UpdateResourceComponent,
+    CreateResourceComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,9 @@ import {CustomPageService} from './service/custom-page.service';
     AuthService,
     WindowRefService,
     PageService,
-    CustomPageService
+    CustomPageService,
+    SystemService,
+    ResourceTypeService
   ],
   bootstrap: [AppComponent]
 })
