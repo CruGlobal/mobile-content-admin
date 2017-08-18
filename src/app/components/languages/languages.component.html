@@ -3,8 +3,19 @@
 <input placeholder="Code" [(ngModel)]="code"/>
 <button (click)="createLanguage()" class="btn btn-primary">Save</button>
 <h3>Current Languages</h3>
-<div *ngFor="let language of languages">
-  {{language.name}}
-  {{language.code}}
-  <button (click)="deleteLanguage(language)">Delete</button>
-</div>
+<table class="table table-hover">
+  <thead class="thead-default">
+  <tr>
+    <th>Language</th>
+    <th>Code</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let language of languages">
+    <td>{{language.name}}</td>
+    <td>{{language.code}}</td>
+    <td><button (click)="deleteLanguage(language)" class="btn btn-danger">Delete</button></td>
+  </tr>
+  </tbody>
+</table>
