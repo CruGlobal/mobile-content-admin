@@ -5,19 +5,25 @@ import {System} from '../../models/system';
 import {ResourceService} from '../../service/resource.service';
 import {SystemService} from '../../service/system.service';
 import {ResourceTypeService} from '../../service/resource-type.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {AbstractEditResourceComponent} from './abstract-edit-resource.component';
 
 @Component({
   selector: 'admin-edit-resource',
   templateUrl: './edit-resource.component.html'
 })
-export class UpdateResourceComponent implements OnInit {
+export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit {
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
 
   constructor(private resourceService: ResourceService,
               private systemService: SystemService,
-              private resourceTypeService: ResourceTypeService) {}
+              private resourceTypeService: ResourceTypeService,
+              activeModal: NgbActiveModal) {
+
+    super(activeModal);
+  }
 
   ngOnInit(): void {
     this.resourceTypeService.getResourceTypes().then(types => {

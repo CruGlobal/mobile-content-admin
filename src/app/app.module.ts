@@ -59,6 +59,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     SystemService,
     ResourceTypeService
   ],
+  entryComponents: [UpdateResourceComponent, CreateResourceComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

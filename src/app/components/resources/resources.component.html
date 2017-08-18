@@ -1,4 +1,4 @@
-<admin-create-resource></admin-create-resource>
+<button (click)="openCreateModal()">Add new Resource</button>
 <table class="table table-hover">
   <thead class="thead-default">
   <tr>
@@ -13,12 +13,8 @@
       {{resource.name}}
     </td>
     <td>
-      <button (click)="resource.editing = !resource.editing">Edit</button>
+      <button (click)="openUpdateModal(resource)">Edit</button>
     </td>
-    <div *ngIf="resource.editing">
-      <admin-edit-resource [resource]="resource"></admin-edit-resource>
-    </div>
-    <br>
     <td>
       <button (click)="loadTranslations(resource)">Translations</button>
     </td>
