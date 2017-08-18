@@ -20,8 +20,7 @@
     {{resource.name}}
     <div *ngFor="let attachment of resource.attachments">
       {{attachment.id}}
-      <button (click)="attachment.show = !attachment.show">View</button>
-      <img src="{{attachment.file}}" *ngIf="attachment.show"/>
+      <button (click)="showAttachment(attachment)">View</button>
     </div>
   </div>
 </div>
