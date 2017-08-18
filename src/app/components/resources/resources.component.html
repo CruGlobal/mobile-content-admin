@@ -1,35 +1,33 @@
 <admin-create-resource></admin-create-resource>
-<ul>
-  <table class="table table-hover">
-    <thead class="thead-default">
-    <tr>
-      <th>Name</th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let resource of resources">
-      <td>
-        {{resource.name}}
-      </td>
-      <td>
-        <button (click)="resource.editing = !resource.editing">Edit</button>
-      </td>
-      <div *ngIf="resource.editing">
-        <admin-edit-resource [resource]="resource"></admin-edit-resource>
+<table class="table table-hover">
+  <thead class="thead-default">
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let resource of resources">
+    <td>
+      {{resource.name}}
+    </td>
+    <td>
+      <button (click)="resource.editing = !resource.editing">Edit</button>
+    </td>
+    <div *ngIf="resource.editing">
+      <admin-edit-resource [resource]="resource"></admin-edit-resource>
+    </div>
+    <br>
+    <td>
+      <button (click)="loadTranslations(resource)">Translations</button>
+    </td>
+    <div *ngIf="resource.showTranslations">
+      Latest translations
+      <div *ngFor="let translation of resource.latest">
+        <admin-translation [translation]="translation"></admin-translation>
       </div>
-      <br>
-      <td>
-        <button (click)="loadTranslations(resource)">Translations</button>
-      </td>
-      <div *ngIf="resource.showTranslations">
-        Latest translations
-        <div *ngFor="let translation of resource.latest">
-          <admin-translation [translation]="translation"></admin-translation>
-        </div>
-      </div>
-    </tr>
-    </tbody>
-  </table>
-</ul>
+    </div>
+  </tr>
+  </tbody>
+</table>
