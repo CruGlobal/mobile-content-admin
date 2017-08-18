@@ -12,14 +12,16 @@
     <option value="true">Yes</option>
     <option value="false">No</option>
   </select>
-  <button (click)="uploadNewFile()">Upload</button>
+  <button (click)="uploadNewFile()" class="btn btn-primary">Upload</button>
 </div>
 
 <div *ngFor="let resource of resources">
-  {{resource.name}}
-  <div *ngFor="let attachment of resource.attachments">
-    {{attachment.id}}
-    <button (click)="attachment.show = !attachment.show">View</button>
-    <img src="{{attachment.file}}" *ngIf="attachment.show"/>
+  <div *ngIf="resource.attachments.length > 0">
+    {{resource.name}}
+    <div *ngFor="let attachment of resource.attachments">
+      {{attachment.id}}
+      <button (click)="attachment.show = !attachment.show">View</button>
+      <img src="{{attachment.file}}" *ngIf="attachment.show"/>
+    </div>
   </div>
 </div>
