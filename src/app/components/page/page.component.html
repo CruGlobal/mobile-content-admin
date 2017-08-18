@@ -1,9 +1,9 @@
-{{page.filename}}
-<button (click)="page.show = !page.show">Edit</button>
-<button *ngIf="page.show">Validate</button>
-<button (click)="createCustomPage()" *ngIf="page.show">Save (this language only)</button>
-<button (click)="updatePage()" *ngIf="page.show && translation.language.code ==='en'">Save for all languages</button>
-<i>Note: any translated text entered here will be overwritten when Draft is published</i>
-<div *ngIf="page.show">
+<div>
   <textarea [(ngModel)]="page.structure"></textarea>
 </div>
+
+<button>Validate</button>
+<button (click)="createCustomPage()">Save (this language only)</button>
+<button (click)="updatePage()" *ngIf="translation.language.code ==='en'">Save for all languages</button>
+
+<i>Note: any translated text entered here will be overwritten when Draft is published</i>

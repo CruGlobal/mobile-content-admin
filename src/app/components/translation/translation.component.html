@@ -4,7 +4,7 @@
 </div>
 {{translation.version}}
 <button (click)="translation.show = !translation.show" *ngIf="!translation.is_published">
-  Edit
+  Edit pages
 </button>
 <button *ngIf="!translation.is_published">
   Publish
@@ -12,7 +12,7 @@
 <button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>
 <ol *ngIf="translation.show">
   <li *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
-    <admin-page [page]="page" [translation]="translation" *ngSwitchCase="'page'"></admin-page>
-    <admin-custom-page [customPage]="page" *ngSwitchCase="'custom-page'"></admin-custom-page>
+    <button *ngSwitchCase="'page'" (click)="openPage(page)">{{page.filename}}</button>
+    <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)">{{page.page.filename}}</button>
   </li>
 </ol>

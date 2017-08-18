@@ -61,7 +61,7 @@ import {ImageComponent} from './components/image/image.component';
     SystemService,
     ResourceTypeService
   ],
-  entryComponents: [UpdateResourceComponent, CreateResourceComponent, ImageComponent],
+  entryComponents: [UpdateResourceComponent, CreateResourceComponent, ImageComponent, PageComponent, CustomPageComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
