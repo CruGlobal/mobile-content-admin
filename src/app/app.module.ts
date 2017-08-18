@@ -25,6 +25,7 @@ import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
 import {UpdateResourceComponent} from './components/edit-resource/update-resource.component';
 import {CreateResourceComponent} from './components/edit-resource/create-resource.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {CreateResourceComponent} from './components/edit-resource/create-resourc
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot()
   ],
   providers: [
     ResourceService,
