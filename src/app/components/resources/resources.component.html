@@ -17,13 +17,13 @@
     </td>
     <td>
       <button (click)="loadTranslations(resource)">Translations</button>
-    </td>
-    <div *ngIf="resource.showTranslations">
-      Latest translations
-      <div *ngFor="let translation of resource.latest">
-        <admin-translation [translation]="translation"></admin-translation>
+      <div *ngIf="resource.showTranslations">
+        Latest translations
+        <div *ngFor="let translation of resource.latest">
+          <admin-translation [translation]="translation"></admin-translation>
+        </div>
       </div>
-    </div>
+    </td>
   </tr>
   </tbody>
 </table>
