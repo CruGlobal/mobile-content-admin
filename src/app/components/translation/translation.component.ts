@@ -17,7 +17,7 @@ export class TranslationComponent {
     return this.translation.resource.pages.map(page => {
       const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
 
-      if (customPage == null) {
+      if (!customPage) {
         return page;
       } else {
         customPage.page = page;
