@@ -17,18 +17,15 @@ export class ResourcesComponent implements OnInit {
   }
 
   loadTranslations(resource): void {
-    let x = 0;
     this.resourceService.getResource(resource.id, 'translations,pages').then((r) => {
       resource.latest = r['latest-drafts-translations'];
 
-      resource.latest.forEach((translation) => {
+      resource.latest.forEach((translation, index) => {
         this.languageService.getLanguage(translation.language.id, 'custom_pages').then((language) => {
-          x++;
-
           translation.language = language;
           translation.is_published = translation['is-published'];
 
-          if (x === resource.latest.length) {
+          if (index === resource.latest.length - 1) {
             resource.showTranslations = true;
           }
         });
