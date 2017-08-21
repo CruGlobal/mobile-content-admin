@@ -1,7 +1,7 @@
 <button (click)="openCreateModal()">Add new Resource</button>
 <div *ngFor="let resource of resources">
   <h3>{{resource.name}}</h3>
-  <button (click)="openUpdateModal(resource)">Edit</button>
+  <button (click)="openUpdateModal(resource)" class="btn btn-warning">Edit</button>
   <button (click)="loadTranslations(resource)">Translations</button>
   <div class="container">
     <div class="row">
