@@ -16,7 +16,10 @@ export class ResourcesComponent implements OnInit {
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
-    this.resourceService.getResources(null).then(resources => this.resources = resources);
+    this.resourceService.getResources('translations,pages').then(resources => {
+      this.resources = resources;
+      this.resources.forEach(r => (this.loadTranslations(r)));
+    });
   }
 
   openCreateModal(): void {
@@ -28,18 +31,10 @@ export class ResourcesComponent implements OnInit {
   }
 
   loadTranslations(resource): void {
-    this.resourceService.getResource(resource.id, 'translations,pages').then((r) => {
-      resource.latest = r['latest-drafts-translations'];
-
-      resource.latest.forEach((translation, index) => {
-        this.languageService.getLanguage(translation.language.id, 'custom_pages').then((language) => {
-          translation.language = language;
-          translation.is_published = translation['is-published'];
-
-          if (index === resource.latest.length - 1) {
-            resource.showTranslations = true;
-          }
-        });
+    resource['latest-drafts-translations'].forEach((translation) => {
+      this.languageService.getLanguage(translation.language.id, 'custom_pages').then((language) => {
+        translation.language = language;
+        translation.is_published = translation['is-published'];
       });
     });
   }

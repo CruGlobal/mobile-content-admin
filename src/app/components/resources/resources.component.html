@@ -29,9 +29,6 @@
       <button (click)="openUpdateModal(resource)" class="btn btn-warning">
         <i class="fa fa-pencil"></i> Edit
       </button>
-      <button (click)="loadTranslations(resource)">
-        Translations
-      </button>
     </h4>
   </div>
   <div class="container">
@@ -51,7 +48,7 @@
         </div>
       </div>
     </strong>
-    <div *ngFor="let translation of resource.latest">
+    <div *ngFor="let translation of resource['latest-drafts-translations']">
       <admin-translation [translation]="translation"></admin-translation>
     </div>
   </div>
