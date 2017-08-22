@@ -19,10 +19,34 @@
 
 <div *ngFor="let resource of resources">
   <div *ngIf="resource.attachments.length > 0">
-    {{resource.name}}
-    <div *ngFor="let attachment of resource.attachments">
-      {{attachment.id}}
-      <button (click)="showAttachment(attachment)">View</button>
+    <h4>{{resource.name}}</h4>
+    <div class="container">
+      <strong>
+        <div class="row">
+          <div class="col">
+            Filename
+          </div>
+          <div class="col">
+            ID
+          </div>
+          <div class="col">
+            Options
+          </div>
+        </div>
+      </strong>
+      <div *ngFor="let attachment of resource.attachments" class="row">
+        <div class="col">
+          {{attachment['file-file-name']}}
+        </div>
+        <div class="col">
+          {{attachment.id}}
+        </div>
+        <div class="col">
+          <button (click)="showAttachment(attachment)" class="btn btn-secondary">
+            View
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
