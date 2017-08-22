@@ -23,9 +23,17 @@
   </div>
 </div>
 <div *ngFor="let resource of resources">
-  <h3>{{resource.name}}</h3>
-  <button (click)="openUpdateModal(resource)" class="btn btn-warning"><i class="fa fa-pencil"></i> Edit</button>
-  <button (click)="loadTranslations(resource)">Translations</button>
+  <div>
+    <h4>
+      {{resource.name}}
+      <button (click)="openUpdateModal(resource)" class="btn btn-warning">
+        <i class="fa fa-pencil"></i> Edit
+      </button>
+      <button (click)="loadTranslations(resource)">
+        Translations
+      </button>
+    </h4>
+  </div>
   <div class="container">
     <strong>
       <div class="row">
