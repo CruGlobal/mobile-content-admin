@@ -1,9 +1,20 @@
 <div>
-  <textarea [(ngModel)]="customPage.structure"></textarea>
+  <h5>Edit Custom Page Layout</h5>
+  {{customPage.page.filename}}
+  {{customPage.language.name}}
+  {{customPage.page.resource.name}}
+</div>
+<div>
+  <div ace-editor
+       [(text)]="customPage.structure"
+       [autoUpdateContent]="true"
+       [options]="{wrap : true}"
+       style="min-height: 500px; width:100%; overflow: auto;">
+  </div>
 </div>
 
-<button>Validate</button>
+<button (click)="cancel()">Cancel</button>
 <button (click)="updateCustomPage()">Save (this language only)</button>
-<button (click)="updatePage()" *ngIf="customPage.language.code ==='en'">Save for all languages</button>
+<button (click)="updatePage()" *ngIf="customPage.language.code === 'en'">Save for all languages</button>
 <!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
 <i>Note: any translated text entered here will be overwritten when Draft is published</i>

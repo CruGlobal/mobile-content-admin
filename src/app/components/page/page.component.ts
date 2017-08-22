@@ -3,6 +3,7 @@ import {Page} from '../../models/page';
 import {Translation} from '../../models/translation';
 import {CustomPageService} from '../../service/custom-page.service';
 import {PageService} from '../../service/page.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'admin-page',
@@ -12,7 +13,7 @@ export class PageComponent {
   @Input() page: Page;
   @Input() translation: Translation;
 
-  constructor(private pageService: PageService, private customPageService: CustomPageService) {}
+  constructor(private pageService: PageService, private customPageService: CustomPageService, private activeModal: NgbActiveModal) {}
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
@@ -29,5 +30,9 @@ export class PageComponent {
     this.customPageService.upsert(this.translation.language.id, this.page.id, this.page.structure)
       .then()
       .catch(error => this.handleError(error));
+  }
+
+  cancel(): void {
+    this.activeModal.close();
   }
 }
