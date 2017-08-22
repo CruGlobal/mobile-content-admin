@@ -1,23 +1,25 @@
-<button (click)="openCreateModal()">Add new Resource</button>
+<button (click)="openCreateModal()" class="btn btn-primary">Add new Resource</button>
 <div *ngFor="let resource of resources">
   <h3>{{resource.name}}</h3>
   <button (click)="openUpdateModal(resource)" class="btn btn-warning">Edit</button>
   <button (click)="loadTranslations(resource)">Translations</button>
   <div class="container">
-    <div class="row">
-      <div class="col">
-        Language
+    <strong>
+      <div class="row">
+        <div class="col">
+          Language
+        </div>
+        <div class="col">
+          Code
+        </div>
+        <div class="col">
+          Latest Version & Status
+        </div>
+        <div class="col">
+          Actions
+        </div>
       </div>
-      <div class="col">
-        Code
-      </div>
-      <div class="col">
-        Latest Version & Status
-      </div>
-      <div class="col">
-        Actions
-      </div>
-    </div>
+    </strong>
     <div *ngFor="let translation of resource.latest">
       <admin-translation [translation]="translation"></admin-translation>
     </div>
