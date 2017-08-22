@@ -12,13 +12,15 @@
   <div class="col">
     <div class="btn-group" role="group">
       <button (click)="translation.show = !translation.show" *ngIf="!translation.is_published" type="button" class="btn btn-warning">
-        Edit pages
+        <i class="fa fa-pencil"></i> Edit pages
       </button>
       <button *ngIf="!translation.is_published" type="button" class="btn btn-success">
-        Publish
+        <i class="fa fa-cloud-upload"></i> Publish
       </button>
     </div>
-    <button *ngIf="translation.is_published" (click)="createDraft()" class="btn btn-secondary">New Draft</button>
+    <button *ngIf="translation.is_published" (click)="createDraft()" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> New Draft
+    </button>
   </div>
 </div>
 <div class="row">

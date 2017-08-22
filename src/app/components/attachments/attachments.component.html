@@ -12,7 +12,9 @@
     <option value="true">Yes</option>
     <option value="false">No</option>
   </select>
-  <button (click)="uploadNewFile()" class="btn btn-success">Upload</button>
+  <button (click)="uploadNewFile()" class="btn btn-success">
+    <i class="fa fa-cloud-upload"></i> Upload
+  </button>
 </div>
 
 <div *ngFor="let resource of resources">
