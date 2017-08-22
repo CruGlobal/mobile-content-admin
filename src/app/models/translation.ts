@@ -5,4 +5,5 @@ export class Translation {
   code: string;
   language: Language;
   resource: Resource;
+  show: boolean;
 }
