@@ -1,50 +1,54 @@
-<h3>Attachments</h3>
-
-<div>
-  <h5>Upload new image</h5>
-  <input type="file" ng2FileSelect [uploader]="uploader" />
-  Resource
-  <select [(ngModel)]="selectedResource">
-    <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.name }}</option>
-  </select>
-  Add to zip file?
-  <select [(ngModel)]="is_zipped">
-    <option value="true">Yes</option>
-    <option value="false">No</option>
-  </select>
-  <button (click)="uploadNewFile()" class="btn btn-success">
-    <i class="fa fa-cloud-upload"></i> Upload
-  </button>
-</div>
-
-<div *ngFor="let resource of resources">
-  <div *ngIf="resource.attachments.length > 0">
-    <h4>{{resource.name}}</h4>
-    <div class="container">
-      <strong>
-        <div class="row">
-          <div class="col">
-            Filename
+<div class="card">
+  <div class="card-header">
+    <div>
+      <h5>Upload new image</h5>
+      <input type="file" ng2FileSelect [uploader]="uploader" />
+      Resource
+      <select [(ngModel)]="selectedResource">
+        <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.name }}</option>
+      </select>
+      Add to zip file?
+      <select [(ngModel)]="is_zipped">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <button (click)="uploadNewFile()" class="btn btn-success">
+        <i class="fa fa-cloud-upload"></i> Upload
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">Attachments</h3>
+    <div *ngFor="let resource of resources">
+      <div *ngIf="resource.attachments.length > 0">
+        <h4>{{resource.name}}</h4>
+        <div class="container">
+          <strong>
+            <div class="row">
+              <div class="col">
+                Filename
+              </div>
+              <div class="col">
+                ID
+              </div>
+              <div class="col">
+                Options
+              </div>
+            </div>
+          </strong>
+          <div *ngFor="let attachment of resource.attachments" class="row">
+            <div class="col">
+              {{attachment['file-file-name']}}
+            </div>
+            <div class="col">
+              {{attachment.id}}
+            </div>
+            <div class="col">
+              <button (click)="showAttachment(attachment)" class="btn btn-secondary">
+                View
+              </button>
+            </div>
           </div>
-          <div class="col">
-            ID
-          </div>
-          <div class="col">
-            Options
-          </div>
-        </div>
-      </strong>
-      <div *ngFor="let attachment of resource.attachments" class="row">
-        <div class="col">
-          {{attachment['file-file-name']}}
-        </div>
-        <div class="col">
-          {{attachment.id}}
-        </div>
-        <div class="col">
-          <button (click)="showAttachment(attachment)" class="btn btn-secondary">
-            View
-          </button>
         </div>
       </div>
     </div>
