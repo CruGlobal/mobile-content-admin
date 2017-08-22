@@ -23,15 +23,23 @@
     </button>
   </div>
 </div>
-<div class="row">
-  <div class="col" *ngIf="translation.show">
-    <div *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
-      <button *ngSwitchCase="'page'" (click)="openPage(page)" class="btn btn-secondary btn-block">
-        {{page.filename}}
-      </button>
-      <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)" class="btn btn-secondary btn-block">
-        {{page.page.filename}}
-      </button>
+
+<div class="row" *ngIf="translation.show">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        Choose Page to Edit
+      </div>
+      <div class="card-body">
+        <div *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+          <button *ngSwitchCase="'page'" (click)="openPage(page)" class="btn btn-outline-dark btn-block">
+            {{page.filename}}
+          </button>
+          <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)" class="btn btn-outline-dark btn-block">
+            {{page.page.filename}}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
