@@ -24,6 +24,10 @@ export class LanguagesComponent implements OnInit {
 
     this.languageService.createLanguage(l).then();
   }
-  deleteLanguage(): void {
+
+  deleteLanguage(language: Language): void {
+    this.languageService.deleteLanguage(language.id)
+      .then()
+      .catch();
   }
 }
