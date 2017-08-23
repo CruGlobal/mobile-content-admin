@@ -3,6 +3,10 @@ import {Translation} from '../../models/translation';
 import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
 import {AbstractPage} from '../../models/abstract-page';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {PageComponent} from '../page/page.component';
+import {CustomPageComponent} from '../custom-page/custom-page.component';
+import {Page} from '../../models/page';
 
 @Component({
   selector: 'admin-translation',
@@ -11,7 +15,7 @@ import {AbstractPage} from '../../models/abstract-page';
 export class TranslationComponent {
   @Input() translation: Translation;
 
-  constructor(private draftService: DraftService) {}
+  constructor(private draftService: DraftService, private modalService: NgbModal) {}
 
   getPages(): AbstractPage[] {
     return this.translation.resource.pages.map(page => {
@@ -30,5 +34,15 @@ export class TranslationComponent {
     const resourceId = this.translation.resource.id;
     const languageId = this.translation.language.id;
     this.draftService.createDraft(resourceId, languageId).then();
+  }
+
+  openPage(page: Page): void {
+    const modal = this.modalService.open(PageComponent);
+    modal.componentInstance.page = page;
+    modal.componentInstance.translation = this.translation;
+  }
+
+  openCustomPage(page: CustomPage): void {
+    this.modalService.open(CustomPageComponent).componentInstance.customPage = page;
   }
 }

@@ -5,6 +5,8 @@ import {Attachment} from '../../models/attachment';
 import {FileUploader} from 'ng2-file-upload';
 import {Constants} from '../../constants';
 import {WindowRefService} from '../../models/window-ref-service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ImageComponent} from '../image/image.component';
 
 @Component({
   selector: 'admin-attachments',
@@ -17,8 +19,7 @@ export class AttachmentsComponent implements OnInit {
   @Input() is_zipped: boolean;
   public uploader: FileUploader = new FileUploader({url: Constants.BASE_URL + 'attachments'});
 
-  constructor(private resourceService: ResourceService,
-              private windowRef: WindowRefService) {}
+  constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.resourceService.getResources('attachments').then(resources => this.resources = resources);
@@ -34,5 +35,9 @@ export class AttachmentsComponent implements OnInit {
     this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem('Authorization');
     this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: this.selectedResource.id};
     this.uploader.uploadAll();
+  }
+
+  showAttachment(attachment: Attachment): void {
+    this.modalService.open(ImageComponent).componentInstance.source = attachment.file;
   }
 }

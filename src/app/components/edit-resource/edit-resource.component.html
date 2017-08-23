@@ -1,14 +1,79 @@
-<div>
-  <input placeholder="Name" [(ngModel)]="resource.name"/>
-  <input placeholder="Abbreviation" [(ngModel)]="resource.abbreviation" />
-  <select [(ngModel)]="resource.system">
-    <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
-  </select>
-  <select [(ngModel)]="resource.resourceType">
-    <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
-  </select>
-  <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
-  <input placeholder="Description" [(ngModel)]="resource.description" />
-  <textarea placeholder="Manifest File" [(ngModel)]="resource.manifest" ></textarea>
-  <button (click)="saveResource()">Save</button>
+<div class="container">
+
+  <div class="row">
+    <div class="col">
+      <label>Name</label>
+    </div>
+    <div class="col">
+      <input placeholder="Name" [(ngModel)]="resource.name"/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Abbreviation</label>
+    </div>
+    <div class="col">
+      <input placeholder="Abbreviation" [(ngModel)]="resource.abbreviation" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>System</label>
+    </div>
+    <div class="col">
+      <select [(ngModel)]="resource.system">
+        <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Type</label>
+    </div>
+    <div class="col">
+      <select [(ngModel)]="resource.resourceType">
+        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>OneSky Project ID</label>
+    </div>
+    <div class="col">
+      <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Description</label>
+    </div>
+    <div class="col">
+      <input placeholder="Description" [(ngModel)]="resource.description" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Manifest file</label>
+    </div>
+    <div class="col">
+      <textarea placeholder="Manifest File" [(ngModel)]="resource.manifest" ></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button (click)="closeEditModal()" class="btn btn-danger">Cancel</button>
+    </div>
+    <div class="col">
+      <button (click)="saveResource()" class="btn btn-success">Save</button>
+    </div>
+  </div>
+
 </div>

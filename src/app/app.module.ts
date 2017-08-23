@@ -25,6 +25,8 @@ import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
 import {UpdateResourceComponent} from './components/edit-resource/update-resource.component';
 import {CreateResourceComponent} from './components/edit-resource/create-resource.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ImageComponent} from './components/image/image.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +40,15 @@ import {CreateResourceComponent} from './components/edit-resource/create-resourc
     PageComponent,
     CustomPageComponent,
     UpdateResourceComponent,
-    CreateResourceComponent
+    CreateResourceComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot()
   ],
   providers: [
     ResourceService,
@@ -57,6 +61,7 @@ import {CreateResourceComponent} from './components/edit-resource/create-resourc
     SystemService,
     ResourceTypeService
   ],
+  entryComponents: [UpdateResourceComponent, CreateResourceComponent, ImageComponent, PageComponent, CustomPageComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,18 +1,38 @@
-<div *ngIf="translation.language">
-  {{translation.language.name}}
-  {{translation.language.code}}
+<div class="row">
+  <div class="col">
+    {{translation.language.name}}
+  </div>
+  <div class="col">
+    {{translation.language.code}}
+  </div>
+  <div class="col">
+    <span class="badge badge-secondary" *ngIf="!translation.is_published">{{translation.version}} | Draft</span>
+    <span class="badge badge-success" *ngIf="translation.is_published">{{translation.version}} | Live</span>
+  </div>
+  <div class="col">
+    <div class="btn-group" role="group">
+      <button (click)="translation.show = !translation.show" *ngIf="!translation.is_published" type="button" class="btn btn-warning">
+        <i class="fa fa-pencil"></i> Edit pages
+      </button>
+      <button *ngIf="!translation.is_published" type="button" class="btn btn-success">
+        <i class="fa fa-cloud-upload"></i> Publish
+      </button>
+    </div>
+    <button *ngIf="translation.is_published" (click)="createDraft()" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> New Draft
+    </button>
+  </div>
 </div>
-{{translation.version}}
-<button (click)="translation.show = !translation.show" *ngIf="!translation.is_published">
-  Edit
-</button>
-<button *ngIf="!translation.is_published">
-  Publish
-</button>
-<button *ngIf="translation.is_published" (click)="createDraft()">New Draft</button>
-<ol *ngIf="translation.show">
-  <li *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
-    <admin-page [page]="page" [translation]="translation" *ngSwitchCase="'page'"></admin-page>
-    <admin-custom-page [customPage]="page" *ngSwitchCase="'custom-page'"></admin-custom-page>
-  </li>
-</ol>
+<div class="row">
+  <div class="col" *ngIf="translation.show">
+    <div *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+      <button *ngSwitchCase="'page'" (click)="openPage(page)" class="btn btn-secondary btn-block">
+        {{page.filename}}
+      </button>
+      <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)" class="btn btn-secondary btn-block">
+        {{page.page.filename}}
+      </button>
+    </div>
+  </div>
+</div>
+<hr>

@@ -1,10 +1,9 @@
-{{customPage.page.filename}}
-<button (click)="customPage.show = !customPage.show">Edit</button>
-<button *ngIf="customPage.show">Validate</button>
-<button (click)="updateCustomPage()" *ngIf="customPage.show">Save (this language only)</button>
-<button (click)="updatePage()" *ngIf="customPage.show && customPage.language.code ==='en'">Save for all languages</button>
-<!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
-<i>Note: any translated text entered here will be overwritten when Draft is published</i>
-<div *ngIf="customPage.show">
+<div>
   <textarea [(ngModel)]="customPage.structure"></textarea>
 </div>
+
+<button>Validate</button>
+<button (click)="updateCustomPage()">Save (this language only)</button>
+<button (click)="updatePage()" *ngIf="customPage.language.code ==='en'">Save for all languages</button>
+<!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
+<i>Note: any translated text entered here will be overwritten when Draft is published</i>
