@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.1",
-    "bootstrap": "4.0.0-beta",
     "components-font-awesome": "^4.6.3",
     "core-js": "^2.4.1",
     "jsonapi-datastore": "^0.4.0-beta",
