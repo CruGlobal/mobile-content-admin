@@ -18,8 +18,15 @@ export class LanguagesComponent implements OnInit {
     this.loadLanguages();
   }
 
+  private handleError(error: any): void {
+    console.error(error);
+    this.error = true;
+  }
+
   private loadLanguages(): void {
-    this.languageService.getLanguages().then(languages => this.languages = languages);
+    this.languageService.getLanguages()
+      .then(languages => this.languages = languages)
+      .catch(error => this.handleError(error));
   }
 
   createLanguage(): void {
@@ -29,18 +36,12 @@ export class LanguagesComponent implements OnInit {
 
     this.languageService.createLanguage(l)
       .then(() => this.loadLanguages())
-      .catch(error => {
-        console.log(error);
-        this.error = true;
-      });
+      .catch(error => this.handleError(error));
   }
 
   deleteLanguage(language: Language): void {
     this.languageService.deleteLanguage(language.id)
       .then(() => this.loadLanguages())
-      .catch(error => {
-        console.log(error);
-        this.error = true;
-      });
+      .catch(error => this.handleError(error));
   }
 }

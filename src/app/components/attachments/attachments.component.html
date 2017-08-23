@@ -37,7 +37,9 @@
     </button>
   </div>
 </div>
-
+<ngb-alert type="danger" [dismissible]="false" *ngIf="error">
+  There was an error on this page.
+</ngb-alert>
 <h3 class="card-title">Attachments</h3>
 <div *ngFor="let resource of resources">
   <div *ngIf="resource.attachments.length > 0">
