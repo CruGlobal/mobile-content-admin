@@ -55,7 +55,6 @@ export class LanguageService {
   deleteLanguage(id: number): Promise<void> {
     return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getHttpOptions())
       .toPromise()
-      .then(Promise.resolve)
       .catch(this.handleError);
   }
 }
