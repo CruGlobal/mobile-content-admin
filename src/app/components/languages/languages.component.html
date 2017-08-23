@@ -1,26 +1,33 @@
 <div class="card">
-  <div class="card-header"><h3>Add new language</h3>
+  <div class="card-body">
+    <h3>Add new language</h3>
     <input placeholder="Name" [(ngModel)]="name"/>
     <input placeholder="Code" [(ngModel)]="code"/>
     <button (click)="createLanguage()" class="btn btn-success">Save</button>
   </div>
-  <div class="card-body">
-    <h3 class="card-title">Current Languages</h3>
-    <table class="table table-hover">
-      <thead class="thead-default">
-      <tr>
-        <th>Language</th>
-        <th>Code</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let language of languages">
-        <td>{{language.name}}</td>
-        <td>{{language.code}}</td>
-        <td><button (click)="deleteLanguage(language)" class="btn btn-danger">Delete</button></td>
-      </tr>
-      </tbody>
-    </table>
+</div>
+<strong>
+  <div class="row">
+    <div class="col">
+      Language
+    </div>
+    <div class="col">
+      Code
+    </div>
+    <div class="col">
+      Actions
+    </div>
+  </div>
+</strong>
+
+<div class="row" *ngFor="let language of languages">
+  <div class="col">
+    {{language.name}}
+  </div>
+  <div class="col">
+    {{language.code}}
+  </div>
+  <div class="col">
+    <button (click)="deleteLanguage(language)" class="btn btn-danger">Delete</button>
   </div>
 </div>

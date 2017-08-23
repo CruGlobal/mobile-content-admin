@@ -11,8 +11,11 @@
   </div>
   <div class="col">
     <div class="btn-group" role="group">
-      <button (click)="translation.show = !translation.show" *ngIf="!translation.is_published" type="button" class="btn btn-warning">
-        <i class="fa fa-pencil"></i> Edit pages
+      <button (click)="showPages()" *ngIf="!translation.is_published && !translation.show" type="button" class="btn btn-warning">
+        <i class="fa fa-chevron-down"></i> Show pages
+      </button>
+      <button (click)="hidePages()" *ngIf="!translation.is_published && translation.show" type="button" class="btn btn-warning">
+        <i class="fa fa-chevron-up"></i> Hide pages
       </button>
       <button *ngIf="!translation.is_published" type="button" class="btn btn-success">
         <i class="fa fa-cloud-upload"></i> Publish
@@ -23,15 +26,23 @@
     </button>
   </div>
 </div>
-<div class="row">
-  <div class="col" *ngIf="translation.show">
-    <div *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
-      <button *ngSwitchCase="'page'" (click)="openPage(page)" class="btn btn-secondary btn-block">
-        {{page.filename}}
-      </button>
-      <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)" class="btn btn-secondary btn-block">
-        {{page.page.filename}}
-      </button>
+
+<div class="row" *ngIf="translation.show">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        Choose page to edit
+      </div>
+      <div class="card-body">
+        <div *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+          <button *ngSwitchCase="'page'" (click)="openPage(page)" class="btn btn-outline-dark btn-block">
+            <i class="fa fa-pencil"></i> {{page.filename}}
+          </button>
+          <button *ngSwitchCase="'custom-page'" (click)="openCustomPage(page)" class="btn btn-outline-dark btn-block">
+            <i class="fa fa-pencil"></i> {{page.page.filename}}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

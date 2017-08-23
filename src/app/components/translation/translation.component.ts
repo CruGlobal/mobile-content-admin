@@ -30,6 +30,15 @@ export class TranslationComponent {
     });
   }
 
+  showPages(): void {
+    this.translation.resource.translations.forEach(t => ( t.show = false ));
+    this.translation.show = true;
+  }
+
+  hidePages(): void {
+    this.translation.show = false;
+  }
+
   createDraft(): void {
     const resourceId = this.translation.resource.id;
     const languageId = this.translation.language.id;

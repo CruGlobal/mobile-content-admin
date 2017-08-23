@@ -27,6 +27,7 @@ import {UpdateResourceComponent} from './components/edit-resource/update-resourc
 import {CreateResourceComponent} from './components/edit-resource/create-resource.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from './components/image/image.component';
+import {AceEditorDirective} from 'ng2-ace-editor';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {ImageComponent} from './components/image/image.component';
     CustomPageComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
-    ImageComponent
+    ImageComponent,
+    AceEditorDirective
   ],
   imports: [
     BrowserModule,
