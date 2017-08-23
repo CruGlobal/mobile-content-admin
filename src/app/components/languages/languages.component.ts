@@ -10,6 +10,7 @@ export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
   languages: Language[];
+  private error = false;
 
   constructor(private languageService: LanguageService) {}
 
@@ -26,12 +27,20 @@ export class LanguagesComponent implements OnInit {
     l.name = this.name;
     l.code = this.code;
 
-    this.languageService.createLanguage(l).then(() => this.loadLanguages());
+    this.languageService.createLanguage(l)
+      .then(() => this.loadLanguages())
+      .catch(error => {
+        console.log(error);
+        this.error = true;
+      });
   }
 
   deleteLanguage(language: Language): void {
     this.languageService.deleteLanguage(language.id)
       .then(() => this.loadLanguages())
-      .catch();
+      .catch(error => {
+        console.log(error);
+        this.error = true;
+      });
   }
 }
