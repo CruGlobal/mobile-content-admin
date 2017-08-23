@@ -22,8 +22,16 @@ export class AttachmentsComponent implements OnInit {
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
-    this.resourceService.getResources('attachments').then(resources => this.resources = resources);
+    this.loadAttachments();
     this.is_zipped = false;
+
+    this.uploader.onCompleteAll = () => {
+      this.loadAttachments();
+    };
+  }
+
+  private loadAttachments(): void {
+    this.resourceService.getResources('attachments').then(resources => this.resources = resources);
   }
 
   uploadNewFile(): void {

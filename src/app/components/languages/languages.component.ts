@@ -14,6 +14,10 @@ export class LanguagesComponent implements OnInit {
   constructor(private languageService: LanguageService) {}
 
   ngOnInit(): void {
+    this.loadLanguages();
+  }
+
+  private loadLanguages(): void {
     this.languageService.getLanguages().then(languages => this.languages = languages);
   }
 
@@ -22,12 +26,12 @@ export class LanguagesComponent implements OnInit {
     l.name = this.name;
     l.code = this.code;
 
-    this.languageService.createLanguage(l).then();
+    this.languageService.createLanguage(l).then(() => this.loadLanguages());
   }
 
   deleteLanguage(language: Language): void {
     this.languageService.deleteLanguage(language.id)
-      .then()
+      .then(() => this.loadLanguages())
       .catch();
   }
 }

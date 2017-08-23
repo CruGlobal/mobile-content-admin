@@ -40,6 +40,7 @@ export class UpdateResourceComponent extends AbstractEditResourceComponent imple
   }
 
   saveResource(): void {
-    this.resourceService.update(this.resource).then();
+    this.resourceService.update(this.resource)
+      .then(() => super.saveResource());
   }
 }
