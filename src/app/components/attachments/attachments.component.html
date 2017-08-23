@@ -1,7 +1,10 @@
 <div class="card">
   <div class="card-header">
+    <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+      Toggle instructions
+    </button>
     <h5>Instructions</h5>
-    <ul>
+    <ul [ngbCollapse]="!showInstructions">
       <li>
         <strong>View Attachments</strong>
         <p>Each resource is listed below.  For each resource, any attachment that is available for use is displayed in its section.</p>
