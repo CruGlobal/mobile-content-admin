@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {Resource} from '../models/resource';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Constants} from '../constants';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class ResourceService {
-  private readonly resourcesUrl = Constants.BASE_URL + 'resources';
+  private readonly resourcesUrl = environment.base_url + 'resources';
 
   constructor(private http: Http, private authService: AuthService) { }
 
@@ -37,14 +37,14 @@ export class ResourceService {
   }
 
   create(resource: Resource): Promise<Resource> {
-    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getHttpOptions())
+    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
   update(resource: Resource): Promise<Resource> {
-    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getHttpOptions())
+    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(() => resource)
       .catch(this.handleError);

@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptionsArgs, Headers} from '@angular/http';
+import {Http, RequestOptionsArgs} from '@angular/http';
 import {AuthToken} from '../models/auth-token';
-import {Constants} from '../constants';
 import {WindowRefService} from '../models/window-ref-service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
+import {environment} from '../../environments/environment';
+import {request_constants} from './request-constants';
 
 @Injectable()
 export class AuthService {
-  private readonly authUrl = Constants.BASE_URL + 'auth';
+  private readonly authUrl = environment.base_url + 'auth';
 
   constructor(private http: Http, private windowRef: WindowRefService) {}
 
@@ -16,18 +17,14 @@ export class AuthService {
     return Promise.reject(error.message || error);
   }
 
-  getHttpOptions(): RequestOptionsArgs {
-    return {
-      headers: new Headers(
-        {
-          'Content-Type': 'application/vnd.api+json',
-          'Authorization': this.windowRef.nativeWindow.localStorage.getItem('Authorization')
-        })
-    };
+  getAuthorizationAndOptions(): RequestOptionsArgs {
+    const options: RequestOptionsArgs = request_constants.options;
+    options.headers.set('Authorization', this.windowRef.nativeWindow.localStorage.getItem('Authorization'));
+    return options;
   }
 
   createAuthToken(accessCode: number): Promise<AuthToken> {
-    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, Constants.OPTIONS)
+    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, request_constants.options)
       .toPromise()
       .then(response => {
         const token: AuthToken = new JsonApiDataStore().sync(response.json());

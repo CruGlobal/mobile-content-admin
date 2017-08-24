@@ -3,10 +3,10 @@ import {ResourceService} from '../../service/resource.service';
 import {Resource} from '../../models/resource';
 import {Attachment} from '../../models/attachment';
 import {FileUploader} from 'ng2-file-upload';
-import {Constants} from '../../constants';
 import {WindowRefService} from '../../models/window-ref-service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from '../image/image.component';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'admin-attachments',
@@ -17,7 +17,7 @@ export class AttachmentsComponent implements OnInit {
   @Input() selectedFile;
   @Input() selectedResource: Resource;
   @Input() is_zipped: boolean;
-  public uploader: FileUploader = new FileUploader({url: Constants.BASE_URL + 'attachments'});
+  public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
   private error = false;
 
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}

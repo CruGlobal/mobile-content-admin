@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Language} from '../models/language';
-import {Constants} from '../constants';
 import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class LanguageService {
-  private readonly languagesUrl = Constants.BASE_URL + 'languages';
+  private readonly languagesUrl = environment.base_url + 'languages';
 
   constructor(private http: Http, private authService: AuthService) {}
 
@@ -44,16 +44,14 @@ export class LanguageService {
       }
     };
 
-    return this.http.post(this.languagesUrl, payload, this.authService.getHttpOptions())
+    return this.http.post(this.languagesUrl, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
-
-    // TODO refresh list
   }
 
   deleteLanguage(id: number): Promise<void> {
-    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getHttpOptions())
+    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .catch(this.handleError);
   }
