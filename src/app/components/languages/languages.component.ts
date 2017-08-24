@@ -10,7 +10,10 @@ export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
   languages: Language[];
+
   private error = false;
+  private loading = false;
+  private saving = false;
 
   constructor(private languageService: LanguageService) {}
 
@@ -24,9 +27,12 @@ export class LanguagesComponent implements OnInit {
   }
 
   private loadLanguages(): void {
+    this.loading = true;
+
     this.languageService.getLanguages()
       .then(languages => this.languages = languages)
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error))
+      .then(() => this.loading = false);
   }
 
   createLanguage(): void {

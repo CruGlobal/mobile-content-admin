@@ -18,7 +18,10 @@ export class AttachmentsComponent implements OnInit {
   @Input() selectedResource: Resource;
   @Input() is_zipped: boolean;
   public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
+
   private error = false;
+  private loading = false;
+  private saving = false;
 
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 
@@ -37,9 +40,12 @@ export class AttachmentsComponent implements OnInit {
   }
 
   private loadAttachments(): void {
+    this.loading = true;
+
     this.resourceService.getResources('attachments')
       .then(resources => this.resources = resources)
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error))
+      .then(() => this.loading = false);
   }
 
   uploadNewFile(): void {

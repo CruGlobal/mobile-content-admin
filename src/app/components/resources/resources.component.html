@@ -25,6 +25,9 @@
     <button (click)="openCreateModal()" class="btn btn-secondary"><i class="fa fa-plus"></i> Add new Resource</button>
   </div>
 </div>
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+  Loading...
+</ngb-alert>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="error">
   There was an error on this page.
 </ngb-alert>

@@ -9,6 +9,9 @@
 <ngb-alert type="danger" [dismissible]="false" *ngIf="error">
   There was an error on this page.
 </ngb-alert>
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+  Loading...
+</ngb-alert>
 <strong>
   <div class="row">
     <div class="col">
