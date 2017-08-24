@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {System} from '../models/system';
 import {environment} from '../../environments/environment';
+import {request_constants} from './request-constants';
 
 @Injectable()
 export class SystemService {
@@ -17,7 +18,7 @@ export class SystemService {
   }
 
   getSystems(): Promise<System[]> {
-    return this.http.get(this.systemsUrl, environment.request_options)
+    return this.http.get(this.systemsUrl, request_constants.options)
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

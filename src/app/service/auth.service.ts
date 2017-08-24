@@ -4,6 +4,7 @@ import {AuthToken} from '../models/auth-token';
 import {WindowRefService} from '../models/window-ref-service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {environment} from '../../environments/environment';
+import {request_constants} from './request-constants';
 
 @Injectable()
 export class AuthService {
@@ -17,13 +18,13 @@ export class AuthService {
   }
 
   getAuthorizationAndOptions(): RequestOptionsArgs {
-    const options: RequestOptionsArgs = environment.request_options;
+    const options: RequestOptionsArgs = request_constants.options;
     options.headers.append('Authorization', this.windowRef.nativeWindow.localStorage.getItem('Authorization'));
     return options;
   }
 
   createAuthToken(accessCode: number): Promise<AuthToken> {
-    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, environment.request_options)
+    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, request_constants.options)
       .toPromise()
       .then(response => {
         const token: AuthToken = new JsonApiDataStore().sync(response.json());
