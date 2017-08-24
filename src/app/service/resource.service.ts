@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {Resource} from '../models/resource';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Constants} from '../constants';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class ResourceService {
-  private readonly resourcesUrl = Constants.BASE_URL + 'resources';
+  private readonly resourcesUrl = environment.base_url + 'resources';
 
   constructor(private http: Http, private authService: AuthService) { }
 

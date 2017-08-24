@@ -3,7 +3,12 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+import {Headers, RequestOptionsArgs} from '@angular/http';
+
 export const environment = {
   production: false,
-  base_url: 'http://localhost:3000/'
+  base_url: 'http://localhost:3000/',
+  request_options: {
+    headers : new Headers({'Content-Type': 'application/vnd.api+json'})
+  }
 };

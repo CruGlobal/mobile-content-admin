@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import {Constants} from '../constants';
 import {Http} from '@angular/http';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
 import {CustomPage} from '../models/custom-page';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class CustomPageService {
-  private readonly customPagesUrl = Constants.BASE_URL + 'custom_pages';
+  private readonly customPagesUrl = environment.base_url + 'custom_pages';
 
   constructor(private http: Http, private authService: AuthService) { }
 

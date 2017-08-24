@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptionsArgs, Headers} from '@angular/http';
 import {AuthToken} from '../models/auth-token';
-import {Constants} from '../constants';
 import {WindowRefService} from '../models/window-ref-service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
-  private readonly authUrl = Constants.BASE_URL + 'auth';
+  private readonly authUrl = environment.base_url + 'auth';
 
   constructor(private http: Http, private windowRef: WindowRefService) {}
 
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   createAuthToken(accessCode: number): Promise<AuthToken> {
-    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, Constants.OPTIONS)
+    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, environment.request_options)
       .toPromise()
       .then(response => {
         const token: AuthToken = new JsonApiDataStore().sync(response.json());

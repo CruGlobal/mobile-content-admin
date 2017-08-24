@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Constants} from '../constants';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {System} from '../models/system';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class SystemService {
-  private readonly systemsUrl = Constants.BASE_URL + 'systems';
+  private readonly systemsUrl = environment.base_url + 'systems';
 
   constructor(private http: Http) { }
 
@@ -17,7 +17,7 @@ export class SystemService {
   }
 
   getSystems(): Promise<System[]> {
-    return this.http.get(this.systemsUrl, Constants.OPTIONS)
+    return this.http.get(this.systemsUrl, environment.request_options)
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

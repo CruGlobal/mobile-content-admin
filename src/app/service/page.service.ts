@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import {Constants} from '../constants';
 import {Http} from '@angular/http';
 import {Page} from '../models/page';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class PageService {
-  private readonly pagesUrl = Constants.BASE_URL + 'pages';
+  private readonly pagesUrl = environment.base_url + 'pages';
 
   constructor(private http: Http, private authService: AuthService) { }
 

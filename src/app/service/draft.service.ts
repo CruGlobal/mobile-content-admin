@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {Translation} from '../models/translation';
-import {Constants} from '../constants';
 import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class DraftService {
-  private readonly draftsUrl = Constants.BASE_URL + 'drafts';
+  private readonly draftsUrl = environment.base_url + 'drafts';
 
   constructor(private http: Http, private authService: AuthService) { }
 
