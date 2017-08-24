@@ -8,6 +8,7 @@ import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
 import {CreatePageComponent} from '../create-page/create-page.component';
+import {ResourcesComponent} from '../resources/resources.component';
 
 @Component({
   selector: 'admin-translation',
@@ -15,6 +16,7 @@ import {CreatePageComponent} from '../create-page/create-page.component';
 })
 export class TranslationComponent {
   @Input() translation: Translation;
+  @Input() resourcesComponent: ResourcesComponent;
 
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
 
@@ -44,7 +46,7 @@ export class TranslationComponent {
     const modal = this.modalService.open(CreatePageComponent);
     modal.componentInstance.page.resource = this.translation.resource;
     modal.result
-      .then() // TODO need to refresh list
+      .then(() => this.resourcesComponent.loadResources())
       .catch(console.log);
   }
 

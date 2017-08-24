@@ -25,7 +25,7 @@ export class ResourcesComponent implements OnInit {
     this.error = true;
   }
 
-  private loadResources(): void {
+  loadResources(): void {
     this.resourceService.getResources('translations,pages').then(resources => {
       this.resources = resources;
       this.resources.forEach(r => (this.loadTranslations(r)));

@@ -55,7 +55,7 @@
       </div>
     </strong>
     <div *ngFor="let translation of resource['latest-drafts-translations']">
-      <admin-translation [translation]="translation"></admin-translation>
+      <admin-translation [translation]="translation" [resourcesComponent]="this"></admin-translation>
     </div>
   </div>
 </div>
