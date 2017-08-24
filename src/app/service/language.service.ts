@@ -48,12 +48,10 @@ export class LanguageService {
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
-
-    // TODO refresh list
   }
 
   deleteLanguage(id: number): Promise<void> {
-    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getHttpOptions())
+    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .catch(this.handleError);
   }
