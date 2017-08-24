@@ -23,6 +23,12 @@
 
   <div class="row">
     <div class="col">
+      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">{{ errorMessage }}</ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <div ace-editor
            [(text)]="page.structure"
            [autoUpdateContent]="true"

@@ -33,7 +33,7 @@ export class PageService {
     return this.http.post(this.pagesUrl, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
-      .catch(this.handleError);
+      .catch(response => Promise.reject(response.json().errors));
   }
 
   update(pageId: number, structure: string): Promise<Page> {

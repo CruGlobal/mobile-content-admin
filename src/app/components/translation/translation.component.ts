@@ -44,8 +44,8 @@ export class TranslationComponent {
     const modal = this.modalService.open(CreatePageComponent);
     modal.componentInstance.page.resource = this.translation.resource;
     modal.result
-      .then()
-      .catch();
+      .then() // TODO need to refresh list
+      .catch(console.log);
   }
 
   createDraft(): void {
