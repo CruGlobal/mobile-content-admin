@@ -19,7 +19,7 @@ export class AuthService {
 
   getAuthorizationAndOptions(): RequestOptionsArgs {
     const options: RequestOptionsArgs = request_constants.options;
-    options.headers.append('Authorization', this.windowRef.nativeWindow.localStorage.getItem('Authorization'));
+    options.headers.set('Authorization', this.windowRef.nativeWindow.localStorage.getItem('Authorization'));
     return options;
   }
 
