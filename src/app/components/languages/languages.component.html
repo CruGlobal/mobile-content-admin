@@ -6,6 +6,9 @@
     <button (click)="createLanguage()" class="btn btn-success">Save</button>
   </div>
 </div>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="error">
+  There was an error on this page.
+</ngb-alert>
 <strong>
   <div class="row">
     <div class="col">

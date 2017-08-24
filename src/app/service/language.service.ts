@@ -51,4 +51,10 @@ export class LanguageService {
 
     // TODO refresh list
   }
+
+  deleteLanguage(id: number): Promise<void> {
+    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getHttpOptions())
+      .toPromise()
+      .catch(this.handleError);
+  }
 }
