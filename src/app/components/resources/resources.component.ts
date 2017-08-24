@@ -34,13 +34,13 @@ export class ResourcesComponent implements OnInit {
 
   openCreateModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(CreateResourceComponent);
-    modalRef.result.then(() => this.loadResources(), error => this.handleError(error));
+    modalRef.result.then(() => this.loadResources(), error => console.log(error));
   }
 
   openUpdateModal(resource: Resource): void {
     const modalRef: NgbModalRef = this.modalService.open(UpdateResourceComponent);
     modalRef.componentInstance.resource = resource;
-    modalRef.result.then(() => this.loadResources(), error => this.handleError(error));
+    modalRef.result.then(() => this.loadResources(), error => console.log(error));
   }
 
   loadTranslations(resource): void {
