@@ -1,0 +1,33 @@
+<div class="container">
+  <div>
+    <h5>Add new page to resource {{page.resource.name}}</h5>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Filename</label>
+    </div>
+    <div class="col">
+      <input placeholder="Filename" [(ngModel)]="page.filename"/>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Position</label>
+    </div>
+    <div class="col">
+      <input placeholder="Position" [(ngModel)]="page.position" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button (click)="dismissModal()" class="btn btn-danger">Cancel</button>
+    </div>
+    <div class="col">
+      <button (click)="savePage()" class="btn btn-success">Save</button>
+    </div>
+  </div>
+
+</div>
