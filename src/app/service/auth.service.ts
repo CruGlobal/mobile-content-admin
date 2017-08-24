@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, RequestOptionsArgs, Headers} from '@angular/http';
+import {Http, RequestOptionsArgs} from '@angular/http';
 import {AuthToken} from '../models/auth-token';
 import {WindowRefService} from '../models/window-ref-service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
@@ -16,14 +16,10 @@ export class AuthService {
     return Promise.reject(error.message || error);
   }
 
-  getHttpOptions(): RequestOptionsArgs {
-    return {
-      headers: new Headers(
-        {
-          'Content-Type': 'application/vnd.api+json',
-          'Authorization': this.windowRef.nativeWindow.localStorage.getItem('Authorization')
-        })
-    };
+  getAuthorizationAndOptions(): RequestOptionsArgs {
+    const options: RequestOptionsArgs = environment.request_options;
+    options.headers.append('Authorization', this.windowRef.nativeWindow.localStorage.getItem('Authorization'));
+    return options;
   }
 
   createAuthToken(accessCode: number): Promise<AuthToken> {

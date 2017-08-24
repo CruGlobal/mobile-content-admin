@@ -29,7 +29,7 @@ export class PageService {
       }
     };
 
-    return this.http.put(url, payload, this.authService.getHttpOptions())
+    return this.http.put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

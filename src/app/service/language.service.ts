@@ -44,7 +44,7 @@ export class LanguageService {
       }
     };
 
-    return this.http.post(this.languagesUrl, payload, this.authService.getHttpOptions())
+    return this.http.post(this.languagesUrl, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

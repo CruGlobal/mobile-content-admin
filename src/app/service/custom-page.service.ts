@@ -28,7 +28,7 @@ export class CustomPageService {
       }
     };
 
-    return this.http.post(this.customPagesUrl, payload, this.authService.getHttpOptions())
+    return this.http.post(this.customPagesUrl, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

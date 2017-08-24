@@ -37,14 +37,14 @@ export class ResourceService {
   }
 
   create(resource: Resource): Promise<Resource> {
-    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getHttpOptions())
+    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
   update(resource: Resource): Promise<Resource> {
-    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getHttpOptions())
+    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(() => resource)
       .catch(this.handleError);
