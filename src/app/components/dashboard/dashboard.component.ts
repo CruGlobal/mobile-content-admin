@@ -6,7 +6,7 @@ import {AuthService} from '../../service/auth.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  @Input() accessCode: number;
+  @Input() accessCode: string;
 
   constructor(private authService: AuthService) {}
 
