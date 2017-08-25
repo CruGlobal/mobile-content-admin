@@ -21,7 +21,6 @@ export class AttachmentsComponent implements OnInit {
 
   private error = false;
   private loading = false;
-  private saving = false;
 
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 

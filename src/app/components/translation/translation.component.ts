@@ -18,6 +18,9 @@ export class TranslationComponent {
   @Input() translation: Translation;
   @Input() resourcesComponent: ResourcesComponent;
 
+  private publishing = false;
+  private errorMessage: string;
+
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
 
   getPages(): AbstractPage[] {
@@ -40,6 +43,16 @@ export class TranslationComponent {
 
   hidePages(): void {
     this.translation.show = false;
+  }
+
+  publishDraft(): void {
+    this.publishing = true;
+
+    this.translation.is_published = true;
+    this.draftService.updateDraft(this.translation)
+      .then(() => this.resourcesComponent.loadResources())
+      .catch(errors => this.errorMessage = errors[0].detail)
+      .then(() => this.publishing = false);
   }
 
   createPage(): void {

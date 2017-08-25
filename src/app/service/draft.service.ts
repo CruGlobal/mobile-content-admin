@@ -14,7 +14,7 @@ export class DraftService {
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
-    return Promise.reject(error.message || error);
+    return Promise.reject(error.json().errors);
   }
 
   getPage(page: Page, translation: Translation): Promise<string> {
@@ -30,6 +30,22 @@ export class DraftService {
     const body = `{"data": {"attributes": {"resource_id": ${resourceId}, "language_id": ${languageId}}}}`;
 
     return this.http.post(this.draftsUrl, body, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then(response => new JsonApiDataStore().sync(response.json()))
+      .catch(this.handleError);
+  }
+
+  updateDraft(translation: Translation): Promise<Translation> {
+    const payload = {
+      data: {
+        type: 'translation',
+        attributes: {
+          is_published: translation.is_published
+        }
+      }
+    };
+
+    return this.http.put(`${this.draftsUrl}/${translation.id}`, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

@@ -5,5 +5,11 @@
   <div class="card-body">
     <input placeholder="access code" [(ngModel)]="accessCode"/>
     <button (click)="createAuthToken()" class="btn btn-primary">Submit</button>
+    <ngb-alert type="success" [dismissible]="false" *ngIf="saving">
+      Saving...
+    </ngb-alert>
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      {{errorMessage}}
+    </ngb-alert>
   </div>
 </div>

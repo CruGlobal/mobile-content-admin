@@ -17,13 +17,28 @@
       <button (click)="hidePages()" *ngIf="!translation.is_published && translation.show" type="button" class="btn btn-warning">
         <i class="fa fa-chevron-up"></i> Hide pages
       </button>
-      <button *ngIf="!translation.is_published" type="button" class="btn btn-success">
+      <button *ngIf="!translation.is_published" type="button" (click)="publishDraft()" class="btn btn-success">
         <i class="fa fa-cloud-upload"></i> Publish
       </button>
     </div>
     <button *ngIf="translation.is_published" (click)="createDraft()" class="btn btn-secondary">
       <i class="fa fa-plus"></i> New Draft
     </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <ngb-alert type="success" [dismissible]="false" *ngIf="publishing">
+      Publishing...
+    </ngb-alert>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      {{errorMessage}}
+    </ngb-alert>
   </div>
 </div>
 

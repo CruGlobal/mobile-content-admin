@@ -8,9 +8,16 @@ import {AuthService} from '../../service/auth.service';
 export class DashboardComponent {
   @Input() accessCode: string;
 
+  private errorMessage: string;
+  private saving = false;
+
   constructor(private authService: AuthService) {}
 
   createAuthToken(): void {
-    this.authService.createAuthToken(this.accessCode).then();
+    this.saving = true;
+
+    this.authService.createAuthToken(this.accessCode)
+      .catch(errors => this.errorMessage = errors[0].detail)
+      .then(() => this.saving = false);
   }
 }

@@ -9,6 +9,7 @@ import {LanguageService} from '../../service/language.service';
 export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
+  newLanguage: Language = new Language();
   languages: Language[];
 
   private error = false;
@@ -36,13 +37,12 @@ export class LanguagesComponent implements OnInit {
   }
 
   createLanguage(): void {
-    const l: Language = new Language();
-    l.name = this.name;
-    l.code = this.code;
+    this.saving = true;
 
-    this.languageService.createLanguage(l)
+    this.languageService.createLanguage(this.newLanguage)
       .then(() => this.loadLanguages())
-      .catch(error => this.handleError(error));
+      .catch(error => this.handleError(error))
+      .then(() => this.saving = false);
   }
 
   deleteLanguage(language: Language): void {
