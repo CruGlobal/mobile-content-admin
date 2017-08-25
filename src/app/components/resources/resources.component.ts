@@ -15,7 +15,6 @@ export class ResourcesComponent implements OnInit {
 
   private error = false;
   private loading = false;
-  private publishing = false;
 
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
 

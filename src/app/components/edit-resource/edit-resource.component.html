@@ -69,6 +69,22 @@
 
   <div class="row">
     <div class="col">
+      <ngb-alert type="warning" [dismissible]="false" *ngIf="saving">
+        Saving...
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+        {{errorMessage}}
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <button (click)="closeEditModal()" class="btn btn-danger">Cancel</button>
     </div>
     <div class="col">
