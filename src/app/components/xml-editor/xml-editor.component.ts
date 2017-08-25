@@ -15,6 +15,10 @@ export class XmlEditorComponent {
   @Input() structure: string;
   @Output() structureChange = new EventEmitter();
 
+  @Input() onCancel;
+  @Input() onSaveForOne;
+  @Input() onSaveForAll;
+
   onStructureChange(code) {
     this.structureChange.emit(code);
   }

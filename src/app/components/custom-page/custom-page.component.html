@@ -1,13 +1,9 @@
-<div>
-  <admin-xml-editor [(structure)]="customPage.structure"
-                    [filename]="customPage.page.filename"
-                    [type]="'custom page'"
-                    [language]="customPage.language"
-                    [resource]="customPage.page.resource"></admin-xml-editor>
-</div>
-
-<button (click)="cancel()">Cancel</button>
-<button (click)="updateCustomPage()">Save (this language only)</button>
-<button (click)="updatePage()" *ngIf="customPage.language.code === 'en'">Save for all languages</button>
-<!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
-<i>Note: any translated text entered here will be overwritten when Draft is published</i>
+<admin-xml-editor [(structure)]="customPage.structure"
+                  [filename]="customPage.page.filename"
+                  [type]="'custom page'"
+                  [language]="customPage.language"
+                  [resource]="customPage.page.resource"
+                  [onCancel]="cancel.bind(this)"
+                  [onSaveForOne]="updateCustomPage.bind(this)"
+                  [onSaveForAll]="updatePage.bind(this)"
+></admin-xml-editor>

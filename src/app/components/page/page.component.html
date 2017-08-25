@@ -1,13 +1,9 @@
-<div>
-  <admin-xml-editor [(structure)]="page.structure"
-                    [filename]="page.filename"
-                    [type]="'page'"
-                    [language]="translation.language"
-                    [resource]="page.resource"></admin-xml-editor>
-</div>
-
-<button (click)="cancel()">Cancel</button>
-<button (click)="createCustomPage()">Save (this language only)</button>
-<button (click)="updatePage()" *ngIf="translation.language.code === 'en'">Save for all languages</button>
-
-<i>Note: any translated text entered here will be overwritten when Draft is published</i>
+<admin-xml-editor [(structure)]="page.structure"
+                  [filename]="page.filename"
+                  [type]="'page'"
+                  [language]="translation.language"
+                  [resource]="page.resource"
+                  [onCancel]="cancel.bind(this)"
+                  [onSaveForOne]="createCustomPage.bind(this)"
+                  [onSaveForAll]="updatePage.bind(this)"
+></admin-xml-editor>
