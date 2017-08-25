@@ -13,7 +13,7 @@ import {UpdateResourceComponent} from '../edit-resource/update-resource.componen
 export class ResourcesComponent implements OnInit {
   resources: Resource[];
 
-  private error = false;
+  private errorMessage: string;
   private loading = false;
 
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
@@ -22,9 +22,8 @@ export class ResourcesComponent implements OnInit {
     this.loadResources();
   }
 
-  private handleError(error: any): void {
-    console.error(error);
-    this.error = true;
+  private handleError(errors): void {
+    this.errorMessage = errors[0].detail;
   }
 
   loadResources(): void {
@@ -35,6 +34,7 @@ export class ResourcesComponent implements OnInit {
         this.resources = resources;
         this.resources.forEach(r => (this.loadTranslations(r)));
       })
+      .catch(errors => this.handleError(errors))
       .then(() => this.loading = false);
   }
 
@@ -56,7 +56,7 @@ export class ResourcesComponent implements OnInit {
           translation.language = language;
           translation.is_published = translation['is-published'];
         })
-        .catch(error => this.handleError(error));
+        .catch(errors => this.handleError(errors));
     });
   }
 }

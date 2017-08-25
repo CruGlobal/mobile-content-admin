@@ -28,8 +28,8 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<ngb-alert type="danger" [dismissible]="false" *ngIf="error">
-  There was an error on this page.
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{errorMessage}}
 </ngb-alert>
 <div *ngFor="let resource of resources">
   <div>
