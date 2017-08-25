@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Language} from '../../models/language';
 import {Resource} from '../../models/resource';
 
@@ -11,5 +11,11 @@ export class XmlEditorComponent {
   @Input() filename: string;
   @Input() language: Language;
   @Input() resource: Resource;
+
   @Input() structure: string;
+  @Output() structureChange = new EventEmitter();
+
+  onStructureChange(code) {
+    this.structureChange.emit(code);
+  }
 }
