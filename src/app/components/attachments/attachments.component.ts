@@ -35,6 +35,10 @@ export class AttachmentsComponent implements OnInit {
     this.uploader.onCompleteAll = () => {
       this.loadAttachments();
     };
+
+    this.uploader.onErrorItem = (_item, response) => {
+      this.errorMessage = JSON.parse(response).errors[0].detail;
+    };
   }
 
   private loadAttachments(): void {
