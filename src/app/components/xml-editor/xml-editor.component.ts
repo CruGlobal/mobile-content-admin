@@ -26,6 +26,10 @@ export class XmlEditorComponent {
     this.structureChange.emit(code);
   }
 
+  setErrorMessage(message: string) {
+    this.errorMessage = message;
+  }
+
   private saveForOne(): void {
     this.saving = true;
     this.onSaveForOne();

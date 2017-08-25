@@ -13,7 +13,7 @@ export class PageService {
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
-    return Promise.reject(error.message || error);
+    return Promise.reject(error.json().errors);
   }
 
   create(page: Page): Promise<Page> {
