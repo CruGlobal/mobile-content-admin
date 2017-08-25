@@ -22,13 +22,13 @@ export class PageComponent {
 
   updatePage(): void {
     this.pageService.update(this.page.id, this.page.structure)
-      .then()
+      .then(() => this.activeModal.close())
       .catch(error => this.handleError(error));
   }
 
   createCustomPage(): void {
     this.customPageService.upsert(this.translation.language.id, this.page.id, this.page.structure)
-      .then()
+      .then(() => this.activeModal.close())
       .catch(error => this.handleError(error));
   }
 

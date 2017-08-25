@@ -20,13 +20,13 @@ export class CustomPageComponent {
 
   updatePage(): void {
     this.pageService.update(this.customPage.page.id, this.customPage.structure)
-      .then()
+      .then(() => this.activeModal.close())
       .catch(error => this.handleError(error));
   }
 
   updateCustomPage() {
     this.customPageService.upsert(this.customPage.language.id, this.customPage.page.id, this.customPage.structure)
-      .then()
+      .then(() => this.activeModal.close())
       .catch(error => this.handleError(error));
   }
 

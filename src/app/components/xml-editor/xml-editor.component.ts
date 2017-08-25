@@ -19,7 +19,20 @@ export class XmlEditorComponent {
   @Input() onSaveForOne;
   @Input() onSaveForAll;
 
+  private saving = false;
+  private errorMessage: string;
+
   onStructureChange(code) {
     this.structureChange.emit(code);
+  }
+
+  private saveForOne(): void {
+    this.saving = true;
+    this.onSaveForOne();
+  }
+
+  private saveForAll(): void {
+    this.saving = true;
+    this.onSaveForAll();
   }
 }

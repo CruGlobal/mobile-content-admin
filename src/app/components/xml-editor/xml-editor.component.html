@@ -12,8 +12,17 @@
      style="min-height: 500px; width:100%; overflow: auto;">
 </div>
 
-<button (click)="onCancel()">Cancel</button>
-<button (click)="onSaveForOne()">Save (this language only)</button>
-<button (click)="onSaveForAll()" *ngIf="language.code === 'en'">Save for all languages</button>
-<!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
-<i>Note: any translated text entered here will be overwritten when Draft is published</i>
+<ngb-alert type="success" [dismissible]="false" *ngIf="saving">
+  Saving...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{errorMessage}}
+</ngb-alert>
+
+<div>
+  <button (click)="onCancel()">Cancel</button>
+  <button (click)="saveForOne()">Save (this language only)</button>
+  <button (click)="saveForAll()" *ngIf="language.code === 'en'">Save for all languages</button>
+  <!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
+  <i>Note: any translated text entered here will be overwritten when Draft is published</i>
+</div>
