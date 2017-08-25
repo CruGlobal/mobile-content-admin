@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {CustomPage} from '../../models/custom-page';
 import {CustomPageService} from '../../service/custom-page.service';
 import {PageService} from '../../service/page.service';
@@ -14,11 +14,6 @@ export class CustomPageComponent {
   @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   constructor(private pageService: PageService, private customPageService: CustomPageService, private activeModal: NgbActiveModal) {}
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.message || error);
-  }
 
   updatePage(): void {
     this.pageService.update(this.customPage.page.id, this.customPage.structure)

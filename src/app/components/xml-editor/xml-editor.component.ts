@@ -30,12 +30,12 @@ export class XmlEditorComponent {
     this.errorMessage = message;
   }
 
-  private saveForOne(): void {
+  protected saveForOne(): void {
     this.saving = true;
     this.onSaveForOne();
   }
 
-  private saveForAll(): void {
+  protected saveForAll(): void {
     this.saving = true;
     this.onSaveForAll();
   }
