@@ -7,6 +7,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
+import {CreatePageComponent} from '../create-page/create-page.component';
+import {ResourcesComponent} from '../resources/resources.component';
 
 @Component({
   selector: 'admin-translation',
@@ -14,6 +16,7 @@ import {Page} from '../../models/page';
 })
 export class TranslationComponent {
   @Input() translation: Translation;
+  @Input() resourcesComponent: ResourcesComponent;
 
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
 
@@ -37,6 +40,14 @@ export class TranslationComponent {
 
   hidePages(): void {
     this.translation.show = false;
+  }
+
+  createPage(): void {
+    const modal = this.modalService.open(CreatePageComponent);
+    modal.componentInstance.page.resource = this.translation.resource;
+    modal.result
+      .then(() => this.resourcesComponent.loadResources())
+      .catch(console.log);
   }
 
   createDraft(): void {

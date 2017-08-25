@@ -25,7 +25,7 @@ export class ResourcesComponent implements OnInit {
     this.error = true;
   }
 
-  private loadResources(): void {
+  loadResources(): void {
     this.resourceService.getResources('translations,pages').then(resources => {
       this.resources = resources;
       this.resources.forEach(r => (this.loadTranslations(r)));
@@ -34,13 +34,13 @@ export class ResourcesComponent implements OnInit {
 
   openCreateModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(CreateResourceComponent);
-    modalRef.result.then(() => this.loadResources(), error => console.log(error));
+    modalRef.result.then(() => this.loadResources(), console.log);
   }
 
   openUpdateModal(resource: Resource): void {
     const modalRef: NgbModalRef = this.modalService.open(UpdateResourceComponent);
     modalRef.componentInstance.resource = resource;
-    modalRef.result.then(() => this.loadResources(), error => console.log(error));
+    modalRef.result.then(() => this.loadResources(), console.log);
   }
 
   loadTranslations(resource): void {
