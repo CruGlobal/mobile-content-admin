@@ -1,16 +1,9 @@
 <div>
-  <h5>Edit Custom Page Layout</h5>
-  {{customPage.page.filename}}
-  {{customPage.language.name}}
-  {{customPage.page.resource.name}}
-</div>
-<div>
-  <div ace-editor
-       [(text)]="customPage.structure"
-       [autoUpdateContent]="true"
-       [options]="{wrap : true}"
-       style="min-height: 500px; width:100%; overflow: auto;">
-  </div>
+  <admin-xml-editor [(structure)]="customPage.structure"
+                    [filename]="customPage.page.filename"
+                    [type]="'custom page'"
+                    [language]="customPage.language"
+                    [resource]="customPage.page.resource"></admin-xml-editor>
 </div>
 
 <button (click)="cancel()">Cancel</button>

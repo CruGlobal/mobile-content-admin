@@ -1,0 +1,14 @@
+<div>
+  <h5>Edit {{type}} Layout</h5>
+  {{filename}}
+  {{language.name}}
+  {{resource.name}}
+</div>
+<div>
+  <div ace-editor
+       [(text)]="structure"
+       [autoUpdateContent]="true"
+       [options]="{wrap : true}"
+       style="min-height: 500px; width:100%; overflow: auto;">
+  </div>
+</div>

@@ -1,16 +1,9 @@
 <div>
-  <h5>Edit Page Layout</h5>
-  {{page.filename}}
-  {{translation.language.name}}
-  {{page.resource.name}}
-</div>
-<div>
-  <div ace-editor
-       [(text)]="page.structure"
-       [autoUpdateContent]="true"
-       [options]="{wrap : true}"
-       style="min-height: 500px; width:100%; overflow: auto;">
-  </div>
+  <admin-xml-editor [(structure)]="page.structure"
+                    [filename]="page.filename"
+                    [type]="'page'"
+                    [language]="translation.language"
+                    [resource]="page.resource"></admin-xml-editor>
 </div>
 
 <button (click)="cancel()">Cancel</button>
