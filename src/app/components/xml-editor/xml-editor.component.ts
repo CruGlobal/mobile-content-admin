@@ -15,9 +15,9 @@ export class XmlEditorComponent {
   @Input() structure: string;
   @Output() structureChange = new EventEmitter();
 
-  @Input() onCancel;
-  @Input() onSaveForOne;
-  @Input() onSaveForAll;
+  @Output() onCancel = new EventEmitter();
+  @Output() onSaveForOne = new EventEmitter();
+  @Output() onSaveForAll = new EventEmitter();
 
   private saving = false;
   private errorMessage: string;
@@ -32,11 +32,15 @@ export class XmlEditorComponent {
 
   protected saveForOne(): void {
     this.saving = true;
-    this.onSaveForOne();
+    this.onSaveForOne.emit();
   }
 
   protected saveForAll(): void {
     this.saving = true;
-    this.onSaveForAll();
+    this.onSaveForAll.emit();
+  }
+
+  protected cancel(): void {
+    this.onCancel.emit();
   }
 }

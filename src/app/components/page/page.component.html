@@ -3,7 +3,7 @@
                   [type]="'page'"
                   [language]="translation.language"
                   [resource]="page.resource"
-                  [onCancel]="cancel.bind(this)"
-                  [onSaveForOne]="createCustomPage.bind(this)"
-                  [onSaveForAll]="updatePage.bind(this)"
+                  (onCancel)="cancel()"
+                  (onSaveForOne)="createCustomPage()"
+                  (onSaveForAll)="updatePage()"
 ></admin-xml-editor>
