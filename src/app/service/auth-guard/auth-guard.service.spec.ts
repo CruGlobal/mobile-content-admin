@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/toPromise';
 import {AuthGuardService} from './auth-guard.service';
-import {DraftService} from './draft.service';
+import {DraftService} from '../draft.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 class MockDraftService extends DraftService {
