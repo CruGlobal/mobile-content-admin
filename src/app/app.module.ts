@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {ResourcesComponent} from './components/resources/resources.component';
 import {ResourceService} from './service/resource.service';
 import {AppComponent} from './app.component';
-import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {LoginComponent} from './components/login/login.component';
 import {AppRoutingModule} from './app-routing.module';
 
 import {HttpModule} from '@angular/http';
@@ -36,7 +36,7 @@ import {AuthGuardService} from './service/auth-guard.service';
   declarations: [
     AppComponent,
     ResourcesComponent,
-    DashboardComponent,
+    LoginComponent,
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
@@ -76,7 +76,7 @@ import {AuthGuardService} from './service/auth-guard.service';
     PageComponent,
     CustomPageComponent,
     CreatePageComponent,
-    DashboardComponent
+    LoginComponent
   ],
   bootstrap: [AppComponent]
 })

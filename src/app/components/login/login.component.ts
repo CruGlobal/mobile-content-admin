@@ -3,10 +3,10 @@ import {AuthService} from '../../service/auth.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'admin-dashboard',
-  templateUrl: './dashboard.component.html',
+  selector: 'admin-login',
+  templateUrl: './login.component.html',
 })
-export class DashboardComponent {
+export class LoginComponent {
   @Input() accessCode: string;
 
   private errorMessage: string;
