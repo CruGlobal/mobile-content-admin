@@ -5,7 +5,6 @@ import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
 import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class DraftService {

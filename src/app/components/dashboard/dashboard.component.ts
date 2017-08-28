@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {AuthService} from '../../service/auth.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'admin-dashboard',
@@ -11,13 +12,16 @@ export class DashboardComponent {
   private errorMessage: string;
   private saving = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private activeModal: NgbActiveModal) {}
 
   createAuthToken(): void {
     this.saving = true;
 
     this.authService.createAuthToken(this.accessCode)
-      .catch(errors => this.errorMessage = errors[0].detail)
-      .then(() => this.saving = false);
+      .then(() => this.activeModal.close())
+      .catch(errors => {
+        this.errorMessage = errors[0].detail;
+        this.saving = false;
+      });
   }
 }

@@ -75,7 +75,8 @@ import {AuthGuardService} from './service/auth-guard.service';
     ImageComponent,
     PageComponent,
     CustomPageComponent,
-    CreatePageComponent
+    CreatePageComponent,
+    DashboardComponent
   ],
   bootstrap: [AppComponent]
 })
