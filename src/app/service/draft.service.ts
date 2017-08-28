@@ -33,12 +33,11 @@ export class DraftService {
       .catch(this.handleError);
   }
 
-  createDraft(resourceId: number, languageId: number): Promise<Translation> {
+  createDraft(resourceId: number, languageId: number): Promise<void> {
     const body = `{"data": {"attributes": {"resource_id": ${resourceId}, "language_id": ${languageId}}}}`;
 
     return this.http.post(this.draftsUrl, body, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
