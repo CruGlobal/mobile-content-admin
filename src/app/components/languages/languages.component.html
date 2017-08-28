@@ -7,6 +7,9 @@
     <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
       Saving...
     </ngb-alert>
+    <ngb-alert type="success" [dismissible]="false" *ngIf="success">
+      Success!
+    </ngb-alert>
   </div>
 </div>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">

@@ -35,8 +35,11 @@
     <button (click)="uploadNewFile()" class="btn btn-success">
       <i class="fa fa-cloud-upload"></i> Upload <!-- TODO button doesn't do anything if the first attempt fails -->
     </button>
-    <ngb-alert type="warning" [dismissible]="false" *ngIf="uploader.isUploading">
+    <ngb-alert type="info" [dismissible]="false" *ngIf="uploader.isUploading">
       Uploading...
+    </ngb-alert>
+    <ngb-alert type="success" [dismissible]="false" *ngIf="success">
+      Success!
     </ngb-alert>
   </div>
 </div>
