@@ -5,13 +5,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ResourcesComponent } from './components/resources/resources.component';
 import {LanguagesComponent} from './components/languages/languages.component';
 import {AttachmentsComponent} from './components/attachments/attachments.component';
+import {AuthGuardService} from './service/auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'resources', component: ResourcesComponent },
-  { path: 'languages', component: LanguagesComponent },
-  { path: 'attachments',     component: AttachmentsComponent }
+  { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuardService] },
+  { path: 'languages', component: LanguagesComponent, canActivate: [AuthGuardService] },
+  { path: 'attachments',     component: AttachmentsComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
 import {environment} from '../../environments/environment';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class DraftService {
@@ -15,6 +16,13 @@ export class DraftService {
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
     return Promise.reject(error.json().errors);
+  }
+
+  canGetDrafts(): Promise<boolean> {
+    return this.http.get(this.draftsUrl, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then(() => true)
+      .catch(() => Promise.reject(false));
   }
 
   getPage(page: Page, translation: Translation): Promise<string> {

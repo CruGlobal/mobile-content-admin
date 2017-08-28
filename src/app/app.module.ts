@@ -30,6 +30,7 @@ import {ImageComponent} from './components/image/image.component';
 import {AceEditorDirective} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
+import {AuthGuardService} from './service/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
     PageService,
     CustomPageService,
     SystemService,
-    ResourceTypeService
+    ResourceTypeService,
+    AuthGuardService
   ],
   entryComponents: [
     UpdateResourceComponent,
