@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {AuthService} from './auth.service';
-import {JsonApiDataStore} from 'jsonapi-datastore';
 import {environment} from '../../environments/environment';
 
 @Injectable()
