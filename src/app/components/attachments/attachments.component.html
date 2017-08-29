@@ -57,10 +57,10 @@
       <strong>
         <div class="row">
           <div class="col">
-            Filename
+            ID
           </div>
           <div class="col">
-            ID
+            Filename
           </div>
           <div class="col">
             Actions
@@ -70,10 +70,10 @@
       <div *ngFor="let attachment of resource.attachments">
         <div class="row">
           <div class="col">
-            {{attachment['file-file-name']}}
+            {{attachment.id}}
           </div>
           <div class="col">
-            {{attachment.id}}
+            {{attachment['file-file-name']}}
           </div>
           <div class="col">
             <button (click)="showAttachment(attachment)" class="btn btn-secondary">
