@@ -58,8 +58,8 @@ export class LanguagesComponent implements OnInit {
   }
 
   protected showConfirmButton(language: Language): void {
-    this.languages.forEach(l => l.canDelete = false);
-    language.canDelete = true;
+    this.languages.forEach(l => l.canConfirmDelete = false);
+    language.canConfirmDelete = true;
   }
 
   private showSuccess(): void {

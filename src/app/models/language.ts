@@ -6,5 +6,5 @@ export class Language {
   code: string;
   customPages: CustomPage[];
 
-  canDelete: boolean;
+  canConfirmDelete: boolean;
 }
