@@ -33,12 +33,18 @@
       <option value="false">No</option>
     </select>
     <button (click)="uploadNewFile()" class="btn btn-success">
-      <i class="fa fa-cloud-upload"></i> Upload
+      <i class="fa fa-cloud-upload"></i> Upload <!-- TODO button doesn't do anything if the first attempt fails -->
     </button>
+    <ngb-alert type="warning" [dismissible]="false" *ngIf="uploader.isUploading">
+      Uploading...
+    </ngb-alert>
   </div>
 </div>
-<ngb-alert type="danger" [dismissible]="false" *ngIf="error">
-  There was an error on this page.
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{errorMessage}}
+</ngb-alert>
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+  Loading...
 </ngb-alert>
 <h3 class="card-title">Attachments</h3>
 <div *ngFor="let resource of resources">

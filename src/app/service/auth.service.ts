@@ -14,7 +14,7 @@ export class AuthService {
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred');
-    return Promise.reject(error.message || error);
+    return Promise.reject(error.json().errors);
   }
 
   getAuthorizationAndOptions(): RequestOptionsArgs {
@@ -23,8 +23,8 @@ export class AuthService {
     return options;
   }
 
-  createAuthToken(accessCode: number): Promise<AuthToken> {
-    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":${accessCode}}}}`, request_constants.options)
+  createAuthToken(accessCode: string): Promise<AuthToken> {
+    return this.http.post(this.authUrl, `{"data": {"attributes": {"code":"${accessCode}"}}}`, request_constants.options)
       .toPromise()
       .then(response => {
         const token: AuthToken = new JsonApiDataStore().sync(response.json());

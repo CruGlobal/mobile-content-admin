@@ -18,13 +18,14 @@ export class AttachmentsComponent implements OnInit {
   @Input() selectedResource: Resource;
   @Input() is_zipped: boolean;
   public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
-  private error = false;
+
+  private errorMessage: string;
+  private loading = false;
 
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 
-  private handleError(error: any): void {
-    console.error(error);
-    this.error = true;
+  private handleError(errors): void {
+    this.errorMessage = errors[0].detail;
   }
 
   ngOnInit(): void {
@@ -34,12 +35,19 @@ export class AttachmentsComponent implements OnInit {
     this.uploader.onCompleteAll = () => {
       this.loadAttachments();
     };
+
+    this.uploader.onErrorItem = (_item, response) => {
+      this.errorMessage = JSON.parse(response).errors[0].detail;
+    };
   }
 
   private loadAttachments(): void {
+    this.loading = true;
+
     this.resourceService.getResources('attachments')
       .then(resources => this.resources = resources)
-      .catch(error => this.handleError(error));
+      .catch(errors => this.handleError(errors))
+      .then(() => this.loading = false);
   }
 
   uploadNewFile(): void {

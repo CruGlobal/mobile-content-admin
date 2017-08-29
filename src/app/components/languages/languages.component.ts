@@ -9,8 +9,12 @@ import {LanguageService} from '../../service/language.service';
 export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
+  newLanguage: Language = new Language();
   languages: Language[];
-  private error = false;
+
+  private errorMessage: string;
+  private loading = false;
+  private saving = false;
 
   constructor(private languageService: LanguageService) {}
 
@@ -18,30 +22,31 @@ export class LanguagesComponent implements OnInit {
     this.loadLanguages();
   }
 
-  private handleError(error: any): void {
-    console.error(error);
-    this.error = true;
+  private handleError(errors): void {
+    this.errorMessage = errors[0].detail;
   }
 
   private loadLanguages(): void {
+    this.loading = true;
+
     this.languageService.getLanguages()
       .then(languages => this.languages = languages)
-      .catch(error => this.handleError(error));
+      .catch(errors => this.handleError(errors))
+      .then(() => this.loading = false);
   }
 
   createLanguage(): void {
-    const l: Language = new Language();
-    l.name = this.name;
-    l.code = this.code;
+    this.saving = true;
 
-    this.languageService.createLanguage(l)
+    this.languageService.createLanguage(this.newLanguage)
       .then(() => this.loadLanguages())
-      .catch(error => this.handleError(error));
+      .catch(errors => this.handleError(errors))
+      .then(() => this.saving = false);
   }
 
   deleteLanguage(language: Language): void {
     this.languageService.deleteLanguage(language.id)
       .then(() => this.loadLanguages())
-      .catch(error => this.handleError(error));
+      .catch(errors => this.handleError(errors));
   }
 }

@@ -29,6 +29,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from './components/image/image.component';
 import {AceEditorDirective} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
+import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {CreatePageComponent} from './components/create-page/create-page.componen
     CreateResourceComponent,
     ImageComponent,
     AceEditorDirective,
-    CreatePageComponent
+    CreatePageComponent,
+    XmlEditorComponent
   ],
   imports: [
     BrowserModule,

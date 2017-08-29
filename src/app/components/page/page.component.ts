@@ -1,9 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Page} from '../../models/page';
 import {Translation} from '../../models/translation';
 import {CustomPageService} from '../../service/custom-page.service';
 import {PageService} from '../../service/page.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
 
 @Component({
   selector: 'admin-page',
@@ -12,24 +13,20 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class PageComponent {
   @Input() page: Page;
   @Input() translation: Translation;
+  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   constructor(private pageService: PageService, private customPageService: CustomPageService, private activeModal: NgbActiveModal) {}
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.message || error);
-  }
-
   updatePage(): void {
     this.pageService.update(this.page.id, this.page.structure)
-      .then()
-      .catch(error => this.handleError(error));
+      .then(() => this.activeModal.close())
+      .catch(errors => this.xmlEditor.setErrorMessage(errors[0].detail));
   }
 
   createCustomPage(): void {
     this.customPageService.upsert(this.translation.language.id, this.page.id, this.page.structure)
-      .then()
-      .catch(error => this.handleError(error));
+      .then(() => this.activeModal.close())
+      .catch(errors => this.xmlEditor.setErrorMessage(errors[0].detail));
   }
 
   cancel(): void {

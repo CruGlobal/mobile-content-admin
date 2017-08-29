@@ -23,18 +23,28 @@
 
   <div class="row">
     <div class="col">
-      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">{{ errorMessage }}</ngb-alert>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
       <div ace-editor
            [(text)]="page.structure"
            [autoUpdateContent]="true"
            [options]="{wrap : true}"
            style="min-height: 500px; width:100%; overflow: auto;">
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="warning" [dismissible]="false" *ngIf="saving">
+        Saving...
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ngb-alert>
     </div>
   </div>
 
