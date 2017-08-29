@@ -87,7 +87,9 @@
         <div class="row">
           <div class="col">
             <ngb-alert type="danger" [dismissible]="false" *ngIf="attachment.canConfirmDelete">
-              Are you sure you want to delete {{attachment['file-file-name']}}? <button (click)="deleteAttachment(attachment)" class="btn btn-dark">Confirm</button>
+              Are you sure you want to delete {{attachment['file-file-name']}}?
+              <button (click)="deleteAttachment(attachment)" class="btn btn-dark">Confirm</button>
+              <button (click)="attachment.canConfirmDelete = !attachment.canConfirmDelete" class="btn btn-secondary">Cancel</button>
             </ngb-alert>
           </div>
         </div>

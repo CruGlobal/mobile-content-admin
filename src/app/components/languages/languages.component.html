@@ -47,7 +47,9 @@
   <div class="row">
     <div class="col">
       <ngb-alert type="danger" [dismissible]="false" *ngIf="language.canConfirmDelete">
-        Are you sure you want to delete {{language.name}}? <button (click)="deleteLanguage(language)" class="btn btn-dark">Confirm</button>
+        Are you sure you want to delete {{language.name}}?
+        <button (click)="deleteLanguage(language)" class="btn btn-dark">Confirm</button>
+        <button (click)="language.canConfirmDelete = !language.canConfirmDelete" class="btn btn-secondary">Cancel</button>
       </ngb-alert>
     </div>
   </div>
