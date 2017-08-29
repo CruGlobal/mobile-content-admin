@@ -62,7 +62,7 @@ export class LanguagesComponent implements OnInit {
     language.canConfirmDelete = true;
   }
 
-  private showSuccess(): void {
+  showSuccess(): void {
     this.success = true;
     setTimeout(() => this.success = false, 2000);
   }
