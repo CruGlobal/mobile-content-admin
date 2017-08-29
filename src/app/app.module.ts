@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {ResourcesComponent} from './components/resources/resources.component';
 import {ResourceService} from './service/resource.service';
 import {AppComponent} from './app.component';
-import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {LoginComponent} from './components/login/login.component';
 import {AppRoutingModule} from './app-routing.module';
 
 import {HttpModule} from '@angular/http';
@@ -30,12 +30,13 @@ import {ImageComponent} from './components/image/image.component';
 import {AceEditorDirective} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
+import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     ResourcesComponent,
-    DashboardComponent,
+    LoginComponent,
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
@@ -65,7 +66,8 @@ import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
     PageService,
     CustomPageService,
     SystemService,
-    ResourceTypeService
+    ResourceTypeService,
+    AuthGuardService
   ],
   entryComponents: [
     UpdateResourceComponent,
@@ -73,7 +75,8 @@ import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
     ImageComponent,
     PageComponent,
     CustomPageComponent,
-    CreatePageComponent
+    CreatePageComponent,
+    LoginComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -21,6 +21,7 @@ export class AttachmentsComponent implements OnInit {
 
   private errorMessage: string;
   private loading = false;
+  private success = false;
 
   constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
 
@@ -33,6 +34,9 @@ export class AttachmentsComponent implements OnInit {
     this.is_zipped = false;
 
     this.uploader.onCompleteAll = () => {
+      this.success = true;
+      setTimeout(() => this.success = false, 2000);
+
       this.loadAttachments();
     };
 

@@ -15,6 +15,7 @@ export class LanguagesComponent implements OnInit {
   private errorMessage: string;
   private loading = false;
   private saving = false;
+  private success = false;
 
   constructor(private languageService: LanguageService) {}
 
@@ -39,14 +40,25 @@ export class LanguagesComponent implements OnInit {
     this.saving = true;
 
     this.languageService.createLanguage(this.newLanguage)
-      .then(() => this.loadLanguages())
+      .then(() => {
+        this.showSuccess();
+        this.loadLanguages();
+      })
       .catch(errors => this.handleError(errors))
       .then(() => this.saving = false);
   }
 
   deleteLanguage(language: Language): void {
     this.languageService.deleteLanguage(language.id)
-      .then(() => this.loadLanguages())
+      .then(() => {
+        this.showSuccess();
+        this.loadLanguages();
+      })
       .catch(errors => this.handleError(errors));
+  }
+
+  private showSuccess(): void {
+    this.success = true;
+    setTimeout(() => this.success = false, 2000);
   }
 }

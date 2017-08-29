@@ -19,6 +19,7 @@ export class TranslationComponent {
   @Input() resourcesComponent: ResourcesComponent;
 
   private publishing = false;
+  private saving = false;
   private errorMessage: string;
 
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
@@ -64,9 +65,12 @@ export class TranslationComponent {
   }
 
   createDraft(): void {
-    const resourceId = this.translation.resource.id;
-    const languageId = this.translation.language.id;
-    this.draftService.createDraft(resourceId, languageId).then();
+    this.saving = true;
+
+    this.draftService.createDraft(this.translation.resource.id, this.translation.language.id)
+      .then(() => this.resourcesComponent.loadResources())
+      .catch(errors => this.errorMessage = errors[0].detail)
+      .then(() => this.saving = false);
   }
 
   openPage(page: Page): void {

@@ -17,6 +17,13 @@ export class DraftService {
     return Promise.reject(error.json().errors);
   }
 
+  canGetDrafts(): Promise<boolean> {
+    return this.http.get(this.draftsUrl, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then(() => true)
+      .catch(() => Promise.reject(false));
+  }
+
   getPage(page: Page, translation: Translation): Promise<string> {
     return this.http.get(`${this.draftsUrl}/${translation.id}/?page_id=${page.id}`, this.authService.getAuthorizationAndOptions())
       .toPromise()
@@ -26,12 +33,11 @@ export class DraftService {
       .catch(this.handleError);
   }
 
-  createDraft(resourceId: number, languageId: number): Promise<Translation> {
+  createDraft(resourceId: number, languageId: number): Promise<void> {
     const body = `{"data": {"attributes": {"resource_id": ${resourceId}, "language_id": ${languageId}}}}`;
 
     return this.http.post(this.draftsUrl, body, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 

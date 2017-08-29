@@ -4,8 +4,11 @@
     <input placeholder="Name" [(ngModel)]="newLanguage.name"/>
     <input placeholder="Code" [(ngModel)]="newLanguage.code"/>
     <button (click)="createLanguage()" class="btn btn-success">Save</button>
-    <ngb-alert type="success" [dismissible]="false" *ngIf="saving">
+    <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
       Saving...
+    </ngb-alert>
+    <ngb-alert type="success" [dismissible]="false" *ngIf="success">
+      Success!
     </ngb-alert>
   </div>
 </div>
