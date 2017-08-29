@@ -57,6 +57,11 @@ export class LanguagesComponent implements OnInit {
       .catch(errors => this.handleError(errors));
   }
 
+  protected showConfirmButton(language: Language): void {
+    this.languages.forEach(l => l.canDelete = false);
+    language.canDelete = true;
+  }
+
   private showSuccess(): void {
     this.success = true;
     setTimeout(() => this.success = false, 2000);

@@ -32,14 +32,23 @@
   </div>
 </strong>
 
-<div class="row" *ngFor="let language of languages">
-  <div class="col">
-    {{language.name}}
+<div *ngFor="let language of languages">
+  <div class="row">
+    <div class="col">
+      {{language.name}}
+    </div>
+    <div class="col">
+      {{language.code}}
+    </div>
+    <div class="col">
+      <button (click)="showConfirmButton(language)" class="btn btn-danger">Delete</button>
+    </div>
   </div>
-  <div class="col">
-    {{language.code}}
-  </div>
-  <div class="col">
-    <button (click)="deleteLanguage(language)" class="btn btn-danger">Delete</button>
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false" *ngIf="language.canDelete">
+        Are you sure you want to delete {{language.name}}? <button (click)="deleteLanguage(language)" class="btn btn-dark">Confirm</button>
+      </ngb-alert>
+    </div>
   </div>
 </div>
