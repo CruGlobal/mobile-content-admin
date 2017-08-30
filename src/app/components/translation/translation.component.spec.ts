@@ -4,6 +4,10 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DraftService} from '../../service/draft.service';
 import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
+import {Translation} from '../../models/translation';
+import {Language} from '../../models/language';
+import {DebugElement} from '@angular/core';
+import {By} from '@angular/platform-browser';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
@@ -45,5 +49,59 @@ describe('TranslationComponent', () => {
     comp.openCustomPage(null);
 
     expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent);
+  });
+
+  describe('status badge', () => {
+    const t = new Translation();
+
+    beforeEach(() => {
+      t.language = new Language();
+      comp.translation = t;
+    });
+
+    it(`should say 'Live' for published translations`, () => {
+      t.is_published = true;
+
+      fixture.detectChanges();
+
+      const element: DebugElement = fixture.debugElement.query(By.css('.badge.badge-success'));
+      expect(element.nativeElement.textContent).toBe(' | Live');
+    });
+
+    it(`should say 'Draft' for drafts`, () => {
+      t.is_published = false;
+
+      fixture.detectChanges();
+
+      const element: DebugElement = fixture.debugElement.query(By.css('.badge.badge-secondary'));
+      expect(element.nativeElement.textContent).toBe(' | Draft');
+    });
+  });
+
+  describe('action button', () => {
+    const t = new Translation();
+
+    beforeEach(() => {
+      t.language = new Language();
+      comp.translation = t;
+    });
+
+    it(`should say 'New Draft' for published translations`, () => {
+      t.is_published = true;
+
+      fixture.detectChanges();
+
+      const element: DebugElement = fixture.debugElement.query(By.css('.btn.btn-secondary'));
+      expect(element.nativeElement.textContent.trim()).toBe('New Draft');
+    });
+
+    it(`should say 'Publish' for drafts`, () => {
+      t.is_published = false;
+
+      fixture.detectChanges();
+
+      const element: DebugElement = fixture.debugElement.query(By.css('.btn.btn-success'));
+      expect(element.nativeElement.textContent.trim()).toBe('Publish');
+    });
   });
 });
