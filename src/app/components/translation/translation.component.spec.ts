@@ -62,7 +62,6 @@ describe('TranslationComponent', () => {
     fixture.detectChanges();
 
     const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
-    expect(showPagesButton.nativeElement.textContent.trim()).toBe('Show pages');
     showPagesButton.nativeElement.click();
 
     fixture.detectChanges();
