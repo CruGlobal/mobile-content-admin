@@ -35,7 +35,7 @@ describe('XmlEditorComponent', () => {
     expect(element.nativeElement).toBeDefined();
   });
 
-  it('shows Save for All Languages for English', () => {
+  it('does not show Save for All Languages for other languages', () => {
     comp.language.code = 'fr';
     fixture.detectChanges();
 
