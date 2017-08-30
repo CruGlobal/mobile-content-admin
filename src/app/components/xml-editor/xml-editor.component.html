@@ -22,7 +22,15 @@
 <div>
   <button (click)="cancel()" class="btn btn-danger">Cancel</button>
   <button (click)="saveForOne()" class="btn btn-success">Save (this language only)</button>
-  <button (click)="saveForAll()" *ngIf="language.code === 'en'" class="btn btn-dark">Save for all languages</button> <!-- TODO add warning -->
+
   <!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
+  <button (click)="canConfirmSaveForAll = !canConfirmSaveForAll" *ngIf="language.code === 'en'" class="btn btn-dark">
+    Save for all languages
+  </button>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="canConfirmSaveForAll && language.code === 'en'">
+    Are you sure you want to save this as the structure for {{filename}} for all languages?
+    <button (click)="saveForAll()" class="btn btn-dark">Confirm</button>
+    <button (click)="canConfirmSaveForAll = false" class="btn btn-secondary">Cancel</button>
+  </ngb-alert>
   <i>Note: any translated text entered here will be overwritten when Draft is published</i>
 </div>

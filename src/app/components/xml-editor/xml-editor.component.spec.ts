@@ -11,7 +11,7 @@ describe('XmlEditorComponent', () => {
   let fixture: ComponentFixture<XmlEditorComponent>;
 
   const saveForAllButton = (): DebugElement => {
-    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent === 'Save for all languages');
+    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === 'Save for all languages');
   };
 
   beforeEach(() => {
