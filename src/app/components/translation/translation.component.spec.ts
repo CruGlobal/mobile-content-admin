@@ -10,6 +10,7 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {Resource} from '../../models/resource';
 import {Page} from '../../models/page';
+import {CustomPage} from '../../models/custom-page';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
@@ -41,40 +42,59 @@ describe('TranslationComponent', () => {
     comp = fixture.componentInstance;
   });
 
-  it('openPage() should open PageComponent', () => {
-    const p = new Page();
-    p['_type'] = 'page';
+  describe('opening Page/CustomPage editors', () => {
+    beforeEach(() => {
+      const page1 = new Page();
+      page1.id = 1;
+      page1['_type'] = 'page';
 
-    const r = new Resource();
-    r.pages = [ p ];
+      const page2 = new Page();
+      page2.id = 2;
+      page2['_type'] = 'page';
 
-    const l = new Language();
-    l['custom-pages'] = [];
+      const r = new Resource();
+      r.pages = [ page1, page2 ];
 
-    const t = new Translation();
-    r.translations = [t];
-    t.language = l;
-    t.resource = r;
-    t.is_published = false;
+      const cp = new CustomPage();
+      cp['_type'] = 'custom-page';
+      cp.page = page2;
 
-    comp.translation = t;
+      const l = new Language();
+      l['custom-pages'] = [ cp ];
 
-    fixture.detectChanges();
+      const t = new Translation();
+      r.translations = [t];
+      t.language = l;
+      t.resource = r;
+      t.is_published = false;
 
-    const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
-    showPagesButton.nativeElement.click();
+      comp.translation = t;
 
-    fixture.detectChanges();
+      fixture.detectChanges();
 
-    const page: DebugElement = fixture.debugElement.query(By.css('.btn.btn-outline-dark.btn-block'));
-    page.nativeElement.click();
-    expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent);
-  });
+      const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
+      showPagesButton.nativeElement.click();
 
-  it('openCustomPage() should open CustomPageComponent', () => {
-    comp.openCustomPage(null);
+      fixture.detectChanges();
+    });
 
-    expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent);
+    it('clicking Page should open PageComponent', () => {
+      const pages: DebugElement[] = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
+      const page = pages[0];
+
+      page.nativeElement.click();
+
+      expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent);
+    });
+
+    it('clicking CustomPage should open CustomPageComponent', () => {
+      const pages: DebugElement[] = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
+      const customPage = pages[1];
+
+      customPage.nativeElement.click();
+
+      expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent);
+    });
   });
 
   describe('status badge', () => {
