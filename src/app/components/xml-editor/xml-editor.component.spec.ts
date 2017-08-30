@@ -32,7 +32,7 @@ describe('XmlEditorComponent', () => {
 
     const element: DebugElement = saveForAllButton();
 
-    expect(element.nativeElement).toBeDefined();
+    expect(element.nativeElement).toBeTruthy();
   });
 
   it('does not show Save for All Languages for other languages', () => {
@@ -41,7 +41,7 @@ describe('XmlEditorComponent', () => {
 
     const element: DebugElement = saveForAllButton();
 
-    expect(element).toBeNull();
+    expect(element === null).toBeTruthy();
   });
 
 });
