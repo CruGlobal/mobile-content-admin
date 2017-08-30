@@ -8,6 +8,8 @@ import {Translation} from '../../models/translation';
 import {Language} from '../../models/language';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
+import {Resource} from '../../models/resource';
+import {Page} from '../../models/page';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
@@ -40,8 +42,33 @@ describe('TranslationComponent', () => {
   });
 
   it('openPage() should open PageComponent', () => {
-    comp.openPage(null);
+    const p = new Page();
+    p['_type'] = 'page';
 
+    const r = new Resource();
+    r.pages = [ p ];
+
+    const l = new Language();
+    l['custom-pages'] = [];
+
+    const t = new Translation();
+    r.translations = [t];
+    t.language = l;
+    t.resource = r;
+    t.is_published = false;
+
+    comp.translation = t;
+
+    fixture.detectChanges();
+
+    const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
+    expect(showPagesButton.nativeElement.textContent.trim()).toBe('Show pages');
+    showPagesButton.nativeElement.click();
+
+    fixture.detectChanges();
+
+    const page: DebugElement = fixture.debugElement.query(By.css('.btn.btn-outline-dark.btn-block'));
+    page.nativeElement.click();
     expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent);
   });
 
