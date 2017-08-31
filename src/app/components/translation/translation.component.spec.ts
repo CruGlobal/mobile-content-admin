@@ -18,6 +18,13 @@ describe('TranslationComponent', () => {
 
   let modalServiceStub;
 
+  const buildPage = (id: number): Page => {
+    const page = new Page();
+    page.id = id;
+    page['_type'] = 'page';
+    return page;
+  };
+
   beforeEach(async(() => {
     modalServiceStub = {
       open() {}
@@ -44,13 +51,8 @@ describe('TranslationComponent', () => {
 
   describe('opening Page/CustomPage editors', () => {
     beforeEach(() => {
-      const page1 = new Page();
-      page1.id = 1;
-      page1['_type'] = 'page';
-
-      const page2 = new Page();
-      page2.id = 2;
-      page2['_type'] = 'page';
+      const page1 = buildPage(1);
+      const page2 = buildPage(2);
 
       const r = new Resource();
       r.pages = [ page1, page2 ];

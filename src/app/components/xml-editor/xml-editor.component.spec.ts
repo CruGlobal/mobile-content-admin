@@ -7,18 +7,28 @@ import {Language} from '../../models/language';
 import {AceEditorDirective} from 'ng2-ace-editor';
 
 describe('XmlEditorComponent', () => {
-  let comp:    XmlEditorComponent;
+  let comp: XmlEditorComponent;
   let fixture: ComponentFixture<XmlEditorComponent>;
   const filename = 'test.xml';
 
-  const saveForAllButton = (): DebugElement => {
+  const getConfirmSaveForAllAlert = (): DebugElement => {
+    comp.language.code = comp.baseLanguageCode;
+    fixture.detectChanges();
+
+    getSaveForAllButton().nativeElement.click();
+    fixture.detectChanges();
+
+    return fixture.debugElement.query(de => de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
+  };
+
+  const getSaveForAllButton = (): DebugElement => {
     return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === comp.saveForAllMessage);
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ XmlEditorComponent, AceEditorDirective ],
-      imports: [ NgbModule.forRoot() ],
+      declarations: [XmlEditorComponent, AceEditorDirective],
+      imports: [NgbModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(XmlEditorComponent);
@@ -40,30 +50,14 @@ describe('XmlEditorComponent', () => {
   });
 
   it(`opens warning alert when clicking save for all languages`, () => {
-    comp.language.code = comp.baseLanguageCode;
-    fixture.detectChanges();
+    const confirmAlert: DebugElement = getConfirmSaveForAllAlert();
 
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForAllMessage);
-    element.nativeElement.click();
-    fixture.detectChanges();
-
-    const confirmAlert: DebugElement = fixture.debugElement.query(de =>
-      de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
     expect(confirmAlert.nativeElement).toBeTruthy();
   });
 
   it(`saves for all languages when confirming save for all languages`, () => {
-    comp.language.code = comp.baseLanguageCode;
-    fixture.detectChanges();
-
     spyOn(comp.onSaveForAll, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForAllMessage);
-    element.nativeElement.click();
-    fixture.detectChanges();
-
-    const confirmAlert: DebugElement = fixture.debugElement.query(de =>
-      de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
-    const confirmButton: DebugElement = confirmAlert.query(de => de.nativeElement.textContent.trim() === 'Confirm');
+    const confirmButton: DebugElement = getConfirmSaveForAllAlert().query(de => de.nativeElement.textContent.trim() === 'Confirm');
 
     confirmButton.nativeElement.click();
 
@@ -74,7 +68,7 @@ describe('XmlEditorComponent', () => {
     comp.language.code = comp.baseLanguageCode;
     fixture.detectChanges();
 
-    const element: DebugElement = saveForAllButton();
+    const element: DebugElement = getSaveForAllButton();
 
     expect(element.nativeElement).toBeTruthy();
   });
@@ -83,7 +77,7 @@ describe('XmlEditorComponent', () => {
     comp.language.code = 'fr';
     fixture.detectChanges();
 
-    const element: DebugElement = saveForAllButton();
+    const element: DebugElement = getSaveForAllButton();
 
     expect(element === null).toBeTruthy();
   });
