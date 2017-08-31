@@ -21,6 +21,7 @@ export class XmlEditorComponent {
 
   private saving = false;
   private errorMessage: string;
+  protected canConfirmSaveForAll = false;
 
   onStructureChange(code) {
     this.structureChange.emit(code);

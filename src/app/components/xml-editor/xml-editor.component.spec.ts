@@ -26,7 +26,32 @@ describe('XmlEditorComponent', () => {
     comp.language = new Language();
   });
 
-  it('shows Save for All Languages for English', () => {
+  it(`saves for one language when clicking 'Save (this language only)'`, () => {
+    comp.language.code = 'en';
+    spyOn(comp.onSaveForOne, 'emit');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save (this language only)');
+
+    element.nativeElement.click();
+
+    expect(comp.onSaveForOne.emit).toHaveBeenCalled();
+  });
+
+  it(`opens warning alert when clicking 'Save for all languages'`, () => {
+    const filename = 'test.xml';
+    comp.language.code = 'en';
+    comp.filename = filename;
+    fixture.detectChanges();
+
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save for all languages');
+    element.nativeElement.click();
+    fixture.detectChanges();
+
+    const confirmButton: DebugElement = fixture.debugElement.query(
+      de => de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for test.xml for all languages?`));
+    expect(confirmButton.nativeElement).toBeTruthy();
+  });
+
+  it(`shows 'Save for All Languages' for English`, () => {
     comp.language.code = 'en';
     fixture.detectChanges();
 
@@ -35,7 +60,7 @@ describe('XmlEditorComponent', () => {
     expect(element.nativeElement).toBeTruthy();
   });
 
-  it('does not show Save for All Languages for other languages', () => {
+  it(`does not show 'Save for All Languages' for other languages`, () => {
     comp.language.code = 'fr';
     fixture.detectChanges();
 
