@@ -46,9 +46,29 @@ describe('XmlEditorComponent', () => {
     element.nativeElement.click();
     fixture.detectChanges();
 
-    const confirmButton: DebugElement = fixture.debugElement.query(de =>
+    const confirmAlert: DebugElement = fixture.debugElement.query(de =>
       de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for ${filename} for all languages?`));
-    expect(confirmButton.nativeElement).toBeTruthy();
+    expect(confirmAlert.nativeElement).toBeTruthy();
+  });
+
+  it(`saves for all languages when confirming save for all languages`, () => {
+    const filename = 'test.xml';
+    comp.language.code = 'en';
+    comp.filename = filename;
+    fixture.detectChanges();
+
+    spyOn(comp.onSaveForAll, 'emit');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save for all languages');
+    element.nativeElement.click();
+    fixture.detectChanges();
+
+    const confirmAlert: DebugElement = fixture.debugElement.query(de =>
+      de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for ${filename} for all languages?`));
+    const confirmButton: DebugElement = confirmAlert.query(de => de.nativeElement.textContent.trim() === 'Confirm');
+
+    confirmButton.nativeElement.click();
+
+    expect(comp.onSaveForAll.emit).toHaveBeenCalled();
   });
 
   it(`shows 'Save for All Languages' for English`, () => {
