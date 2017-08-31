@@ -11,6 +11,10 @@ describe('XmlEditorComponent', () => {
   let fixture: ComponentFixture<XmlEditorComponent>;
   const filename = 'test.xml';
 
+  const getSaveForAllButton = (): DebugElement => {
+    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === comp.saveForAllMessage);
+  };
+
   const getConfirmSaveForAllAlert = (): DebugElement => {
     comp.language.code = comp.baseLanguageCode;
     fixture.detectChanges();
@@ -19,10 +23,6 @@ describe('XmlEditorComponent', () => {
     fixture.detectChanges();
 
     return fixture.debugElement.query(de => de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
-  };
-
-  const getSaveForAllButton = (): DebugElement => {
-    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === comp.saveForAllMessage);
   };
 
   beforeEach(() => {
