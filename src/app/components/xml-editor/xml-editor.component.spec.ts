@@ -46,8 +46,8 @@ describe('XmlEditorComponent', () => {
     element.nativeElement.click();
     fixture.detectChanges();
 
-    const confirmButton: DebugElement = fixture.debugElement.query(
-      de => de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for test.xml for all languages?`));
+    const confirmButton: DebugElement = fixture.debugElement.query(de =>
+      de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for ${filename} for all languages?`));
     expect(confirmButton.nativeElement).toBeTruthy();
   });
 
