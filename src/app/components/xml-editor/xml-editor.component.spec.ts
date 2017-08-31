@@ -9,9 +9,10 @@ import {AceEditorDirective} from 'ng2-ace-editor';
 describe('XmlEditorComponent', () => {
   let comp:    XmlEditorComponent;
   let fixture: ComponentFixture<XmlEditorComponent>;
+  const filename = 'test.xml';
 
   const saveForAllButton = (): DebugElement => {
-    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === 'Save for all languages');
+    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === comp.saveForAllMessage);
   };
 
   beforeEach(() => {
@@ -24,46 +25,44 @@ describe('XmlEditorComponent', () => {
     comp = fixture.componentInstance;
     comp.resource = new Resource();
     comp.language = new Language();
+    comp.filename = filename;
   });
 
-  it(`saves for one language when clicking 'Save (this language only)'`, () => {
-    comp.language.code = 'en';
+  it(`saves for one language when clicking save for one language only`, () => {
+    comp.language.code = comp.baseLanguageCode;
+    fixture.detectChanges();
     spyOn(comp.onSaveForOne, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save (this language only)');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForOneMessage);
 
     element.nativeElement.click();
 
     expect(comp.onSaveForOne.emit).toHaveBeenCalled();
   });
 
-  it(`opens warning alert when clicking 'Save for all languages'`, () => {
-    const filename = 'test.xml';
-    comp.language.code = 'en';
-    comp.filename = filename;
+  it(`opens warning alert when clicking save for all languages`, () => {
+    comp.language.code = comp.baseLanguageCode;
     fixture.detectChanges();
 
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save for all languages');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForAllMessage);
     element.nativeElement.click();
     fixture.detectChanges();
 
     const confirmAlert: DebugElement = fixture.debugElement.query(de =>
-      de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for ${filename} for all languages?`));
+      de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
     expect(confirmAlert.nativeElement).toBeTruthy();
   });
 
   it(`saves for all languages when confirming save for all languages`, () => {
-    const filename = 'test.xml';
-    comp.language.code = 'en';
-    comp.filename = filename;
+    comp.language.code = comp.baseLanguageCode;
     fixture.detectChanges();
 
     spyOn(comp.onSaveForAll, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === 'Save for all languages');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForAllMessage);
     element.nativeElement.click();
     fixture.detectChanges();
 
     const confirmAlert: DebugElement = fixture.debugElement.query(de =>
-      de.nativeElement.textContent.includes(`Are you sure you want to save this as the structure for ${filename} for all languages?`));
+      de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
     const confirmButton: DebugElement = confirmAlert.query(de => de.nativeElement.textContent.trim() === 'Confirm');
 
     confirmButton.nativeElement.click();
@@ -71,8 +70,8 @@ describe('XmlEditorComponent', () => {
     expect(comp.onSaveForAll.emit).toHaveBeenCalled();
   });
 
-  it(`shows 'Save for All Languages' for English`, () => {
-    comp.language.code = 'en';
+  it(`shows save for all button for English`, () => {
+    comp.language.code = comp.baseLanguageCode;
     fixture.detectChanges();
 
     const element: DebugElement = saveForAllButton();
@@ -80,7 +79,7 @@ describe('XmlEditorComponent', () => {
     expect(element.nativeElement).toBeTruthy();
   });
 
-  it(`does not show 'Save for All Languages' for other languages`, () => {
+  it(`does not show save for all button for other languages`, () => {
     comp.language.code = 'fr';
     fixture.detectChanges();
 

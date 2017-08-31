@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Language} from '../../models/language';
 import {Resource} from '../../models/resource';
 
@@ -7,6 +7,11 @@ import {Resource} from '../../models/resource';
   templateUrl: './xml-editor.component.html'
 })
 export class XmlEditorComponent {
+
+  readonly saveForOneMessage = 'Save (this language only)';
+  readonly saveForAllMessage = 'Save for all languages';
+  readonly baseLanguageCode = 'en'; // TODO would be nice to store a field called base_language instead of hardcoding
+
   @Input() type: string;
   @Input() filename: string;
   @Input() language: Language;
@@ -29,6 +34,10 @@ export class XmlEditorComponent {
 
   setErrorMessage(message: string) {
     this.errorMessage = message;
+  }
+
+  getConfirmationMessage(): string {
+    return `Are you sure you want to save this as the structure for ${this.filename} for all languages?`;
   }
 
   protected saveForOne(): void {
