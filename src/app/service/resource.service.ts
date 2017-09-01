@@ -56,8 +56,8 @@ export class ResourceService extends AbstractService {
         attributes: {
           name: resource.name,
           abbreviation: resource.abbreviation,
-          system_id: resource.system.id,
-          resource_type_id: resource.resourceType.id,
+          system_id: resource.getSystemId(),
+          resource_type_id: resource.getResourceTypeId(),
           onesky_project_id: resource.oneskyProjectId,
           description: resource.description,
           manifest: resource.manifest
