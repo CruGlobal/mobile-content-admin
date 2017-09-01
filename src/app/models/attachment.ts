@@ -5,4 +5,5 @@ export class Attachment {
   file: string;
   resource: Resource;
   is_zipped: boolean;
+  canConfirmDelete: boolean;
 }

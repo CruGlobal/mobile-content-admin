@@ -57,27 +57,41 @@
       <strong>
         <div class="row">
           <div class="col">
-            Filename
+            ID
           </div>
           <div class="col">
-            ID
+            Filename
           </div>
           <div class="col">
             Actions
           </div>
         </div>
       </strong>
-      <div *ngFor="let attachment of resource.attachments" class="row">
-        <div class="col">
-          {{attachment['file-file-name']}}
+      <div *ngFor="let attachment of resource.attachments">
+        <div class="row">
+          <div class="col">
+            {{attachment.id}}
+          </div>
+          <div class="col">
+            {{attachment['file-file-name']}}
+          </div>
+          <div class="col">
+            <button (click)="showAttachment(attachment)" class="btn btn-secondary">
+              View
+            </button>
+            <button (click)="showConfirmButton(attachment)" class="btn btn-danger">
+              Delete
+            </button>
+          </div>
         </div>
-        <div class="col">
-          {{attachment.id}}
-        </div>
-        <div class="col">
-          <button (click)="showAttachment(attachment)" class="btn btn-secondary">
-            View
-          </button>
+        <div class="row">
+          <div class="col">
+            <ngb-alert type="danger" [dismissible]="false" *ngIf="attachment.canConfirmDelete">
+              Are you sure you want to delete {{attachment['file-file-name']}}?
+              <button (click)="deleteAttachment(attachment)" class="btn btn-dark">Confirm</button>
+              <button (click)="attachment.canConfirmDelete = !attachment.canConfirmDelete" class="btn btn-secondary">Cancel</button>
+            </ngb-alert>
+          </div>
         </div>
       </div>
     </div>

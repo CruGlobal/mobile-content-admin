@@ -31,6 +31,7 @@ import {AceEditorDirective} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
+import {AttachmentService} from './service/attachment.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {AuthGuardService} from './service/auth-guard/auth-guard.service';
     CustomPageService,
     SystemService,
     ResourceTypeService,
-    AuthGuardService
+    AuthGuardService,
+    AttachmentService
   ],
   entryComponents: [
     UpdateResourceComponent,

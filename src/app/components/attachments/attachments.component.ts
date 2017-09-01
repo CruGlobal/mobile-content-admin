@@ -7,6 +7,7 @@ import {WindowRefService} from '../../models/window-ref-service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from '../image/image.component';
 import {environment} from '../../../environments/environment';
+import {AttachmentService} from '../../service/attachment.service';
 
 @Component({
   selector: 'admin-attachments',
@@ -23,7 +24,10 @@ export class AttachmentsComponent implements OnInit {
   private loading = false;
   private success = false;
 
-  constructor(private resourceService: ResourceService, private windowRef: WindowRefService, private modalService: NgbModal) {}
+  constructor(private resourceService: ResourceService,
+              private windowRef: WindowRefService,
+              private modalService: NgbModal,
+              private attachmentService: AttachmentService) {}
 
   private handleError(errors): void {
     this.errorMessage = errors[0].detail;
@@ -34,9 +38,7 @@ export class AttachmentsComponent implements OnInit {
     this.is_zipped = false;
 
     this.uploader.onCompleteAll = () => {
-      this.success = true;
-      setTimeout(() => this.success = false, 2000);
-
+      this.showSuccess();
       this.loadAttachments();
     };
 
@@ -67,5 +69,24 @@ export class AttachmentsComponent implements OnInit {
 
   showAttachment(attachment: Attachment): void {
     this.modalService.open(ImageComponent).componentInstance.source = attachment.file;
+  }
+
+  deleteAttachment(attachment: Attachment): void {
+    this.attachmentService.deleteAttachment(attachment.id)
+      .then(() => {
+        this.showSuccess();
+        this.loadAttachments();
+      })
+      .catch(errors => this.handleError(errors));
+  }
+
+  protected showConfirmButton(attachment: Attachment): void {
+    this.resources.forEach(r => r.attachments.forEach(a => a.canConfirmDelete = false));
+    attachment.canConfirmDelete = true;
+  }
+
+  private showSuccess(): void {
+    this.success = true;
+    setTimeout(() => this.success = false, 2000);
   }
 }

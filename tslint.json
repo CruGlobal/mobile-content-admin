@@ -1,6 +1,7 @@
 {
   "rulesDirectory": [
-    "node_modules/codelyzer"
+    "node_modules/codelyzer",
+    "node_modules/tslint-jasmine-rules/dist"
   ],
   "rules": {
     "arrow-return-shorthand": true,
@@ -56,6 +57,8 @@
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
+    "no-focused-tests": true,
+    "no-disabled-tests": true,
     "no-inferrable-types": [
       true,
       "ignore-params"

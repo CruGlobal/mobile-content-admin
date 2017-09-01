@@ -2,6 +2,7 @@ import {Translation} from './translation';
 import {Page} from './page';
 import {System} from './system';
 import {ResourceType} from './resource-type';
+import {Attachment} from './attachment';
 
 export class Resource {
   id: number;
@@ -14,6 +15,7 @@ export class Resource {
   manifest: string;
   showTranslations: boolean;
   translations: Translation[];
+  attachments: Attachment[];
   pages: Page[];
   latest: Translation[];
   data: { id: number };

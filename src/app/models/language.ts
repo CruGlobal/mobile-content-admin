@@ -5,4 +5,6 @@ export class Language {
   name: string;
   code: string;
   customPages: CustomPage[];
+
+  canConfirmDelete: boolean;
 }

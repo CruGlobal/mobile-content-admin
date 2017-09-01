@@ -20,9 +20,15 @@
 </ngb-alert>
 
 <div>
-  <button (click)="cancel()">Cancel</button>
-  <button (click)="saveForOne()">Save (this language only)</button>
-  <button (click)="saveForAll()" *ngIf="language.code === 'en'">Save for all languages</button>
-  <!-- TODO would be nice to store a field called base_language instead of hardcoding 'en' here. -->
+  <button (click)="cancel()" class="btn btn-danger">Cancel</button>
+  <button (click)="saveForOne()" class="btn btn-success">{{saveForOneMessage}}</button>
+  <button (click)="canConfirmSaveForAll = !canConfirmSaveForAll" *ngIf="language.code === baseLanguageCode" class="btn btn-dark">
+    Save for all languages
+  </button>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="canConfirmSaveForAll && language.code === baseLanguageCode">
+    {{getConfirmationMessage()}}
+    <button (click)="saveForAll()" class="btn btn-dark">Confirm</button>
+    <button (click)="canConfirmSaveForAll = false" class="btn btn-secondary">Cancel</button>
+  </ngb-alert>
   <i>Note: any translated text entered here will be overwritten when Draft is published</i>
 </div>
