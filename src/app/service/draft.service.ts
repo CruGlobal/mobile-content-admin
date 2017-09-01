@@ -5,16 +5,14 @@ import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class DraftService {
+export class DraftService extends AbstractService {
   private readonly draftsUrl = environment.base_url + 'drafts';
 
-  constructor(private http: Http, private authService: AuthService) { }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   canGetDrafts(): Promise<boolean> {

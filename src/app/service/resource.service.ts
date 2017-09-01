@@ -5,16 +5,14 @@ import 'rxjs/add/operator/toPromise';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class ResourceService {
+export class ResourceService extends AbstractService {
   private readonly resourcesUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) { }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   getResources(include: string): Promise<Resource[]> {

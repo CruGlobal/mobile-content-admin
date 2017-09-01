@@ -5,16 +5,14 @@ import {Language} from '../models/language';
 import {AuthService} from './auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class LanguageService {
+export class LanguageService extends AbstractService {
   private readonly languagesUrl = environment.base_url + 'languages';
 
-  constructor(private http: Http, private authService: AuthService) {}
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   getLanguages(): Promise<Language[]> {

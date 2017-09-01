@@ -4,16 +4,14 @@ import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
 import {CustomPage} from '../models/custom-page';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class CustomPageService {
+export class CustomPageService extends AbstractService {
   private readonly customPagesUrl = environment.base_url + 'custom_pages';
 
-  constructor(private http: Http, private authService: AuthService) { }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   upsert(languageId: number, pageId: number, structure: string): Promise<CustomPage> {
