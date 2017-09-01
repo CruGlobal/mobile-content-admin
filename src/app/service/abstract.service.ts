@@ -13,7 +13,7 @@ export abstract class AbstractService {
     try {
       message = error.json().errors[0].detail;
     } catch (e) {
-      message = 'An unknown error occured.';
+      message = 'An unknown error occurred.';
     }
 
     return Promise.reject(message);
