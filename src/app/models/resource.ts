@@ -19,4 +19,12 @@ export class Resource {
   pages: Page[];
   latest: Translation[];
   data: { id: number };
+
+  getResourceTypeId(): number {
+    return this.resourceType ? this.resourceType.id : null;
+  }
+
+  getSystemId(): number {
+    return this.system ? this.system.id : null;
+  }
 }

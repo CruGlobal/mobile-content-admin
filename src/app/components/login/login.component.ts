@@ -19,9 +19,7 @@ export class LoginComponent {
 
     this.authService.createAuthToken(this.accessCode)
       .then(() => this.activeModal.close())
-      .catch(errors => {
-        this.errorMessage = errors[0].detail;
-        this.saving = false;
-      });
+      .catch(message => this.errorMessage = message)
+      .then(() => this.saving = false);
   }
 }

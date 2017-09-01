@@ -20,16 +20,20 @@ export class PageComponent {
   updatePage(): void {
     this.pageService.update(this.page.id, this.page.structure)
       .then(() => this.activeModal.close())
-      .catch(errors => this.xmlEditor.setErrorMessage(errors[0].detail));
+      .catch(this.handleError.bind(this));
   }
 
   createCustomPage(): void {
     this.customPageService.upsert(this.translation.language.id, this.page.id, this.page.structure)
       .then(() => this.activeModal.close())
-      .catch(errors => this.xmlEditor.setErrorMessage(errors[0].detail));
+      .catch(this.handleError.bind(this));
   }
 
   cancel(): void {
     this.activeModal.close();
+  }
+
+  private handleError(message: string): void {
+    this.xmlEditor.setErrorMessage(message);
   }
 }

@@ -22,8 +22,8 @@ export class ResourcesComponent implements OnInit {
     this.loadResources();
   }
 
-  private handleError(errors): void {
-    this.errorMessage = errors[0].detail;
+  private handleError(message): void {
+    this.errorMessage = message;
   }
 
   loadResources(): void {
@@ -34,7 +34,7 @@ export class ResourcesComponent implements OnInit {
         this.resources = resources;
         this.resources.forEach(r => (this.loadTranslations(r)));
       })
-      .catch(errors => this.handleError(errors))
+      .catch(this.handleError.bind(this))
       .then(() => this.loading = false);
   }
 
@@ -56,7 +56,7 @@ export class ResourcesComponent implements OnInit {
           translation.language = language;
           translation.is_published = translation['is-published'];
         })
-        .catch(errors => this.handleError(errors));
+        .catch(this.handleError.bind(this));
     });
   }
 }

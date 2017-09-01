@@ -3,16 +3,14 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {AuthService} from './auth.service';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class AttachmentService {
+export class AttachmentService extends AbstractService {
   private readonly attachmentsUrl = environment.base_url + 'attachments';
 
-  constructor(private http: Http, private authService: AuthService) {}
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   deleteAttachment(id: number): Promise<void> {

@@ -23,8 +23,8 @@ export class LanguagesComponent implements OnInit {
     this.loadLanguages();
   }
 
-  private handleError(errors): void {
-    this.errorMessage = errors[0].detail;
+  private handleError(message): void {
+    this.errorMessage = message;
   }
 
   private loadLanguages(): void {
@@ -32,7 +32,7 @@ export class LanguagesComponent implements OnInit {
 
     this.languageService.getLanguages()
       .then(languages => this.languages = languages)
-      .catch(errors => this.handleError(errors))
+      .catch(this.handleError.bind(this))
       .then(() => this.loading = false);
   }
 
@@ -44,7 +44,7 @@ export class LanguagesComponent implements OnInit {
         this.showSuccess();
         this.loadLanguages();
       })
-      .catch(errors => this.handleError(errors))
+      .catch(this.handleError.bind(this))
       .then(() => this.saving = false);
   }
 
@@ -54,7 +54,7 @@ export class LanguagesComponent implements OnInit {
         this.showSuccess();
         this.loadLanguages();
       })
-      .catch(errors => this.handleError(errors));
+      .catch(this.handleError.bind(this));
   }
 
   protected showConfirmButton(language: Language): void {

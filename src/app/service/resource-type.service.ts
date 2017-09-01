@@ -4,21 +4,18 @@ import 'rxjs/add/operator/toPromise';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {ResourceType} from '../models/resource-type';
 import {environment} from '../../environments/environment';
-import {request_constants} from './request-constants';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class ResourceTypeService {
+export class ResourceTypeService extends AbstractService {
   private readonly resourceTypesUrl = environment.base_url + 'resource_types';
 
-  constructor(private http: Http) { }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.message || error);
+  constructor(private http: Http) {
+    super();
   }
 
   getResourceTypes(): Promise<ResourceType[]> {
-    return this.http.get(this.resourceTypesUrl, request_constants.options)
+    return this.http.get(this.resourceTypesUrl, this.requestOptions)
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);

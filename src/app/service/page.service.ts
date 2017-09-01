@@ -4,16 +4,14 @@ import {Page} from '../models/page';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {AuthService} from './auth.service';
 import {environment} from '../../environments/environment';
+import {AbstractService} from './abstract.service';
 
 @Injectable()
-export class PageService {
+export class PageService extends AbstractService {
   private readonly pagesUrl = environment.base_url + 'pages';
 
-  constructor(private http: Http, private authService: AuthService) { }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred');
-    return Promise.reject(error.json().errors);
+  constructor(private http: Http, private authService: AuthService) {
+    super();
   }
 
   create(page: Page): Promise<Page> {

@@ -52,7 +52,7 @@ export class TranslationComponent {
     this.translation.is_published = true;
     this.draftService.updateDraft(this.translation)
       .then(() => this.resourcesComponent.loadResources())
-      .catch(errors => this.errorMessage = errors[0].detail)
+      .catch(this.handleError.bind(this))
       .then(() => this.publishing = false);
   }
 
@@ -69,7 +69,7 @@ export class TranslationComponent {
 
     this.draftService.createDraft(this.translation.resource.id, this.translation.language.id)
       .then(() => this.resourcesComponent.loadResources())
-      .catch(errors => this.errorMessage = errors[0].detail)
+      .catch(this.handleError.bind(this))
       .then(() => this.saving = false);
   }
 
@@ -81,5 +81,9 @@ export class TranslationComponent {
 
   openCustomPage(customPage: CustomPage): void {
     this.modalService.open(CustomPageComponent).componentInstance.customPage = customPage;
+  }
+
+  private handleError(message: string): void {
+    this.errorMessage = message;
   }
 }
