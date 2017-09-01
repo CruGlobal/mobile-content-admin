@@ -8,6 +8,14 @@ export abstract class AbstractService {
 
   protected handleError(error: any): Promise<any> {
     console.error('An error occurred');
-    return Promise.reject(error.json().errors[0].detail);
+    let message: string;
+
+    try {
+      message = error.json().errors[0].detail;
+    } catch (e) {
+      message = 'An unknown error occured.';
+    }
+
+    return Promise.reject(message);
   }
 }
