@@ -10,8 +10,8 @@ export abstract class AbstractEditResourceComponent {
     this.activeModal.dismiss('dismissed');
   }
 
-  protected handleError(errors): void {
-    this.errorMessage = errors[0].detail;
+  protected handleError(message): void {
+    this.errorMessage = message;
   }
 
   protected saveResource(): void {

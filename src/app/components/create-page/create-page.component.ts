@@ -21,7 +21,7 @@ export class CreatePageComponent {
 
     this.pageService.create(this.page)
       .then(() => this.activeModal.close())
-      .catch(errors => this.errorMessage = errors[0].detail)
+      .catch(message => this.errorMessage = message)
       .then(() => this.saving = false);
   }
 

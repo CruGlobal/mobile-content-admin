@@ -29,10 +29,6 @@ export class AttachmentsComponent implements OnInit {
               private modalService: NgbModal,
               private attachmentService: AttachmentService) {}
 
-  private handleError(errors): void {
-    this.errorMessage = errors[0].detail;
-  }
-
   ngOnInit(): void {
     this.loadAttachments();
     this.is_zipped = false;
@@ -52,7 +48,7 @@ export class AttachmentsComponent implements OnInit {
 
     this.resourceService.getResources('attachments')
       .then(resources => this.resources = resources)
-      .catch(errors => this.handleError(errors))
+      .catch(this.handleError.bind(this))
       .then(() => this.loading = false);
   }
 
@@ -77,7 +73,7 @@ export class AttachmentsComponent implements OnInit {
         this.showSuccess();
         this.loadAttachments();
       })
-      .catch(errors => this.handleError(errors));
+      .catch(this.handleError.bind(this));
   }
 
   protected showConfirmButton(attachment: Attachment): void {
@@ -88,5 +84,9 @@ export class AttachmentsComponent implements OnInit {
   private showSuccess(): void {
     this.success = true;
     setTimeout(() => this.success = false, 2000);
+  }
+
+  private handleError(message: string): void {
+    this.errorMessage = message;
   }
 }
