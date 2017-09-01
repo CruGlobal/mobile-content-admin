@@ -19,8 +19,11 @@ before_script:
   - yarn add @angular/cli
 
 script:
-  - ng test --watch=false
+  - ng test --code-coverage --watch=false
   - ng lint --type-check
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 cache:
   yarn: true
