@@ -11,6 +11,7 @@ export abstract class AbstractEditResourceComponent {
   }
 
   protected handleError(message): void {
+    this.saving = false;
     this.errorMessage = message;
   }
 
