@@ -71,7 +71,7 @@ export class TranslationComponent {
     this.saving = true;
     this.errorMessage = null;
 
-    this.draftService.createDraft(this.translation.resource.id, this.translation.language.id)
+    this.draftService.createDraft(this.translation)
       .then(() => this.resourcesComponent.loadResources())
       .catch(this.handleError.bind(this))
       .then(() => this.saving = false);

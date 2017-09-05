@@ -31,8 +31,8 @@ export class DraftService extends AbstractService {
       .catch(this.handleError);
   }
 
-  createDraft(resourceId: number, languageId: number): Promise<void> {
-    const body = `{"data": {"attributes": {"resource_id": ${resourceId}, "language_id": ${languageId}}}}`;
+  createDraft(translation: Translation): Promise<void> {
+    const body = `{"data": {"attributes": {"resource_id": ${translation.resource.id}, "language_id": ${translation.language.id}}}}`;
 
     return this.http.post(this.draftsUrl, body, this.authService.getAuthorizationAndOptions())
       .toPromise()

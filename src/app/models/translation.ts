@@ -7,7 +7,9 @@ export class Translation {
   is_published: boolean;
   language: Language;
   resource: Resource;
+
   show: boolean;
+  generateDraft: boolean;
 
   copy(): Translation {
     const copy = new Translation();

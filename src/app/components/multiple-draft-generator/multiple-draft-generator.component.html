@@ -1,7 +1,7 @@
 <div class="container">
   <div *ngFor="let translation of resource['latest-drafts-translations']">
     <label class="btn-secondary btn-block" ngbButtonLabel *ngIf="translation.is_published">
-      <input type="checkbox" ngbButton> {{translation.language.name}}
+      <input type="checkbox" ngbButton [(ngModel)]="translation.generateDraft"> {{translation.language.name}}
     </label>
   </div>
   <br>
