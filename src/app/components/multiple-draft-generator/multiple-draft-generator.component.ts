@@ -44,6 +44,10 @@ export class MultipleDraftGeneratorComponent {
           if (index === this.translations.length - 1) {
             this.ngbActiveModal.close();
           }
+        })
+        .catch((message) => {
+          this.saving = false;
+          this.errorMessage = message;
         });
     });
   }
