@@ -33,13 +33,15 @@ export class AttachmentsComponent implements OnInit {
     this.loadAttachments();
     this.is_zipped = false;
 
-    this.uploader.onCompleteAll = () => {
+    this.uploader.onSuccessItem = (item, response, status, headers) => {
       this.showSuccess();
       this.loadAttachments();
+      return {item, response, status, headers};
     };
 
-    this.uploader.onErrorItem = (_item, response) => {
+    this.uploader.onErrorItem = (item, response, status, headers) => {
       this.errorMessage = JSON.parse(response).errors[0].detail;
+      return {item, response, status, headers};
     };
   }
 
