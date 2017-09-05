@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Resource} from '../../models/resource';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'admin-multiple-draft-generator',
@@ -8,7 +9,13 @@ import {Resource} from '../../models/resource';
 export class MultipleDraftGeneratorComponent {
   resource: Resource;
 
-  generateDrafts(): void {
+  constructor(private ngbActiveModal: NgbActiveModal) {}
 
+  generateDrafts(): void {
+    this.ngbActiveModal.close();
+  }
+
+  cancel(): void {
+    this.ngbActiveModal.dismiss();
   }
 }
