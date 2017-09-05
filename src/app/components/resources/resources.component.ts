@@ -53,6 +53,7 @@ export class ResourcesComponent implements OnInit {
   openGenerateModal(resource: Resource): void {
     const modalRef: NgbModalRef = this.modalService.open(MultipleDraftGeneratorComponent);
     modalRef.componentInstance.resource = resource;
+    modalRef.result.then(() => this.loadResources(), console.log);
   }
 
   private loadTranslations(resource): void {

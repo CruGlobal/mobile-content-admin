@@ -26,6 +26,6 @@ export class CreatePageComponent {
   }
 
   dismissModal(): void {
-    this.activeModal.dismiss();
+    this.activeModal.dismiss('dismissed create page modal');
   }
 }

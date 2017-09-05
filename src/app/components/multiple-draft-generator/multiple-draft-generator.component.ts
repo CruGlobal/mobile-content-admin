@@ -53,6 +53,6 @@ export class MultipleDraftGeneratorComponent {
   }
 
   cancel(): void {
-    this.ngbActiveModal.dismiss();
+    this.ngbActiveModal.dismiss('dismissed draft generation modal');
   }
 }
