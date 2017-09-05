@@ -38,6 +38,7 @@ export class LanguagesComponent implements OnInit {
 
   createLanguage(): void {
     this.saving = true;
+    this.errorMessage = null;
 
     this.languageService.createLanguage(this.newLanguage)
       .then(() => {
@@ -49,6 +50,9 @@ export class LanguagesComponent implements OnInit {
   }
 
   deleteLanguage(language: Language): void {
+    this.errorMessage = null;
+    language.canConfirmDelete = false;
+
     this.languageService.deleteLanguage(language.id)
       .then(() => {
         this.showSuccess();

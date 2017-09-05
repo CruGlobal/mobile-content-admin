@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ResourceService} from '../../service/resource.service';
 import {Resource} from '../../models/resource';
 import {Attachment} from '../../models/attachment';
@@ -14,6 +14,8 @@ import {AttachmentService} from '../../service/attachment.service';
   templateUrl: './attachments.component.html',
 })
 export class AttachmentsComponent implements OnInit {
+  @ViewChild('uploadElement') uploadElement: ElementRef;
+
   @Input() resources: Resource[];
   @Input() selectedFile;
   @Input() selectedResource: Resource;
@@ -33,13 +35,15 @@ export class AttachmentsComponent implements OnInit {
     this.loadAttachments();
     this.is_zipped = false;
 
-    this.uploader.onCompleteAll = () => {
+    this.uploader.onSuccessItem = (item, response, status, headers) => {
       this.showSuccess();
       this.loadAttachments();
+      return {item, response, status, headers};
     };
 
-    this.uploader.onErrorItem = (_item, response) => {
+    this.uploader.onErrorItem = (item, response, status, headers) => {
       this.errorMessage = JSON.parse(response).errors[0].detail;
+      return {item, response, status, headers};
     };
   }
 
@@ -53,13 +57,13 @@ export class AttachmentsComponent implements OnInit {
   }
 
   uploadNewFile(): void {
-    const a = new Attachment();
-    a.file = this.selectedFile;
-    a.resource = this.selectedResource;
-    a.is_zipped = this.is_zipped;
+    this.errorMessage = null;
+    this.uploadElement.nativeElement.value = '';
+
+    const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
     this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem('Authorization');
-    this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: this.selectedResource.id};
+    this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: resourceId};
     this.uploader.uploadAll();
   }
 
