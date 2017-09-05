@@ -20,11 +20,11 @@ export class Resource {
   latest: Translation[];
   data: { id: number };
 
-  getResourceTypeId(): number {
-    return this.resourceType ? this.resourceType.id : null;
+  static getResourceTypeId(resource: Resource): number {
+    return resource.resourceType ? resource.resourceType.id : null;
   }
 
-  getSystemId(): number {
-    return this.system ? this.system.id : null;
+  static getSystemId(resource: Resource): number {
+    return resource.system ? resource.system.id : null;
   }
 }
