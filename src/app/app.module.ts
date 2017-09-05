@@ -32,6 +32,7 @@ import {CreatePageComponent} from './components/create-page/create-page.componen
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 import {AttachmentService} from './service/attachment.service';
+import {MultipleDraftGeneratorComponent} from './components/multiple-draft-generator/multiple-draft-generator.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {AttachmentService} from './service/attachment.service';
     ImageComponent,
     AceEditorDirective,
     CreatePageComponent,
-    XmlEditorComponent
+    XmlEditorComponent,
+    MultipleDraftGeneratorComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import {AttachmentService} from './service/attachment.service';
     PageComponent,
     CustomPageComponent,
     CreatePageComponent,
-    LoginComponent
+    LoginComponent,
+    MultipleDraftGeneratorComponent
   ],
   bootstrap: [AppComponent]
 })

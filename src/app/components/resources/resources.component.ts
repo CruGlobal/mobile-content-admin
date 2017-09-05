@@ -5,6 +5,7 @@ import {LanguageService} from '../../service/language.service';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {CreateResourceComponent} from '../edit-resource/create-resource.component';
 import {UpdateResourceComponent} from '../edit-resource/update-resource.component';
+import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multiple-draft-generator.component';
 
 @Component({
   selector: 'admin-resources',
@@ -47,6 +48,11 @@ export class ResourcesComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(UpdateResourceComponent);
     modalRef.componentInstance.resource = resource;
     modalRef.result.then(() => this.loadResources(), console.log);
+  }
+
+  openGenerateModal(resource: Resource): void {
+    const modalRef: NgbModalRef = this.modalService.open(MultipleDraftGeneratorComponent);
+    modalRef.componentInstance.resource = resource;
   }
 
   private loadTranslations(resource): void {
