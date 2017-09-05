@@ -1,3 +1,10 @@
-<div *ngFor="let translation of resource['latest-drafts-translations']">
-  {{translation.language.name}}
+<div class="container">
+  <div *ngFor="let translation of resource['latest-drafts-translations']">
+    <label class="btn-secondary btn-block" ngbButtonLabel *ngIf="translation.is_published">
+      <input type="checkbox" ngbButton> {{translation.language.name}}
+    </label>
+  </div>
+  <br>
+  <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+  <button class="btn btn-success" (click)="generateDrafts()">Generate drafts</button>
 </div>

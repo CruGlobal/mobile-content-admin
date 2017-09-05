@@ -7,4 +7,8 @@ import {Resource} from '../../models/resource';
 })
 export class MultipleDraftGeneratorComponent {
   resource: Resource;
+
+  generateDrafts(): void {
+
+  }
 }
