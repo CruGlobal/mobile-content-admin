@@ -53,8 +53,10 @@ export class AttachmentsComponent implements OnInit {
   }
 
   uploadNewFile(): void {
+    const resourceId = this.selectedResource ? this.selectedResource.id : null;
+
     this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem('Authorization');
-    this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: this.selectedResource.id};
+    this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: resourceId};
     this.uploader.uploadAll();
   }
 
