@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ResourceService} from '../../service/resource.service';
 import {Resource} from '../../models/resource';
 import {Attachment} from '../../models/attachment';
@@ -14,6 +14,8 @@ import {AttachmentService} from '../../service/attachment.service';
   templateUrl: './attachments.component.html',
 })
 export class AttachmentsComponent implements OnInit {
+  @ViewChild('uploadElement') uploadElement: ElementRef;
+
   @Input() resources: Resource[];
   @Input() selectedFile;
   @Input() selectedResource: Resource;
@@ -55,6 +57,8 @@ export class AttachmentsComponent implements OnInit {
   }
 
   uploadNewFile(): void {
+    this.uploadElement.nativeElement.value = '';
+
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
     this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem('Authorization');

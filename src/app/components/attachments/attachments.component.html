@@ -22,7 +22,7 @@
   </div>
   <div class="card-body">
     <h5>Upload new attachment</h5>
-    <input type="file" ng2FileSelect [uploader]="uploader" />
+    <input type="file" ng2FileSelect [uploader]="uploader" #uploadElement />
     Resource
     <select [(ngModel)]="selectedResource">
       <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.name }}</option>
