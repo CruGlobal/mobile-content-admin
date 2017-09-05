@@ -9,11 +9,15 @@ export class Translation {
   resource: Resource;
   show: boolean;
 
-  constructor(translation: Translation) {
-    this.id = translation.id;
-    this.code = translation.code;
-    this.is_published = translation.is_published;
-    this.language = translation.language;
-    this.resource = translation.resource;
+  copy(): Translation {
+    const copy = new Translation();
+
+    copy.id = this.id;
+    copy.code = this.code;
+    copy.is_published = this.is_published;
+    copy.language = this.language;
+    copy.resource = this.resource;
+
+    return copy;
   }
 }

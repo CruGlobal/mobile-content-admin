@@ -50,7 +50,7 @@ export class TranslationComponent {
     this.publishing = true;
     this.errorMessage = null;
 
-    const t = new Translation(this.translation);
+    const t = this.translation.copy();
     t.is_published = true;
 
     this.draftService.updateDraft(t)
