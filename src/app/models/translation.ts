@@ -11,14 +11,14 @@ export class Translation {
   show: boolean;
   generateDraft: boolean;
 
-  copy(): Translation {
+  static copy(translation: Translation): Translation {
     const copy = new Translation();
 
-    copy.id = this.id;
-    copy.code = this.code;
-    copy.is_published = this.is_published;
-    copy.language = this.language;
-    copy.resource = this.resource;
+    copy.id = translation.id;
+    copy.code = translation.code;
+    copy.is_published = translation.is_published;
+    copy.language = translation.language;
+    copy.resource = translation.resource;
 
     return copy;
   }
