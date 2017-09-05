@@ -31,7 +31,7 @@ export class MultipleDraftGeneratorComponent {
       if (index === this.translations.length - 1) {
         this.confirmMessage = `${this.confirmMessage}?`;
       } else {
-        this.confirmMessage = `${this.confirmMessage}, `;
+        this.confirmMessage = `${this.confirmMessage},`;
       }
     });
   }
