@@ -19,9 +19,11 @@ export class MultipleDraftGeneratorComponent {
   constructor(private ngbActiveModal: NgbActiveModal, private draftService: DraftService) {}
 
   showConfirmAlert(): void {
-    this.confirmMessage = 'Are you sure you want to generate a draft for these languages: ';
-
     this.translations = this.resource.translations.filter(translation => translation.generateDraft);
+    if (this.translations.length === 0) {
+      return;
+    }
+    this.confirmMessage = 'Are you sure you want to generate a draft for these languages: ';
 
     this.translations.forEach((translation, index) => {
       this.confirmMessage = `${this.confirmMessage} ${translation.language.name}`;
