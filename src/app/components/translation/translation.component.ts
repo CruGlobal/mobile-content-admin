@@ -48,6 +48,7 @@ export class TranslationComponent {
 
   publishDraft(): void {
     this.publishing = true;
+    this.errorMessage = null;
 
     this.translation.is_published = true;
     this.draftService.updateDraft(this.translation)
@@ -66,6 +67,7 @@ export class TranslationComponent {
 
   createDraft(): void {
     this.saving = true;
+    this.errorMessage = null;
 
     this.draftService.createDraft(this.translation.resource.id, this.translation.language.id)
       .then(() => this.resourcesComponent.loadResources())

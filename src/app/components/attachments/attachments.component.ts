@@ -57,6 +57,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   uploadNewFile(): void {
+    this.errorMessage = null;
     this.uploadElement.nativeElement.value = '';
 
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
