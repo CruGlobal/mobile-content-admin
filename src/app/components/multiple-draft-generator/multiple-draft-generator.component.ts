@@ -22,9 +22,16 @@ export class MultipleDraftGeneratorComponent {
     this.confirmMessage = 'Are you sure you want to generate a draft for these languages: ';
 
     this.translations = this.resource.translations.filter(translation => translation.generateDraft);
-    this.translations.forEach(translation => this.confirmMessage = `${this.confirmMessage} ${translation.language.name}, `);
 
-    this.confirmMessage = `${this.confirmMessage}?`;
+    this.translations.forEach((translation, index) => {
+      this.confirmMessage = `${this.confirmMessage} ${translation.language.name}`;
+
+      if (index === this.translations.length - 1) {
+        this.confirmMessage = `${this.confirmMessage}?`;
+      } else {
+        this.confirmMessage = `${this.confirmMessage}, `;
+      }
+    });
   }
 
   generateDrafts(): void {
