@@ -10,16 +10,31 @@ import {Translation} from '../../models/translation';
 })
 export class MultipleDraftGeneratorComponent {
   resource: Resource;
+  translations: Translation[];
+
+  confirmMessage: string;
+  saving: boolean;
+  errorMessage: string;
 
   constructor(private ngbActiveModal: NgbActiveModal, private draftService: DraftService) {}
 
-  generateDrafts(): void {
-    const translations: Translation[] = this.resource.translations.filter(translation => translation.generateDraft);
+  showConfirmAlert(): void {
+    this.confirmMessage = 'Are you sure you want to generate a draft for these languages: ';
 
-    translations.forEach((translation, index) => {
+    this.translations = this.resource.translations.filter(translation => translation.generateDraft);
+    this.translations.forEach(translation => this.confirmMessage = `${this.confirmMessage} ${translation.language.name}, `);
+
+    this.confirmMessage = `${this.confirmMessage}?`;
+  }
+
+  generateDrafts(): void {
+    this.saving = true;
+    this.errorMessage = null;
+
+    this.translations.forEach((translation, index) => {
       this.draftService.createDraft(translation)
         .then(() => {
-          if (index === translations.length - 1) {
+          if (index === this.translations.length - 1) {
             this.ngbActiveModal.close();
           }
         });

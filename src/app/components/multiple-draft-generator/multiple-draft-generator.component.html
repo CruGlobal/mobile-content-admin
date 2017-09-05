@@ -5,6 +5,17 @@
     </label>
   </div>
   <br>
+  <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+    Saving...
+  </ngb-alert>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+    {{errorMessage}}
+  </ngb-alert>
   <button class="btn btn-danger" (click)="cancel()">Cancel</button>
-  <button class="btn btn-success" (click)="generateDrafts()">Generate drafts</button>
+  <button class="btn btn-success" (click)="showConfirmAlert()">Generate drafts</button>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="confirmMessage">
+    {{confirmMessage}}
+    <button (click)="generateDrafts()" class="btn btn-dark">Confirm</button>
+    <button (click)="confirmMessage = null" class="btn btn-secondary">Cancel</button>
+  </ngb-alert>
 </div>
