@@ -50,8 +50,10 @@ export class TranslationComponent {
     this.publishing = true;
     this.errorMessage = null;
 
-    this.translation.is_published = true;
-    this.draftService.updateDraft(this.translation)
+    const t = new Translation(this.translation);
+    t.is_published = true;
+
+    this.draftService.updateDraft(t)
       .then(() => this.resourcesComponent.loadResources())
       .catch(this.handleError.bind(this))
       .then(() => this.publishing = false);
