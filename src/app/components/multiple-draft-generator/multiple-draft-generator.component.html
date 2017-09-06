@@ -1,0 +1,22 @@
+<div class="container">
+  <h5>Languages without a Draft</h5>
+  <div *ngFor="let translation of resource['latest-drafts-translations']">
+    <label class="btn-secondary btn-block" ngbButtonLabel *ngIf="translation.is_published">
+      <input type="checkbox" ngbButton [(ngModel)]="translation.generateDraft"> {{translation.language.name}}
+    </label>
+  </div>
+  <br>
+  <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+    Saving...
+  </ngb-alert>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+    {{errorMessage}}
+  </ngb-alert>
+  <button class="btn btn-danger" (click)="cancel()">Cancel</button>
+  <button class="btn btn-success" (click)="showConfirmAlert()">Generate drafts</button>
+  <ngb-alert type="danger" [dismissible]="false" *ngIf="confirmMessage">
+    {{confirmMessage}}
+    <button (click)="generateDrafts()" class="btn btn-dark">Confirm</button>
+    <button (click)="confirmMessage = null" class="btn btn-secondary">Cancel</button>
+  </ngb-alert>
+</div>

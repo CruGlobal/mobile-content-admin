@@ -50,7 +50,7 @@ export class TranslationComponent {
     this.publishing = true;
     this.errorMessage = null;
 
-    const t = this.translation.copy();
+    const t = Translation.copy(this.translation);
     t.is_published = true;
 
     this.draftService.updateDraft(t)
@@ -71,7 +71,7 @@ export class TranslationComponent {
     this.saving = true;
     this.errorMessage = null;
 
-    this.draftService.createDraft(this.translation.resource.id, this.translation.language.id)
+    this.draftService.createDraft(this.translation)
       .then(() => this.resourcesComponent.loadResources())
       .catch(this.handleError.bind(this))
       .then(() => this.saving = false);
