@@ -1,16 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Resource} from '../../models/resource';
-import {ResourceType} from '../../models/resource-type';
-import {System} from '../../models/system';
-import {ResourceService} from '../../service/resource.service';
-import {SystemService} from '../../service/system.service';
-import {ResourceTypeService} from '../../service/resource-type.service';
+import {Resource} from '../../../models/resource';
+import {ResourceType} from '../../../models/resource-type';
+import {System} from '../../../models/system';
+import {ResourceService} from '../../../service/resource.service';
+import {SystemService} from '../../../service/system.service';
+import {ResourceTypeService} from '../../../service/resource-type.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {AbstractEditResourceComponent} from './abstract-edit-resource.component';
+import {AbstractEditResourceComponent} from '../abstract-edit-resource.component';
 
 @Component({
   selector: 'admin-edit-resource',
-  templateUrl: './edit-resource.component.html'
+  templateUrl: '../edit-resource.component.html'
 })
 export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit{
   @Input() resource: Resource;

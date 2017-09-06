@@ -3,8 +3,8 @@ import {Resource} from '../../models/resource';
 import {ResourceService} from '../../service/resource.service';
 import {LanguageService} from '../../service/language.service';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {CreateResourceComponent} from '../edit-resource/create-resource.component';
-import {UpdateResourceComponent} from '../edit-resource/update-resource.component';
+import {CreateResourceComponent} from '../edit-resource/create-resource/create-resource.component';
+import {UpdateResourceComponent} from '../edit-resource/update-resource/update-resource.component';
 import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multiple-draft-generator.component';
 
 @Component({
