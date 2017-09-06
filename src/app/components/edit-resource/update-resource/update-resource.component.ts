@@ -12,7 +12,7 @@ import {AbstractEditResourceComponent} from '../abstract-edit-resource.component
   selector: 'admin-edit-resource',
   templateUrl: '../edit-resource.component.html'
 })
-export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit{
+export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit {
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
