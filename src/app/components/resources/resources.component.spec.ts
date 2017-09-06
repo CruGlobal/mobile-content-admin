@@ -33,15 +33,13 @@ describe('LanguagesComponent', () => {
     comp = fixture.componentInstance;
   });
 
-  describe('loading translations and pages', () => {
-    it('should include pages ', (done) => {
-      comp.loadResources();
+  it('should include pages when loading resources', (done) => {
+    comp.loadResources();
 
-      setTimeout(() => {
-        expect(resourceServiceStub.getResources).toHaveBeenCalledWith('translations,pages');
+    setTimeout(() => {
+      expect(resourceServiceStub.getResources).toHaveBeenCalledWith('translations,pages');
 
-        done();
-      });
+      done();
     });
   });
 });
