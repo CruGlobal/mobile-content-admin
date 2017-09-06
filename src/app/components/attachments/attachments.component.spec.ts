@@ -22,8 +22,13 @@ describe('AttachmentsComponent', () => {
     open() {}
   };
 
+  const file = 'roger.txt';
+  const componentInstance = {
+    source: file
+  };
+
   beforeEach(() => {
-    spyOn(modalServiceStub, 'open');
+    spyOn(modalServiceStub, 'open').and.returnValue(componentInstance);
 
     TestBed.configureTestingModule({
       declarations: [ AttachmentsComponent, FileSelectDirective ],
@@ -40,6 +45,7 @@ describe('AttachmentsComponent', () => {
     comp = fixture.componentInstance;
 
     const a = new Attachment();
+    a.file = file;
     const attachments: Attachment[] = [ a ];
     const r = new Resource();
     r.attachments = attachments;
@@ -48,9 +54,17 @@ describe('AttachmentsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('opens modal with image when view button is clicked', () => {
-    fixture.debugElement.query(By.css('.btn.btn-secondary')).nativeElement.click();
+  describe('image modal', () => {
+    beforeEach(() => {
+      fixture.debugElement.query(By.css('.btn.btn-secondary')).nativeElement.click();
+    });
 
-    expect(modalServiceStub.open).toHaveBeenCalled();
+    it('is opened when view button is clicked', () => {
+      expect(modalServiceStub.open).toHaveBeenCalled();
+    });
+
+    it('has its source set as the file', () => {
+      expect(componentInstance.source).toBe(file);
+    });
   });
 });
