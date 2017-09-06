@@ -18,6 +18,15 @@ describe('AttachmentsComponent', () => {
     getResources() { return Promise.resolve(); }
   };
 
+  const authToken = 'c43ac439-99c8-4551-99a3-0cf53f4a4bcd';
+  const windowRefStub = {
+    nativeWindow: {
+      localStorage: {
+        getItem(key: string) { return key === 'Authorization' ? authToken : null; }
+      }
+    }
+  };
+
   const modalServiceStub = {
     open() {}
   };
@@ -35,7 +44,7 @@ describe('AttachmentsComponent', () => {
       imports: [ NgbModule.forRoot(), FormsModule ],
       providers: [
         {provide: ResourceService, useValue: resourceServiceStub},
-        {provide: WindowRefService},
+        {provide: WindowRefService, useValue: windowRefStub},
         {provide: NgbModal, useValue: modalServiceStub},
         {provide: AttachmentService},
       ]
@@ -52,6 +61,14 @@ describe('AttachmentsComponent', () => {
     comp.resources = [r];
 
     fixture.detectChanges();
+  });
+
+  it('includes auth header with file uploads', () => {
+    spyOn(comp.uploader, 'uploadAll');
+
+    fixture.debugElement.query(By.css('.btn.btn-success')).nativeElement.click();
+
+    expect(comp.uploader.authToken).toBe(authToken);
   });
 
   describe('image modal', () => {
