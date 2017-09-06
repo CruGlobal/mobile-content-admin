@@ -41,6 +41,7 @@ describe('MultipleDraftGeneratorComponent', () => {
     const translations: Translation[] = [
       buildTranslation(true, false, 'English'),
       buildTranslation(false, false, 'Spanish'),
+      buildTranslation(true, true, 'Chinese'),
       buildTranslation(true, true, 'French')
     ];
 
@@ -53,7 +54,7 @@ describe('MultipleDraftGeneratorComponent', () => {
   });
 
   it('only shows languages without drafts', () => {
-    expect(fixture.debugElement.queryAll(By.directive(NgbButtonLabel)).length).toBe(2);
+    expect(fixture.debugElement.queryAll(By.directive(NgbButtonLabel)).length).toBe(3);
   });
 
   it('confirm message lists all languages', () => {
@@ -62,6 +63,6 @@ describe('MultipleDraftGeneratorComponent', () => {
 
     const alert: DebugElement = fixture.debugElement.query(By.directive(NgbAlert));
     expect(alert.nativeElement.textContent)
-      .toContain('Are you sure you want to generate a draft for these languages:  French?');
+      .toContain('Are you sure you want to generate a draft for these languages:  Chinese, French?');
   });
 });
