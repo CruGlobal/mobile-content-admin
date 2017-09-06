@@ -16,6 +16,8 @@ export class MultipleDraftGeneratorComponent {
   saving: boolean;
   errorMessage: string;
 
+  readonly baseConfirmMessage = 'Are you sure you want to generate a draft for these languages:';
+
   constructor(private ngbActiveModal: NgbActiveModal, private draftService: DraftService) {}
 
   showConfirmAlert(): void {
@@ -23,17 +25,11 @@ export class MultipleDraftGeneratorComponent {
     if (this.translations.length === 0) {
       return;
     }
-    this.confirmMessage = 'Are you sure you want to generate a draft for these languages: ';
 
-    this.translations.forEach((translation, index) => {
-      this.confirmMessage = `${this.confirmMessage} ${translation.language.name}`;
+    const message = this.translations.map(translation => translation.language.name)
+      .join(', ');
 
-      if (index === this.translations.length - 1) {
-        this.confirmMessage = `${this.confirmMessage}?`;
-      } else {
-        this.confirmMessage = `${this.confirmMessage},`;
-      }
-    });
+    this.confirmMessage = `${this.baseConfirmMessage} ${message}?`;
   }
 
   generateDrafts(): void {

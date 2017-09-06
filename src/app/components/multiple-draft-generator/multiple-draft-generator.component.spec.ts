@@ -63,6 +63,6 @@ describe('MultipleDraftGeneratorComponent', () => {
 
     const alert: DebugElement = fixture.debugElement.query(By.directive(NgbAlert));
     expect(alert.nativeElement.textContent)
-      .toContain('Are you sure you want to generate a draft for these languages:  Chinese, French?');
+      .toContain(`${comp.baseConfirmMessage} Chinese, French?`);
   });
 });
