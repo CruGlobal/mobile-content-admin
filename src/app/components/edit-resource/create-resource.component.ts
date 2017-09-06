@@ -18,19 +18,15 @@ export class CreateResourceComponent extends AbstractEditResourceComponent imple
   systems: System[];
 
   constructor(private resourceService: ResourceService,
-              private systemService: SystemService,
-              private resourceTypeService: ResourceTypeService,
+              systemService: SystemService,
+              resourceTypeService: ResourceTypeService,
               activeModal: NgbActiveModal) {
 
-    super(activeModal);
+    super(systemService, resourceTypeService, activeModal);
   }
 
   ngOnInit(): void {
-    this.resourceTypeService.getResourceTypes().then(types => this.resourceTypes = types);
-    this.systemService.getSystems().then(systems => {
-      this.systems = systems;
-      this.resource.system = this.systems[0];
-    });
+    super.init(null, () => this.resource.system = this.systems[0]);
   }
 
   saveResource(): void {

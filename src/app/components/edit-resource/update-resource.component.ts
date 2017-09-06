@@ -12,29 +12,23 @@ import {AbstractEditResourceComponent} from './abstract-edit-resource.component'
   selector: 'admin-edit-resource',
   templateUrl: './edit-resource.component.html'
 })
-export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit {
+export class UpdateResourceComponent extends AbstractEditResourceComponent implements OnInit{
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
 
   constructor(private resourceService: ResourceService,
-              private systemService: SystemService,
-              private resourceTypeService: ResourceTypeService,
+              systemService: SystemService,
+              resourceTypeService: ResourceTypeService,
               activeModal: NgbActiveModal) {
 
-    super(activeModal);
-  }
+    super(systemService, resourceTypeService, activeModal);  }
 
   ngOnInit(): void {
-    this.resourceTypeService.getResourceTypes().then(types => {
-      this.resourceTypes = types;
-      this.resource.resourceType = this.resourceTypes.find(type => type.name === this.resource['resource-type']);
-    });
-
-    this.systemService.getSystems().then(systems => {
-      this.systems = systems;
-      this.resource.system = this.systems.find(system => system.id === this.resource.system.id);
-    });
+    super.init(
+      () => this.resource.resourceType = this.resourceTypes.find(type => type.name === this.resource['resource-type']),
+      () => this.resource.system = this.systems.find(system => system.id === this.resource.system.id)
+    );
 
     this.resource.oneskyProjectId = this.resource['onesky-project-id'];
   }
