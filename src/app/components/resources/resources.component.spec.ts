@@ -6,7 +6,7 @@ import {ResourcesComponent} from './resources.component';
 import {ResourceService} from '../../service/resource.service';
 import {TranslationComponent} from '../translation/translation.component';
 
-describe('LanguagesComponent', () => {
+describe('ResourcesComponent', () => {
   let comp:    ResourcesComponent;
   let fixture: ComponentFixture<ResourcesComponent>;
 
