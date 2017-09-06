@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {XmlEditorComponent} from '../../xml-editor/xml-editor.component';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ResourceService} from '../../../service/resource.service';
+import {ResourceService} from '../../../service/resource/resource.service';
 import {SystemService} from '../../../service/system.service';
 import {ResourceTypeService} from '../../../service/resource-type.service';
 import {CreateResourceComponent} from './create-resource.component';

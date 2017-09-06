@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AttachmentsComponent} from './attachments.component';
-import {ResourceService} from '../../service/resource.service';
+import {ResourceService} from '../../service/resource/resource.service';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {WindowRefService} from '../../models/window-ref-service';
 import {AttachmentService} from '../../service/attachment.service';

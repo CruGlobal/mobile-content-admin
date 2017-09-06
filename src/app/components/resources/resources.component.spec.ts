@@ -3,7 +3,7 @@ import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LanguageService} from '../../service/language.service';
 import {FormsModule} from '@angular/forms';
 import {ResourcesComponent} from './resources.component';
-import {ResourceService} from '../../service/resource.service';
+import {ResourceService} from '../../service/resource/resource.service';
 import {TranslationComponent} from '../translation/translation.component';
 import {Resource} from '../../models/resource';
 import {Translation} from '../../models/translation';

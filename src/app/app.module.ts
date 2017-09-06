@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {ResourcesComponent} from './components/resources/resources.component';
-import {ResourceService} from './service/resource.service';
+import {ResourceService} from './service/resource/resource.service';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {AppRoutingModule} from './app-routing.module';

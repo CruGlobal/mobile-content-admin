@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ResourceService} from '../../service/resource.service';
+import {ResourceService} from '../../service/resource/resource.service';
 import {Resource} from '../../models/resource';
 import {Attachment} from '../../models/attachment';
 import {FileUploader} from 'ng2-file-upload';

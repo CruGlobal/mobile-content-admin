@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Resource} from '../models/resource';
+import {Resource} from '../../models/resource';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {JsonApiDataStore} from 'jsonapi-datastore';
-import {AuthService} from './auth.service';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import {AuthService} from '../auth.service';
+import {environment} from '../../../environments/environment';
+import {AbstractService} from '../abstract.service';
 
 @Injectable()
 export class ResourceService extends AbstractService {
