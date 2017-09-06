@@ -7,17 +7,24 @@ import {ResourceTypeService} from '../../../service/resource-type.service';
 import {CreateResourceComponent} from './create-resource.component';
 import {FormsModule} from '@angular/forms';
 import {AceEditorDirective} from 'ng2-ace-editor';
+import {By} from '@angular/platform-browser';
 
 describe('CreateResourceComponent', () => {
   let comp:    CreateResourceComponent;
   let fixture: ComponentFixture<CreateResourceComponent>;
 
+  const resourceServiceStub = {
+    create() { return Promise.resolve(); }
+  };
+
   beforeEach(() => {
+    spyOn(resourceServiceStub, 'create');
+
     TestBed.configureTestingModule({
       declarations: [ CreateResourceComponent, XmlEditorComponent, AceEditorDirective ],
       imports: [ NgbModule.forRoot(), FormsModule ],
       providers: [
-        {provide: ResourceService},
+        {provide: ResourceService, useValue: resourceServiceStub},
         {provide: SystemService},
         {provide: ResourceTypeService},
         {provide: NgbActiveModal}
@@ -26,9 +33,12 @@ describe('CreateResourceComponent', () => {
 
     fixture = TestBed.createComponent(CreateResourceComponent);
     comp = fixture.componentInstance;
+    comp.resource.name = 'Satisfied?';
   });
 
   it('creates resource', () => {
+    fixture.debugElement.query(By.css('.btn.btn-success')).nativeElement.click();
 
+    expect(resourceServiceStub.create).toHaveBeenCalledWith(comp.resource);
   });
 });
