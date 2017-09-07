@@ -7,13 +7,13 @@ export abstract class AbstractService {
   };
 
   protected handleError(error: any): Promise<any> {
-    console.error('An error occurred');
     let message: string;
 
     try {
       message = error.json().errors[0].detail;
+      console.error('An error occurred:' + message);
     } catch (e) {
-      message = 'An unknown error occurred.';
+      message = 'An unknown error occurred: ' + error;
     }
 
     return Promise.reject(message);
