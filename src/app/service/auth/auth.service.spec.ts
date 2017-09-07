@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/toPromise';
-import {Http} from '@angular/http';
+import {Http, RequestOptionsArgs} from '@angular/http';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs/Observable';
 import {WindowRefService} from '../../models/window-ref-service';
@@ -32,6 +32,12 @@ describe ('AuthService', () => {
   const windowRef = new WindowRefService();
 
   const service = new AuthService(mockHttp, windowRef);
+
+  it('sets auth header', () => {
+    const result: RequestOptionsArgs = service.getAuthorizationAndOptions();
+
+    expect(result.headers.get('Authorization')).toBe(token);
+  });
 
   it('saves auth code after successful authentication', () => {
     service.createAuthToken('code');
