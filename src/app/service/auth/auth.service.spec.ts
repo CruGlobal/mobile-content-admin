@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {WindowRefService} from '../../models/window-ref-service';
 import { UUID } from 'angular2-uuid';
 
-const token = UUID.UUID();
+let token: string;
 
 const response = {
   json() {
@@ -33,6 +33,10 @@ describe ('AuthService', () => {
   const windowRef = new WindowRefService();
 
   const service = new AuthService(mockHttp, windowRef);
+
+  beforeEach(() => {
+    token = UUID.UUID();
+  });
 
   it('sets auth header', (done) => {
     windowRef.nativeWindow.localStorage.setItem('Authorization', token);
