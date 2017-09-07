@@ -25,8 +25,14 @@ describe ('ResourceService', () => {
   const resource = new Resource();
 
   beforeEach(() => {
-    spyOn(mockHttp, 'post').and.returnValue(Observable.create(resource));
-    spyOn(mockHttp, 'put').and.returnValue(Observable.create());
+    spyOn(mockHttp, 'post').and.returnValue(Observable.create(observer => {
+      observer.next({
+        json() { return new Resource(); }
+      });
+      observer.complete();
+    }));
+
+    spyOn(mockHttp, 'put').and.returnValue(Observable.create(observer => observer.complete()));
   });
 
   it('creating uses authorization code', () => {
