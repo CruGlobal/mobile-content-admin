@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptionsArgs} from '@angular/http';
-import {AuthToken} from '../models/auth-token';
-import {WindowRefService} from '../models/window-ref-service';
+import {AuthToken} from '../../models/auth-token';
+import {WindowRefService} from '../../models/window-ref-service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import {environment} from '../../../environments/environment';
+import {AbstractService} from '../abstract.service';
 
 @Injectable()
 export class AuthService extends AbstractService {

@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 import {ResourceService} from './resource.service';
 import {Http, RequestOptionsArgs} from '@angular/http';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../auth/auth.service';
 import {Resource} from '../../models/resource';
 import {Observable} from 'rxjs/Observable';
 import anything = jasmine.anything;
@@ -17,7 +17,7 @@ class MockAuthService extends AuthService {
   }
 }
 
-describe ('AuthGuardService', () => {
+describe ('ResourceService', () => {
   const mockHttp = new MockHttp(null, null);
   const mockAuthService = new MockAuthService(null, null);
   const service = new ResourceService(mockHttp, mockAuthService);
