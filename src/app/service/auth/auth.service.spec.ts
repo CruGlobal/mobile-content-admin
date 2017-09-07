@@ -3,8 +3,9 @@ import {Http, RequestOptionsArgs} from '@angular/http';
 import {AuthService} from './auth.service';
 import {Observable} from 'rxjs/Observable';
 import {WindowRefService} from '../../models/window-ref-service';
+import { UUID } from 'angular2-uuid';
 
-const token = 'bc2bd721-4fa5-4e21-a0c3-94962da8919c';
+const token = UUID.UUID();
 
 const response = {
   json() {
@@ -33,15 +34,23 @@ describe ('AuthService', () => {
 
   const service = new AuthService(mockHttp, windowRef);
 
-  it('sets auth header', () => {
+  it('sets auth header', (done) => {
+    windowRef.nativeWindow.localStorage.setItem('Authorization', token);
+
     const result: RequestOptionsArgs = service.getAuthorizationAndOptions();
 
-    expect(result.headers.get('Authorization')).toBe(token);
+    setTimeout(() => {
+      expect(result.headers.get('Authorization')).toBe(token);
+      done();
+    });
   });
 
-  it('saves auth code after successful authentication', () => {
+  it('saves auth code after successful authentication', (done) => {
     service.createAuthToken('code');
 
-    expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(token);
+    setTimeout(() => {
+      expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(token);
+      done();
+    });
   });
 });
