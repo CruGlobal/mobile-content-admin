@@ -32,12 +32,14 @@ describe('AttachmentsComponent', () => {
   };
 
   const file = 'roger.txt';
-  const componentInstance = {
-    source: file
+  const modalRef = {
+    componentInstance: {
+      source: null
+    }
   };
 
   beforeEach(() => {
-    spyOn(modalServiceStub, 'open').and.returnValue(componentInstance);
+    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
 
     TestBed.configureTestingModule({
       declarations: [ AttachmentsComponent, FileSelectDirective ],
@@ -81,7 +83,7 @@ describe('AttachmentsComponent', () => {
     });
 
     it('has its source set as the file', () => {
-      expect(componentInstance.source).toBe(file);
+      expect(modalRef.componentInstance.source).toBe(file);
     });
   });
 });

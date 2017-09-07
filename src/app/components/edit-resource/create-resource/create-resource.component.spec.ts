@@ -14,11 +14,11 @@ describe('CreateResourceComponent', () => {
   let fixture: ComponentFixture<CreateResourceComponent>;
 
   const resourceServiceStub = {
-    create() { return Promise.resolve(); }
+    create() { }
   };
 
   beforeEach(() => {
-    spyOn(resourceServiceStub, 'create');
+    spyOn(resourceServiceStub, 'create').and.returnValue(Promise.resolve());
 
     TestBed.configureTestingModule({
       declarations: [ CreateResourceComponent, XmlEditorComponent, AceEditorDirective ],
