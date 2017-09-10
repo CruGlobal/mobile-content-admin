@@ -33,7 +33,7 @@
       <option value="false">No</option>
     </select>
     <button (click)="uploadNewFile()" class="btn btn-success">
-      <i class="fa fa-cloud-upload"></i> Upload <!-- TODO button doesn't do anything if the first attempt fails -->
+      <i class="fa fa-cloud-upload"></i> Upload
     </button>
     <ngb-alert type="info" [dismissible]="false" *ngIf="uploader.isUploading">
       Uploading...

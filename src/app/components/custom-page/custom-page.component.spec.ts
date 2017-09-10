@@ -23,8 +23,8 @@ describe('CustomPageComponent', () => {
   };
 
   beforeEach(() => {
-    spyOn(customPageServiceStub, 'upsert');
-    spyOn(pageServiceStub, 'update');
+    spyOn(customPageServiceStub, 'upsert').and.returnValue(Promise.resolve());
+    spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve());
 
     TestBed.configureTestingModule({
       declarations: [ CustomPageComponent, XmlEditorComponent, AceEditorDirective ],

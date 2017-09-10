@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import {Page} from '../models/page';
 import {JsonApiDataStore} from 'jsonapi-datastore';
-import {AuthService} from './auth.service';
+import {AuthService} from './auth/auth.service';
 import {environment} from '../../environments/environment';
 import {AbstractService} from './abstract.service';
 
