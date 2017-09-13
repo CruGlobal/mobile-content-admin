@@ -61,7 +61,10 @@
       </div>
     </strong>
     <div *ngFor="let translation of resource['latest-drafts-translations']">
-      <admin-translation [translation]="translation" [resourcesComponent]="this"></admin-translation>
+      <admin-translation [translation]="translation" [resourcesComponent]="this" *ngIf="!translation.language._placeHolder"></admin-translation>
+      <ngb-alert type="warning" [dismissible]="false" *ngIf="translation.language._placeHolder">
+        Loading...
+      </ngb-alert>
     </div>
   </div>
 </div>
