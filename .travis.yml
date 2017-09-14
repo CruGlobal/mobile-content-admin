@@ -25,6 +25,16 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
+deploy:
+  provider: s3
+  access_key_id:
+  secret_access_key:
+  bucket: "cru-mobilecontentadmin-staging"
+  region: us-east-1
+  skip_cleanup: true
+  local_dir: dist
+  acl: public_read
+
 cache:
   yarn: true
   directories:
