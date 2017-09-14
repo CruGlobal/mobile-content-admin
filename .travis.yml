@@ -34,6 +34,8 @@ deploy:
   skip_cleanup: true
   local_dir: dist
   acl: public_read
+  on:
+    all_branches: true
 
 cache:
   yarn: true
