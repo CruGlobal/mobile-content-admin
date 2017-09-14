@@ -10,7 +10,6 @@ import {Translation} from '../../models/translation';
 import {Language} from '../../models/language';
 import anything = jasmine.anything;
 import {By} from '@angular/platform-browser';
-import {DebugElement} from '@angular/core';
 import {DraftService} from '../../service/draft.service';
 
 describe('ResourcesComponent', () => {
