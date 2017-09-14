@@ -9,6 +9,8 @@ import {Resource} from '../../models/resource';
 import {Translation} from '../../models/translation';
 import {Language} from '../../models/language';
 import anything = jasmine.anything;
+import {By} from '@angular/platform-browser';
+import {DraftService} from '../../service/draft.service';
 
 describe('ResourcesComponent', () => {
   let comp:    ResourcesComponent;
@@ -17,6 +19,7 @@ describe('ResourcesComponent', () => {
   const buildTranslation = (languageId): Translation => {
     const t = new Translation();
     t.language = new Language();
+    t.language['_placeHolder'] = true;
     t.language.id = languageId;
 
     return t;
@@ -33,7 +36,7 @@ describe('ResourcesComponent', () => {
 
   beforeEach(async(() => {
     spyOn(resourceServiceStub, 'getResources').and.returnValue(Promise.resolve([ resource ]));
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve([ new Language() ]));
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve( { _placeHolder: true } ));
 
     TestBed.configureTestingModule({
       declarations: [ ResourcesComponent, TranslationComponent ],
@@ -41,7 +44,8 @@ describe('ResourcesComponent', () => {
       providers: [
         {provide: ResourceService, useValue: resourceServiceStub},
         {provide: LanguageService, useValue: languageServiceStub},
-        {provide: NgbModal}
+        {provide: NgbModal},
+        {provide: DraftService}
       ]
     }).compileComponents();
   }));
@@ -85,6 +89,18 @@ describe('ResourcesComponent', () => {
 
       setTimeout(() => {
         expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(anything(), 'custom_pages');
+
+        done();
+      });
+    });
+
+    it('if not completed should not show translations', (done) => {
+      comp.loadResources();
+
+      setTimeout(() => {
+        fixture.detectChanges();
+
+        expect(fixture.debugElement.queryAll(By.directive(TranslationComponent)).length).toBe(0);
 
         done();
       });
