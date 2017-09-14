@@ -101,8 +101,7 @@ describe('ResourcesComponent', () => {
       setTimeout(() => {
         fixture.detectChanges();
 
-        const elements: DebugElement[] = fixture.debugElement.queryAll(By.directive(TranslationComponent));
-        expect(elements.length).toBe(0);
+        expect(fixture.debugElement.queryAll(By.directive(TranslationComponent)).length).toBe(0);
 
         done();
       });
