@@ -21,6 +21,7 @@ before_script:
 script:
   - ng test --code-coverage --watch=false
   - ng lint --type-check
+  - ng build -e staging
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
