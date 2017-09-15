@@ -29,8 +29,6 @@ after_success:
 
 deploy:
   - provider: s3
-    access_key_id:
-    secret_access_key:
     bucket: "cru-mobilecontentadmin-staging"
     region: us-east-1
     skip_cleanup: true
