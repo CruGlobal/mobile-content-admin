@@ -1,8 +1,10 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<!-- TODO error handling -->
-<admin-xml-editor *ngIf="!loading"
+<ngb-alert type="danger" [dismissible]="false" *ngIf="loadingError">
+  {{loadingError}}
+</ngb-alert>
+<admin-xml-editor *ngIf="!loading && !loadingError"
                   [(structure)]="page.structure"
                   [filename]="page.filename"
                   [type]="'Page'"

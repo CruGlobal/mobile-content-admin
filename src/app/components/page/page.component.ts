@@ -17,6 +17,7 @@ export class PageComponent implements OnInit {
   @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   loading = true;
+  loadingError: string;
 
   constructor(private pageService: PageService,
               private customPageService: CustomPageService,
@@ -28,7 +29,7 @@ export class PageComponent implements OnInit {
       .then((response) => {
         this.page.structure = response;
       })
-      .catch(this.handleError.bind(this))
+      .catch((message) => this.loadingError = message)
       .then(() => this.loading = false);
   }
 
