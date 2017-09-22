@@ -24,9 +24,9 @@ export class XmlEditorComponent {
   @Output() onSaveForOne = new EventEmitter();
   @Output() onSaveForAll = new EventEmitter();
 
-  private saving = false;
-  private errorMessage: string;
-  protected canConfirmSaveForAll = false;
+  saving = false;
+  errorMessage: string;
+  canConfirmSaveForAll = false;
 
   onStructureChange(code) {
     this.structureChange.emit(code);
@@ -40,17 +40,17 @@ export class XmlEditorComponent {
     return `Are you sure you want to save this as the structure for ${this.filename} for all languages?`;
   }
 
-  protected saveForOne(): void {
+  saveForOne(): void {
     this.saving = true;
     this.onSaveForOne.emit();
   }
 
-  protected saveForAll(): void {
+  saveForAll(): void {
     this.saving = true;
     this.onSaveForAll.emit();
   }
 
-  protected cancel(): void {
+  cancel(): void {
     this.onCancel.emit();
   }
 }

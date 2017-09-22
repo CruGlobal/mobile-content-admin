@@ -14,8 +14,9 @@ import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multi
 export class ResourcesComponent implements OnInit {
   resources: Resource[];
 
-  private errorMessage: string;
-  private loading = false;
+  errorMessage: string;
+  loading = false;
+  showInstructions = false;
 
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
 

@@ -7,8 +7,8 @@ import {SystemService} from '../../service/system.service';
 import {ResourceTypeService} from '../../service/resource-type.service';
 
 export abstract class AbstractEditResourceComponent {
-  protected saving = false;
-  protected errorMessage: string;
+  saving = false;
+  errorMessage: string;
 
   @Input() resource: Resource = new Resource();
   resourceTypes: ResourceType[];

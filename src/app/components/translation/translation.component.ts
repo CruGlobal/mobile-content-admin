@@ -18,9 +18,9 @@ export class TranslationComponent {
   @Input() translation: Translation;
   @Input() resourcesComponent: ResourcesComponent;
 
-  private publishing = false;
-  private saving = false;
-  private errorMessage: string;
+  publishing = false;
+  saving = false;
+  errorMessage: string;
 
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
 

@@ -22,9 +22,10 @@ export class AttachmentsComponent implements OnInit {
   @Input() is_zipped: boolean;
   public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
 
-  private errorMessage: string;
-  private loading = false;
-  private success = false;
+  errorMessage: string;
+  loading = false;
+  success = false;
+  showInstructions = false;
 
   constructor(private resourceService: ResourceService,
               private windowRef: WindowRefService,
