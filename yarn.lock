@@ -3399,9 +3399,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-ng2-ace-editor@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/ng2-ace-editor/-/ng2-ace-editor-0.2.5.tgz#3b99da834dd103f48d5ecdc695eda11324ada2d1"
+ng2-ace-editor@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/ng2-ace-editor/-/ng2-ace-editor-0.3.1.tgz#2c87e9c0e7564c7871f7ce4a234e65a8bc0372a1"
   dependencies:
     ace-builds "^1.2.5"
     brace "^0.9.0"
