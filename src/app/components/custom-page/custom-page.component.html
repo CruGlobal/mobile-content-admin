@@ -1,4 +1,11 @@
-<admin-xml-editor [(structure)]="customPage.structure"
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+  Loading...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="loadingError">
+  {{loadingError}}
+</ngb-alert>
+<admin-xml-editor *ngIf="!loading && !loadingError"
+                  [(structure)]="customPage.structure"
                   [filename]="customPage.page.filename"
                   [type]="'Custom Page'"
                   [language]="customPage.language"

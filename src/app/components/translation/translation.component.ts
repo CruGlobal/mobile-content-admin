@@ -84,7 +84,9 @@ export class TranslationComponent {
   }
 
   openCustomPage(customPage: CustomPage): void {
-    this.modalService.open(CustomPageComponent).componentInstance.customPage = customPage;
+    const modal = this.modalService.open(CustomPageComponent);
+    modal.componentInstance.customPage = customPage;
+    modal.componentInstance.translation = this.translation;
   }
 
   private handleError(message: string): void {
