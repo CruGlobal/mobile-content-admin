@@ -78,25 +78,15 @@ export class TranslationComponent {
   }
 
   openPage(page: Page): void {
-    this.draftService.getPage(page, this.translation)
-      .then((response) => {
-        page.structure = response;
-
-        const modal = this.modalService.open(PageComponent);
-        modal.componentInstance.page = page;
-        modal.componentInstance.translation = this.translation;
-      })
-      .catch(this.handleError.bind(this));
+    const modal = this.modalService.open(PageComponent);
+    modal.componentInstance.page = page;
+    modal.componentInstance.translation = this.translation;
   }
 
   openCustomPage(customPage: CustomPage): void {
-    this.draftService.getPage(customPage.page, this.translation)
-      .then((response) => {
-        customPage.structure = response;
-
-        this.modalService.open(CustomPageComponent).componentInstance.customPage = customPage;
-      })
-      .catch(this.handleError.bind(this));
+    const modal = this.modalService.open(CustomPageComponent);
+    modal.componentInstance.customPage = customPage;
+    modal.componentInstance.translation = this.translation;
   }
 
   private handleError(message: string): void {

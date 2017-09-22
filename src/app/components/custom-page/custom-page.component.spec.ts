@@ -9,6 +9,7 @@ import {PageService} from '../../service/page.service';
 import {CustomPage} from '../../models/custom-page';
 import {Language} from '../../models/language';
 import {Page} from '../../models/page';
+import {DraftService} from '../../service/draft.service';
 
 describe('CustomPageComponent', () => {
   let comp:    CustomPageComponent;
@@ -32,6 +33,7 @@ describe('CustomPageComponent', () => {
       providers: [
         {provide: PageService, useValue: pageServiceStub},
         {provide: CustomPageService, useValue: customPageServiceStub},
+        {provide: DraftService},
         {provide: NgbActiveModal}
       ]
     }).compileComponents();
