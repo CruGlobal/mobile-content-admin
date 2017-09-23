@@ -21,8 +21,8 @@ before_script:
 script:
   - ng test --code-coverage --watch=false
   - ng lint --type-check
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build -e prod; fi
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build -e staging; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build --target=production --environment=prod; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build --target=production --environment=staging; fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

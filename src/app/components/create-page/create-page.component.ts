@@ -10,8 +10,8 @@ import {PageService} from '../../service/page.service';
 export class CreatePageComponent {
   @Input() page: Page = new Page();
 
-  private errorMessage: string;
-  private saving = false;
+  errorMessage: string;
+  saving = false;
 
   constructor(private pageService: PageService, private activeModal: NgbActiveModal) {}
 

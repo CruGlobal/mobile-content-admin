@@ -12,10 +12,10 @@ export class LanguagesComponent implements OnInit {
   newLanguage: Language = new Language();
   languages: Language[];
 
-  private errorMessage: string;
-  private loading = false;
-  private saving = false;
-  private success = false;
+  errorMessage: string;
+  loading = false;
+  saving = false;
+  success = false;
 
   constructor(private languageService: LanguageService) {}
 

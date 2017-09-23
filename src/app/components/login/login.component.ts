@@ -9,8 +9,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class LoginComponent {
   @Input() accessCode: string;
 
-  private errorMessage: string;
-  private saving = false;
+  errorMessage: string;
+  saving = false;
 
   constructor(private authService: AuthService, private activeModal: NgbActiveModal) {}
 
