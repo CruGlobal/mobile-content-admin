@@ -6,8 +6,9 @@
     {{translation.language.code}}
   </div>
   <div class="col">
-    <span class="badge badge-secondary" *ngIf="!translation.is_published">{{translation.version}} | Draft</span>
+    <span class="badge badge-secondary" *ngIf="!translation.is_published && !translation.none">{{translation.version}} | Draft</span>
     <span class="badge badge-success" *ngIf="translation.is_published">{{translation.version}} | Live</span>
+    <span class="badge badge-warning" *ngIf="translation.none">None</span>
   </div>
   <div class="col">
     <div class="btn-group" role="group">

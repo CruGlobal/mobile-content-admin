@@ -29,10 +29,11 @@
       </div>
     </div>
   </strong>
-  <div *ngFor="let translation of resource['latest-drafts-translations']">
-    <admin-translation [translation]="translation" [resourceComponent]="this" *ngIf="!translation.language._placeHolder"></admin-translation>
+  <div *ngFor="let language of resourcesComponent.languages">
+    <admin-translation [language]="language" [resourceComponent]="this"></admin-translation>
+<!--    TODO
     <ngb-alert type="warning" [dismissible]="false" *ngIf="translation.language._placeHolder">
       Loading...
-    </ngb-alert>
+    </ngb-alert>-->
   </div>
 </div>

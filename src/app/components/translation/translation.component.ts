@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Translation} from '../../models/translation';
 import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
@@ -9,20 +9,27 @@ import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
 import {CreatePageComponent} from '../create-page/create-page.component';
 import {ResourceComponent} from '../resource/resource.component';
+import {Language} from '../../models/language';
 
 @Component({
   selector: 'admin-translation',
   templateUrl: './translation.component.html',
 })
-export class TranslationComponent {
-  @Input() translation: Translation;
+export class TranslationComponent implements OnInit {
+  @Input() language: Language;
   @Input() resourceComponent: ResourceComponent;
+
+  translation: Translation;
 
   private publishing = false;
   private saving = false;
   private errorMessage: string;
 
   constructor(private draftService: DraftService, private modalService: NgbModal) {}
+
+  ngOnInit(): void {
+    this.translation = this.getLatestTranslation(this.language);
+  }
 
   getPages(): AbstractPage[] {
     return this.translation.resource.pages.map(page => {
@@ -87,6 +94,18 @@ export class TranslationComponent {
     const modal = this.modalService.open(CustomPageComponent);
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
+  }
+
+  private getLatestTranslation(language: Language): Translation {
+    let latest = this.resourceComponent.resource['latest-drafts-translations'].find(t => t.language.id === language.id);
+    if (!latest) {
+      latest = new Translation();
+      latest.language = language;
+      latest.resource = this.resourceComponent.resource;
+      latest.none = true;
+    }
+
+    return latest;
   }
 
   private loadAllResources() {
