@@ -8,7 +8,7 @@ import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
 import {CreatePageComponent} from '../create-page/create-page.component';
-import {ResourcesComponent} from '../resources/resources.component';
+import {ResourceComponent} from '../resource/resource.component';
 
 @Component({
   selector: 'admin-translation',
@@ -16,7 +16,7 @@ import {ResourcesComponent} from '../resources/resources.component';
 })
 export class TranslationComponent {
   @Input() translation: Translation;
-  @Input() resourcesComponent: ResourcesComponent;
+  @Input() resourceComponent: ResourceComponent;
 
   private publishing = false;
   private saving = false;
@@ -54,7 +54,7 @@ export class TranslationComponent {
     t.is_published = true;
 
     this.draftService.updateDraft(t)
-      .then(() => this.resourcesComponent.loadResources())
+      .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this))
       .then(() => this.publishing = false);
   }
@@ -63,7 +63,7 @@ export class TranslationComponent {
     const modal = this.modalService.open(CreatePageComponent);
     modal.componentInstance.page.resource = this.translation.resource;
     modal.result
-      .then(() => this.resourcesComponent.loadResources())
+      .then(() => this.loadAllResources())
       .catch(console.log);
   }
 
@@ -72,7 +72,7 @@ export class TranslationComponent {
     this.errorMessage = null;
 
     this.draftService.createDraft(this.translation)
-      .then(() => this.resourcesComponent.loadResources())
+      .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this))
       .then(() => this.saving = false);
   }
@@ -87,6 +87,10 @@ export class TranslationComponent {
     const modal = this.modalService.open(CustomPageComponent);
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
+  }
+
+  private loadAllResources() {
+    this.resourceComponent.resourcesComponent.loadResources();
   }
 
   private handleError(message: string): void {

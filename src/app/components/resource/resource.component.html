@@ -1,0 +1,38 @@
+<div>
+  <h4>
+    {{resource.name}}
+    <button (click)="openUpdateModal(resource)" class="btn btn-warning">
+      <i class="fa fa-pencil"></i> Edit
+    </button>
+    <button (click)="openGenerateModal(resource)" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> Generate multiple drafts
+    </button>
+  </h4>
+</div>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{errorMessage}}
+</ngb-alert>
+<div class="container">
+  <strong>
+    <div class="row">
+      <div class="col">
+        Language
+      </div>
+      <div class="col">
+        Code
+      </div>
+      <div class="col">
+        Latest Version & Status
+      </div>
+      <div class="col">
+        Actions
+      </div>
+    </div>
+  </strong>
+  <div *ngFor="let translation of resource['latest-drafts-translations']">
+    <admin-translation [translation]="translation" [resourceComponent]="this" *ngIf="!translation.language._placeHolder"></admin-translation>
+    <ngb-alert type="warning" [dismissible]="false" *ngIf="translation.language._placeHolder">
+      Loading...
+    </ngb-alert>
+  </div>
+</div>
