@@ -5,7 +5,6 @@ import {UpdateResourceComponent} from '../edit-resource/update-resource/update-r
 import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multiple-draft-generator.component';
 import {LanguageService} from '../../service/language.service';
 import {ResourcesComponent} from '../resources/resources.component';
-import {Translation} from '../../models/translation';
 
 @Component({
   selector: 'admin-resource',
