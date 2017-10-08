@@ -15,24 +15,25 @@ export class ResourcesComponent implements OnInit {
   languages: Language[];
 
   private errorMessage: string;
-  private loading = false;
+  private loadingResources = false;
+  private loadingLanguages = false;
 
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.loadResources();
-    this.loadLanguages(); // TODO wait for this to finish also before removing loading
+    this.loadLanguages();
   }
 
   loadResources(): void {
-    this.loading = true;
+    this.loadingResources = true;
 
     this.resourceService.getResources('translations,pages')
       .then(resources => {
         this.resources = resources;
       })
       .catch(this.handleError.bind(this))
-      .then(() => this.loading = false);
+      .then(() => this.loadingResources = false);
   }
 
   openCreateModal(): void {
@@ -41,9 +42,12 @@ export class ResourcesComponent implements OnInit {
   }
 
   private loadLanguages(): void {
+    this.loadingLanguages = true;
+
     this.languageService.getLanguages()
       .then(languages => this.languages = languages)
-      .catch(this.handleError.bind(this));
+      .catch(this.handleError.bind(this))
+      .then(() => this.loadingLanguages = false);
   }
 
   private handleError(message): void {

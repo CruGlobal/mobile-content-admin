@@ -27,12 +27,14 @@
     <button (click)="openCreateModal()" class="btn btn-secondary"><i class="fa fa-plus"></i> Add new Resource</button>
   </div>
 </div>
-<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loadingResources || loadingLanguages">
   Loading...
 </ngb-alert>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
   {{errorMessage}}
 </ngb-alert>
-<div *ngFor="let resource of resources">
-  <admin-resource [resource]="resource" [resourcesComponent]="this"></admin-resource>
+<div *ngIf="!loadingLanguages">
+  <div *ngFor="let resource of resources">
+    <admin-resource [resource]="resource" [resourcesComponent]="this"></admin-resource>
+  </div>
 </div>
