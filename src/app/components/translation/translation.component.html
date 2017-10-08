@@ -12,17 +12,17 @@
   </div>
   <div class="col">
     <div class="btn-group" role="group">
-      <button (click)="showPages()" *ngIf="!translation.is_published && !translation.show" type="button" class="btn btn-warning">
+      <button (click)="showPages()" *ngIf="!translation.is_published && !translation.show && !translation.none" type="button" class="btn btn-warning">
         <i class="fa fa-chevron-down"></i> Show pages
       </button>
-      <button (click)="hidePages()" *ngIf="!translation.is_published && translation.show" type="button" class="btn btn-warning">
+      <button (click)="hidePages()" *ngIf="!translation.is_published && translation.show && !translation.none" type="button" class="btn btn-warning">
         <i class="fa fa-chevron-up"></i> Hide pages
       </button>
-      <button *ngIf="!translation.is_published" type="button" (click)="publishDraft()" class="btn btn-success">
+      <button *ngIf="!translation.is_published && !translation.none" type="button" (click)="publishDraft()" class="btn btn-success">
         <i class="fa fa-cloud-upload"></i> Publish
       </button>
     </div>
-    <button *ngIf="translation.is_published" (click)="createDraft()" class="btn btn-secondary">
+    <button *ngIf="translation.is_published || translation.none" (click)="createDraft()" class="btn btn-secondary">
       <i class="fa fa-plus"></i> New Draft
     </button>
   </div>
