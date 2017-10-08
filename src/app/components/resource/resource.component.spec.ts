@@ -49,6 +49,8 @@ describe('ResourceComponent', () => {
     fixture = TestBed.createComponent(ResourceComponent);
     comp = fixture.componentInstance;
     comp.resource = resource;
+
+    comp.resourcesComponent = new ResourcesComponent(null, null, null);
   });
 
   describe('loading languages', () => {
@@ -59,7 +61,7 @@ describe('ResourceComponent', () => {
       resource['latest-drafts-translations'] = [ buildTranslation(languageIdOne), buildTranslation(languageIdTwo) ];
     });
 
-    it('should be done latest drafts and translations', (done) => {
+    it('should be done with latest drafts and translations', (done) => {
       comp.ngOnInit();
 
       setTimeout(() => {

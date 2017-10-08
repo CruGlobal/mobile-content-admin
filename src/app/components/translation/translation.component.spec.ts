@@ -11,12 +11,18 @@ import {By} from '@angular/platform-browser';
 import {Resource} from '../../models/resource';
 import {Page} from '../../models/page';
 import {CustomPage} from '../../models/custom-page';
+import {ResourceComponent} from '../resource/resource.component';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
   let fixture: ComponentFixture<TranslationComponent>;
 
   let modalServiceStub;
+
+  let resourceComponent: ResourceComponent;
+  let language: Language;
+
+  let translation: Translation;
 
   const buildPage = (id: number): Page => {
     const page = new Page();
@@ -47,33 +53,37 @@ describe('TranslationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslationComponent);
     comp = fixture.componentInstance;
+
+    resourceComponent = new ResourceComponent(null, null);
+    comp.resourceComponent = resourceComponent;
+
+    const page1 = buildPage(1);
+    const page2 = buildPage(2);
+
+    const r = new Resource();
+    r.pages = [ page1, page2 ];
+    comp.resourceComponent.resource = r;
+
+    const cp = new CustomPage();
+    cp['_type'] = 'custom-page';
+    cp.page = page2;
+
+    language = new Language();
+    language['custom-pages'] = [ cp ];
+    comp.language = language;
+
+    translation = new Translation();
+    r.translations = [translation];
+    translation.language = language;
+    translation.resource = r;
+    translation.is_published = false;
+    r['latest-drafts-translations'] = [ translation ];
+
+    fixture.detectChanges();
   });
 
   describe('opening Page/CustomPage editors', () => {
     beforeEach(() => {
-      const page1 = buildPage(1);
-      const page2 = buildPage(2);
-
-      const r = new Resource();
-      r.pages = [ page1, page2 ];
-
-      const cp = new CustomPage();
-      cp['_type'] = 'custom-page';
-      cp.page = page2;
-
-      const l = new Language();
-      l['custom-pages'] = [ cp ];
-
-      const t = new Translation();
-      r.translations = [t];
-      t.language = l;
-      t.resource = r;
-      t.is_published = false;
-
-      comp.translation = t;
-
-      fixture.detectChanges();
-
       const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
       showPagesButton.nativeElement.click();
 
@@ -100,15 +110,8 @@ describe('TranslationComponent', () => {
   });
 
   describe('status badge', () => {
-    const t = new Translation();
-
-    beforeEach(() => {
-      t.language = new Language();
-      comp.translation = t;
-    });
-
     it(`should say 'Live' for published translations`, () => {
-      t.is_published = true;
+      translation.is_published = true;
 
       fixture.detectChanges();
 
@@ -117,7 +120,7 @@ describe('TranslationComponent', () => {
     });
 
     it(`should say 'Draft' for drafts`, () => {
-      t.is_published = false;
+      translation.is_published = false;
 
       fixture.detectChanges();
 
@@ -127,15 +130,8 @@ describe('TranslationComponent', () => {
   });
 
   describe('action button', () => {
-    const t = new Translation();
-
-    beforeEach(() => {
-      t.language = new Language();
-      comp.translation = t;
-    });
-
     it(`should say 'New Draft' for published translations`, () => {
-      t.is_published = true;
+      translation.is_published = true;
 
       fixture.detectChanges();
 
@@ -144,7 +140,7 @@ describe('TranslationComponent', () => {
     });
 
     it(`should say 'Publish' for drafts`, () => {
-      t.is_published = false;
+      translation.is_published = false;
 
       fixture.detectChanges();
 
