@@ -7,8 +7,8 @@ import {AttachmentsComponent} from './components/attachments/attachments.compone
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/resources', pathMatch: 'full' },
-  { path: 'resources', component: ResourcesComponent, canActivate: [AuthGuardService] },
+  { path: '', redirectTo: '/translations', pathMatch: 'full' },
+  { path: 'translations', component: ResourcesComponent, canActivate: [AuthGuardService] },
   { path: 'languages', component: LanguagesComponent, canActivate: [AuthGuardService] },
   { path: 'attachments', component: AttachmentsComponent, canActivate: [AuthGuardService] }
 ];
