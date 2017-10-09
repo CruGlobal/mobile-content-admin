@@ -3,22 +3,24 @@
     <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
       Toggle instructions
     </button>
-    <h5>Instructions</h5>
-    <ul [ngbCollapse]="!showInstructions">
-      <li>
-        <strong>View Attachments</strong>
-        <p>Each resource is listed below.  For each resource, any attachment that is available for use is displayed in its section.</p>
-        <p><strong>ID</strong> identifies the attachment in the API.
-          These values are mainly useful to developers who need to know how the attachment is referenced.</p>
-        <p>The <strong>filename</strong> can be used by content editors to use the attachment in the resource.</p>
-        <p>Simply click <strong>View</strong> to see the attachment.</p>
-      </li>
-      <li><strong>Upload Attachment</strong>
-        <p>New attachments can be uploaded and then used in a resource.  Attachments are scoped to a particular resource, so when uploading
-          a new attachment, you must also choose the resource to associate it with.  To associate an attachment to multiple resources, it currently must
-          be uploaded one time for each resource it needs to be associated with.</p>
-      </li>
-    </ul>
+    <div [ngbCollapse]="!showInstructions">
+      <h5>Instructions</h5>
+      <ul>
+        <li>
+          <strong>View Attachments</strong>
+          <p>Each resource is listed below.  For each resource, any attachment that is available for use is displayed in its section.</p>
+          <p><strong>ID</strong> identifies the attachment in the API.
+            These values are mainly useful to developers who need to know how the attachment is referenced.</p>
+          <p>The <strong>filename</strong> can be used by content editors to use the attachment in the resource.</p>
+          <p>Simply click <strong>View</strong> to see the attachment.</p>
+        </li>
+        <li><strong>Upload Attachment</strong>
+          <p>New attachments can be uploaded and then used in a resource.  Attachments are scoped to a particular resource, so when uploading
+            a new attachment, you must also choose the resource to associate it with.  To associate an attachment to multiple resources, it currently must
+            be uploaded one time for each resource it needs to be associated with.</p>
+        </li>
+      </ul>
+    </div>
   </div>
   <div class="card-body">
     <h5>Upload new attachment</h5>

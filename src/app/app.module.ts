@@ -33,11 +33,13 @@ import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 import {AttachmentService} from './service/attachment.service';
 import {MultipleDraftGeneratorComponent} from './components/multiple-draft-generator/multiple-draft-generator.component';
+import {ResourceComponent} from './components/resource/resource.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ResourcesComponent,
+    ResourceComponent,
     LoginComponent,
     TranslationComponent,
     LanguagesComponent,

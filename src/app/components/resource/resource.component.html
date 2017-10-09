@@ -1,0 +1,35 @@
+<div>
+  <h4>
+    {{resource.name}}
+    <button (click)="openUpdateModal(resource)" class="btn btn-warning">
+      <i class="fa fa-pencil"></i> Edit
+    </button>
+    <button (click)="openGenerateModal(resource)" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> Generate multiple drafts
+    </button>
+  </h4>
+</div>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{errorMessage}}
+</ngb-alert>
+<div class="container">
+  <strong>
+    <div class="row">
+      <div class="col">
+        Language
+      </div>
+      <div class="col">
+        Code
+      </div>
+      <div class="col">
+        Latest Version & Status
+      </div>
+      <div class="col">
+        Actions
+      </div>
+    </div>
+  </strong>
+  <div *ngFor="let language of resourcesComponent.languages">
+    <admin-translation [language]="language" [resourceComponent]="this"></admin-translation>
+  </div>
+</div>
