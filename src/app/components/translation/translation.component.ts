@@ -67,7 +67,7 @@ export class TranslationComponent implements OnInit {
   }
 
   createPage(): void {
-    const modal = this.modalService.open(CreatePageComponent);
+    const modal = this.modalService.open(CreatePageComponent, {size: 'lg'});
     modal.componentInstance.page.resource = this.translation.resource;
     modal.result
       .then(() => this.loadAllResources())
@@ -85,13 +85,13 @@ export class TranslationComponent implements OnInit {
   }
 
   openPage(page: Page): void {
-    const modal = this.modalService.open(PageComponent);
+    const modal = this.modalService.open(PageComponent, {size: 'lg'});
     modal.componentInstance.page = page;
     modal.componentInstance.translation = this.translation;
   }
 
   openCustomPage(customPage: CustomPage): void {
-    const modal = this.modalService.open(CustomPageComponent);
+    const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
   }
