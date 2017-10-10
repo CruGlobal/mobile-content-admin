@@ -12,6 +12,7 @@ import {Resource} from '../../models/resource';
 import {Page} from '../../models/page';
 import {CustomPage} from '../../models/custom-page';
 import {ResourceComponent} from '../resource/resource.component';
+import anything = jasmine.anything;
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
@@ -104,29 +105,43 @@ describe('TranslationComponent', () => {
     });
 
     describe('opening Page/CustomPage editors', () => {
+      let pages: DebugElement[];
+
       beforeEach(() => {
         const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
         showPagesButton.nativeElement.click();
 
         fixture.detectChanges();
+
+        pages = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
       });
 
-      it('clicking Page should open PageComponent', () => {
-        const pages: DebugElement[] = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
-        const page = pages[0];
+      describe('clicking Page', () => {
+        beforeEach(() => {
+          pages[0].nativeElement.click();
+        });
 
-        page.nativeElement.click();
+        it('should open PageComponent', () => {
+          expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent, anything());
+        });
 
-        expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent);
+        it('should open a large window', () => {
+          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+        });
       });
 
-      it('clicking CustomPage should open CustomPageComponent', () => {
-        const pages: DebugElement[] = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
-        const customPage = pages[1];
+      describe('clicking CustomPage', () => {
+        beforeEach(() => {
+          pages[1].nativeElement.click();
+        });
 
-        customPage.nativeElement.click();
+        it('clicking CustomPage should open CustomPageComponent', () => {
+          expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent, anything());
+        });
 
-        expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent);
+        it('should open a large window', () => {
+          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+        });
       });
     });
 
