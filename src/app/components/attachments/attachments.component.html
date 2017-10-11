@@ -29,7 +29,7 @@
     <select [(ngModel)]="selectedResource">
       <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.name }}</option>
     </select>
-    Add to zip file?
+    Include in package?
     <select [(ngModel)]="is_zipped">
       <option value="true">Yes</option>
       <option value="false">No</option>
@@ -65,6 +65,9 @@
             Filename
           </div>
           <div class="col">
+            Included in package?
+          </div>
+          <div class="col">
             Actions
           </div>
         </div>
@@ -76,6 +79,10 @@
           </div>
           <div class="col">
             {{attachment['file-file-name']}}
+          </div>
+          <div class="col">
+            <span *ngIf="attachment['is-zipped']">Yes</span>
+            <span *ngIf="!attachment['is-zipped']">No</span>
           </div>
           <div class="col">
             <button (click)="showAttachment(attachment)" class="btn btn-secondary">
