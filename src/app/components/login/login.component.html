@@ -3,7 +3,7 @@
     <h3 class="card-title">Authorization</h3>
   </div>
   <div class="card-body">
-    <input placeholder="access code" [(ngModel)]="accessCode"/>
+    <input placeholder="access code" type="password" [(ngModel)]="accessCode"/>
     <button (click)="createAuthToken()" class="btn btn-primary">Submit</button>
     <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
       Saving...
