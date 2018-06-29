@@ -56,13 +56,13 @@
   Loading...
 </ngb-alert>
 <div *ngFor="let resource of resources" class="card mb-3">
-  <div class="card-header">
-    <h4>{{resource.name}}</h4>
+  <div class="card-header" (click)="resource.showAttachments = !resource.showAttachments">
+    <span class="h4" style="cursor:pointer">{{resource.name}}</span>
   </div>
-  <div *ngIf="resource.attachments.length == 0" class="card-body">
+  <div *ngIf="resource.attachments.length == 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
     No Attachments
   </div>
-  <div *ngIf="resource.attachments.length > 0" class="card-body">
+  <div *ngIf="resource.attachments.length > 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
     <div class="container">
       <strong>
         <div class="row">
