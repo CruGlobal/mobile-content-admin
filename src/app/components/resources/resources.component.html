@@ -1,8 +1,11 @@
 <div class="card mb-3">
   <div class="card-header">
-    <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
-      Toggle instructions
-    </button>
+    <span class="h4">Translations</span>
+    <div class="float-right">
+      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+        Toggle instructions
+      </button>
+    </div>
   </div>
   <div class="card-body">
     <div [ngbCollapse]="!showInstructions">
