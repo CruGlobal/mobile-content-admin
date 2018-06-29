@@ -1,8 +1,13 @@
 <div class="card">
   <div class="card-header">
-    <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
-      Toggle instructions
-    </button>
+    <span class="h4">Attachments</span>
+    <div class="float-right">
+      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+        Toggle instructions
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
     <div [ngbCollapse]="!showInstructions">
       <h5>Instructions</h5>
       <ul>
@@ -20,9 +25,8 @@
             be uploaded one time for each resource it needs to be associated with.</p>
         </li>
       </ul>
+      <hr />
     </div>
-  </div>
-  <div class="card-body">
     <h5>Upload new attachment</h5>
     <input type="file" ng2FileSelect [uploader]="uploader" #uploadElement />
     Resource
