@@ -16,7 +16,8 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 script:
-  - ng test --code-coverage --watch=false
+  # TODO: code coverage is currently disabled due to a code coverage framework crash, someone should fix it
+  - ng test --watch=false # --code-coverage
   - ng lint --type-check
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build -e prod; fi
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build -e staging; fi
