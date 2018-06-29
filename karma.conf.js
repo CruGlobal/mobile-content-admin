@@ -29,8 +29,14 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeNoSandbox'],
     singleRun: false,
+    customLaunchers: {
+      ChromeNoSandbox: {
+        base: 'Chrome',
+        flags: process.env.TRAVIS && ['--no-sandbox']
+      }
+    },
     preprocessors: {
       'src/app/**/*.ts': ['coverage']
     }
