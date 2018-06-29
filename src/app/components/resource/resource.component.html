@@ -1,13 +1,13 @@
 <div class="card mb-3">
   <div class="card-header" (click)="showLanguages = !showLanguages">
-    <span class="h4">
+    <span class="h4" style="cursor:pointer">
       {{resource.name}}
     </span>
     <div class="float-right">
-      <button (click)="openUpdateModal(resource)" class="btn btn-warning">
+      <button (click)="openUpdateModal(resource); $event.stopPropagation()" class="btn btn-warning">
         <i class="fa fa-pencil"></i> Edit
       </button>
-      <button (click)="openGenerateModal(resource)" class="btn btn-secondary">
+      <button (click)="openGenerateModal(resource); $event.stopPropagation()" class="btn btn-secondary">
         <i class="fa fa-plus"></i> Generate multiple drafts
       </button>
     </div>
