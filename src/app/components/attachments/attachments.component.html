@@ -1,6 +1,6 @@
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
-    <span class="h4">Attachments</span>
+    <span class="h3">Attachments</span>
     <div class="float-right">
       <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
         Toggle instructions
@@ -55,10 +55,14 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<h3 class="card-title">Attachments</h3>
-<div *ngFor="let resource of resources">
-  <div *ngIf="resource.attachments.length > 0">
+<div *ngFor="let resource of resources" class="card mb-3">
+  <div class="card-header">
     <h4>{{resource.name}}</h4>
+  </div>
+  <div *ngIf="resource.attachments.length == 0" class="card-body">
+    No Attachments
+  </div>
+  <div *ngIf="resource.attachments.length > 0" class="card-body">
     <div class="container">
       <strong>
         <div class="row">
