@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - '7'
+  - '8'
 
 addons:
   apt:
@@ -15,11 +15,9 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-before_script:
-  - yarn add @angular/cli
-
 script:
-  - ng test --code-coverage --watch=false
+  # TODO: code coverage is currently disabled due to a code coverage framework crash, someone should fix it
+  - ng test --watch=false # --code-coverage
   - ng lint --type-check
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build -e prod; fi
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build -e staging; fi
