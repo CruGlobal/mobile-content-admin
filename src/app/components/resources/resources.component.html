@@ -1,8 +1,13 @@
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
-    <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
-      Toggle instructions
-    </button>
+    <span class="h3">Translations</span>
+    <div class="float-right">
+      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+        Toggle instructions
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
     <div [ngbCollapse]="!showInstructions">
       <h5>Instructions</h5>
       <ul>
@@ -21,9 +26,8 @@
           <p>Click <button class="btn btn-success"><i class="fa fa-cloud-upload"></i> Publish</button> next to the translation draft to be published.</p>
         </li>
       </ul>
+      <hr />
     </div>
-  </div>
-  <div class="card-body">
     <button (click)="openCreateModal()" class="btn btn-secondary"><i class="fa fa-plus"></i> Add new Resource</button>
   </div>
 </div>

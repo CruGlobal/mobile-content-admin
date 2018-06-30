@@ -1,8 +1,13 @@
-<div class="card">
+<div class="card mb-3">
   <div class="card-header">
-    <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
-      Toggle instructions
-    </button>
+    <span class="h3">Attachments</span>
+    <div class="float-right">
+      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+        Toggle instructions
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
     <div [ngbCollapse]="!showInstructions">
       <h5>Instructions</h5>
       <ul>
@@ -20,9 +25,8 @@
             be uploaded one time for each resource it needs to be associated with.</p>
         </li>
       </ul>
+      <hr />
     </div>
-  </div>
-  <div class="card-body">
     <h5>Upload new attachment</h5>
     <input type="file" ng2FileSelect [uploader]="uploader" #uploadElement />
     Resource
@@ -51,10 +55,14 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<h3 class="card-title">Attachments</h3>
-<div *ngFor="let resource of resources">
-  <div *ngIf="resource.attachments.length > 0">
-    <h4>{{resource.name}}</h4>
+<div *ngFor="let resource of resources" class="card mb-3">
+  <div class="card-header" (click)="resource.showAttachments = !resource.showAttachments">
+    <span class="h4" style="cursor:pointer">{{resource.name}}</span>
+  </div>
+  <div *ngIf="resource.attachments.length == 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
+    No Attachments
+  </div>
+  <div *ngIf="resource.attachments.length > 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
     <div class="container">
       <strong>
         <div class="row">
