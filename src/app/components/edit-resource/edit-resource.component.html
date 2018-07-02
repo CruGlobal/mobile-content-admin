@@ -1,5 +1,4 @@
-<div class="container">
-
+<div class="modal-body">
   <div class="row">
     <div class="col">
       <label>Name</label>
@@ -67,29 +66,24 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="saving">
     <div class="col">
-      <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+      <ngb-alert type="info" [dismissible]="false">
         Saving...
       </ngb-alert>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="errorMessage">
     <div class="col">
-      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      <ngb-alert type="danger" [dismissible]="false">
         {{errorMessage}}
       </ngb-alert>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <button (click)="closeEditModal()" class="btn btn-danger">Cancel</button>
-    </div>
-    <div class="col">
-      <button (click)="saveResource()" class="btn btn-success">Save</button>
-    </div>
-  </div>
-
+<div class="modal-footer">
+  <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+  <button (click)="saveResource()" class="btn btn-success">Save</button>
 </div>
