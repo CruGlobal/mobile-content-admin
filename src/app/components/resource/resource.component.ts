@@ -1,10 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Resource} from '../../models/resource';
+import {Page} from '../../models/page';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {UpdateResourceComponent} from '../edit-resource/update-resource/update-resource.component';
 import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multiple-draft-generator.component';
 import {LanguageService} from '../../service/language.service';
 import {ResourcesComponent} from '../resources/resources.component';
+import {PageComponent} from '../page/page.component';
 
 @Component({
   selector: 'admin-resource',
@@ -20,6 +22,15 @@ export class ResourceComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTranslations();
+  }
+
+  sortedPages(): Page[] {
+    return this.resource.pages.sort(((a, b) => Page.compare(a, b)));
+  }
+
+  openPage(page: Page): void {
+    const modal = this.modalService.open(PageComponent, {size: 'lg'});
+    modal.componentInstance.page = page;
   }
 
   openUpdateModal(resource: Resource): void {

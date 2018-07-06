@@ -59,6 +59,7 @@ describe('ResourceComponent', () => {
 
     beforeEach(() => {
       resource['latest-drafts-translations'] = [ buildTranslation(languageIdOne), buildTranslation(languageIdTwo) ];
+      resource['pages'] = [];
     });
 
     it('should be done with latest drafts and translations', (done) => {
