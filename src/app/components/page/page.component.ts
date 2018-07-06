@@ -13,7 +13,7 @@ import {DraftService} from '../../service/draft.service';
 })
 export class PageComponent implements OnInit {
   @Input() page: Page;
-  @Input() translation: Translation;
+  @Input() translation?: Translation;
   @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   loading = true;
@@ -25,12 +25,16 @@ export class PageComponent implements OnInit {
               private activeModal: NgbActiveModal) {}
 
   ngOnInit(): void {
-    this.draftService.getPage(this.page, this.translation)
-      .then((response) => {
-        this.page.structure = response;
-      })
-      .catch((message) => this.loadingError = message)
-      .then(() => this.loading = false);
+    if (this.translation !== undefined) {
+      this.draftService.getPage(this.page, this.translation)
+        .then((response) => {
+          this.page.structure = response;
+        })
+        .catch((message) => this.loadingError = message)
+        .then(() => this.loading = false);
+    } else {
+      this.loading = false;
+    }
   }
 
   updatePage(): void {

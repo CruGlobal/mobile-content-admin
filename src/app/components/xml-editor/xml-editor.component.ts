@@ -14,7 +14,7 @@ export class XmlEditorComponent {
 
   @Input() type: string;
   @Input() filename: string;
-  @Input() language: Language;
+  @Input() language?: Language;
   @Input() resource: Resource;
 
   @Input() structure: string;
