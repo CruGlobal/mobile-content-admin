@@ -50,46 +50,39 @@
   </div>
 </div>
 
-<div class="row" *ngIf="translation.show">
+<div class="row mt-3" *ngIf="translation.show">
   <div class="col">
-    <div class="card">
-      <div class="card-header">
-        Choose page to edit
-      </div>
-      <div class="card-body">
-        <table class="table border border-dark">
-          <thead class="thead-dark">
-            <tr>
-              <th colspan="2">{{translation.language.name}} Page Customizations</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
-              <td>{{getBasePage(page).filename}}</td>
-              <td>
-                <div class="container">
-                  <div class="float-right">
-                    <ng-container *ngSwitchCase="'page'">
-                      <button (click)="openPage(page)" class="btn btn-primary">
-                        <i class="fa fa-pencil"></i> Create
-                      </button>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'custom-page'">
-                      <button (click)="openCustomPage(page)" class="btn btn-outline-dark">
-                        <i class="fa fa-pencil"></i> Edit
-                      </button>
-                      <button (click)="deleteCustomPage(page)" class="btn btn-danger">
-                        <i class="fa fa-times"></i> Remove
-                      </button>
-                    </ng-container>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table class="table border border-dark">
+      <thead class="thead-dark">
+        <tr>
+          <th colspan="2">{{translation.language.name}} Page Customizations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let page of getPages()" [ngSwitch]="page['_type']">
+          <td>{{getBasePage(page).filename}}</td>
+          <td>
+            <div class="container">
+              <div class="float-right">
+                <ng-container *ngSwitchCase="'page'">
+                  <button (click)="openPage(page)" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> Create
+                  </button>
+                </ng-container>
+                <ng-container *ngSwitchCase="'custom-page'">
+                  <button (click)="openCustomPage(page)" class="btn btn-outline-dark">
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                  <button (click)="deleteCustomPage(page)" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Remove
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 <hr>
