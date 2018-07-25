@@ -32,13 +32,14 @@ export class TranslationComponent implements OnInit {
   }
 
   getPages(): AbstractPage[] {
-    return this.translation.resource.pages.map(page => {
+    return this.resourceComponent.sortedPages().map(page => {
       const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
 
       if (!customPage) {
         return page;
       } else {
         customPage.page = page;
+        customPage.filename = page.filename;
         return customPage;
       }
     });
