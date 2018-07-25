@@ -10,8 +10,7 @@
                   [type]="'Page'"
                   [language]="translation?.language"
                   [resource]="page.resource"
+                  (onSave)="updatePage()"
                   (onCancel)="cancel()"
-                  (onSaveForOne)="createCustomPage()"
-                  (onSaveForAll)="updatePage()"
                   class="d-block modal-body"
 ></admin-xml-editor>

@@ -33,12 +33,6 @@ export class CustomPageComponent implements OnInit {
       .then(() => this.loading = false);
   }
 
-  updatePage(): void {
-    this.pageService.update(this.customPage.page.id, this.customPage.structure)
-      .then(() => this.activeModal.close())
-      .catch(this.handleError.bind(this));
-  }
-
   updateCustomPage(): void {
     this.customPageService.upsert(this.customPage.language.id, this.customPage.page.id, this.customPage.structure)
       .then(() => this.activeModal.close())

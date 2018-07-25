@@ -8,6 +8,7 @@ import {Resource} from '../../models/resource';
 })
 export class XmlEditorComponent {
 
+  readonly saveMessage = 'Save';
   readonly saveForOneMessage = 'Save (this language only)';
   readonly saveForAllMessage = 'Save for all languages';
   readonly baseLanguageCode = 'en'; // TODO would be nice to store a field called base_language instead of hardcoding
@@ -21,6 +22,7 @@ export class XmlEditorComponent {
   @Output() structureChange = new EventEmitter();
 
   @Output() onCancel = new EventEmitter();
+  @Output() onSave = new EventEmitter();
   @Output() onSaveForOne = new EventEmitter();
   @Output() onSaveForAll = new EventEmitter();
 
@@ -40,14 +42,9 @@ export class XmlEditorComponent {
     return `Are you sure you want to save this as the structure for ${this.filename} for all languages?`;
   }
 
-  protected saveForOne(): void {
+  protected save(): void {
     this.saving = true;
-    this.onSaveForOne.emit();
-  }
-
-  protected saveForAll(): void {
-    this.saving = true;
-    this.onSaveForAll.emit();
+    this.onSave.emit();
   }
 
   protected cancel(): void {

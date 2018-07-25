@@ -59,7 +59,7 @@ describe('PageComponent', () => {
       fixture.detectChanges();
       xmlEditor = fixture.debugElement.query(de => de.name === 'admin-xml-editor');
 
-      xmlEditor.triggerEventHandler('onSaveForOne', 'emit');
+      xmlEditor.triggerEventHandler('onSave', 'emit');
 
       expect(customPageServiceStub.upsert).toHaveBeenCalled();
       done();
