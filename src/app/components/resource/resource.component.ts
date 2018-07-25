@@ -7,6 +7,7 @@ import {MultipleDraftGeneratorComponent} from '../multiple-draft-generator/multi
 import {LanguageService} from '../../service/language.service';
 import {ResourcesComponent} from '../resources/resources.component';
 import {PageComponent} from '../page/page.component';
+import {CreatePageComponent} from '../create-page/create-page.component';
 
 @Component({
   selector: 'admin-resource',
@@ -26,6 +27,14 @@ export class ResourceComponent implements OnInit {
 
   sortedPages(): Page[] {
     return this.resource.pages.sort(((a, b) => Page.compare(a, b)));
+  }
+
+  createPage(): void {
+    const modal = this.modalService.open(CreatePageComponent, {size: 'lg'});
+    modal.componentInstance.page.resource = this.resource;
+    modal.result
+      .then(() => this.resourcesComponent.loadResources())
+      .catch(this.handleError.bind(this));
   }
 
   openPage(page: Page): void {

@@ -20,6 +20,9 @@
           <th class="align-middle">Default Pages</th>
           <th>
             <div class="float-right">
+              <button class="btn btn-secondary" (click)="createPage(); $event.stopPropagation()">
+                <i class="fa fa-file"></i> Add new page
+              </button>
               <button (click)="true" class="btn btn-primary">
                 <i class="fa fa-copy"></i> Show/Hide
               </button>

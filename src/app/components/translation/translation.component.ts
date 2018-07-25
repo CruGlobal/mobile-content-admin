@@ -7,7 +7,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
-import {CreatePageComponent} from '../create-page/create-page.component';
 import {ResourceComponent} from '../resource/resource.component';
 import {Language} from '../../models/language';
 import {CustomPageService} from '../../service/custom-page.service';
@@ -72,14 +71,6 @@ export class TranslationComponent implements OnInit {
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this))
       .then(() => this.publishing = false);
-  }
-
-  createPage(): void {
-    const modal = this.modalService.open(CreatePageComponent, {size: 'lg'});
-    modal.componentInstance.page.resource = this.translation.resource;
-    modal.result
-      .then(() => this.loadAllResources())
-      .catch(console.log);
   }
 
   createDraft(): void {
