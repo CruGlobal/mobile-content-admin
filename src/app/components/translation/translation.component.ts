@@ -83,10 +83,13 @@ export class TranslationComponent implements OnInit {
       .then(() => this.saving = false);
   }
 
-  openPage(page: Page): void {
+  createCustomPage(page: Page): void {
     const modal = this.modalService.open(PageComponent, {size: 'lg'});
     modal.componentInstance.page = page;
     modal.componentInstance.translation = this.translation;
+    modal.result
+      .then(this.loadAllResources.bind(this))
+      .catch(this.handleError.bind(this));
   }
 
   openCustomPage(customPage: CustomPage): void {
