@@ -61,7 +61,7 @@
         <table class="table border border-dark">
           <thead class="thead-dark">
             <tr>
-              <th colspan="2">{{translation.language.name}} Custom Pages</th>
+              <th colspan="2">{{translation.language.name}} Page Customizations</th>
             </tr>
           </thead>
           <tbody>
@@ -78,6 +78,9 @@
                     <ng-container *ngSwitchCase="'custom-page'">
                       <button (click)="openCustomPage(page)" class="btn btn-outline-dark">
                         <i class="fa fa-pencil"></i> Edit
+                      </button>
+                      <button (click)="deleteCustomPage(page)" class="btn btn-danger">
+                        <i class="fa fa-times"></i> Remove
                       </button>
                     </ng-container>
                   </div>

@@ -10,6 +10,7 @@ import {Page} from '../../models/page';
 import {CreatePageComponent} from '../create-page/create-page.component';
 import {ResourceComponent} from '../resource/resource.component';
 import {Language} from '../../models/language';
+import {CustomPageService} from '../../service/custom-page.service';
 
 @Component({
   selector: 'admin-translation',
@@ -25,7 +26,7 @@ export class TranslationComponent implements OnInit {
   private saving = false;
   private errorMessage: string;
 
-  constructor(private draftService: DraftService, private modalService: NgbModal) {}
+  constructor(private customPageService: CustomPageService, private draftService: DraftService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.translation = this.getLatestTranslation(this.language);
@@ -101,6 +102,12 @@ export class TranslationComponent implements OnInit {
     const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
+  }
+
+  deleteCustomPage(customPage: CustomPage): void {
+    this.customPageService.delete(customPage.id)
+      .then(() => this.loadAllResources())
+      .catch(this.handleError.bind(this));
   }
 
   private getLatestTranslation(language: Language): Translation {

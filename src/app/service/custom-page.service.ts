@@ -31,4 +31,10 @@ export class CustomPageService extends AbstractService {
       .then(response => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
+
+  delete(id: number): Promise<void> {
+    return this.http.delete(`${this.customPagesUrl}/${id}`, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .catch(this.handleError);
+  }
 }
