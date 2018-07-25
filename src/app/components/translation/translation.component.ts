@@ -39,10 +39,16 @@ export class TranslationComponent implements OnInit {
         return page;
       } else {
         customPage.page = page;
-        customPage.filename = page.filename;
         return customPage;
       }
     });
+  }
+
+  getBasePage(page: AbstractPage): Page {
+    if (page['_type'] === 'custom-page') {
+      return (page as CustomPage).page;
+    }
+    return page as Page;
   }
 
   showPages(): void {
