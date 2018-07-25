@@ -65,15 +65,15 @@
             <div class="container">
               <div class="float-right">
                 <ng-container *ngSwitchCase="'page'">
-                  <button (click)="createCustomPage(page)" class="btn btn-primary">
+                  <button (click)="createCustomPage(page)" class="btn btn-primary" data-action="create">
                     <i class="fa fa-plus"></i> Create
                   </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="'custom-page'">
-                  <button (click)="openCustomPage(page)" class="btn btn-outline-dark">
+                  <button (click)="openCustomPage(page)" class="btn btn-outline-dark" data-action="edit">
                     <i class="fa fa-pencil"></i> Edit
                   </button>
-                  <button (click)="deleteCustomPage(page)" class="btn btn-danger">
+                  <button (click)="deleteCustomPage(page)" class="btn btn-danger" data-action="delete">
                     <i class="fa fa-times"></i> Remove
                   </button>
                 </ng-container>

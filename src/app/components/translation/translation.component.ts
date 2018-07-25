@@ -84,8 +84,13 @@ export class TranslationComponent implements OnInit {
   }
 
   createCustomPage(page: Page): void {
-    const modal = this.modalService.open(PageComponent, {size: 'lg'});
-    modal.componentInstance.page = page;
+    const customPage = new CustomPage();
+    customPage.page = page;
+    customPage.language = this.translation.language;
+    customPage.structure = page.structure;
+
+    const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
+    modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
     modal.result
       .then(this.loadAllResources.bind(this))

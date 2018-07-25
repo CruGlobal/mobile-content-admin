@@ -13,11 +13,13 @@ import {Page} from '../../models/page';
 import {CustomPage} from '../../models/custom-page';
 import {ResourceComponent} from '../resource/resource.component';
 import anything = jasmine.anything;
+import {CustomPageService} from '../../service/custom-page.service';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
   let fixture: ComponentFixture<TranslationComponent>;
 
+  let customPageServiceStub;
   let modalServiceStub;
 
   let resourceComponent: ResourceComponent;
@@ -31,12 +33,18 @@ describe('TranslationComponent', () => {
   };
 
   beforeEach(async(() => {
+    customPageServiceStub = {
+      delete() {}
+    };
+
     modalServiceStub = {
       open() {}
     };
 
+    spyOn(customPageServiceStub, 'delete');
     spyOn(modalServiceStub, 'open').and.returnValue({ componentInstance: {} });
 
+    customPageServiceStub.delete();
     modalServiceStub.open();
 
     TestBed.configureTestingModule({
@@ -44,6 +52,7 @@ describe('TranslationComponent', () => {
       imports: [ NgbModule.forRoot() ],
       providers: [
         {provide: DraftService},
+        {provide: CustomPageService, useValue: customPageServiceStub},
         {provide: NgbModal, useValue: modalServiceStub}
       ]
     }).compileComponents();
@@ -104,7 +113,7 @@ describe('TranslationComponent', () => {
       fixture.detectChanges();
     });
 
-    describe('opening Page/CustomPage editors', () => {
+    describe('editing Translation page', () => {
       let pages: DebugElement[];
 
       beforeEach(() => {
@@ -113,34 +122,79 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        pages = fixture.debugElement.queryAll(By.css('.btn.btn-outline-dark.btn-block'));
+        pages = fixture.debugElement.queryAll(By.css('tbody tr'));
       });
 
-      describe('clicking Page', () => {
+      describe('with no CustomPage', () => {
+        let createButtons: DebugElement[];
+        let editButtons: DebugElement[];
+        let deleteButtons: DebugElement[];
+
         beforeEach(() => {
-          pages[0].nativeElement.click();
+          createButtons = pages[0].queryAll(By.css('button[data-action="create"]'));
+          editButtons = pages[0].queryAll(By.css('button[data-action="edit"]'));
+          deleteButtons = pages[0].queryAll(By.css('button[data-action="delete"]'));
         });
 
-        it('should open PageComponent', () => {
-          expect(modalServiceStub.open).toHaveBeenCalledWith(PageComponent, anything());
+        it('should have one create button', () => {
+          expect(createButtons.length).toEqual(1);
         });
 
-        it('should open a large window', () => {
-          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
-        });
-      });
-
-      describe('clicking CustomPage', () => {
-        beforeEach(() => {
-          pages[1].nativeElement.click();
-        });
-
-        it('clicking CustomPage should open CustomPageComponent', () => {
+        it('create button should open a CustomPageComponent', () => {
+          createButtons[0].nativeElement.click();
           expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent, anything());
         });
 
-        it('should open a large window', () => {
+        it('create button should open a large window', () => {
+          createButtons[0].nativeElement.click();
           expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+        });
+
+        it('shouldnt have any edit buttons', () => {
+          expect(editButtons.length).toEqual(0);
+        });
+
+        it('shouldnt have a delete button', () => {
+          expect(deleteButtons.length).toEqual(0);
+        });
+      });
+
+      describe('with a CustomPage', () => {
+        let createButtons: DebugElement[];
+        let editButtons: DebugElement[];
+        let deleteButtons: DebugElement[];
+
+        beforeEach(() => {
+          createButtons = pages[1].queryAll(By.css('button[data-action="create"]'));
+          editButtons = pages[1].queryAll(By.css('button[data-action="edit"]'));
+          deleteButtons = pages[1].queryAll(By.css('button[data-action="delete"]'));
+        });
+
+        it('shouldnt have a create button', () => {
+          expect(createButtons.length).toEqual(0);
+        });
+
+        it('should have one edit button', () => {
+          expect(editButtons.length).toEqual(1);
+        });
+
+        it('edit button should open a CustomPageComponent', () => {
+          editButtons[0].nativeElement.click();
+          expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent, anything());
+        });
+
+        it('edit button should open a large window', () => {
+          editButtons[0].nativeElement.click();
+          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+        });
+
+        it('should have one delete button', () => {
+          expect(deleteButtons.length).toEqual(1);
+        });
+
+        it('delete button should delete the custom page', () => {
+          deleteButtons[0].nativeElement.click();
+          expect(customPageServiceStub.delete).toHaveBeenCalled();
         });
       });
     });
