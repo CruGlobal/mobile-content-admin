@@ -52,7 +52,7 @@ describe('CustomPageComponent', () => {
     comp.customPage.page.resource = new Resource();
   });
 
-  it('updates existing CustomPage when XmlEditorComponent saves for one', (done) => {
+  it('updates existing CustomPage when XmlEditorComponent saves', (done) => {
     comp.ngOnInit();
 
     setTimeout(() => {
@@ -65,19 +65,4 @@ describe('CustomPageComponent', () => {
       done();
     });
   });
-
-  it('updates Page when XmlEditorComponent saves for all', (done) => {
-    comp.ngOnInit();
-
-    setTimeout(() => {
-      fixture.detectChanges();
-      xmlEditor = fixture.debugElement.query(de => de.name === 'admin-xml-editor');
-
-      xmlEditor.triggerEventHandler('onSaveForAll', 'emit');
-
-      expect(pageServiceStub.update).toHaveBeenCalled();
-      done();
-    });
-  });
-
 });
