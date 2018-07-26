@@ -41,7 +41,7 @@ describe('TranslationComponent', () => {
       open() {}
     };
 
-    spyOn(customPageServiceStub, 'delete');
+    spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
     spyOn(modalServiceStub, 'open').and.returnValue({ componentInstance: {} });
 
     customPageServiceStub.delete();
