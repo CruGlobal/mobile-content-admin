@@ -32,6 +32,18 @@ describe('TranslationComponent', () => {
     return page;
   };
 
+  const getPageCreateButtons = (page: DebugElement): DebugElement[] => {
+    return page.queryAll(By.css('button[data-action="create"]'));
+  };
+
+  const getPageEditButtons = (page: DebugElement): DebugElement[] => {
+    return page.queryAll(By.css('button[data-action="edit"]'));
+  };
+
+  const getPageDeleteButtons = (page: DebugElement): DebugElement[] => {
+    return page.queryAll(By.css('button[data-action="delete"]'));
+  };
+
   beforeEach(async(() => {
     customPageServiceStub = {
       delete() {}
@@ -131,9 +143,9 @@ describe('TranslationComponent', () => {
         let deleteButtons: DebugElement[];
 
         beforeEach(() => {
-          createButtons = pages[0].queryAll(By.css('button[data-action="create"]'));
-          editButtons = pages[0].queryAll(By.css('button[data-action="edit"]'));
-          deleteButtons = pages[0].queryAll(By.css('button[data-action="delete"]'));
+          createButtons = getPageCreateButtons(pages[0]);
+          editButtons = getPageEditButtons(pages[0]);
+          deleteButtons = getPageDeleteButtons(pages[0]);
         });
 
         it('should have one create button', () => {
@@ -165,9 +177,9 @@ describe('TranslationComponent', () => {
         let deleteButtons: DebugElement[];
 
         beforeEach(() => {
-          createButtons = pages[1].queryAll(By.css('button[data-action="create"]'));
-          editButtons = pages[1].queryAll(By.css('button[data-action="edit"]'));
-          deleteButtons = pages[1].queryAll(By.css('button[data-action="delete"]'));
+          createButtons = getPageCreateButtons(pages[1]);
+          editButtons = getPageEditButtons(pages[1]);
+          deleteButtons = getPageDeleteButtons(pages[1]);
         });
 
         it('shouldnt have a create button', () => {
