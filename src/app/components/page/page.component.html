@@ -1,14 +1,6 @@
-<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
-  Loading...
-</ngb-alert>
-<ngb-alert type="danger" [dismissible]="false" *ngIf="loadingError">
-  {{loadingError}}
-</ngb-alert>
-<admin-xml-editor *ngIf="!loading && !loadingError"
-                  [(structure)]="page.structure"
+<admin-xml-editor [(structure)]="page.structure"
                   [filename]="page.filename"
                   [type]="'Page'"
-                  [language]="translation?.language"
                   [resource]="page.resource"
                   (onSave)="updatePage()"
                   (onCancel)="cancel()"
