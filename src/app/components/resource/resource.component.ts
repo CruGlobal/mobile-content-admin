@@ -43,7 +43,7 @@ export class ResourceComponent implements OnInit {
   }
 
   openUpdateModal(resource: Resource): void {
-    const modalRef: NgbModalRef = this.modalService.open(UpdateResourceComponent);
+    const modalRef: NgbModalRef = this.modalService.open(UpdateResourceComponent, {size: 'lg'});
     modalRef.componentInstance.resource = resource;
     modalRef.result.then(() => this.resourcesComponent.loadResources(), console.log);
   }
