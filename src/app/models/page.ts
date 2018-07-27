@@ -7,11 +7,6 @@ export class Page extends AbstractPage {
   position: number;
 
   static compare(a: Page, b: Page): number {
-    if (a.position < b.position) {
-      return -1;
-    } else if (a.position > b.position) {
-      return 1;
-    }
-    return 0;
+    return a.position - b.position;
   }
 }
