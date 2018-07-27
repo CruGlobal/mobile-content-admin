@@ -11,20 +11,6 @@ describe('XmlEditorComponent', () => {
   let fixture: ComponentFixture<XmlEditorComponent>;
   const filename = 'test.xml';
 
-  const getSaveForAllButton = (): DebugElement => {
-    return fixture.debugElement.query(de => de.name === 'button' && de.nativeElement.textContent.trim() === comp.saveForAllMessage);
-  };
-
-  const getConfirmSaveForAllAlert = (): DebugElement => {
-    comp.language.code = comp.baseLanguageCode;
-    fixture.detectChanges();
-
-    getSaveForAllButton().nativeElement.click();
-    fixture.detectChanges();
-
-    return fixture.debugElement.query(de => de.nativeElement.textContent.includes(comp.getConfirmationMessage()));
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [XmlEditorComponent, AceEditorDirective],
@@ -38,48 +24,23 @@ describe('XmlEditorComponent', () => {
     comp.filename = filename;
   });
 
-  it(`saves for one language when clicking save for one language only`, () => {
-    comp.language.code = comp.baseLanguageCode;
+  it('saves when clicking save', () => {
     fixture.detectChanges();
-    spyOn(comp.onSaveForOne, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveForOneMessage);
+    spyOn(comp.onSave, 'emit');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveMessage);
 
     element.nativeElement.click();
 
-    expect(comp.onSaveForOne.emit).toHaveBeenCalled();
+    expect(comp.onSave.emit).toHaveBeenCalled();
   });
 
-  it(`opens warning alert when clicking save for all languages`, () => {
-    const confirmAlert: DebugElement = getConfirmSaveForAllAlert();
-
-    expect(confirmAlert.nativeElement).toBeTruthy();
-  });
-
-  it(`saves for all languages when confirming save for all languages`, () => {
-    spyOn(comp.onSaveForAll, 'emit');
-    const confirmButton: DebugElement = getConfirmSaveForAllAlert().query(de => de.nativeElement.textContent.trim() === 'Confirm');
-
-    confirmButton.nativeElement.click();
-
-    expect(comp.onSaveForAll.emit).toHaveBeenCalled();
-  });
-
-  it(`shows save for all button for English`, () => {
-    comp.language.code = comp.baseLanguageCode;
+  it('cancels when clicking cancel', () => {
     fixture.detectChanges();
+    spyOn(comp.onCancel, 'emit');
+    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.cancelMessage);
 
-    const element: DebugElement = getSaveForAllButton();
+    element.nativeElement.click();
 
-    expect(element.nativeElement).toBeTruthy();
+    expect(comp.onCancel.emit).toHaveBeenCalled();
   });
-
-  it(`does not show save for all button for other languages`, () => {
-    comp.language.code = 'fr';
-    fixture.detectChanges();
-
-    const element: DebugElement = getSaveForAllButton();
-
-    expect(element === null).toBeTruthy();
-  });
-
 });

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CustomPage} from '../../models/custom-page';
 import {CustomPageService} from '../../service/custom-page.service';
-import {PageService} from '../../service/page.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
 import {DraftService} from '../../service/draft.service';
@@ -19,8 +18,7 @@ export class CustomPageComponent implements OnInit {
   loading = true;
   loadingError: string;
 
-  constructor(private pageService: PageService,
-              private customPageService: CustomPageService,
+  constructor(private customPageService: CustomPageService,
               private draftService: DraftService,
               private activeModal: NgbActiveModal) {}
 
@@ -31,12 +29,6 @@ export class CustomPageComponent implements OnInit {
       })
       .catch((message) => this.loadingError = message)
       .then(() => this.loading = false);
-  }
-
-  updatePage(): void {
-    this.pageService.update(this.customPage.page.id, this.customPage.structure)
-      .then(() => this.activeModal.close())
-      .catch(this.handleError.bind(this));
   }
 
   updateCustomPage(): void {

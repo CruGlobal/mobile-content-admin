@@ -5,7 +5,7 @@
     </span>
     <div class="float-right">
       <button (click)="openUpdateModal(resource); $event.stopPropagation()" class="btn btn-warning">
-        <i class="fa fa-pencil"></i> Edit
+        <i class="fa fa-pencil"></i> Details
       </button>
       <button (click)="openGenerateModal(resource); $event.stopPropagation()" class="btn btn-secondary">
         <i class="fa fa-plus"></i> Generate multiple drafts
@@ -13,6 +13,37 @@
     </div>
   </div>
   <div class="card-body" [ngbCollapse]="!showLanguages">
+    <!-- Pages UI -->
+    <table class="table border border-dark mb-3">
+      <thead class="thead-dark" (click)="showDefaultPages = !showDefaultPages">
+        <tr>
+          <th class="align-middle">Default Pages</th>
+          <th>
+            <div class="float-right">
+              <button class="btn btn-secondary" (click)="createPage(); $event.stopPropagation()">
+                <i class="fa fa-file"></i> Add new page
+              </button>
+              <button (click)="true" class="btn btn-primary">
+                <i class="fa fa-copy"></i> Show/Hide
+              </button>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody [ngbCollapse]="!showDefaultPages">
+        <tr *ngFor="let page of sortedPages()">
+          <td>{{page.filename}}</td>
+          <td>
+            <div class="container">
+              <button (click)="openPage(page)" class="btn btn-outline-dark float-right">
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
       {{errorMessage}}
     </ngb-alert>

@@ -4,12 +4,11 @@ import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
 import {AbstractPage} from '../../models/abstract-page';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
-import {CreatePageComponent} from '../create-page/create-page.component';
 import {ResourceComponent} from '../resource/resource.component';
 import {Language} from '../../models/language';
+import {CustomPageService} from '../../service/custom-page.service';
 
 @Component({
   selector: 'admin-translation',
@@ -25,14 +24,14 @@ export class TranslationComponent implements OnInit {
   private saving = false;
   private errorMessage: string;
 
-  constructor(private draftService: DraftService, private modalService: NgbModal) {}
+  constructor(private customPageService: CustomPageService, private draftService: DraftService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.translation = this.getLatestTranslation(this.language);
   }
 
   getPages(): AbstractPage[] {
-    return this.translation.resource.pages.map(page => {
+    return this.resourceComponent.sortedPages().map(page => {
       const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
 
       if (!customPage) {
@@ -42,6 +41,13 @@ export class TranslationComponent implements OnInit {
         return customPage;
       }
     });
+  }
+
+  getBasePage(page: AbstractPage): Page {
+    if (page['_type'] === 'custom-page') {
+      return (page as CustomPage).page;
+    }
+    return page as Page;
   }
 
   showPages(): void {
@@ -66,14 +72,6 @@ export class TranslationComponent implements OnInit {
       .then(() => this.publishing = false);
   }
 
-  createPage(): void {
-    const modal = this.modalService.open(CreatePageComponent, {size: 'lg'});
-    modal.componentInstance.page.resource = this.translation.resource;
-    modal.result
-      .then(() => this.loadAllResources())
-      .catch(console.log);
-  }
-
   createDraft(): void {
     this.saving = true;
     this.errorMessage = null;
@@ -84,16 +82,30 @@ export class TranslationComponent implements OnInit {
       .then(() => this.saving = false);
   }
 
-  openPage(page: Page): void {
-    const modal = this.modalService.open(PageComponent, {size: 'lg'});
-    modal.componentInstance.page = page;
+  createCustomPage(page: Page): void {
+    const customPage = new CustomPage();
+    customPage.page = page;
+    customPage.language = this.translation.language;
+    customPage.structure = page.structure;
+
+    const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
+    modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
+    modal.result
+      .then(this.loadAllResources.bind(this))
+      .catch(this.handleError.bind(this));
   }
 
   openCustomPage(customPage: CustomPage): void {
     const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
+  }
+
+  deleteCustomPage(customPage: CustomPage): void {
+    this.customPageService.delete(customPage.id)
+      .then(() => this.loadAllResources())
+      .catch(this.handleError.bind(this));
   }
 
   private getLatestTranslation(language: Language): Translation {

@@ -1,7 +1,7 @@
 <div>
   <h5>Edit {{type}} Layout</h5>
   {{filename}}
-  {{language.name}}
+  {{language?.name}}
   {{resource.name}}
 </div>
 <div ace-editor
@@ -9,6 +9,7 @@
      (textChanged)="onStructureChange($event)"
      [autoUpdateContent]="true"
      [options]="{wrap : true}"
+     class="mb-3"
      style="min-height: 500px; width:100%; overflow: auto;">
 </div>
 
@@ -19,16 +20,14 @@
   {{errorMessage}}
 </ngb-alert>
 
-<div>
-  <button (click)="cancel()" class="btn btn-danger">Cancel</button>
-  <button (click)="saveForOne()" class="btn btn-success">{{saveForOneMessage}}</button>
-  <button (click)="canConfirmSaveForAll = !canConfirmSaveForAll" *ngIf="language.code === baseLanguageCode" class="btn btn-dark">
-    Save for all languages
-  </button>
-  <ngb-alert type="danger" [dismissible]="false" *ngIf="canConfirmSaveForAll && language.code === baseLanguageCode">
-    {{getConfirmationMessage()}}
-    <button (click)="saveForAll()" class="btn btn-dark">Confirm</button>
-    <button (click)="canConfirmSaveForAll = false" class="btn btn-secondary">Cancel</button>
-  </ngb-alert>
-  <i>Note: any translated text entered here will be overwritten when Draft is published</i>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <i>Note: any translated text entered here will be overwritten when Draft is published</i>
+    </div>
+    <span class="float-right">
+      <button (click)="cancel()" class="btn btn-danger">{{cancelMessage}}</button>
+      <button (click)="save()" class="btn btn-success">{{saveMessage}}</button>
+    </span>
+  </div>
 </div>
