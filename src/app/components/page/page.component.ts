@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Page} from '../../models/page';
 import {PageService} from '../../service/page.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';

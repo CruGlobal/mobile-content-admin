@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TranslationComponent} from './translation.component';
 import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {DraftService} from '../../service/draft.service';
-import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Translation} from '../../models/translation';
 import {Language} from '../../models/language';

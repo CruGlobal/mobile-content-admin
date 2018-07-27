@@ -4,7 +4,6 @@ import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
 import {AbstractPage} from '../../models/abstract-page';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {PageComponent} from '../page/page.component';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
 import {ResourceComponent} from '../resource/resource.component';

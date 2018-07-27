@@ -5,7 +5,6 @@ import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AceEditorDirective} from 'ng2-ace-editor';
 import {CustomPageService} from '../../service/custom-page.service';
-import {PageService} from '../../service/page.service';
 import {CustomPage} from '../../models/custom-page';
 import {Language} from '../../models/language';
 import {Page} from '../../models/page';
@@ -20,22 +19,17 @@ describe('CustomPageComponent', () => {
   const customPageServiceStub = {
     upsert() {}
   };
-  const pageServiceStub = {
-    update() {}
-  };
   const draftServiceStub = {
     getPage() { return Promise.resolve('xml response'); }
   };
 
   beforeEach(async(() => {
     spyOn(customPageServiceStub, 'upsert').and.returnValue(Promise.resolve());
-    spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve());
 
     TestBed.configureTestingModule({
       declarations: [ CustomPageComponent, XmlEditorComponent, AceEditorDirective ],
       imports: [ NgbModule.forRoot() ],
       providers: [
-        {provide: PageService, useValue: pageServiceStub},
         {provide: CustomPageService, useValue: customPageServiceStub},
         {provide: DraftService, useValue: draftServiceStub},
         {provide: NgbActiveModal}
