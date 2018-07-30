@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody [ngbCollapse]="!showDefaultPages">
-        <tr *ngFor="let page of sortedPages()">
+        <tr *ngFor="let page of resource.pages">
           <td>{{page.filename}}</td>
           <td>
             <div class="container">

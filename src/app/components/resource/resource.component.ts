@@ -25,10 +25,6 @@ export class ResourceComponent implements OnInit {
     this.loadTranslations();
   }
 
-  sortedPages(): Page[] {
-    return this.resource.pages.sort(((a, b) => Page.compare(a, b)));
-  }
-
   createPage(): void {
     const modal = this.modalService.open(CreatePageComponent, {size: 'lg'});
     modal.componentInstance.page.resource = this.resource;
