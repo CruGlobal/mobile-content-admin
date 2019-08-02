@@ -48,22 +48,20 @@
       {{errorMessage}}
     </ngb-alert>
     <div class="container">
-      <strong>
-        <div class="row">
-          <div class="col">
-            Language
-          </div>
-          <div class="col">
-            Code
-          </div>
-          <div class="col">
-            Latest Version & Status
-          </div>
-          <div class="col">
-            Actions
-          </div>
+      <div class="row">
+        <div class="col">
+          <strong>Language</strong>
         </div>
-      </strong>
+        <div class="col">
+          <strong>Latest Version & Status</strong>
+        </div>
+        <div class="col">
+          <strong>Custom Manifest</strong>
+        </div>
+        <div class="col">
+          <strong>Actions</strong>
+        </div>
+      </div>
       <div *ngFor="let language of resourcesComponent.languages">
         <admin-translation [language]="language" [resourceComponent]="this"></admin-translation>
       </div>
