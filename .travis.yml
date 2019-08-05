@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - '8'
+  - '10'
 
 addons:
   apt:
@@ -10,10 +10,11 @@ addons:
     packages:
     - google-chrome-stable
 
+services:
+  - xvfb
+
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
 
 script:
   # TODO: code coverage is currently disabled due to a code coverage framework crash, someone should fix it
