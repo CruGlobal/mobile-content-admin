@@ -28,7 +28,7 @@ export class ResourcesComponent implements OnInit {
   loadResources(): void {
     this.loadingResources = true;
 
-    this.resourceService.getResources('translations,pages')
+    this.resourceService.getResources('translations,pages,custom-manifests')
       .then(resources => {
         this.resources = resources;
       })

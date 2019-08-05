@@ -3,6 +3,7 @@ import {Page} from './page';
 import {System} from './system';
 import {ResourceType} from './resource-type';
 import {Attachment} from './attachment';
+import {CustomManifest} from './custom-manifest';
 
 export class Resource {
   id: number;
@@ -19,6 +20,7 @@ export class Resource {
   pages: Page[];
   latest: Translation[];
   data: { id: number };
+  customManifests: CustomManifest[];
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;

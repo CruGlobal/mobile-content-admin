@@ -9,6 +9,9 @@ import {Page} from '../../models/page';
 import {ResourceComponent} from '../resource/resource.component';
 import {Language} from '../../models/language';
 import {CustomPageService} from '../../service/custom-page.service';
+import {CustomManifest} from '../../models/custom-manifest';
+import {CustomManifestService} from '../../service/custom-manifest.service';
+import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
 
 @Component({
   selector: 'admin-translation',
@@ -19,15 +22,20 @@ export class TranslationComponent implements OnInit {
   @Input() resourceComponent: ResourceComponent;
 
   translation: Translation;
+  customManifest: CustomManifest;
 
   private publishing = false;
   private saving = false;
   private errorMessage: string;
 
-  constructor(private customPageService: CustomPageService, private draftService: DraftService, private modalService: NgbModal) {}
+  constructor(private customPageService: CustomPageService,
+              private draftService: DraftService,
+              private customManifestService: CustomManifestService,
+              private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.translation = this.getLatestTranslation(this.language);
+    this.customManifest = this.getCustomManifest();
   }
 
   getPages(): AbstractPage[] {
@@ -108,6 +116,35 @@ export class TranslationComponent implements OnInit {
       .catch(this.handleError.bind(this));
   }
 
+  editCustomManifest(): void {
+    let manifest;
+    if (typeof this.customManifest === 'undefined') {
+      manifest = new CustomManifest();
+      manifest.resource = this.resourceComponent.resource;
+      manifest.language = this.language;
+      manifest.structure = this.resourceComponent.resource.manifest;
+    } else {
+      manifest = CustomManifest.copy(this.customManifest);
+    }
+
+    const modal = this.modalService.open(CustomManifestComponent, {size: 'lg'});
+    modal.componentInstance.customManifest = manifest;
+    modal.result.then((customManifest) => {
+      this.customManifest = customManifest;
+    }).catch(() => {
+      // Modal cancelled: Do nothing, manifest has original structure
+    });
+  }
+
+  deleteCustomManifest(): void {
+    if (typeof this.customManifest === 'undefined' || typeof this.customManifest.id === 'undefined') {
+      return;
+    }
+    this.customManifestService.delete(this.customManifest.id)
+      .then(() => this.loadAllResources())
+      .catch(this.handleError.bind(this));
+  }
+
   private getLatestTranslation(language: Language): Translation {
     let latest = this.resourceComponent.resource['latest-drafts-translations'].find(t => t.language.id === language.id);
     if (!latest) {
@@ -118,6 +155,11 @@ export class TranslationComponent implements OnInit {
     }
 
     return latest;
+  }
+
+  private getCustomManifest(): CustomManifest {
+    console.log(this.resourceComponent.resource['custom-manifests']);
+    return this.resourceComponent.resource['custom-manifests'].find(m => m.language.id === this.language.id);
   }
 
   private loadAllResources() {

@@ -3,12 +3,22 @@
     {{translation.language.name}}
   </div>
   <div class="col">
-    {{translation.language.code}}
-  </div>
-  <div class="col">
     <span class="badge badge-secondary" *ngIf="!translation.is_published && !translation.none">{{translation.version}} | Draft</span>
     <span class="badge badge-success" *ngIf="translation.is_published">{{translation.version}} | Live</span>
     <span class="badge badge-warning" *ngIf="translation.none">None</span>
+  </div>
+  <div class="col">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-secondary" *ngIf="!customManifest" (click)="editCustomManifest()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+      <button type="button" class="btn btn-primary" *ngIf="customManifest" (click)="editCustomManifest()">
+        <i class="fa fa-edit"></i> Edit
+      </button>
+      <button type="button" class="btn btn-danger" *ngIf="customManifest" (click)="deleteCustomManifest()">
+        <i class="fa fa-trash"></i> Remove
+      </button>
+    </div>
   </div>
   <div class="col">
     <div class="btn-group" role="group">

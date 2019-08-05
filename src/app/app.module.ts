@@ -19,6 +19,7 @@ import {AttachmentsComponent} from './components/attachments/attachments.compone
 import {FileSelectDirective} from 'ng2-file-upload';
 import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
+import {CustomManifestComponent} from './components/custom-manifest/custom-manifest.component';
 import {CustomPageComponent} from './components/custom-page/custom-page.component';
 import {CustomPageService} from './service/custom-page.service';
 import {SystemService} from './service/system.service';
@@ -34,6 +35,7 @@ import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 import {AttachmentService} from './service/attachment.service';
 import {MultipleDraftGeneratorComponent} from './components/multiple-draft-generator/multiple-draft-generator.component';
 import {ResourceComponent} from './components/resource/resource.component';
+import {CustomManifestService} from './service/custom-manifest.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import {ResourceComponent} from './components/resource/resource.component';
     AttachmentsComponent,
     FileSelectDirective,
     PageComponent,
+    CustomManifestComponent,
     CustomPageComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
@@ -73,13 +76,15 @@ import {ResourceComponent} from './components/resource/resource.component';
     SystemService,
     ResourceTypeService,
     AuthGuardService,
-    AttachmentService
+    AttachmentService,
+    CustomManifestService
   ],
   entryComponents: [
     UpdateResourceComponent,
     CreateResourceComponent,
     ImageComponent,
     PageComponent,
+    CustomManifestComponent,
     CustomPageComponent,
     CreatePageComponent,
     LoginComponent,
@@ -89,4 +94,3 @@ import {ResourceComponent} from './components/resource/resource.component';
 })
 export class AppModule {
 }
-
