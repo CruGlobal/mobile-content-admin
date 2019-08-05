@@ -130,8 +130,8 @@ export class TranslationComponent implements OnInit {
     const modal = this.modalService.open(CustomManifestComponent, {size: 'lg'});
     modal.componentInstance.customManifest = manifest;
     modal.result.then((customManifest) => {
-      this.customManifest = customManifest
-    }).catch((result) => {
+      this.customManifest = customManifest;
+    }).catch(() => {
       // Modal cancelled: Do nothing, manifest has original structure
     });
   }
