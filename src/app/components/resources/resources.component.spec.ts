@@ -47,7 +47,7 @@ describe('ResourcesComponent', () => {
     comp.loadResources();
 
     setTimeout(() => {
-      expect(resourceServiceStub.getResources).toHaveBeenCalledWith('translations,pages');
+      expect(resourceServiceStub.getResources).toHaveBeenCalledWith('translations,pages,custom-manifests');
 
       done();
     });

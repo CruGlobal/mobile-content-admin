@@ -158,6 +158,7 @@ export class TranslationComponent implements OnInit {
   }
 
   private getCustomManifest(): CustomManifest {
+    console.log(this.resourceComponent.resource['custom-manifests']);
     return this.resourceComponent.resource['custom-manifests'].find(m => m.language.id === this.language.id);
   }
 

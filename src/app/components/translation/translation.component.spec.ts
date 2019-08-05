@@ -13,6 +13,8 @@ import {CustomPage} from '../../models/custom-page';
 import {ResourceComponent} from '../resource/resource.component';
 import anything = jasmine.anything;
 import {CustomPageService} from '../../service/custom-page.service';
+import {CustomManifestService} from '../../service/custom-manifest.service';
+import {CustomManifest} from '../../models/custom-manifest';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
@@ -20,6 +22,7 @@ describe('TranslationComponent', () => {
 
   let customPageServiceStub;
   let modalServiceStub;
+  let customManifestServiceStub;
 
   let resourceComponent: ResourceComponent;
   let language: Language;
@@ -29,6 +32,16 @@ describe('TranslationComponent', () => {
     page.id = id;
     page['_type'] = 'page';
     return page;
+  };
+
+  const buildCustomManifest = (id: number, lang: Language, resource: Resource): CustomManifest => {
+    const manifest = new CustomManifest();
+    manifest.id = id;
+    manifest['_type'] = 'custom-manifest';
+    manifest.language = lang;
+    manifest.resource = resource;
+    manifest.structure = '<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"></manifest>';
+    return manifest;
   };
 
   const getPageCreateButtons = (page: DebugElement): DebugElement[] => {
@@ -52,11 +65,17 @@ describe('TranslationComponent', () => {
       open() {}
     };
 
+    customManifestServiceStub = {
+      delete() {}
+    };
+
     spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
     spyOn(modalServiceStub, 'open').and.returnValue({ componentInstance: {} });
+    spyOn(customManifestServiceStub, 'delete').and.returnValue(Promise.resolve());
 
     customPageServiceStub.delete();
     modalServiceStub.open();
+    customManifestServiceStub.delete();
 
     TestBed.configureTestingModule({
       declarations: [ TranslationComponent ],
@@ -64,6 +83,7 @@ describe('TranslationComponent', () => {
       providers: [
         {provide: DraftService},
         {provide: CustomPageService, useValue: customPageServiceStub},
+        {provide: CustomManifestService, useValue: customManifestServiceStub},
         {provide: NgbModal, useValue: modalServiceStub}
       ]
     }).compileComponents();
@@ -78,17 +98,19 @@ describe('TranslationComponent', () => {
 
     const pageWithCustomPage = buildPage(2);
 
-    const resource = new Resource();
-    resource.pages = [ buildPage(1), pageWithCustomPage ];
-    comp.resourceComponent.resource = resource;
-
     const cp = new CustomPage();
     cp['_type'] = 'custom-page';
     cp.page = pageWithCustomPage;
 
     language = new Language();
     language['custom-pages'] = [ cp ];
+    language.id = 1;
     comp.language = language;
+
+    const resource = new Resource();
+    resource.pages = [ buildPage(1), pageWithCustomPage ];
+    resource['custom-manifests'] = [buildCustomManifest(12, language, resource)];
+    comp.resourceComponent.resource = resource;
   });
 
   describe('language does not have existing translations', () => {
