@@ -1722,10 +1722,9 @@ component-inherit@0.0.3:
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
   integrity sha1-ZF/ErfWLcrZJ1crmUTVhnbJv8UM=
 
-components-font-awesome@^5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-5.9.0.tgz#02242f85946f0a6ab46870547f4c54d11e94ef75"
-  integrity sha512-AjY5WwmKripvroQ1oYpCC4eK8efavSKUGN/ATgwcbyz/kRmojslH8l6Mrlxq071bdzBrZvCxi+RKgU5ao3bU+A==
+components-font-awesome@^4.6.3:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/components-font-awesome/-/components-font-awesome-4.6.3.tgz#52435b352a529e5781293641f00a3facf1f67e63"
 
 compressible@~2.0.16:
   version "2.0.17"
