@@ -141,10 +141,10 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/language-service@^4.0.0":
-  version "4.4.7"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-4.4.7.tgz#45dea0935c132095a0fdc4610b007f1f57b8fbea"
-  integrity sha512-wUTH1+B1L/bcROduWH/asEpTwx3myQXueqfA5S+JCtR58PZD/OCjnY3rIzei2oxb8MIprhFV0xGl4r8v7fSmDw==
+"@angular/language-service@^8.2.9":
+  version "8.2.9"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-8.2.9.tgz#b20c938bad93c046a22bbe44dd4fecd1ff039ff0"
+  integrity sha512-F6ReN0cToHIkCjEM2ECkBxCTsvFjVae8FpIr3Fz8IHZHOOYcS5mx/BWdEO7odI5/tQKl+cCWol7NjvJYV0zolg==
 
 "@angular/platform-browser-dynamic@^4.0.0":
   version "4.3.4"
@@ -2093,7 +2093,7 @@ debug@*, debug@4, debug@^4.1.0, debug@^4.1.1:
   dependencies:
     ms "^2.1.1"
 
-debug@2, debug@2.6.9:
+debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6, debug@~2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
@@ -2104,13 +2104,6 @@ debug@3.1.0, debug@~3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
-  dependencies:
-    ms "2.0.0"
-
-debug@^2.2.0, debug@^2.3.3, debug@^2.6.6, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6, debug@~2.6.9:
-  version "2.6.9"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
-  integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
   dependencies:
     ms "2.0.0"
 
