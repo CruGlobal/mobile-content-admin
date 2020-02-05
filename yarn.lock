@@ -293,15 +293,10 @@
     semver "^5.3.0"
     semver-intersect "^1.1.2"
 
-"@types/jasmine@*":
-  version "3.3.16"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.16.tgz#7c84074f5d7f84da9a14f816ccfb9aeb4da13f27"
-  integrity sha512-Nveep4zKGby8uIvG2AEUyYOwZS8uVeHK9TgbuWYSawUDDdIgfhCKz28QzamTo//Jk7Ztt9PO3f+vzlB6a4GV1Q==
-
-"@types/jasmine@~2.5.53":
-  version "2.5.54"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.54.tgz#a6b5f2ae2afb6e0307774e8c7c608e037d491c63"
-  integrity sha512-B9YofFbUljs19g5gBKUYeLIulsh31U5AK70F41BImQRHEZQGm4GcN922UvnYwkduMqbC/NH+9fruWa/zrqvHIg==
+"@types/jasmine@*", "@types/jasmine@~3.5.3":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.5.3.tgz#e41ba279166d3838e68aa34738dd890c846ee3f8"
+  integrity sha512-LRJ21f/BO4QNZ3YDaMP0OEurOfE77x8mi8MfEnUsei5IKfmZL0GKl7juhABMdUIJHhVS9OCLotKHfsFNAuJ+DA==
 
 "@types/jasminewd2@~2.0.2":
   version "2.0.6"
