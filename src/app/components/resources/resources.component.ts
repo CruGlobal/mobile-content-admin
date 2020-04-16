@@ -42,7 +42,9 @@ export class ResourcesComponent implements OnInit {
   }
 
   trackByFunction(pIx: number, pItem: Resource) {
-    if (!pItem){return null};
+    if (!pItem || pIx < 0){
+      return null;
+    }
     return pItem.id;
   }
 
