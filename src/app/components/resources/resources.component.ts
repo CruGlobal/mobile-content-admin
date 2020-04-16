@@ -57,5 +57,4 @@ export class ResourcesComponent implements OnInit {
   private handleError(message): void {
     this.errorMessage = message;
   }
-
 }
