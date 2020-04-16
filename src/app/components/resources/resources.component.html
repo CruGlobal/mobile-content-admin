@@ -38,7 +38,7 @@
   {{errorMessage}}
 </ngb-alert>
 <div *ngIf="!loadingLanguages">
-  <div *ngFor="let resource of resources">
+  <div *ngFor="let resource of resources; trackBy: trackByFunction">
     <admin-resource [resource]="resource" [resourcesComponent]="this"></admin-resource>
   </div>
 </div>

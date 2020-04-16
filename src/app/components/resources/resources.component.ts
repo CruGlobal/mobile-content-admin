@@ -41,9 +41,13 @@ export class ResourcesComponent implements OnInit {
     modalRef.result.then(() => this.loadResources(), console.log);
   }
 
+  trackByFunction(pIx: number, pItem: Resource) {
+    if (!pItem){return null};
+    return pItem.id;
+  }
+
   private loadLanguages(): void {
     this.loadingLanguages = true;
-
     this.languageService.getLanguages()
       .then(languages => this.languages = languages)
       .catch(this.handleError.bind(this))
