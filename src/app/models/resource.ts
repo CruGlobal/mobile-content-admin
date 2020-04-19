@@ -23,6 +23,9 @@ export class Resource {
   latest: Translation[];
   data: { id: number };
   customManifests: CustomManifest[];
+  aboutOverviewVideoYoutube?: string;
+  bannerAbout?: number;
+  banner?: number;
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;

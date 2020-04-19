@@ -73,6 +73,9 @@ export class ResourceService extends AbstractService {
           onesky_project_id: resource.oneskyProjectId,
           description: resource.description,
           manifest: resource.manifest,
+          attr_banner: resource.banner,
+          attr_banner_about: resource.bannerAbout,
+          attr_about_overview_video_youtube: resource.aboutOverviewVideoYoutube,
         },
       },
     };
