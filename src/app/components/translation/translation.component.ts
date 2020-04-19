@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges, OnChanges, Output, EventEmitter} from '@angular/core';
 import {Translation} from '../../models/translation';
 import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
@@ -6,20 +6,24 @@ import {AbstractPage} from '../../models/abstract-page';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {Page} from '../../models/page';
-import {ResourceComponent} from '../resource/resource.component';
 import {Language} from '../../models/language';
 import {CustomPageService} from '../../service/custom-page.service';
 import {CustomManifest} from '../../models/custom-manifest';
 import {CustomManifestService} from '../../service/custom-manifest.service';
 import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
+import { Resource } from '../../models/resource';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'admin-translation',
   templateUrl: './translation.component.html',
 })
-export class TranslationComponent implements OnInit {
+export class TranslationComponent implements OnInit, OnChanges {
+
   @Input() language: Language;
-  @Input() resourceComponent: ResourceComponent;
+  @Input() resource: Resource;
+  @Input() translationLoaded: Observable<number>;
+  @Output() loadResources = new EventEmitter<any>();
 
   translation: Translation;
   customManifest: CustomManifest;
@@ -36,12 +40,22 @@ export class TranslationComponent implements OnInit {
   ngOnInit(): void {
     this.translation = this.getLatestTranslation(this.language);
     this.customManifest = this.getCustomManifest();
+    this.translationLoaded.subscribe((langId) => {
+      if (langId === this.language.id) {
+        this.reloadTranslation();
+      }
+    });
+  }
+
+  ngOnChanges(pChanges: SimpleChanges): void {
+    if (pChanges.resource && pChanges.resource.previousValue && pChanges.resource.currentValue) {
+      this.customManifest = this.getCustomManifest();
+    }
   }
 
   getPages(): AbstractPage[] {
-    return this.translation.resource.pages.map(page => {
-      const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page.id === page.id);
-
+    const _tPages = this.translation.resource.pages.map(page => {
+      const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page && c.page.id === page.id);
       if (!customPage) {
         return page;
       } else {
@@ -49,6 +63,18 @@ export class TranslationComponent implements OnInit {
         return customPage;
       }
     });
+    return _tPages;
+  }
+
+  reloadTranslation(): void {
+    this.translation = this.getLatestTranslation(this.language);
+  }
+
+  pagesTrackBy(pIx: number, pItem: AbstractPage): any {
+    if (!pItem || pIx < 0) {
+      return null;
+    }
+    return pItem.id;
   }
 
   getBasePage(page: AbstractPage): Page {
@@ -120,9 +146,9 @@ export class TranslationComponent implements OnInit {
     let manifest;
     if (typeof this.customManifest === 'undefined') {
       manifest = new CustomManifest();
-      manifest.resource = this.resourceComponent.resource;
+      manifest.resource = this.resource;
       manifest.language = this.language;
-      manifest.structure = this.resourceComponent.resource.manifest;
+      manifest.structure = this.resource.manifest;
     } else {
       manifest = CustomManifest.copy(this.customManifest);
     }
@@ -146,24 +172,27 @@ export class TranslationComponent implements OnInit {
   }
 
   private getLatestTranslation(language: Language): Translation {
-    let latest = this.resourceComponent.resource['latest-drafts-translations'].find(t => t.language.id === language.id);
+    let latest = this.resource['latest-drafts-translations'].find(t => t.language.id === language.id);
     if (!latest) {
       latest = new Translation();
       latest.language = language;
-      latest.resource = this.resourceComponent.resource;
+      latest.resource = this.resource;
       latest.none = true;
     }
-
+    if (this.translation) {
+      latest.show = this.translation.show;
+    }
     return latest;
   }
 
   private getCustomManifest(): CustomManifest {
-    console.log(this.resourceComponent.resource['custom-manifests']);
-    return this.resourceComponent.resource['custom-manifests'].find(m => m.language.id === this.language.id);
+    // console.log(this.resourceComponent.resource['custom-manifests']);
+    return this.resource['custom-manifests'].find(m => m.language.id === this.language.id);
   }
 
   private loadAllResources() {
-    this.resourceComponent.resourcesComponent.loadResources();
+    // this.resourceComponent.resourcesComponent.loadResources();
+    this.loadResources.emit();
   }
 
   private handleError(message: string): void {
