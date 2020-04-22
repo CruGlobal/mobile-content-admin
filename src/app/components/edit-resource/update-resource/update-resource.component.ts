@@ -41,6 +41,9 @@ export class UpdateResourceComponent
     );
 
     this.resource.oneskyProjectId = this.resource['onesky-project-id'];
+    this.resource.aboutOverviewVideoYoutube = this.resource['attr-about-overview-video-youtube'];
+    this.resource.banner = this.resource['attr-banner'];
+    this.resource.bannerAbout = this.resource['attr-banner-about'];
   }
 
   saveResource(): void {
