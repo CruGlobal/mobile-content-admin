@@ -19,7 +19,6 @@ export class AttachmentsComponent implements OnInit {
   @Input() resources: Resource[];
   @Input() selectedFile;
   @Input() selectedResource: Resource;
-  @Input() is_zipped: boolean;
   public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
 
   private errorMessage: string;
@@ -33,7 +32,6 @@ export class AttachmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAttachments();
-    this.is_zipped = false;
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       this.showSuccess();
@@ -63,7 +61,7 @@ export class AttachmentsComponent implements OnInit {
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
     this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem('Authorization');
-    this.uploader.options.additionalParameter = {is_zipped: this.is_zipped, resource_id: resourceId};
+    this.uploader.options.additionalParameter = {resource_id: resourceId};
     this.uploader.uploadAll();
   }
 
