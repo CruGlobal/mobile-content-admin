@@ -94,7 +94,7 @@ describe('TranslationComponent', () => {
     comp = fixture.componentInstance;
 
     resourceComponent = new ResourceComponent(null, null);
-    comp.resourceComponent = resourceComponent;
+    comp.translationLoaded = resourceComponent.translationLoaded$;
 
     const pageWithCustomPage = buildPage(2);
 
@@ -110,13 +110,13 @@ describe('TranslationComponent', () => {
     const resource = new Resource();
     resource.pages = [ buildPage(1), pageWithCustomPage ];
     resource['custom-manifests'] = [buildCustomManifest(12, language, resource)];
-    comp.resourceComponent.resource = resource;
+    comp.resource = resource;
   });
 
   describe('language does not have existing translations', () => {
     beforeEach(() => {
-      comp.resourceComponent.resource['latest-drafts-translations'] = [];
-
+      comp.resource['latest-drafts-translations'] = [];
+      comp.reloadTranslation();
       fixture.detectChanges();
     });
 
@@ -138,11 +138,11 @@ describe('TranslationComponent', () => {
       translation = new Translation();
       translation.is_published = false;
       translation.language = language;
-      translation.resource = comp.resourceComponent.resource;
+      translation.resource = comp.resource;
 
-      comp.resourceComponent.resource.translations = [translation];
-      comp.resourceComponent.resource['latest-drafts-translations'] = [ translation ];
-
+      comp.resource.translations = [translation];
+      comp.resource['latest-drafts-translations'] = [ translation ];
+      comp.reloadTranslation();
       fixture.detectChanges();
     });
 

@@ -62,8 +62,8 @@
           <strong>Actions</strong>
         </div>
       </div>
-      <div *ngFor="let language of resourcesComponent.languages">
-        <admin-translation [language]="language" [resourceComponent]="this"></admin-translation>
+      <div *ngFor="let language of resourcesComponent.languages"> 
+        <admin-translation [language]="language" [resource]="resource" [translationLoaded]="translationLoaded$" (loadResources)="onLoadResources()"></admin-translation>
       </div>
     </div>
   </div>
