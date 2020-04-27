@@ -186,12 +186,10 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   private getCustomManifest(): CustomManifest {
-    // console.log(this.resourceComponent.resource['custom-manifests']);
     return this.resource['custom-manifests'].find(m => m.language.id === this.language.id);
   }
 
   private loadAllResources() {
-    // this.resourceComponent.resourcesComponent.loadResources();
     this.loadResources.emit();
   }
 
