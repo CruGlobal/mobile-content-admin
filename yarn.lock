@@ -357,9 +357,10 @@ accepts@~1.3.4, accepts@~1.3.5, accepts@~1.3.7:
     mime-types "~2.1.24"
     negotiator "0.6.2"
 
-ace-builds@^1.2.5:
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.2.8.tgz#062dc45772b00ece6a547a266a3081fe57591103"
+ace-builds@^1.2.9:
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.4.11.tgz#b1f19a891afcef1d26522473082baf80067e855f"
+  integrity sha512-keACH1d7MvAh72fE/us36WQzOFQPJbHphNpj33pXwVZOM84pTWcdFzIAvngxOGIGLTm7gtUP2eJ4Ku6VaPo8bw==
 
 acorn-dynamic-import@^2.0.0:
   version "2.0.2"
@@ -1057,9 +1058,10 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-brace@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/brace/-/brace-0.9.1.tgz#19dcbae2faec9a9920a0452ec64d8d84df45e7b6"
+brace@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/brace/-/brace-0.10.0.tgz#edef4eb9b0928ba1ee5f717ffc157749a6dd5d76"
+  integrity sha1-7e9OubCSi6HuX3F//BV3SabdXXY=
   dependencies:
     w3c-blob "0.0.1"
 
@@ -5296,12 +5298,13 @@ next-tick@^1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-ng2-ace-editor@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/ng2-ace-editor/-/ng2-ace-editor-0.3.1.tgz#2c87e9c0e7564c7871f7ce4a234e65a8bc0372a1"
+ng2-ace-editor@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/ng2-ace-editor/-/ng2-ace-editor-0.3.3.tgz#4299a9e8eb057dfdad90f836776398db500e5ddc"
+  integrity sha512-LoIbAceDFHwoF5JOoHQZbTtzJDwP7c0JDC8oGVgQ1CaFQGxkIo9G4L5Kr8gErNfBieINHKotWzATHfI39nnVmQ==
   dependencies:
-    ace-builds "^1.2.5"
-    brace "^0.9.0"
+    ace-builds "^1.2.9"
+    brace "^0.10.0"
 
 ng2-file-upload@^1.2.1:
   version "1.2.1"
