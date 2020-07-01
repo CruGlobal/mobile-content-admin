@@ -13,8 +13,8 @@ export class CreatePageComponent implements OnDestroy {
 
   @ViewChild(AceEditorDirective) editor;
 
-  private errorMessage: string;
-  private saving = false;
+  saving = false;
+  errorMessage: string;
 
   constructor(private pageService: PageService, private activeModal: NgbActiveModal) {}
 

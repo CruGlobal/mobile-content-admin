@@ -14,9 +14,10 @@ export class ResourcesComponent implements OnInit {
   resources: Resource[];
   languages: Language[];
 
-  private errorMessage: string;
-  private loadingResources = false;
-  private loadingLanguages = false;
+  showInstructions = false;
+  loadingResources = false;
+  loadingLanguages = false;
+  errorMessage: string;
 
   constructor(private resourceService: ResourceService, private languageService: LanguageService, private modalService: NgbModal) {}
 

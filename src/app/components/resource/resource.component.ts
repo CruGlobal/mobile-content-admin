@@ -8,7 +8,7 @@ import {LanguageService} from '../../service/language.service';
 import {ResourcesComponent} from '../resources/resources.component';
 import {PageComponent} from '../page/page.component';
 import {CreatePageComponent} from '../create-page/create-page.component';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'admin-resource',
@@ -18,7 +18,9 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resource: Resource;
   @Input() resourcesComponent: ResourcesComponent;
 
-  private errorMessage: string;
+  showLanguages = false;
+  showDefaultPages = false;
+  errorMessage: string;
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();

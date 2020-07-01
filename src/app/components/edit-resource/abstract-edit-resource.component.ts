@@ -8,8 +8,8 @@ import {ResourceTypeService} from '../../service/resource-type.service';
 import {AceEditorDirective} from 'ng2-ace-editor';
 
 export abstract class AbstractEditResourceComponent implements OnDestroy {
-  protected saving = false;
-  protected errorMessage: string;
+  saving = false;
+  errorMessage: string;
 
   @ViewChild(AceEditorDirective) editor;
 
@@ -17,9 +17,9 @@ export abstract class AbstractEditResourceComponent implements OnDestroy {
   resourceTypes: ResourceType[];
   systems: System[];
 
-  constructor(protected systemService: SystemService,
-              protected resourceTypeService: ResourceTypeService,
-              protected activeModal: NgbActiveModal) {}
+  protected constructor(protected systemService: SystemService,
+                        protected resourceTypeService: ResourceTypeService,
+                        protected activeModal: NgbActiveModal) {}
 
   init(resourceTypesCallback, systemsCallback): void {
     this.resourceTypeService.getResourceTypes().then(types => {

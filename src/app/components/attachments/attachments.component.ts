@@ -21,9 +21,10 @@ export class AttachmentsComponent implements OnInit {
   @Input() selectedResource: Resource;
   public uploader: FileUploader = new FileUploader({url: environment.base_url + 'attachments'});
 
-  private errorMessage: string;
-  private loading = false;
-  private success = false;
+  showInstructions = false;
+  loading = false;
+  success = false;
+  errorMessage: string;
 
   constructor(private resourceService: ResourceService,
               private windowRef: WindowRefService,

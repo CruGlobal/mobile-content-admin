@@ -16,7 +16,7 @@ import {AuthService} from './service/auth/auth.service';
 import {LanguagesComponent} from './components/languages/languages.component';
 import {WindowRefService} from './models/window-ref-service';
 import {AttachmentsComponent} from './components/attachments/attachments.component';
-import {FileSelectDirective} from 'ng2-file-upload';
+import {FileUploadModule} from 'ng2-file-upload';
 import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
 import {CustomManifestComponent} from './components/custom-manifest/custom-manifest.component';
@@ -28,7 +28,7 @@ import {UpdateResourceComponent} from './components/edit-resource/update-resourc
 import {CreateResourceComponent} from './components/edit-resource/create-resource/create-resource.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from './components/image/image.component';
-import {AceEditorDirective} from 'ng2-ace-editor';
+import {AceEditorModule} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
@@ -47,20 +47,20 @@ import 'brace/mode/xml';
     TranslationComponent,
     LanguagesComponent,
     AttachmentsComponent,
-    FileSelectDirective,
     PageComponent,
     CustomManifestComponent,
     CustomPageComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
     ImageComponent,
-    AceEditorDirective,
     CreatePageComponent,
     XmlEditorComponent,
     MultipleDraftGeneratorComponent
   ],
   imports: [
+    AceEditorModule,
     BrowserModule,
+    FileUploadModule,
     FormsModule,
     AppRoutingModule,
     HttpModule,

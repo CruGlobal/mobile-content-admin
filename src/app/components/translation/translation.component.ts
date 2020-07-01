@@ -12,7 +12,7 @@ import {CustomManifest} from '../../models/custom-manifest';
 import {CustomManifestService} from '../../service/custom-manifest.service';
 import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
 import { Resource } from '../../models/resource';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'admin-translation',
@@ -28,9 +28,9 @@ export class TranslationComponent implements OnInit, OnChanges {
   translation: Translation;
   customManifest: CustomManifest;
 
-  private publishing = false;
-  private saving = false;
-  private errorMessage: string;
+  saving = false;
+  publishing = false;
+  errorMessage: string;
 
   constructor(private customPageService: CustomPageService,
               private draftService: DraftService,
