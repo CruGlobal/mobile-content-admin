@@ -12,7 +12,7 @@ class MockDraftService extends DraftService {
 describe ('AuthGuardService', () => {
   it('opens login modal', (done) => {
     const mockDraftService = new MockDraftService(null, null);
-    const mockNgbModal = new NgbModal(null, null, null);
+    const mockNgbModal = new NgbModal(null, null, null, null);
     spyOn(mockNgbModal, 'open');
 
     const service = new AuthGuardService(mockDraftService, mockNgbModal);

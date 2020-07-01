@@ -6,7 +6,7 @@ import {DraftService} from '../../service/draft.service';
 import {Resource} from '../../models/resource';
 import {Translation} from '../../models/translation';
 import {By} from '@angular/platform-browser';
-import {NgbButtonLabel} from '@ng-bootstrap/ng-bootstrap/buttons/label';
+import {NgbButtonLabel} from '@ng-bootstrap/ng-bootstrap';
 import {Language} from '../../models/language';
 import {DebugElement} from '@angular/core';
 
