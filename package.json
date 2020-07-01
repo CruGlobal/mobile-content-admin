@@ -32,7 +32,6 @@
     "ng2-file-upload": "^1.2.1",
     "rxjs": "6.5.5",
     "rxjs-compat": "6.0",
-    "tslint-jasmine-rules": "^1.3.0",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
@@ -55,6 +54,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.5.4",
     "tslint": "~5.5.0",
+    "tslint-jasmine-rules": "^1.3.0",
     "typescript": "2.9.2"
   },
   "main": "index.js",
