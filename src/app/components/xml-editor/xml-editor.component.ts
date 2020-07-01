@@ -25,8 +25,8 @@ export class XmlEditorComponent implements OnDestroy {
 
   @ViewChild(AceEditorDirective) editor;
 
-  private saving = false;
-  private errorMessage: string;
+  saving = false;
+  errorMessage: string;
 
   onStructureChange(code) {
     this.structureChange.emit(code);
@@ -42,12 +42,12 @@ export class XmlEditorComponent implements OnDestroy {
     this.errorMessage = message;
   }
 
-  protected save(): void {
+  save(): void {
     this.saving = true;
     this.onSave.emit();
   }
 
-  protected cancel(): void {
+  cancel(): void {
     this.onCancel.emit();
   }
 }

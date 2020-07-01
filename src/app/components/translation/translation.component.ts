@@ -28,9 +28,9 @@ export class TranslationComponent implements OnInit, OnChanges {
   translation: Translation;
   customManifest: CustomManifest;
 
-  private publishing = false;
-  private saving = false;
-  private errorMessage: string;
+  saving = false;
+  publishing = false;
+  errorMessage: string;
 
   constructor(private customPageService: CustomPageService,
               private draftService: DraftService,

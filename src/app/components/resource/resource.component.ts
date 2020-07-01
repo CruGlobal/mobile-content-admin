@@ -18,7 +18,9 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resource: Resource;
   @Input() resourcesComponent: ResourcesComponent;
 
-  private errorMessage: string;
+  showLanguages = false;
+  showDefaultPages = false;
+  errorMessage: string;
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();

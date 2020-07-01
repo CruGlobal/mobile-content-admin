@@ -7,9 +7,11 @@ export class Translation {
   is_published: boolean;
   language: Language;
   resource: Resource;
+  version: number;
 
   show: boolean;
   generateDraft: boolean;
+  none: boolean;
 
   static copy(translation: Translation): Translation {
     const copy = new Translation();
@@ -19,6 +21,7 @@ export class Translation {
     copy.is_published = translation.is_published;
     copy.language = translation.language;
     copy.resource = translation.resource;
+    copy.version = translation.version;
 
     return copy;
   }
