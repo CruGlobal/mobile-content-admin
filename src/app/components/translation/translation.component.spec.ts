@@ -64,13 +64,17 @@ describe('TranslationComponent', () => {
     modalServiceStub = {
       open() {}
     };
+    const modalRef = {
+      componentInstance: {},
+      result: Promise.resolve()
+    };
 
     customManifestServiceStub = {
       delete() {}
     };
 
     spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
-    spyOn(modalServiceStub, 'open').and.returnValue({ componentInstance: {} });
+    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
     spyOn(customManifestServiceStub, 'delete').and.returnValue(Promise.resolve());
 
     customPageServiceStub.delete();
