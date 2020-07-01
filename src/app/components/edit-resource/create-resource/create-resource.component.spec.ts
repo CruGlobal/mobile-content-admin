@@ -8,6 +8,7 @@ import {CreateResourceComponent} from './create-resource.component';
 import {FormsModule} from '@angular/forms';
 import {AceEditorDirective} from 'ng2-ace-editor';
 import {By} from '@angular/platform-browser';
+import {Resource} from '../../../models/resource';
 
 describe('CreateResourceComponent', () => {
   let comp:    CreateResourceComponent;
@@ -15,10 +16,10 @@ describe('CreateResourceComponent', () => {
 
   const resourceServiceStub = {
     create() { }
-  };
+  } as unknown as ResourceService;
 
   beforeEach(() => {
-    spyOn(resourceServiceStub, 'create').and.returnValue(Promise.resolve());
+    spyOn(resourceServiceStub, 'create').and.returnValue(Promise.resolve<Resource>(null));
 
     TestBed.configureTestingModule({
       declarations: [ CreateResourceComponent, XmlEditorComponent, AceEditorDirective ],

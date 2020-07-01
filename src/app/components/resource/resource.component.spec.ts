@@ -27,12 +27,15 @@ describe('ResourceComponent', () => {
 
   const languageServiceStub = {
     getLanguage() {}
-  };
+  } as unknown as LanguageService;
+  const languageStub = {
+    _placeHolder: true
+  } as unknown as Language;
 
   const resource: Resource = new Resource();
 
   beforeEach(async(() => {
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve( { _placeHolder: true } ));
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve(languageStub));
 
     TestBed.configureTestingModule({
       declarations: [ ResourcesComponent, ResourceComponent, TranslationComponent ],

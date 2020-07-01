@@ -18,13 +18,13 @@ describe('CustomPageComponent', () => {
 
   const customPageServiceStub = {
     upsert() {}
-  };
+  } as unknown as CustomPageService;
   const draftServiceStub = {
     getPage() { return Promise.resolve('xml response'); }
   };
 
   beforeEach(async(() => {
-    spyOn(customPageServiceStub, 'upsert').and.returnValue(Promise.resolve());
+    spyOn(customPageServiceStub, 'upsert').and.returnValue(Promise.resolve<CustomPage>(null));
 
     TestBed.configureTestingModule({
       declarations: [ CustomPageComponent, XmlEditorComponent, AceEditorDirective ],

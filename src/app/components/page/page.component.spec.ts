@@ -15,10 +15,10 @@ describe('PageComponent', () => {
 
   const pageServiceStub = {
     update() {}
-  };
+  } as unknown as PageService;
 
   beforeEach(async(() => {
-    spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve());
+    spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve<Page>(null));
 
     TestBed.configureTestingModule({
       declarations: [ PageComponent, XmlEditorComponent, AceEditorDirective ],
