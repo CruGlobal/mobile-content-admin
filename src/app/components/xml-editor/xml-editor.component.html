@@ -6,6 +6,7 @@
 </div>
 <div ace-editor
      [(text)]="structure"
+     [mode]="'xml'"
      (textChanged)="onStructureChange($event)"
      [autoUpdateContent]="true"
      [options]="{wrap : true}"

@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {Language} from '../../models/language';
 import {Resource} from '../../models/resource';
+import {AceEditorDirective} from 'ng2-ace-editor';
 
 @Component({
   selector: 'admin-xml-editor',
   templateUrl: './xml-editor.component.html'
 })
-export class XmlEditorComponent {
+export class XmlEditorComponent implements OnDestroy {
 
   readonly saveMessage = 'Save';
   readonly cancelMessage = 'Cancel';
@@ -22,11 +23,19 @@ export class XmlEditorComponent {
   @Output() onCancel = new EventEmitter();
   @Output() onSave = new EventEmitter();
 
+  @ViewChild(AceEditorDirective) editor;
+
   private saving = false;
   private errorMessage: string;
 
   onStructureChange(code) {
     this.structureChange.emit(code);
+  }
+
+  ngOnDestroy(): void {
+    // HACK: workaround this bug: https://github.com/ajaxorg/ace/issues/4042
+    //       ng2-ace-editor bundles an older version of ace that doesn't have this fix
+    this.editor.editor.renderer.freeze();
   }
 
   setErrorMessage(message: string) {

@@ -36,6 +36,7 @@ import {AttachmentService} from './service/attachment.service';
 import {MultipleDraftGeneratorComponent} from './components/multiple-draft-generator/multiple-draft-generator.component';
 import {ResourceComponent} from './components/resource/resource.component';
 import {CustomManifestService} from './service/custom-manifest.service';
+import 'brace/mode/xml';
 
 @NgModule({
   declarations: [
