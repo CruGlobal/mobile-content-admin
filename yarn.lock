@@ -391,10 +391,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
-"@ng-bootstrap/ng-bootstrap@^1.0.0-beta.1":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.1.2.tgz#276b1c488687ca3e53d1694b63835fd57ca552ca"
-  integrity sha512-lPB4WdFk3s4k1OMKiZsmbxSE3r8qBFapov0HudEVi8HYkm6LBxZmWqy9I6KAC9NnhVUVIYnCixvRSNwOQvIwwA==
+"@ng-bootstrap/ng-bootstrap@^2.0.0":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-2.2.2.tgz#07c64badd48b563140eb5a6327b5516bf2226834"
+  integrity sha512-uqngK1urcevQeF+zgoGW1XDnasjoob4QrwhynNUFpDnnplP1wa+BEUjpSccxU+L2dHLfrOb2sPGEGp8cE2X3Iw==
 
 "@ngtools/webpack@6.2.9":
   version "6.2.9"
