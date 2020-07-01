@@ -12,7 +12,7 @@ import {CustomManifest} from '../../models/custom-manifest';
 import {CustomManifestService} from '../../service/custom-manifest.service';
 import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
 import { Resource } from '../../models/resource';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'admin-translation',

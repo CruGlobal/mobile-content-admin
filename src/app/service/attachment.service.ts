@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+
 import {AuthService} from './auth/auth.service';
 import {environment} from '../../environments/environment';
 import {AbstractService} from './abstract.service';
