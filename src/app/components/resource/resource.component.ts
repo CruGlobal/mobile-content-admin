@@ -9,6 +9,9 @@ import {ResourcesComponent} from '../resources/resources.component';
 import {PageComponent} from '../page/page.component';
 import {CreatePageComponent} from '../create-page/create-page.component';
 import { Subject } from 'rxjs';
+import {Tip} from '../../models/tip';
+import {TipComponent} from '../tip/tip.component';
+import {CreateTipComponent} from '../create-tip/create-tip.component';
 
 @Component({
   selector: 'admin-resource',
@@ -20,6 +23,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   showLanguages = false;
   showDefaultPages = false;
+  showDefaultTips = false;
   errorMessage: string;
 
   private _translationLoaded = new Subject<number>();
@@ -52,6 +56,19 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   openPage(page: Page): void {
     const modal = this.modalService.open(PageComponent, {size: 'lg'});
     modal.componentInstance.page = page;
+  }
+
+  createTip(): void {
+    const modal = this.modalService.open(CreateTipComponent, {size: 'lg'});
+    modal.componentInstance.tip.resource = this.resource;
+    modal.result
+      .then(() => this.resourcesComponent.loadResources())
+      .catch(this.handleError.bind(this));
+  }
+
+  openTip(tip: Tip): void {
+    const modal = this.modalService.open(TipComponent, {size: 'lg'});
+    modal.componentInstance.tip = tip;
   }
 
   openUpdateModal(resource: Resource): void {

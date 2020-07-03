@@ -29,7 +29,7 @@ export class ResourcesComponent implements OnInit {
   loadResources(): void {
     this.loadingResources = true;
 
-    this.resourceService.getResources('translations,pages,custom-manifests')
+    this.resourceService.getResources('translations,pages,custom-manifests,tips')
       .then(resources => {
         this.resources = resources;
       })

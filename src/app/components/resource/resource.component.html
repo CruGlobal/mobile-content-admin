@@ -44,6 +44,37 @@
       </tbody>
     </table>
 
+    <!-- Tips UI -->
+    <table class="table border border-dark mb-3">
+      <thead class="thead-dark" (click)="showDefaultTips = !showDefaultTips">
+        <tr>
+          <th class="align-middle">Default Tips</th>
+          <th>
+            <div class="float-right">
+              <button class="btn btn-secondary" (click)="createTip(); $event.stopPropagation()">
+                <i class="fa fa-file"></i> Add new tip
+              </button>
+              <button (click)="true" class="btn btn-primary">
+                <i class="fa fa-copy"></i> Show/Hide
+              </button>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody [ngbCollapse]="!showDefaultTips">
+        <tr *ngFor="let tip of resource.tips">
+          <td>{{tip.filename}}</td>
+          <td>
+            <div class="container">
+              <button (click)="openTip(tip)" class="btn btn-outline-dark float-right">
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
       {{errorMessage}}
     </ngb-alert>

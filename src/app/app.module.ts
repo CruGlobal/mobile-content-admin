@@ -19,6 +19,8 @@ import {AttachmentsComponent} from './components/attachments/attachments.compone
 import {FileUploadModule} from 'ng2-file-upload';
 import {PageService} from './service/page.service';
 import {PageComponent} from './components/page/page.component';
+import {TipService} from './service/tip.service';
+import {TipComponent} from './components/tip/tip.component';
 import {CustomManifestComponent} from './components/custom-manifest/custom-manifest.component';
 import {CustomPageComponent} from './components/custom-page/custom-page.component';
 import {CustomPageService} from './service/custom-page.service';
@@ -30,6 +32,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from './components/image/image.component';
 import {AceEditorModule} from 'ng2-ace-editor';
 import {CreatePageComponent} from './components/create-page/create-page.component';
+import {CreateTipComponent} from './components/create-tip/create-tip.component';
 import {XmlEditorComponent} from './components/xml-editor/xml-editor.component';
 import {AuthGuardService} from './service/auth-guard/auth-guard.service';
 import {AttachmentService} from './service/attachment.service';
@@ -48,12 +51,14 @@ import 'brace/mode/xml';
     LanguagesComponent,
     AttachmentsComponent,
     PageComponent,
+    TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
     ImageComponent,
     CreatePageComponent,
+    CreateTipComponent,
     XmlEditorComponent,
     MultipleDraftGeneratorComponent
   ],
@@ -74,6 +79,7 @@ import 'brace/mode/xml';
     WindowRefService,
     PageService,
     CustomPageService,
+    TipService,
     SystemService,
     ResourceTypeService,
     AuthGuardService,
@@ -85,9 +91,11 @@ import 'brace/mode/xml';
     CreateResourceComponent,
     ImageComponent,
     PageComponent,
+    TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
     CreatePageComponent,
+    CreateTipComponent,
     LoginComponent,
     MultipleDraftGeneratorComponent
   ],
