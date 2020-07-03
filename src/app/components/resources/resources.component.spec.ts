@@ -8,6 +8,7 @@ import {TranslationComponent} from '../translation/translation.component';
 import {Resource} from '../../models/resource';
 import {DraftService} from '../../service/draft.service';
 import {ResourceComponent} from '../resource/resource.component';
+import {Language} from '../../models/language';
 
 describe('ResourcesComponent', () => {
   let comp:    ResourcesComponent;
@@ -15,16 +16,19 @@ describe('ResourcesComponent', () => {
 
   const resourceServiceStub = {
     getResources() {}
-  };
+  } as unknown as ResourceService;
   const languageServiceStub = {
     getLanguage() {}
-  };
+  } as unknown as LanguageService;
+  const languageStub = {
+    _placeHolder: true
+  } as unknown as Language;
 
   const resource: Resource = new Resource();
 
   beforeEach(async(() => {
     spyOn(resourceServiceStub, 'getResources').and.returnValue(Promise.resolve([ resource ]));
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve( { _placeHolder: true } ));
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve(languageStub));
 
     TestBed.configureTestingModule({
       declarations: [ ResourcesComponent, ResourceComponent, TranslationComponent ],

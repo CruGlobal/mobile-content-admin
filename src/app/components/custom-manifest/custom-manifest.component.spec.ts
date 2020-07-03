@@ -17,10 +17,10 @@ describe('CustomManifestComponent', () => {
   const customManifestServiceStub = {
     upsert() {},
     delete() {}
-  };
+  } as unknown as CustomManifestService;
 
   beforeEach(async(() => {
-    spyOn(customManifestServiceStub, 'upsert').and.returnValue(Promise.resolve());
+    spyOn(customManifestServiceStub, 'upsert').and.returnValue(Promise.resolve<CustomManifest>(null));
 
     TestBed.configureTestingModule({
       declarations: [ CustomManifestComponent, XmlEditorComponent, AceEditorDirective ],

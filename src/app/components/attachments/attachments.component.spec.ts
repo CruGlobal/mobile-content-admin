@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AttachmentsComponent} from './attachments.component';
 import {ResourceService} from '../../service/resource/resource.service';
-import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {WindowRefService} from '../../models/window-ref-service';
 import {AttachmentService} from '../../service/attachment.service';
 import {Resource} from '../../models/resource';
@@ -29,14 +29,14 @@ describe('AttachmentsComponent', () => {
 
   const modalServiceStub = {
     open() {}
-  };
+  } as unknown as NgbModal;
 
   const file = 'roger.txt';
   const modalRef = {
     componentInstance: {
       source: null
     }
-  };
+  } as unknown as NgbModalRef;
 
   beforeEach(() => {
     spyOn(modalServiceStub, 'open').and.returnValue(modalRef);

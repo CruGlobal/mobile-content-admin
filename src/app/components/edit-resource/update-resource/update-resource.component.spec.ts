@@ -17,10 +17,10 @@ describe('UpdateResourceComponent', () => {
   const resource = new Resource();
   const resourceServiceStub = {
     update() { }
-  };
+  } as unknown as ResourceService;
 
   beforeEach(() => {
-    spyOn(resourceServiceStub, 'update').and.returnValue(Promise.resolve());
+    spyOn(resourceServiceStub, 'update').and.returnValue(Promise.resolve<Resource>(null));
 
     TestBed.configureTestingModule({
       declarations: [ UpdateResourceComponent, XmlEditorComponent, AceEditorDirective ],
