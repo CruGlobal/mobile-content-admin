@@ -63,7 +63,7 @@
       </thead>
       <tbody [ngbCollapse]="!showDefaultTips">
         <tr *ngFor="let tip of resource.tips">
-          <td>{{tip.filename}}</td>
+          <td>{{tip.name}}</td>
           <td>
             <div class="container">
               <button (click)="openTip(tip)" class="btn btn-outline-dark float-right">

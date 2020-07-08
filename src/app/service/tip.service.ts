@@ -23,7 +23,7 @@ export class TipService extends AbstractService {
           structure: tip.structure,
           resource_id: tip.resource.id,
           position: tip.position,
-          filename: tip.filename
+          name: tip.name
         }
       }
     };

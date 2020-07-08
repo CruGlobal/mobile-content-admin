@@ -2,7 +2,7 @@ import {Resource} from './resource';
 import {AbstractTip} from './abstract-tip';
 
 export class Tip extends AbstractTip {
-  filename: string;
+  name: string;
   resource: Resource;
   position: number;
 }
