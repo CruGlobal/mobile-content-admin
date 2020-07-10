@@ -4,6 +4,7 @@ import {Translation} from '../models/translation';
 import {AuthService} from './auth/auth.service';
 import {JsonApiDataStore} from 'jsonapi-datastore';
 import {Page} from '../models/page';
+import {Tip} from '../models/tip';
 import {environment} from '../../environments/environment';
 import {AbstractService} from './abstract.service';
 
@@ -24,6 +25,15 @@ export class DraftService extends AbstractService {
 
   getPage(page: Page, translation: Translation): Promise<string> {
     return this.http.get(`${this.draftsUrl}/${translation.id}/?page_id=${page.id}`, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then(response => {
+        return response.text();
+      })
+      .catch(this.handleError);
+  }
+
+  getTip(tip: Tip, translation: Translation): Promise<string> {
+    return this.http.get(`${this.draftsUrl}/${translation.id}/?tip_id=${tip.id}`, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => {
         return response.text();

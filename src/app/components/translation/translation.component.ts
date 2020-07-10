@@ -2,12 +2,17 @@ import {Component, Input, OnInit, SimpleChanges, OnChanges, Output, EventEmitter
 import {Translation} from '../../models/translation';
 import {DraftService} from '../../service/draft.service';
 import {CustomPage} from '../../models/custom-page';
+import {CustomTip} from '../../models/custom-tip';
 import {AbstractPage} from '../../models/abstract-page';
+import {AbstractTip} from '../../models/abstract-tip';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
+import {CustomTipComponent} from '../custom-tip/custom-tip.component';
 import {Page} from '../../models/page';
+import {Tip} from '../../models/tip';
 import {Language} from '../../models/language';
 import {CustomPageService} from '../../service/custom-page.service';
+import {CustomTipService} from '../../service/custom-tip.service';
 import {CustomManifest} from '../../models/custom-manifest';
 import {CustomManifestService} from '../../service/custom-manifest.service';
 import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
@@ -33,6 +38,7 @@ export class TranslationComponent implements OnInit, OnChanges {
   errorMessage: string;
 
   constructor(private customPageService: CustomPageService,
+              private customTipService: CustomTipService,
               private draftService: DraftService,
               private customManifestService: CustomManifestService,
               private modalService: NgbModal) {}
@@ -66,6 +72,19 @@ export class TranslationComponent implements OnInit, OnChanges {
     return _tPages;
   }
 
+  getTips(): AbstractTip[] {
+    const _tTips = this.translation.resource.tips.map(tip => {
+      const customTip: CustomTip = this.translation.language['custom-tips'].find(c => c.tip && c.tip.id === tip.id);
+      if (!customTip) {
+        return tip;
+      } else {
+        customTip.tip = tip;
+        return customTip;
+      }
+    });
+    return _tTips;
+  }
+
   reloadTranslation(): void {
     this.translation = this.getLatestTranslation(this.language);
   }
@@ -84,6 +103,13 @@ export class TranslationComponent implements OnInit, OnChanges {
     return page as Page;
   }
 
+  getBaseTip(tip: AbstractTip): Tip {
+    if (tip['_type'] === 'custom-tip') {
+      return (tip as CustomTip).tip;
+    }
+    return tip as Tip;
+  }
+
   showPages(): void {
     this.translation.resource.translations.forEach(t => ( t.show = false ));
     this.translation.show = true;
@@ -91,6 +117,15 @@ export class TranslationComponent implements OnInit, OnChanges {
 
   hidePages(): void {
     this.translation.show = false;
+  }
+
+  showTips(): void {
+    this.translation.resource.translations.forEach(t => ( t.showTips = false ));
+    this.translation.showTips = true;
+  }
+
+  hideTips(): void {
+    this.translation.showTips = false;
   }
 
   publishDraft(): void {
@@ -130,14 +165,40 @@ export class TranslationComponent implements OnInit, OnChanges {
       .catch(this.handleError.bind(this));
   }
 
+  createCustomTip(tip: Tip): void {
+    const customTip = new CustomTip();
+    customTip.tip = tip;
+    customTip.language = this.translation.language;
+    customTip.structure = tip.structure;
+
+    const modal = this.modalService.open(CustomTipComponent, {size: 'lg'});
+    modal.componentInstance.customTip = customTip;
+    modal.componentInstance.translation = this.translation;
+    modal.result
+      .then(this.loadAllResources.bind(this))
+      .catch(this.handleError.bind(this));
+  }
+
   openCustomPage(customPage: CustomPage): void {
     const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
   }
 
+  openCustomTip(customTip: CustomTip): void {
+    const modal = this.modalService.open(CustomTipComponent, {size: 'lg'});
+    modal.componentInstance.customTip = customTip;
+    modal.componentInstance.translation = this.translation;
+  }
+
   deleteCustomPage(customPage: CustomPage): void {
     this.customPageService.delete(customPage.id)
+      .then(() => this.loadAllResources())
+      .catch(this.handleError.bind(this));
+  }
+
+  deleteCustomTip(customTip: CustomTip): void {
+    this.customTipService.delete(customTip.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
   }

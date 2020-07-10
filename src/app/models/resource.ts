@@ -1,5 +1,6 @@
 import {Translation} from './translation';
 import {Page} from './page';
+import {Tip} from './tip';
 import {System} from './system';
 import {ResourceType} from './resource-type';
 import {Attachment} from './attachment';
@@ -18,6 +19,7 @@ export class Resource {
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
+  tips: Tip[];
   latest: Translation[];
   data: { id: number };
   customManifests: CustomManifest[];

@@ -89,7 +89,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   private loadTranslations(): void {
     this.resource['latest-drafts-translations'].forEach((translation) => {
-      this.languageService.getLanguage(translation.language.id, 'custom_pages')
+      this.languageService.getLanguage(translation.language.id, 'custom_pages,custom_tips')
         .then((language) => {
           translation.language = language;
           translation.is_published = translation['is-published'];

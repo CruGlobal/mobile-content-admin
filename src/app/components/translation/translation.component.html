@@ -22,14 +22,22 @@
   </div>
   <div class="col">
     <div class="btn-group" role="group">
+      <button *ngIf="!translation.is_published && !translation.none" type="button" (click)="publishDraft()" class="btn btn-success">
+        <i class="fa fa-cloud-upload"></i> Publish
+      </button>
+    </div>
+    <div class="btn-group" role="group">
       <button (click)="showPages()" *ngIf="!translation.is_published && !translation.show && !translation.none" type="button" class="btn btn-warning">
         <i class="fa fa-chevron-down"></i> Show pages
       </button>
       <button (click)="hidePages()" *ngIf="!translation.is_published && translation.show && !translation.none" type="button" class="btn btn-warning">
         <i class="fa fa-chevron-up"></i> Hide pages
       </button>
-      <button *ngIf="!translation.is_published && !translation.none" type="button" (click)="publishDraft()" class="btn btn-success">
-        <i class="fa fa-cloud-upload"></i> Publish
+      <button (click)="showTips()" *ngIf="!translation.is_published && !translation.showTips && !translation.none" type="button" class="btn btn-warning">
+        <i class="fa fa-chevron-down"></i> Show tips
+      </button>
+      <button (click)="hideTips()" *ngIf="!translation.is_published && translation.showTips && !translation.none" type="button" class="btn btn-warning">
+        <i class="fa fa-chevron-up"></i> Hide tips
       </button>
     </div>
     <button *ngIf="translation.is_published || translation.none" (click)="createDraft()" class="btn btn-secondary">
@@ -84,6 +92,41 @@
                     <i class="fa fa-pencil"></i> Edit
                   </button>
                   <button (click)="deleteCustomPage(page)" class="btn btn-danger" data-action="delete">
+                    <i class="fa fa-times"></i> Remove
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-3" *ngIf="translation.showTips">
+  <div class="col">
+    <table class="table border border-dark">
+      <thead class="thead-dark">
+        <tr>
+          <th colspan="2">{{translation.language.name}} Tip Customizations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tip of getTips();trackBy: tipsTrackBy" [ngSwitch]="tip['_type']">
+          <td>{{getBaseTip(tip).name}}</td>
+          <td>
+            <div class="container">
+              <div class="float-right">
+                <ng-container *ngSwitchCase="'tip'">
+                  <button (click)="createCustomTip(tip)" class="btn btn-primary" data-action="create">
+                    <i class="fa fa-plus"></i> Create
+                  </button>
+                </ng-container>
+                <ng-container *ngSwitchCase="'custom-tip'">
+                  <button (click)="openCustomTip(tip)" class="btn btn-outline-dark" data-action="edit">
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                  <button (click)="deleteCustomTip(tip)" class="btn btn-danger" data-action="delete">
                     <i class="fa fa-times"></i> Remove
                   </button>
                 </ng-container>

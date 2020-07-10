@@ -24,6 +24,8 @@ import {TipComponent} from './components/tip/tip.component';
 import {CustomManifestComponent} from './components/custom-manifest/custom-manifest.component';
 import {CustomPageComponent} from './components/custom-page/custom-page.component';
 import {CustomPageService} from './service/custom-page.service';
+import {CustomTipComponent} from './components/custom-tip/custom-tip.component';
+import {CustomTipService} from './service/custom-tip.service';
 import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
 import {UpdateResourceComponent} from './components/edit-resource/update-resource/update-resource.component';
@@ -54,6 +56,7 @@ import 'brace/mode/xml';
     TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
+    CustomTipComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
     ImageComponent,
@@ -79,6 +82,7 @@ import 'brace/mode/xml';
     WindowRefService,
     PageService,
     CustomPageService,
+    CustomTipService,
     TipService,
     SystemService,
     ResourceTypeService,
@@ -94,7 +98,7 @@ import 'brace/mode/xml';
     TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
-    CreatePageComponent,
+    CustomTipComponent,
     CreateTipComponent,
     LoginComponent,
     MultipleDraftGeneratorComponent
