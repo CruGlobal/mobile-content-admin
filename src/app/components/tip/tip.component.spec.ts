@@ -15,10 +15,10 @@ describe('TipComponent', () => {
 
   const tipServiceStub = {
     update() {}
-  };
+  } as unknown as TipService;
 
   beforeEach(async(() => {
-    spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve());
+    spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));
 
     TestBed.configureTestingModule({
       declarations: [ TipComponent, XmlEditorComponent, AceEditorDirective ],

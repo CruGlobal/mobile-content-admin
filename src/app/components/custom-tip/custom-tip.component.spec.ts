@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CustomTipComponent} from './custom-Tip.component';
+import {CustomTipComponent} from './custom-tip.component';
 import {DebugElement} from '@angular/core';
 import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -18,13 +18,13 @@ describe('CustomTipComponent', () => {
 
   const customTipServiceStub = {
     upsert() {}
-  };
+  } as unknown as CustomTipService;
   const draftServiceStub = {
     getTip() { return Promise.resolve('xml response'); }
   };
 
   beforeEach(async(() => {
-    spyOn(customTipServiceStub, 'upsert').and.returnValue(Promise.resolve());
+    spyOn(customTipServiceStub, 'upsert').and.returnValue(Promise.resolve<CustomTip>(null));
 
     TestBed.configureTestingModule({
       declarations: [ CustomTipComponent, XmlEditorComponent, AceEditorDirective ],
