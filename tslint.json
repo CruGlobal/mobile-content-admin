@@ -26,7 +26,10 @@
     "label-position": true,
     "max-line-length": [
       true,
-      140
+      {
+        "limit": 124,
+        "ignore-pattern": "^import [^,]+ from |^export | implements"
+      }
     ],
     "member-access": false,
     "member-ordering": [
