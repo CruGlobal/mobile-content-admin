@@ -4,7 +4,7 @@ import {CustomPage} from './custom-page';
 import {CustomTip} from './custom-tip';
 
 export class ResourceLanguage {
-  id: number;
+  id: string;
   includeTips: boolean;
   resource: Resource;
   language: Language;

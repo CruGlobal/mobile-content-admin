@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Resource} from '../../models/resource';
-import {Language} from '../../models/language';
+import {ResourceLanguage} from '../../models/resource-language';
 import {Http} from '@angular/http';
 
 import {JsonApiDataStore} from 'jsonapi-datastore';
@@ -16,16 +15,7 @@ export class ResourceLanguageService extends AbstractService {
     super();
   }
 
-  getResources(include: string): Promise<Resource[]> {
-    return this.http.get(`${this.resourcesUrl}?include=${include}`)
-      .toPromise()
-      .then(response => {
-        return new JsonApiDataStore().sync(response.json());
-      })
-      .catch(this.handleError);
-  }
-
-  getResource(id: number, include: string): Promise<Resource> {
+  getResourceLanguage(id: number, include: string): Promise<ResourceLanguage> {
     const url = `${this.resourcesUrl}/${id}?include=${include}`;
     return this.http.get(url)
       .toPromise()
@@ -35,33 +25,21 @@ export class ResourceLanguageService extends AbstractService {
       .catch(this.handleError);
   }
 
-  create(resource: Resource): Promise<Resource> {
-    return this.http.post(this.resourcesUrl, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
+  update(resourceLanguage: ResourceLanguage): Promise<ResourceLanguage> {
+    const url = `${this.resourcesUrl}/${resourceLanguage.resource.id}/languages/${resourceLanguage.language.id}`;
+    return this.http.put(url, this.getPayload(resourceLanguage), this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then(() => resourceLanguage)
       .catch(this.handleError);
   }
 
-  update(resource: Resource): Promise<Resource> {
-    return this.http.put(`${this.resourcesUrl}/${resource.id}`, this.getPayload(resource), this.authService.getAuthorizationAndOptions())
-      .toPromise()
-      .then(() => resource)
-      .catch(this.handleError);
-  }
-
-  private getPayload(resource: Resource) {
+  private getPayload(resourceLanguage: ResourceLanguage) {
     return {
       data: {
-        id: resource.id,
-        type: 'resource',
+        id: resourceLanguage.resource.id + '-' + resourceLanguage.language.id,
+        type: 'resource-language',
         attributes: {
-          name: resource.name,
-          abbreviation: resource.abbreviation,
-          system_id: Resource.getSystemId(resource),
-          resource_type_id: Resource.getResourceTypeId(resource),
-          onesky_project_id: resource.oneskyProjectId,
-          description: resource.description,
-          manifest: resource.manifest
+          'attr-include-tips': resourceLanguage.includeTips === true ? 'true' : 'false'
         }
       }
     };

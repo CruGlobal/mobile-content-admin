@@ -1,0 +1,30 @@
+<div class="modal-body">
+  <div class="row">
+    <div class="col">
+      <input id="includeTips" placeholder="includeTips" type="checkbox" [(ngModel)]="resourceLanguage.includeTips"/>
+      &nbsp;
+      <label for="includeTips">Include Tips</label>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="saving">
+    <div class="col">
+      <ngb-alert type="info" [dismissible]="false">
+        Saving...
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="errorMessage">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false">
+        {{errorMessage}}
+      </ngb-alert>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+  <button (click)="saveResourceLanguage()" class="btn btn-success">Save</button>
+</div>

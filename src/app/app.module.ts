@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {ResourcesComponent} from './components/resources/resources.component';
 import {ResourceService} from './service/resource/resource.service';
+import {ResourceLanguageService} from './service/resource-language/resource-language.service';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -30,6 +31,7 @@ import {SystemService} from './service/system.service';
 import {ResourceTypeService} from './service/resource-type.service';
 import {UpdateResourceComponent} from './components/edit-resource/update-resource/update-resource.component';
 import {CreateResourceComponent} from './components/edit-resource/create-resource/create-resource.component';
+import {UpdateResourceLanguageComponent} from './components/edit-resource-language/update-resource-language/update-resource-language.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ImageComponent} from './components/image/image.component';
 import {AceEditorModule} from 'ng2-ace-editor';
@@ -59,6 +61,7 @@ import 'brace/mode/xml';
     CustomTipComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
+    UpdateResourceLanguageComponent,
     ImageComponent,
     CreatePageComponent,
     CreateTipComponent,
@@ -77,6 +80,7 @@ import 'brace/mode/xml';
   providers: [
     ResourceService,
     LanguageService,
+    ResourceLanguageService,
     DraftService,
     AuthService,
     WindowRefService,
@@ -93,6 +97,7 @@ import 'brace/mode/xml';
   entryComponents: [
     UpdateResourceComponent,
     CreateResourceComponent,
+    UpdateResourceLanguageComponent,
     ImageComponent,
     PageComponent,
     TipComponent,

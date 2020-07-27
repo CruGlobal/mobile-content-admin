@@ -8,6 +8,7 @@ import {AbstractTip} from '../../models/abstract-tip';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CustomPageComponent} from '../custom-page/custom-page.component';
 import {CustomTipComponent} from '../custom-tip/custom-tip.component';
+import {UpdateResourceLanguageComponent} from '../edit-resource-language/update-resource-language/update-resource-language.component';
 import {Page} from '../../models/page';
 import {Tip} from '../../models/tip';
 import {Language} from '../../models/language';
@@ -221,6 +222,14 @@ export class TranslationComponent implements OnInit, OnChanges {
     }).catch(() => {
       // Modal cancelled: Do nothing, manifest has original structure
     });
+  }
+
+  openResourceLanguage(): void {
+    const modal = this.modalService.open(UpdateResourceLanguageComponent, {size: 'lg'});
+    modal.componentInstance.resourceLanguage.language = this.language;
+    modal.componentInstance.resourceLanguage.resource = this.resource;
+    // TODO
+    // modal.componentInstance.translation = this.translation;
   }
 
   deleteCustomManifest(): void {

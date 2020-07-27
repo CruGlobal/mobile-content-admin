@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ResourceLanguage} from '../../../models/resource-language';
-import {ResourceLanguageService} from '../../../service/resource/resource-language.service';
+import {ResourceLanguageService} from '../../../service/resource-language/resource-language.service';
 import {SystemService} from '../../../service/system.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {AbstractEditResourceLanguageComponent} from '../abstract-edit-resource-language.component';
@@ -19,6 +19,8 @@ export class UpdateResourceLanguageComponent extends AbstractEditResourceLanguag
     super(systemService, activeModal);  }
 
   ngOnInit(): void {
+    // TODO need to use the service to somehow get the resource data
+    this.resourceLanguage.includeTips = true;
   }
 
   saveResourceLanguage(): void {

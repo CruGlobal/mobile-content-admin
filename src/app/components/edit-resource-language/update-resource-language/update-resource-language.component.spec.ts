@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {UpdateResourceLanguageComponent} from './update-resource-language.component';
 import {XmlEditorComponent} from '../../xml-editor/xml-editor.component';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {ResourceLanguageService} from '../../../service/resource/resource-language.service';
+import {ResourceLanguageService} from '../../../service/resource-language/resource-language.service';
 import {SystemService} from '../../../service/system.service';
 import {ResourceTypeService} from '../../../service/resource-type.service';
 import {FormsModule} from '@angular/forms';
