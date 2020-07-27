@@ -15,12 +15,14 @@ import anything = jasmine.anything;
 import {CustomPageService} from '../../service/custom-page.service';
 import {CustomManifestService} from '../../service/custom-manifest.service';
 import {CustomManifest} from '../../models/custom-manifest';
+import {CustomTipService} from '../../service/custom-tip.service';
 
 describe('TranslationComponent', () => {
   let comp:    TranslationComponent;
   let fixture: ComponentFixture<TranslationComponent>;
 
   let customPageServiceStub;
+  let customTipsServiceStub;
   let modalServiceStub;
   let customManifestServiceStub;
 
@@ -60,6 +62,7 @@ describe('TranslationComponent', () => {
     customPageServiceStub = {
       delete() {}
     };
+    customTipsServiceStub = {};
 
     modalServiceStub = {
       open() {}
@@ -87,6 +90,7 @@ describe('TranslationComponent', () => {
       providers: [
         {provide: DraftService},
         {provide: CustomPageService, useValue: customPageServiceStub},
+        {provide: CustomTipService, useValue: customTipsServiceStub},
         {provide: CustomManifestService, useValue: customManifestServiceStub},
         {provide: NgbModal, useValue: modalServiceStub}
       ]
