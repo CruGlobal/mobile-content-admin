@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {System} from '../../../models/system';
 import {ResourceLanguage} from '../../../models/resource-language';
 import {ResourceLanguageService} from '../../../service/resource/resource-language.service';
 import {SystemService} from '../../../service/system.service';
@@ -12,7 +11,6 @@ import {AbstractEditResourceLanguageComponent} from '../abstract-edit-resource-l
 })
 export class UpdateResourceLanguageComponent extends AbstractEditResourceLanguageComponent implements OnInit {
   @Input() resourceLanguage: ResourceLanguage;
-  systems: System[];
 
   constructor(private resourceLanguageService: ResourceLanguageService,
               systemService: SystemService,
@@ -21,9 +19,6 @@ export class UpdateResourceLanguageComponent extends AbstractEditResourceLanguag
     super(systemService, activeModal);  }
 
   ngOnInit(): void {
-    super.init(
-      () => this.resourceLanguage.system = this.systems.find(system => system.id === this.resourceLanguage.system.id)
-    );
   }
 
   saveResourceLanguage(): void {

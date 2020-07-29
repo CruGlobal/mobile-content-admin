@@ -1,9 +1,7 @@
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {Input, OnDestroy} from '@angular/core';
+import {Input, OnDestroy, ViewChild} from '@angular/core';
 import {ResourceLanguage} from '../../models/resource-language';
-import {System} from '../../models/system';
 import {SystemService} from '../../service/system.service';
-import {ResourceTypeService} from '../../service/resource-type.service';
 import {AceEditorDirective} from 'ng2-ace-editor';
 
 export abstract class AbstractEditResourceLanguageComponent implements OnDestroy {
@@ -13,20 +11,9 @@ export abstract class AbstractEditResourceLanguageComponent implements OnDestroy
   @ViewChild(AceEditorDirective) editor;
 
   @Input() resourceLanguage: ResourceLanguage = new ResourceLanguage();
-  systems: System[];
 
   protected constructor(protected systemService: SystemService,
                         protected activeModal: NgbActiveModal) {}
-
-  init(systemsCallback): void {
-    this.systemService.getSystems().then(systems => {
-      this.systems = systems;
-
-      if (systemsCallback) {
-        systemsCallback.call();
-      }
-    });
-  }
 
   ngOnDestroy(): void {
     // HACK: workaround this bug: https://github.com/ajaxorg/ace/issues/4042
