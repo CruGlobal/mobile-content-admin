@@ -39,7 +39,7 @@ export class ResourceLanguageService extends AbstractService {
         id: resourceLanguage.resource.id + '-' + resourceLanguage.language.id,
         type: 'resource-language',
         attributes: {
-          'attr-include-tips': resourceLanguage.includeTips === true ? 'true' : 'false'
+          'attr-include-tips': resourceLanguage.includeTips
         }
       }
     };
