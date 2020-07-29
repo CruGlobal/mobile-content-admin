@@ -31,7 +31,7 @@ export class TipService extends AbstractService {
     return this.http.post(this.tipsUrl, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(response => new JsonApiDataStore().sync(response.json()))
-      .catch(response => Promise.reject(response.json().errors));
+      .catch(this.handleError);
   }
 
   update(tipId: number, structure: string): Promise<Tip> {
