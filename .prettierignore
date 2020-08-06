@@ -1,0 +1,5 @@
+.prettierignore
+coverage
+*.snap
+__generated__
+build
