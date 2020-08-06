@@ -2,15 +2,16 @@
   Loading...
 </ngb-alert>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="loadingError">
-  {{loadingError}}
+  {{ loadingError }}
 </ngb-alert>
-<admin-xml-editor *ngIf="!loading && !loadingError"
-                  [(structure)]="customPage.structure"
-                  [filename]="customPage.page.filename"
-                  [type]="'Custom Page'"
-                  [language]="customPage.language"
-                  [resource]="customPage.page.resource"
-                  (onCancel)="cancel()"
-                  (onSave)="updateCustomPage()"
-                  class="d-block modal-body"
+<admin-xml-editor
+  *ngIf="!loading && !loadingError"
+  [(structure)]="customPage.structure"
+  [filename]="customPage.page.filename"
+  [type]="'Custom Page'"
+  [language]="customPage.language"
+  [resource]="customPage.page.resource"
+  (onCancel)="cancel()"
+  (onSave)="updateCustomPage()"
+  class="d-block modal-body"
 ></admin-xml-editor>

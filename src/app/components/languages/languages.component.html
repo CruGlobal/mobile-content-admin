@@ -1,8 +1,8 @@
 <div class="card">
   <div class="card-body">
     <h3>Add new language</h3>
-    <input placeholder="Name" [(ngModel)]="newLanguage.name"/>
-    <input placeholder="Code" [(ngModel)]="newLanguage.code"/>
+    <input placeholder="Name" [(ngModel)]="newLanguage.name" />
+    <input placeholder="Code" [(ngModel)]="newLanguage.code" />
     <button (click)="createLanguage()" class="btn btn-success">Save</button>
     <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
       Saving...
@@ -13,7 +13,7 @@
   </div>
 </div>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-  {{errorMessage}}
+  {{ errorMessage }}
 </ngb-alert>
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
@@ -35,21 +35,34 @@
 <div *ngFor="let language of languages">
   <div class="row">
     <div class="col">
-      {{language.name}}
+      {{ language.name }}
     </div>
     <div class="col">
-      {{language.code}}
+      {{ language.code }}
     </div>
     <div class="col">
-      <button (click)="showConfirmButton(language)" class="btn btn-danger">Delete</button>
+      <button (click)="showConfirmButton(language)" class="btn btn-danger">
+        Delete
+      </button>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <ngb-alert type="danger" [dismissible]="false" *ngIf="language.canConfirmDelete">
-        Are you sure you want to delete {{language.name}}?
-        <button (click)="deleteLanguage(language)" class="btn btn-dark">Confirm</button>
-        <button (click)="language.canConfirmDelete = !language.canConfirmDelete" class="btn btn-secondary">Cancel</button>
+      <ngb-alert
+        type="danger"
+        [dismissible]="false"
+        *ngIf="language.canConfirmDelete"
+      >
+        Are you sure you want to delete {{ language.name }}?
+        <button (click)="deleteLanguage(language)" class="btn btn-dark">
+          Confirm
+        </button>
+        <button
+          (click)="language.canConfirmDelete = !language.canConfirmDelete"
+          class="btn btn-secondary"
+        >
+          Cancel
+        </button>
       </ngb-alert>
     </div>
   </div>
