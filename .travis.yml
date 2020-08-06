@@ -15,6 +15,7 @@ before_install:
 script:
   - ng test --watch=false --code-coverage
   - ng lint --type-check
+  - yarn prettier:check
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build -c production; fi
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build -c staging; fi
 
@@ -23,7 +24,7 @@ after_success:
 
 deploy:
   - provider: s3
-    bucket: "cru-mobilecontentadmin-prod"
+    bucket: 'cru-mobilecontentadmin-prod'
     region: us-east-1
     skip_cleanup: true
     local_dir: dist
@@ -31,7 +32,7 @@ deploy:
     on:
       branch: master
   - provider: s3
-    bucket: "cru-mobilecontentadmin-staging"
+    bucket: 'cru-mobilecontentadmin-staging'
     region: us-east-1
     skip_cleanup: true
     local_dir: dist
@@ -42,12 +43,12 @@ deploy:
 cache:
   yarn: true
   directories:
-  - node_modules
+    - node_modules
 
 notifications:
   email: false
 
 env:
   global:
-  - AWS_ACCESS_KEY_ID=AKIAIMLCVOS5TLNZVNSA
-  - secure: D+eq9JjLJ8ZMOGJbIsgCziGSwJuyLx6z4lytacrer/G5/33g4LuT2e950bLMyETjyemhRu1XrnI9DEsCKgyhBtcmKYvcb1dqXwdBcaYpWQ7yfl8f9kdfnhwcQpr4rk4u9/mf0UnRDZUk7ha9MNGvHxMpbluaUIwgPjn+ITdAyhDbtXLshSDrIWUwqyfhswm4uj0WJTMoPRrKCHthoeYMqmP92evGVy0CimQCzhveo4syJQlA7ubDRbh+q/wrGvgbRSazButAwLqMmNF9DJWwRcUKSOZ8t75+Hr4QnCu50hZALxWePPIEWcnIPCNRRVlhfv8ajIPmeAwrOKmTAmPbNW+0uSg9WoolzGux1D74sWCZDFTvpBtjMwCtu/blmcfmYlwDY2qg0U1sS7pSSUBSYAO5sILw5cRH3lGfRBOFlnOUOC+fQl0n7ul3H7ZfnibJRlbZIbL7/BSdKQKRuZAAU5Hv+BkJRfdRHnGKfjWHA2idei1SVit/7+k/Gi4NGyu21mAHSnyc9NwR+4+u6e6WT3Lq09R2CpK5avjKez25t+vmBMqvwn/br5NfWTIf3B4Z0b/JTdLdIrO6m0Qdej59UQZ8Hf8qAQew5/bW1he6DLUhWzwFTksQYlty1PEo5dkiH5Yk9qzc9Fqs1S/qhIeK10X3VH8LYUW+iGY8b64v1JY=
+    - AWS_ACCESS_KEY_ID=AKIAIMLCVOS5TLNZVNSA
+    - secure: D+eq9JjLJ8ZMOGJbIsgCziGSwJuyLx6z4lytacrer/G5/33g4LuT2e950bLMyETjyemhRu1XrnI9DEsCKgyhBtcmKYvcb1dqXwdBcaYpWQ7yfl8f9kdfnhwcQpr4rk4u9/mf0UnRDZUk7ha9MNGvHxMpbluaUIwgPjn+ITdAyhDbtXLshSDrIWUwqyfhswm4uj0WJTMoPRrKCHthoeYMqmP92evGVy0CimQCzhveo4syJQlA7ubDRbh+q/wrGvgbRSazButAwLqMmNF9DJWwRcUKSOZ8t75+Hr4QnCu50hZALxWePPIEWcnIPCNRRVlhfv8ajIPmeAwrOKmTAmPbNW+0uSg9WoolzGux1D74sWCZDFTvpBtjMwCtu/blmcfmYlwDY2qg0U1sS7pSSUBSYAO5sILw5cRH3lGfRBOFlnOUOC+fQl0n7ul3H7ZfnibJRlbZIbL7/BSdKQKRuZAAU5Hv+BkJRfdRHnGKfjWHA2idei1SVit/7+k/Gi4NGyu21mAHSnyc9NwR+4+u6e6WT3Lq09R2CpK5avjKez25t+vmBMqvwn/br5NfWTIf3B4Z0b/JTdLdIrO6m0Qdej59UQZ8Hf8qAQew5/bW1he6DLUhWzwFTksQYlty1PEo5dkiH5Yk9qzc9Fqs1S/qhIeK10X3VH8LYUW+iGY8b64v1JY=
