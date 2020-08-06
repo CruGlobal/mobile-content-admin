@@ -1,23 +1,23 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {TranslationComponent} from './translation.component';
-import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {DraftService} from '../../service/draft.service';
-import {CustomPageComponent} from '../custom-page/custom-page.component';
-import {Translation} from '../../models/translation';
-import {Language} from '../../models/language';
-import {DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {Resource} from '../../models/resource';
-import {Page} from '../../models/page';
-import {CustomPage} from '../../models/custom-page';
-import {ResourceComponent} from '../resource/resource.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslationComponent } from './translation.component';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DraftService } from '../../service/draft.service';
+import { CustomPageComponent } from '../custom-page/custom-page.component';
+import { Translation } from '../../models/translation';
+import { Language } from '../../models/language';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { Resource } from '../../models/resource';
+import { Page } from '../../models/page';
+import { CustomPage } from '../../models/custom-page';
+import { ResourceComponent } from '../resource/resource.component';
 import anything = jasmine.anything;
-import {CustomPageService} from '../../service/custom-page.service';
-import {CustomManifestService} from '../../service/custom-manifest.service';
-import {CustomManifest} from '../../models/custom-manifest';
+import { CustomPageService } from '../../service/custom-page.service';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { CustomManifest } from '../../models/custom-manifest';
 
 describe('TranslationComponent', () => {
-  let comp:    TranslationComponent;
+  let comp: TranslationComponent;
   let fixture: ComponentFixture<TranslationComponent>;
 
   let customPageServiceStub;
@@ -34,13 +34,18 @@ describe('TranslationComponent', () => {
     return page;
   };
 
-  const buildCustomManifest = (id: number, lang: Language, resource: Resource): CustomManifest => {
+  const buildCustomManifest = (
+    id: number,
+    lang: Language,
+    resource: Resource,
+  ): CustomManifest => {
     const manifest = new CustomManifest();
     manifest.id = id;
     manifest['_type'] = 'custom-manifest';
     manifest.language = lang;
     manifest.resource = resource;
-    manifest.structure = '<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"></manifest>';
+    manifest.structure =
+      '<manifest xmlns="https://mobile-content-api.cru.org/xmlns/manifest"></manifest>';
     return manifest;
   };
 
@@ -58,38 +63,40 @@ describe('TranslationComponent', () => {
 
   beforeEach(async(() => {
     customPageServiceStub = {
-      delete() {}
+      delete() {},
     };
 
     modalServiceStub = {
-      open() {}
+      open() {},
     };
     const modalRef = {
       componentInstance: {},
-      result: Promise.resolve()
+      result: Promise.resolve(),
     };
 
     customManifestServiceStub = {
-      delete() {}
+      delete() {},
     };
 
     spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
     spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
-    spyOn(customManifestServiceStub, 'delete').and.returnValue(Promise.resolve());
+    spyOn(customManifestServiceStub, 'delete').and.returnValue(
+      Promise.resolve(),
+    );
 
     customPageServiceStub.delete();
     modalServiceStub.open();
     customManifestServiceStub.delete();
 
     TestBed.configureTestingModule({
-      declarations: [ TranslationComponent ],
-      imports: [ NgbModule.forRoot() ],
+      declarations: [TranslationComponent],
+      imports: [NgbModule.forRoot()],
       providers: [
-        {provide: DraftService},
-        {provide: CustomPageService, useValue: customPageServiceStub},
-        {provide: CustomManifestService, useValue: customManifestServiceStub},
-        {provide: NgbModal, useValue: modalServiceStub}
-      ]
+        { provide: DraftService },
+        { provide: CustomPageService, useValue: customPageServiceStub },
+        { provide: CustomManifestService, useValue: customManifestServiceStub },
+        { provide: NgbModal, useValue: modalServiceStub },
+      ],
     }).compileComponents();
   }));
 
@@ -107,13 +114,15 @@ describe('TranslationComponent', () => {
     cp.page = pageWithCustomPage;
 
     language = new Language();
-    language['custom-pages'] = [ cp ];
+    language['custom-pages'] = [cp];
     language.id = 1;
     comp.language = language;
 
     const resource = new Resource();
-    resource.pages = [ buildPage(1), pageWithCustomPage ];
-    resource['custom-manifests'] = [buildCustomManifest(12, language, resource)];
+    resource.pages = [buildPage(1), pageWithCustomPage];
+    resource['custom-manifests'] = [
+      buildCustomManifest(12, language, resource),
+    ];
     comp.resource = resource;
   });
 
@@ -125,12 +134,16 @@ describe('TranslationComponent', () => {
     });
 
     it(`should show action button with 'New Draft'`, () => {
-      const element: DebugElement = fixture.debugElement.query(By.css('.btn.btn-secondary'));
+      const element: DebugElement = fixture.debugElement.query(
+        By.css('.btn.btn-secondary'),
+      );
       expect(element.nativeElement.textContent.trim()).toBe('New Draft');
     });
 
     it(`should show status badge with 'None'`, () => {
-      const element: DebugElement = fixture.debugElement.query(By.css('.badge.badge-warning'));
+      const element: DebugElement = fixture.debugElement.query(
+        By.css('.badge.badge-warning'),
+      );
       expect(element.nativeElement.textContent).toBe('None');
     });
   });
@@ -145,7 +158,7 @@ describe('TranslationComponent', () => {
       translation.resource = comp.resource;
 
       comp.resource.translations = [translation];
-      comp.resource['latest-drafts-translations'] = [ translation ];
+      comp.resource['latest-drafts-translations'] = [translation];
       comp.reloadTranslation();
       fixture.detectChanges();
     });
@@ -154,7 +167,9 @@ describe('TranslationComponent', () => {
       let pages: DebugElement[];
 
       beforeEach(() => {
-        const showPagesButton: DebugElement = fixture.debugElement.query(By.css('.btn.btn-warning'));
+        const showPagesButton: DebugElement = fixture.debugElement.query(
+          By.css('.btn.btn-warning'),
+        );
         showPagesButton.nativeElement.click();
 
         fixture.detectChanges();
@@ -179,12 +194,17 @@ describe('TranslationComponent', () => {
 
         it('create button should open a CustomPageComponent', () => {
           createButtons[0].nativeElement.click();
-          expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent, anything());
+          expect(modalServiceStub.open).toHaveBeenCalledWith(
+            CustomPageComponent,
+            anything(),
+          );
         });
 
         it('create button should open a large window', () => {
           createButtons[0].nativeElement.click();
-          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), {
+            size: 'lg',
+          });
         });
 
         it('shouldnt have any edit buttons', () => {
@@ -217,12 +237,17 @@ describe('TranslationComponent', () => {
 
         it('edit button should open a CustomPageComponent', () => {
           editButtons[0].nativeElement.click();
-          expect(modalServiceStub.open).toHaveBeenCalledWith(CustomPageComponent, anything());
+          expect(modalServiceStub.open).toHaveBeenCalledWith(
+            CustomPageComponent,
+            anything(),
+          );
         });
 
         it('edit button should open a large window', () => {
           editButtons[0].nativeElement.click();
-          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), { size: 'lg' });
+          expect(modalServiceStub.open).toHaveBeenCalledWith(anything(), {
+            size: 'lg',
+          });
         });
 
         it('should have one delete button', () => {
@@ -242,7 +267,9 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        const element: DebugElement = fixture.debugElement.query(By.css('.badge.badge-success'));
+        const element: DebugElement = fixture.debugElement.query(
+          By.css('.badge.badge-success'),
+        );
         expect(element.nativeElement.textContent).toBe(' | Live');
       });
 
@@ -251,7 +278,9 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        const element: DebugElement = fixture.debugElement.query(By.css('.badge.badge-secondary'));
+        const element: DebugElement = fixture.debugElement.query(
+          By.css('.badge.badge-secondary'),
+        );
         expect(element.nativeElement.textContent).toBe(' | Draft');
       });
     });
@@ -262,7 +291,9 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        const element: DebugElement = fixture.debugElement.query(By.css('.btn.btn-secondary'));
+        const element: DebugElement = fixture.debugElement.query(
+          By.css('.btn.btn-secondary'),
+        );
         expect(element.nativeElement.textContent.trim()).toBe('New Draft');
       });
 
@@ -271,7 +302,9 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        const element: DebugElement = fixture.debugElement.query(By.css('.btn.btn-success'));
+        const element: DebugElement = fixture.debugElement.query(
+          By.css('.btn.btn-success'),
+        );
         expect(element.nativeElement.textContent.trim()).toBe('Publish');
       });
     });

@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
-import {AuthService} from './auth/auth.service';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { AuthService } from './auth/auth.service';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 @Injectable()
 export class AttachmentService extends AbstractService {
@@ -14,7 +14,11 @@ export class AttachmentService extends AbstractService {
   }
 
   deleteAttachment(id: number): Promise<void> {
-    return this.http.delete(`${this.attachmentsUrl}/${id}`, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .delete(
+        `${this.attachmentsUrl}/${id}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
       .catch(this.handleError);
   }

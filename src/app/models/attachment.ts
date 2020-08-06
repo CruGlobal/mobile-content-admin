@@ -1,4 +1,4 @@
-import {Resource} from './resource';
+import { Resource } from './resource';
 
 export class Attachment {
   id: number;

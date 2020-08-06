@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
-import {AuthGuardService} from './auth-guard.service';
-import {DraftService} from '../draft.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { AuthGuardService } from './auth-guard.service';
+import { DraftService } from '../draft.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 class MockDraftService extends DraftService {
   canGetDrafts() {
@@ -9,7 +9,7 @@ class MockDraftService extends DraftService {
   }
 }
 
-describe ('AuthGuardService', () => {
+describe('AuthGuardService', () => {
   it('opens login modal', (done) => {
     const mockDraftService = new MockDraftService(null, null);
     const mockNgbModal = new NgbModal(null, null, null, null);

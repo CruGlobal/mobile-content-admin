@@ -1,5 +1,5 @@
-import {Resource} from './resource';
-import {AbstractPage} from './abstract-page';
+import { Resource } from './resource';
+import { AbstractPage } from './abstract-page';
 
 export class Page extends AbstractPage {
   filename: string;

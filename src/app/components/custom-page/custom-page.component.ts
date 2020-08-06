@@ -1,14 +1,14 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {CustomPage} from '../../models/custom-page';
-import {CustomPageService} from '../../service/custom-page.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
-import {DraftService} from '../../service/draft.service';
-import {Translation} from '../../models/translation';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { CustomPage } from '../../models/custom-page';
+import { CustomPageService } from '../../service/custom-page.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { DraftService } from '../../service/draft.service';
+import { Translation } from '../../models/translation';
 
 @Component({
   selector: 'admin-custom-page',
-  templateUrl: './custom-page.component.html'
+  templateUrl: './custom-page.component.html',
 })
 export class CustomPageComponent implements OnInit {
   @Input() customPage: CustomPage;
@@ -18,21 +18,29 @@ export class CustomPageComponent implements OnInit {
   loading = true;
   loadingError: string;
 
-  constructor(private customPageService: CustomPageService,
-              private draftService: DraftService,
-              private activeModal: NgbActiveModal) {}
+  constructor(
+    private customPageService: CustomPageService,
+    private draftService: DraftService,
+    private activeModal: NgbActiveModal,
+  ) {}
 
   ngOnInit(): void {
-    this.draftService.getPage(this.customPage.page, this.translation)
+    this.draftService
+      .getPage(this.customPage.page, this.translation)
       .then((response) => {
         this.customPage.structure = response;
       })
-      .catch((message) => this.loadingError = message)
-      .then(() => this.loading = false);
+      .catch((message) => (this.loadingError = message))
+      .then(() => (this.loading = false));
   }
 
   updateCustomPage(): void {
-    this.customPageService.upsert(this.customPage.language.id, this.customPage.page.id, this.customPage.structure)
+    this.customPageService
+      .upsert(
+        this.customPage.language.id,
+        this.customPage.page.id,
+        this.customPage.structure,
+      )
       .then(() => this.activeModal.close())
       .catch(this.handleError.bind(this));
   }

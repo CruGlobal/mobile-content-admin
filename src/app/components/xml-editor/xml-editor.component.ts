@@ -1,14 +1,20 @@
-import {Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
-import {Language} from '../../models/language';
-import {Resource} from '../../models/resource';
-import {AceEditorDirective} from 'ng2-ace-editor';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { Language } from '../../models/language';
+import { Resource } from '../../models/resource';
+import { AceEditorDirective } from 'ng2-ace-editor';
 
 @Component({
   selector: 'admin-xml-editor',
-  templateUrl: './xml-editor.component.html'
+  templateUrl: './xml-editor.component.html',
 })
 export class XmlEditorComponent implements OnDestroy {
-
   readonly saveMessage = 'Save';
   readonly cancelMessage = 'Cancel';
 
