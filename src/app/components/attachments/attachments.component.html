@@ -47,16 +47,31 @@
       <hr />
     </div>
     <h5>Upload new attachment</h5>
-    <input type="file" ng2FileSelect [uploader]="uploader" #uploadElement />
-    Resource
-    <select [(ngModel)]="selectedResource">
-      <option *ngFor="let resource of resources" [ngValue]="resource">{{
-        resource.name
-      }}</option>
-    </select>
-    <button (click)="uploadNewFile()" class="btn btn-success">
-      <i class="fa fa-cloud-upload"></i> Upload
-    </button>
+    <div class="input-group mb-3">
+      <div class="custom-file">
+        <input
+          type="file"
+          ng2FileSelect
+          [uploader]="uploader"
+          #uploadElement
+          class="custom-file-input"
+          id="newAttachment"
+        />
+        <label class="custom-file-label" for="newAttachment">Choose file</label>
+      </div>
+      <select [(ngModel)]="selectedResource" class="custom-select">
+        <option value="undefined" disabled selected hidden>Resource</option>
+        <option *ngFor="let resource of resources" [ngValue]="resource">{{
+          resource.name
+        }}</option>
+      </select>
+      <div class="input-group-append">
+        <button (click)="uploadNewFile()" class="btn btn-success">
+          <i class="fa fa-cloud-upload"></i> Upload
+        </button>
+      </div>
+    </div>
+
     <ngb-alert type="info" [dismissible]="false" *ngIf="uploader.isUploading">
       Uploading...
     </ngb-alert>
@@ -114,18 +129,20 @@
           </div>
 
           <div class="col">
-            <button
-              (click)="showAttachment(attachment)"
-              class="btn btn-secondary"
-            >
-              View
-            </button>
-            <button
-              (click)="showConfirmButton(attachment)"
-              class="btn btn-danger"
-            >
-              Delete
-            </button>
+            <div class="btn-group" role="group">
+              <button
+                (click)="showAttachment(attachment)"
+                class="btn btn-secondary"
+              >
+                View
+              </button>
+              <button
+                (click)="showConfirmButton(attachment)"
+                class="btn btn-danger"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
         <div class="row">
@@ -137,20 +154,22 @@
             >
               Are you sure you want to delete
               {{ attachment['file-file-name'] }}?
-              <button
-                (click)="deleteAttachment(attachment)"
-                class="btn btn-dark"
-              >
-                Confirm
-              </button>
-              <button
-                (click)="
-                  attachment.canConfirmDelete = !attachment.canConfirmDelete
-                "
-                class="btn btn-secondary"
-              >
-                Cancel
-              </button>
+              <div class="btn-group" role="group">
+                <button
+                  (click)="deleteAttachment(attachment)"
+                  class="btn btn-dark"
+                >
+                  Confirm
+                </button>
+                <button
+                  (click)="
+                    attachment.canConfirmDelete = !attachment.canConfirmDelete
+                  "
+                  class="btn btn-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
             </ngb-alert>
           </div>
         </div>
