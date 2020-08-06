@@ -2,7 +2,11 @@
   <div class="card-header">
     <span class="h3">Translations</span>
     <div class="float-right">
-      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+      <button
+        type="button"
+        class="btn btn-default"
+        (click)="showInstructions = !showInstructions"
+      >
         Toggle instructions
       </button>
     </div>
@@ -13,32 +17,75 @@
       <ul>
         <li>
           <strong>Create a translation draft </strong>
-          <p>When a translator wishes to do work on a translation, a new <em>translation draft</em> is needed first.</p>
-          <p>To create a new draft, simply by click on <button class="btn btn-secondary"><i class="fa fa-plus"></i> New Draft</button> for the resource to be translated in the desired language.</p>
-          <p>Note that there may be exactly one draft open for a translation at any time.</p>
+          <p>
+            When a translator wishes to do work on a translation, a new
+            <em>translation draft</em> is needed first.
+          </p>
+          <p>
+            To create a new draft, simply by click on
+            <button class="btn btn-secondary">
+              <i class="fa fa-plus"></i> New Draft
+            </button>
+            for the resource to be translated in the desired language.
+          </p>
+          <p>
+            Note that there may be exactly one draft open for a translation at
+            any time.
+          </p>
         </li>
-        <li><strong>View & Edit XML for a translation draft</strong>
-          <p>Sometimes it is necessary to adjust a resource's layout & formatting to accommodate words or phrases that are longer or shorter compared to English. </p>
-          <p>To do so, click <button class="btn btn-warning"><i class="fa fa-chevron-down"></i> Show pages</button> next to the desired translation draft and choose the Page to edit.</p>
+        <li>
+          <strong>View & Edit XML for a translation draft</strong>
+          <p>
+            Sometimes it is necessary to adjust a resource's layout & formatting
+            to accommodate words or phrases that are longer or shorter compared
+            to English.
+          </p>
+          <p>
+            To do so, click
+            <button class="btn btn-warning">
+              <i class="fa fa-chevron-down"></i> Show pages
+            </button>
+            next to the desired translation draft and choose the Page to edit.
+          </p>
         </li>
-        <li><strong>Publish a translation draft</strong>
-          <p>When a translator or an editor has finished work on a translation draft and is to make it available for all to download, the translation draft should be published.</p>
-          <p>Click <button class="btn btn-success"><i class="fa fa-cloud-upload"></i> Publish</button> next to the translation draft to be published.</p>
+        <li>
+          <strong>Publish a translation draft</strong>
+          <p>
+            When a translator or an editor has finished work on a translation
+            draft and is to make it available for all to download, the
+            translation draft should be published.
+          </p>
+          <p>
+            Click
+            <button class="btn btn-success">
+              <i class="fa fa-cloud-upload"></i> Publish
+            </button>
+            next to the translation draft to be published.
+          </p>
         </li>
       </ul>
       <hr />
     </div>
-    <button (click)="openCreateModal()" class="btn btn-secondary"><i class="fa fa-plus"></i> Add new Resource</button>
+    <button (click)="openCreateModal()" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> Add new Resource
+    </button>
   </div>
 </div>
-<ngb-alert type="warning" [dismissible]="false" *ngIf="loadingResources || loadingLanguages">
+<ngb-alert
+  type="warning"
+  [dismissible]="false"
+  *ngIf="loadingResources || loadingLanguages"
+>
   Loading...
 </ngb-alert>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-  {{errorMessage}}
+  {{ errorMessage }}
 </ngb-alert>
 <div *ngIf="!loadingLanguages">
-  <div *ngFor="let resource of resources;trackBy: trackByFunction">
-    <admin-resource [resource]="resource" [resourcesComponent]="this"></admin-resource>
+  <div *ngFor="let resource of resources; trackBy: trackByFunction">
+    <admin-resource
+      [resource]="resource"
+      [resourcesComponent]="this"
+    ></admin-resource>
   </div>
 </div>

@@ -9,8 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prettier:check": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx},./*.{js,json,ts,tsx,yml}}' --list-different",
-    "prettier:write": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx},./*.{js,json,ts,tsx,yml}}' --write"
+    "prettier:check": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
+    "prettier:write": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write"
   },
   "private": true,
   "dependencies": {

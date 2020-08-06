@@ -4,7 +4,7 @@
       <label>Name</label>
     </div>
     <div class="col">
-      <input placeholder="Name" [(ngModel)]="resource.name"/>
+      <input placeholder="Name" [(ngModel)]="resource.name" />
     </div>
   </div>
 
@@ -23,7 +23,9 @@
     </div>
     <div class="col">
       <select [(ngModel)]="resource.system">
-        <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
+        <option *ngFor="let system of systems" [ngValue]="system">{{
+          system.name
+        }}</option>
       </select>
     </div>
   </div>
@@ -34,7 +36,9 @@
     </div>
     <div class="col">
       <select [(ngModel)]="resource.resourceType">
-        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
+        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{
+          type.name
+        }}</option>
       </select>
     </div>
   </div>
@@ -44,7 +48,10 @@
       <label>OneSky Project ID</label>
     </div>
     <div class="col">
-      <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
+      <input
+        placeholder="OneSky Project ID"
+        [(ngModel)]="resource.oneskyProjectId"
+      />
     </div>
   </div>
 
@@ -63,14 +70,15 @@
     </div>
   </div>
   <div class="row">
-    <div ace-editor
-         [(text)]="resource.manifest"
-         [mode]="'xml'"
-         [autoUpdateContent]="true"
-         [options]="{wrap : true}"
-         class="col"
-         style="min-height: 250px; overflow: auto;">
-    </div>
+    <div
+      ace-editor
+      [(text)]="resource.manifest"
+      [mode]="'xml'"
+      [autoUpdateContent]="true"
+      [options]="{ wrap: true }"
+      class="col"
+      style="min-height: 250px; overflow: auto;"
+    ></div>
   </div>
 
   <div class="row" *ngIf="saving">
@@ -84,7 +92,7 @@
   <div class="row" *ngIf="errorMessage">
     <div class="col">
       <ngb-alert type="danger" [dismissible]="false">
-        {{errorMessage}}
+        {{ errorMessage }}
       </ngb-alert>
     </div>
   </div>
