@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
-import {Language} from '../models/language';
-import {AuthService} from './auth/auth.service';
-import {JsonApiDataStore} from 'jsonapi-datastore';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { Language } from '../models/language';
+import { AuthService } from './auth/auth.service';
+import { JsonApiDataStore } from 'jsonapi-datastore';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 @Injectable()
 export class LanguageService extends AbstractService {
@@ -16,18 +16,20 @@ export class LanguageService extends AbstractService {
   }
 
   getLanguages(): Promise<Language[]> {
-    return this.http.get(this.languagesUrl)
+    return this.http
+      .get(this.languagesUrl)
       .toPromise()
-      .then(response => {
+      .then((response) => {
         return new JsonApiDataStore().sync(response.json());
       })
       .catch(this.handleError);
   }
 
   getLanguage(id: number, include: string): Promise<Language> {
-    return this.http.get(`${this.languagesUrl}/${id}?include=${include}`)
+    return this.http
+      .get(`${this.languagesUrl}/${id}?include=${include}`)
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
@@ -37,19 +39,28 @@ export class LanguageService extends AbstractService {
         type: 'language',
         attributes: {
           name: language.name,
-          code: language.code
-        }
-      }
+          code: language.code,
+        },
+      },
     };
 
-    return this.http.post(this.languagesUrl, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .post(
+        this.languagesUrl,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
   deleteLanguage(id: number): Promise<void> {
-    return this.http.delete(`${this.languagesUrl}/${id}`, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .delete(
+        `${this.languagesUrl}/${id}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
       .catch(this.handleError);
   }

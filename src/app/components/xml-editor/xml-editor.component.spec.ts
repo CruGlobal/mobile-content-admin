@@ -1,10 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {XmlEditorComponent} from './xml-editor.component';
-import {DebugElement} from '@angular/core';
-import {Resource} from '../../models/resource';
-import {Language} from '../../models/language';
-import {AceEditorDirective} from 'ng2-ace-editor';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { XmlEditorComponent } from './xml-editor.component';
+import { DebugElement } from '@angular/core';
+import { Resource } from '../../models/resource';
+import { Language } from '../../models/language';
+import { AceEditorDirective } from 'ng2-ace-editor';
 
 describe('XmlEditorComponent', () => {
   let comp: XmlEditorComponent;
@@ -14,7 +14,7 @@ describe('XmlEditorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()]
+      imports: [NgbModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(XmlEditorComponent);
@@ -27,7 +27,9 @@ describe('XmlEditorComponent', () => {
   it('saves when clicking save', () => {
     fixture.detectChanges();
     spyOn(comp.onSave, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.saveMessage);
+    const element: DebugElement = fixture.debugElement.query(
+      (de) => de.nativeElement.textContent.trim() === comp.saveMessage,
+    );
 
     element.nativeElement.click();
 
@@ -37,7 +39,9 @@ describe('XmlEditorComponent', () => {
   it('cancels when clicking cancel', () => {
     fixture.detectChanges();
     spyOn(comp.onCancel, 'emit');
-    const element: DebugElement = fixture.debugElement.query(de => de.nativeElement.textContent.trim() === comp.cancelMessage);
+    const element: DebugElement = fixture.debugElement.query(
+      (de) => de.nativeElement.textContent.trim() === comp.cancelMessage,
+    );
 
     element.nativeElement.click();
 

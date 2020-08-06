@@ -1,15 +1,14 @@
 import 'rxjs/add/operator/toPromise';
-import {ResourceService} from './resource.service';
-import {Http, RequestOptionsArgs} from '@angular/http';
-import {AuthService} from '../auth/auth.service';
-import {Resource} from '../../models/resource';
-import {Observable} from 'rxjs/Observable';
+import { ResourceService } from './resource.service';
+import { Http, RequestOptionsArgs } from '@angular/http';
+import { AuthService } from '../auth/auth.service';
+import { Resource } from '../../models/resource';
+import { Observable } from 'rxjs/Observable';
 import anything = jasmine.anything;
 
 const headers: RequestOptionsArgs = {};
 
-class MockHttp extends Http {
-}
+class MockHttp extends Http {}
 
 class MockAuthService extends AuthService {
   getAuthorizationAndOptions() {
@@ -17,7 +16,7 @@ class MockAuthService extends AuthService {
   }
 }
 
-describe ('ResourceService', () => {
+describe('ResourceService', () => {
   const mockHttp = new MockHttp(null, null);
   const mockAuthService = new MockAuthService(null, null);
   const service = new ResourceService(mockHttp, mockAuthService);
@@ -25,14 +24,20 @@ describe ('ResourceService', () => {
   const resource = new Resource();
 
   beforeEach(() => {
-    spyOn(mockHttp, 'post').and.returnValue(Observable.create(observer => {
-      observer.next({
-        json() { return new Resource(); }
-      });
-      observer.complete();
-    }));
+    spyOn(mockHttp, 'post').and.returnValue(
+      Observable.create((observer) => {
+        observer.next({
+          json() {
+            return new Resource();
+          },
+        });
+        observer.complete();
+      }),
+    );
 
-    spyOn(mockHttp, 'put').and.returnValue(Observable.create(observer => observer.complete()));
+    spyOn(mockHttp, 'put').and.returnValue(
+      Observable.create((observer) => observer.complete()),
+    );
   });
 
   it('creating uses authorization code', () => {

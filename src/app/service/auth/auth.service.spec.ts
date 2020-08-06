@@ -1,8 +1,8 @@
 import 'rxjs/add/operator/toPromise';
-import {Http, RequestOptionsArgs} from '@angular/http';
-import {AuthService} from './auth.service';
-import {Observable} from 'rxjs/Observable';
-import {WindowRefService} from '../../models/window-ref-service';
+import { Http, RequestOptionsArgs } from '@angular/http';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/Observable';
+import { WindowRefService } from '../../models/window-ref-service';
 import { UUID } from 'angular2-uuid';
 
 let token: string;
@@ -12,23 +12,23 @@ const response = {
     return {
       data: {
         attributes: {
-          token: token
-        }
-      }
+          token: token,
+        },
+      },
     };
-  }
+  },
 };
 
 class MockHttp extends Http {
   post() {
-    return Observable.create(observer => {
+    return Observable.create((observer) => {
       observer.next(response);
       observer.complete();
     });
   }
 }
 
-describe ('AuthService', () => {
+describe('AuthService', () => {
   const mockHttp = new MockHttp(null, null);
   const windowRef = new WindowRefService();
 
@@ -53,7 +53,9 @@ describe ('AuthService', () => {
     service.createAuthToken('code');
 
     setTimeout(() => {
-      expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(token);
+      expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
+        token,
+      );
       done();
     });
   });

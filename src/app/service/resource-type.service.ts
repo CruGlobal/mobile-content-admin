@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
-import {JsonApiDataStore} from 'jsonapi-datastore';
-import {ResourceType} from '../models/resource-type';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { JsonApiDataStore } from 'jsonapi-datastore';
+import { ResourceType } from '../models/resource-type';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 @Injectable()
 export class ResourceTypeService extends AbstractService {
@@ -15,9 +15,10 @@ export class ResourceTypeService extends AbstractService {
   }
 
   getResourceTypes(): Promise<ResourceType[]> {
-    return this.http.get(this.resourceTypesUrl, this.requestOptions)
+    return this.http
+      .get(this.resourceTypesUrl, this.requestOptions)
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }

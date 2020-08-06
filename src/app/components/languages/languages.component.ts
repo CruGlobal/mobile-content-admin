@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Language} from '../../models/language';
-import {LanguageService} from '../../service/language.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Language } from '../../models/language';
+import { LanguageService } from '../../service/language.service';
 
 @Component({
   selector: 'admin-languages',
-  templateUrl: './languages.component.html'
+  templateUrl: './languages.component.html',
 })
 export class LanguagesComponent implements OnInit {
   @Input() name: string;
@@ -30,30 +30,33 @@ export class LanguagesComponent implements OnInit {
   private loadLanguages(): void {
     this.loading = true;
 
-    this.languageService.getLanguages()
-      .then(languages => this.languages = languages)
+    this.languageService
+      .getLanguages()
+      .then((languages) => (this.languages = languages))
       .catch(this.handleError.bind(this))
-      .then(() => this.loading = false);
+      .then(() => (this.loading = false));
   }
 
   createLanguage(): void {
     this.saving = true;
     this.errorMessage = null;
 
-    this.languageService.createLanguage(this.newLanguage)
+    this.languageService
+      .createLanguage(this.newLanguage)
       .then(() => {
         this.showSuccess();
         this.loadLanguages();
       })
       .catch(this.handleError.bind(this))
-      .then(() => this.saving = false);
+      .then(() => (this.saving = false));
   }
 
   deleteLanguage(language: Language): void {
     this.errorMessage = null;
     language.canConfirmDelete = false;
 
-    this.languageService.deleteLanguage(language.id)
+    this.languageService
+      .deleteLanguage(language.id)
       .then(() => {
         this.showSuccess();
         this.loadLanguages();
@@ -62,12 +65,12 @@ export class LanguagesComponent implements OnInit {
   }
 
   protected showConfirmButton(language: Language): void {
-    this.languages.forEach(l => l.canConfirmDelete = false);
+    this.languages.forEach((l) => (l.canConfirmDelete = false));
     language.canConfirmDelete = true;
   }
 
   showSuccess(): void {
     this.success = true;
-    setTimeout(() => this.success = false, 2000);
+    setTimeout(() => (this.success = false), 2000);
   }
 }
