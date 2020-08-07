@@ -15,8 +15,10 @@ export class ResourceLanguageService extends AbstractService {
     super();
   }
 
-  getResourceLanguage(id: number, include: string): Promise<ResourceLanguage> {
-    const url = `${this.resourcesUrl}/${id}?include=${include}`;
+  getResourceLanguage(
+    resourceLanguage: ResourceLanguage,
+  ): Promise<ResourceLanguage> {
+    const url = `${this.resourcesUrl}/${resourceLanguage.resource.id}/languages/${resourceLanguage.language.id}`;
     return this.http
       .get(url)
       .toPromise()
