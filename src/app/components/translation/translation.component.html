@@ -163,20 +163,22 @@
                   </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="'custom-page'">
-                  <button
-                    (click)="openCustomPage(page)"
-                    class="btn btn-outline-dark"
-                    data-action="edit"
-                  >
-                    <i class="fa fa-pencil"></i> Edit
-                  </button>
-                  <button
-                    (click)="deleteCustomPage(page)"
-                    class="btn btn-danger"
-                    data-action="delete"
-                  >
-                    <i class="fa fa-times"></i> Remove
-                  </button>
+                  <div class="btn-group" role="group">
+                    <button
+                      (click)="openCustomPage(page)"
+                      class="btn btn-outline-dark"
+                      data-action="edit"
+                    >
+                      <i class="fa fa-pencil"></i> Edit
+                    </button>
+                    <button
+                      (click)="deleteCustomPage(page)"
+                      class="btn btn-danger"
+                      data-action="delete"
+                    >
+                      <i class="fa fa-times"></i> Remove
+                    </button>
+                  </div>
                 </ng-container>
               </div>
             </div>
@@ -215,20 +217,22 @@
                   </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="'custom-tip'">
-                  <button
-                    (click)="openCustomTip(tip)"
-                    class="btn btn-outline-dark"
-                    data-action="edit"
-                  >
-                    <i class="fa fa-pencil"></i> Edit
-                  </button>
-                  <button
-                    (click)="deleteCustomTip(tip)"
-                    class="btn btn-danger"
-                    data-action="delete"
-                  >
-                    <i class="fa fa-times"></i> Remove
-                  </button>
+                  <div class="btn-group" role="group">
+                    <button
+                      (click)="openCustomTip(tip)"
+                      class="btn btn-outline-dark"
+                      data-action="edit"
+                    >
+                      <i class="fa fa-pencil"></i> Edit
+                    </button>
+                    <button
+                      (click)="deleteCustomTip(tip)"
+                      class="btn btn-danger"
+                      data-action="delete"
+                    >
+                      <i class="fa fa-times"></i> Remove
+                    </button>
+                  </div>
                 </ng-container>
               </div>
             </div>
