@@ -1,7 +1,7 @@
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {Input} from '@angular/core';
-import {ResourceLanguage} from '../../models/resource-language';
-import {SystemService} from '../../service/system.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Input } from '@angular/core';
+import { ResourceLanguage } from '../../models/resource-language';
+import { SystemService } from '../../service/system.service';
 
 export abstract class AbstractEditResourceLanguageComponent {
   saving = false;
@@ -9,8 +9,10 @@ export abstract class AbstractEditResourceLanguageComponent {
 
   @Input() resourceLanguage: ResourceLanguage = new ResourceLanguage();
 
-  protected constructor(protected systemService: SystemService,
-                        protected activeModal: NgbActiveModal) {}
+  protected constructor(
+    protected systemService: SystemService,
+    protected activeModal: NgbActiveModal,
+  ) {}
 
   closeEditModal() {
     this.activeModal.dismiss('dismissed');

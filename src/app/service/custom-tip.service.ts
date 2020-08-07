@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import {Http} from '@angular/http';
-import {JsonApiDataStore} from 'jsonapi-datastore';
-import {AuthService} from './auth/auth.service';
-import {CustomTip} from '../models/custom-tip';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { Http } from '@angular/http';
+import { JsonApiDataStore } from 'jsonapi-datastore';
+import { AuthService } from './auth/auth.service';
+import { CustomTip } from '../models/custom-tip';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 // not sure why this is required here but not in custom-page.service.ts
 // without it, there's a StaticInjectorError
 @Injectable({
   providedIn: 'root',
 })
-
 export class CustomTipService extends AbstractService {
   private readonly customTipsUrl = environment.base_url + 'custom_tips';
 
@@ -19,26 +18,39 @@ export class CustomTipService extends AbstractService {
     super();
   }
 
-  upsert(languageId: number, tipId: number, structure: string): Promise<CustomTip> {
+  upsert(
+    languageId: number,
+    tipId: number,
+    structure: string,
+  ): Promise<CustomTip> {
     const payload = {
       data: {
         type: 'custom_tip',
         attributes: {
           language_id: languageId,
           tip_id: tipId,
-          structure: structure
-        }
-      }
+          structure: structure,
+        },
+      },
     };
 
-    return this.http.post(this.customTipsUrl, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .post(
+        this.customTipsUrl,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
   delete(id: number): Promise<void> {
-    return this.http.delete(`${this.customTipsUrl}/${id}`, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .delete(
+        `${this.customTipsUrl}/${id}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
       .catch(this.handleError);
   }

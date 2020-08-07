@@ -1,39 +1,47 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CustomPageComponent} from './custom-page.component';
-import {DebugElement} from '@angular/core';
-import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
-import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AceEditorDirective} from 'ng2-ace-editor';
-import {CustomPageService} from '../../service/custom-page.service';
-import {CustomPage} from '../../models/custom-page';
-import {Language} from '../../models/language';
-import {Page} from '../../models/page';
-import {DraftService} from '../../service/draft.service';
-import {Resource} from '../../models/resource';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CustomPageComponent } from './custom-page.component';
+import { DebugElement } from '@angular/core';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
+import { CustomPageService } from '../../service/custom-page.service';
+import { CustomPage } from '../../models/custom-page';
+import { Language } from '../../models/language';
+import { Page } from '../../models/page';
+import { DraftService } from '../../service/draft.service';
+import { Resource } from '../../models/resource';
 
 describe('CustomPageComponent', () => {
-  let comp:    CustomPageComponent;
+  let comp: CustomPageComponent;
   let fixture: ComponentFixture<CustomPageComponent>;
   let xmlEditor: DebugElement;
 
-  const customPageServiceStub = {
-    upsert() {}
-  } as unknown as CustomPageService;
+  const customPageServiceStub = ({
+    upsert() {},
+  } as unknown) as CustomPageService;
   const draftServiceStub = {
-    getPage() { return Promise.resolve('xml response'); }
+    getPage() {
+      return Promise.resolve('xml response');
+    },
   };
 
   beforeEach(async(() => {
-    spyOn(customPageServiceStub, 'upsert').and.returnValue(Promise.resolve<CustomPage>(null));
+    spyOn(customPageServiceStub, 'upsert').and.returnValue(
+      Promise.resolve<CustomPage>(null),
+    );
 
     TestBed.configureTestingModule({
-      declarations: [ CustomPageComponent, XmlEditorComponent, AceEditorDirective ],
-      imports: [ NgbModule.forRoot() ],
+      declarations: [
+        CustomPageComponent,
+        XmlEditorComponent,
+        AceEditorDirective,
+      ],
+      imports: [NgbModule.forRoot()],
       providers: [
-        {provide: CustomPageService, useValue: customPageServiceStub},
-        {provide: DraftService, useValue: draftServiceStub},
-        {provide: NgbActiveModal}
-      ]
+        { provide: CustomPageService, useValue: customPageServiceStub },
+        { provide: DraftService, useValue: draftServiceStub },
+        { provide: NgbActiveModal },
+      ],
     }).compileComponents();
   }));
 
@@ -51,7 +59,9 @@ describe('CustomPageComponent', () => {
 
     setTimeout(() => {
       fixture.detectChanges();
-      xmlEditor = fixture.debugElement.query(de => de.name === 'admin-xml-editor');
+      xmlEditor = fixture.debugElement.query(
+        (de) => de.name === 'admin-xml-editor',
+      );
 
       xmlEditor.triggerEventHandler('onSave', 'emit');
 

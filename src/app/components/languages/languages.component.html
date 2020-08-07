@@ -1,9 +1,21 @@
 <div class="card">
   <div class="card-body">
     <h3>Add new language</h3>
-    <input placeholder="Name" [(ngModel)]="newLanguage.name"/>
-    <input placeholder="Code" [(ngModel)]="newLanguage.code"/>
-    <button (click)="createLanguage()" class="btn btn-success">Save</button>
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="Name"
+        [(ngModel)]="newLanguage.name"
+      />
+      <input
+        class="form-control"
+        placeholder="Code"
+        [(ngModel)]="newLanguage.code"
+      />
+      <div class="input-group-append">
+        <button (click)="createLanguage()" class="btn btn-success">Save</button>
+      </div>
+    </div>
     <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
       Saving...
     </ngb-alert>
@@ -13,44 +25,62 @@
   </div>
 </div>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-  {{errorMessage}}
+  {{ errorMessage }}
 </ngb-alert>
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<strong>
-  <div class="row">
+<div class="container mt-3">
+  <div class="row font-weight-bold">
     <div class="col">
       Language
     </div>
     <div class="col">
       Code
     </div>
-    <div class="col">
+    <div class="col-2 text-right">
       Actions
     </div>
   </div>
-</strong>
 
-<div *ngFor="let language of languages">
-  <div class="row">
-    <div class="col">
-      {{language.name}}
+  <div *ngFor="let language of languages">
+    <div class="row">
+      <div class="col">
+        {{ language.name }}
+      </div>
+      <div class="col">
+        {{ language.code }}
+      </div>
+      <div class="col-2 text-right">
+        <button
+          (click)="showConfirmButton(language)"
+          class="btn btn-danger btn-sm"
+        >
+          Delete
+        </button>
+      </div>
     </div>
-    <div class="col">
-      {{language.code}}
-    </div>
-    <div class="col">
-      <button (click)="showConfirmButton(language)" class="btn btn-danger">Delete</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <ngb-alert type="danger" [dismissible]="false" *ngIf="language.canConfirmDelete">
-        Are you sure you want to delete {{language.name}}?
-        <button (click)="deleteLanguage(language)" class="btn btn-dark">Confirm</button>
-        <button (click)="language.canConfirmDelete = !language.canConfirmDelete" class="btn btn-secondary">Cancel</button>
-      </ngb-alert>
+    <div class="row">
+      <div class="col">
+        <ngb-alert
+          type="danger"
+          [dismissible]="false"
+          *ngIf="language.canConfirmDelete"
+        >
+          Are you sure you want to delete {{ language.name }}?
+          <div class="btn-group" role="group">
+            <button (click)="deleteLanguage(language)" class="btn btn-dark">
+              Confirm
+            </button>
+            <button
+              (click)="language.canConfirmDelete = !language.canConfirmDelete"
+              class="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </ngb-alert>
+      </div>
     </div>
   </div>
 </div>

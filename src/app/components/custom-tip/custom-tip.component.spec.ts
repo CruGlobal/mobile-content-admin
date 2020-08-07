@@ -1,39 +1,47 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CustomTipComponent} from './custom-tip.component';
-import {DebugElement} from '@angular/core';
-import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
-import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AceEditorDirective} from 'ng2-ace-editor';
-import {CustomTipService} from '../../service/custom-tip.service';
-import {CustomTip} from '../../models/custom-tip';
-import {Language} from '../../models/language';
-import {Tip} from '../../models/tip';
-import {DraftService} from '../../service/draft.service';
-import {Resource} from '../../models/resource';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CustomTipComponent } from './custom-tip.component';
+import { DebugElement } from '@angular/core';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { CustomTip } from '../../models/custom-tip';
+import { Language } from '../../models/language';
+import { Tip } from '../../models/tip';
+import { DraftService } from '../../service/draft.service';
+import { Resource } from '../../models/resource';
 
 describe('CustomTipComponent', () => {
-  let comp:    CustomTipComponent;
+  let comp: CustomTipComponent;
   let fixture: ComponentFixture<CustomTipComponent>;
   let xmlEditor: DebugElement;
 
-  const customTipServiceStub = {
-    upsert() {}
-  } as unknown as CustomTipService;
+  const customTipServiceStub = ({
+    upsert() {},
+  } as unknown) as CustomTipService;
   const draftServiceStub = {
-    getTip() { return Promise.resolve('xml response'); }
+    getTip() {
+      return Promise.resolve('xml response');
+    },
   };
 
   beforeEach(async(() => {
-    spyOn(customTipServiceStub, 'upsert').and.returnValue(Promise.resolve<CustomTip>(null));
+    spyOn(customTipServiceStub, 'upsert').and.returnValue(
+      Promise.resolve<CustomTip>(null),
+    );
 
     TestBed.configureTestingModule({
-      declarations: [ CustomTipComponent, XmlEditorComponent, AceEditorDirective ],
-      imports: [ NgbModule.forRoot() ],
+      declarations: [
+        CustomTipComponent,
+        XmlEditorComponent,
+        AceEditorDirective,
+      ],
+      imports: [NgbModule.forRoot()],
       providers: [
-        {provide: CustomTipService, useValue: customTipServiceStub},
-        {provide: DraftService, useValue: draftServiceStub},
-        {provide: NgbActiveModal}
-      ]
+        { provide: CustomTipService, useValue: customTipServiceStub },
+        { provide: DraftService, useValue: draftServiceStub },
+        { provide: NgbActiveModal },
+      ],
     }).compileComponents();
   }));
 
@@ -51,7 +59,9 @@ describe('CustomTipComponent', () => {
 
     setTimeout(() => {
       fixture.detectChanges();
-      xmlEditor = fixture.debugElement.query(de => de.name === 'admin-xml-editor');
+      xmlEditor = fixture.debugElement.query(
+        (de) => de.name === 'admin-xml-editor',
+      );
 
       xmlEditor.triggerEventHandler('onSave', 'emit');
 

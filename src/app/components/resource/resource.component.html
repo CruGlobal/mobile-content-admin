@@ -1,13 +1,19 @@
 <div class="card mb-3">
   <div class="card-header" (click)="showLanguages = !showLanguages">
-    <span class="h4" style="cursor:pointer">
-      {{resource.name}}
+    <span class="h4" style="cursor: pointer;">
+      {{ resource.name }}
     </span>
-    <div class="float-right">
-      <button (click)="openUpdateModal(resource); $event.stopPropagation()" class="btn btn-warning">
+    <div class="float-right btn-group" role="group">
+      <button
+        (click)="openUpdateModal(resource); $event.stopPropagation()"
+        class="btn btn-warning"
+      >
         <i class="fa fa-pencil"></i> Details
       </button>
-      <button (click)="openGenerateModal(resource); $event.stopPropagation()" class="btn btn-secondary">
+      <button
+        (click)="openGenerateModal(resource); $event.stopPropagation()"
+        class="btn btn-secondary"
+      >
         <i class="fa fa-plus"></i> Generate multiple drafts
       </button>
     </div>
@@ -19,11 +25,14 @@
         <tr>
           <th class="align-middle">Default Pages</th>
           <th>
-            <div class="float-right">
-              <button class="btn btn-secondary" (click)="createPage(); $event.stopPropagation()">
+            <div class="float-right btn-group" role="group">
+              <button
+                class="btn btn-secondary"
+                (click)="createPage(); $event.stopPropagation()"
+              >
                 <i class="fa fa-file"></i> Add new page
               </button>
-              <button (click)="true" class="btn btn-primary">
+              <button (click)="(true)" class="btn btn-primary">
                 <i class="fa fa-copy"></i> Show/Hide
               </button>
             </div>
@@ -32,10 +41,13 @@
       </thead>
       <tbody [ngbCollapse]="!showDefaultPages">
         <tr *ngFor="let page of resource.pages">
-          <td>{{page.filename}}</td>
+          <td>{{ page.filename }}</td>
           <td>
             <div class="container">
-              <button (click)="openPage(page)" class="btn btn-outline-dark float-right">
+              <button
+                (click)="openPage(page)"
+                class="btn btn-outline-dark float-right"
+              >
                 <i class="fa fa-pencil"></i> Edit
               </button>
             </div>
@@ -51,10 +63,13 @@
           <th class="align-middle">Default Tips</th>
           <th>
             <div class="float-right">
-              <button class="btn btn-secondary" (click)="createTip(); $event.stopPropagation()">
+              <button
+                class="btn btn-secondary"
+                (click)="createTip(); $event.stopPropagation()"
+              >
                 <i class="fa fa-file"></i> Add new tip
               </button>
-              <button (click)="true" class="btn btn-primary">
+              <button (click)="(true)" class="btn btn-primary">
                 <i class="fa fa-copy"></i> Show/Hide
               </button>
             </div>
@@ -63,10 +78,13 @@
       </thead>
       <tbody [ngbCollapse]="!showDefaultTips">
         <tr *ngFor="let tip of resource.tips">
-          <td>{{tip.name}}</td>
+          <td>{{ tip.name }}</td>
           <td>
             <div class="container">
-              <button (click)="openTip(tip)" class="btn btn-outline-dark float-right">
+              <button
+                (click)="openTip(tip)"
+                class="btn btn-outline-dark float-right"
+              >
                 <i class="fa fa-pencil"></i> Edit
               </button>
             </div>
@@ -76,7 +94,7 @@
     </table>
 
     <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-      {{errorMessage}}
+      {{ errorMessage }}
     </ngb-alert>
     <div class="container">
       <div class="row">
@@ -93,8 +111,13 @@
           <strong>Actions</strong>
         </div>
       </div>
-      <div *ngFor="let language of resourcesComponent.languages"> 
-        <admin-translation [language]="language" [resource]="resource" [translationLoaded]="translationLoaded$" (loadResources)="onLoadResources()"></admin-translation>
+      <div *ngFor="let language of resourcesComponent.languages">
+        <admin-translation
+          [language]="language"
+          [resource]="resource"
+          [translationLoaded]="translationLoaded$"
+          (loadResources)="onLoadResources()"
+        ></admin-translation>
       </div>
     </div>
   </div>

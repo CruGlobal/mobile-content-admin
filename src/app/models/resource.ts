@@ -1,10 +1,10 @@
-import {Translation} from './translation';
-import {Page} from './page';
-import {Tip} from './tip';
-import {System} from './system';
-import {ResourceType} from './resource-type';
-import {Attachment} from './attachment';
-import {CustomManifest} from './custom-manifest';
+import { Translation } from './translation';
+import { Page } from './page';
+import { Tip } from './tip';
+import { System } from './system';
+import { ResourceType } from './resource-type';
+import { Attachment } from './attachment';
+import { CustomManifest } from './custom-manifest';
 
 export class Resource {
   id: number;

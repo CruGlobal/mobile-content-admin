@@ -4,7 +4,11 @@
       <label>Name</label>
     </div>
     <div class="col">
-      <input placeholder="Name" [(ngModel)]="resource.name"/>
+      <input
+        class="form-control"
+        placeholder="Name"
+        [(ngModel)]="resource.name"
+      />
     </div>
   </div>
 
@@ -13,7 +17,11 @@
       <label>Abbreviation</label>
     </div>
     <div class="col">
-      <input placeholder="Abbreviation" [(ngModel)]="resource.abbreviation" />
+      <input
+        class="form-control"
+        placeholder="Abbreviation"
+        [(ngModel)]="resource.abbreviation"
+      />
     </div>
   </div>
 
@@ -22,8 +30,10 @@
       <label>System</label>
     </div>
     <div class="col">
-      <select [(ngModel)]="resource.system">
-        <option *ngFor="let system of systems" [ngValue]="system">{{system.name}}</option>
+      <select class="form-control" [(ngModel)]="resource.system">
+        <option *ngFor="let system of systems" [ngValue]="system">{{
+          system.name
+        }}</option>
       </select>
     </div>
   </div>
@@ -33,8 +43,10 @@
       <label>Type</label>
     </div>
     <div class="col">
-      <select [(ngModel)]="resource.resourceType">
-        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{type.name}}</option>
+      <select class="form-control" [(ngModel)]="resource.resourceType">
+        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{
+          type.name
+        }}</option>
       </select>
     </div>
   </div>
@@ -44,7 +56,11 @@
       <label>OneSky Project ID</label>
     </div>
     <div class="col">
-      <input placeholder="OneSky Project ID" [(ngModel)]="resource.oneskyProjectId" />
+      <input
+        class="form-control"
+        placeholder="OneSky Project ID"
+        [(ngModel)]="resource.oneskyProjectId"
+      />
     </div>
   </div>
 
@@ -53,7 +69,11 @@
       <label>Description</label>
     </div>
     <div class="col">
-      <input placeholder="Description" [(ngModel)]="resource.description" />
+      <input
+        class="form-control"
+        placeholder="Description"
+        [(ngModel)]="resource.description"
+      />
     </div>
   </div>
 
@@ -63,14 +83,15 @@
     </div>
   </div>
   <div class="row">
-    <div ace-editor
-         [(text)]="resource.manifest"
-         [mode]="'xml'"
-         [autoUpdateContent]="true"
-         [options]="{wrap : true}"
-         class="col"
-         style="min-height: 250px; overflow: auto;">
-    </div>
+    <div
+      ace-editor
+      [(text)]="resource.manifest"
+      [mode]="'xml'"
+      [autoUpdateContent]="true"
+      [options]="{ wrap: true }"
+      class="col"
+      style="min-height: 250px; overflow: auto;"
+    ></div>
   </div>
 
   <div class="row" *ngIf="saving">
@@ -84,13 +105,15 @@
   <div class="row" *ngIf="errorMessage">
     <div class="col">
       <ngb-alert type="danger" [dismissible]="false">
-        {{errorMessage}}
+        {{ errorMessage }}
       </ngb-alert>
     </div>
   </div>
 </div>
 
 <div class="modal-footer">
-  <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
-  <button (click)="saveResource()" class="btn btn-success">Save</button>
+  <div class="btn-group" role="group">
+    <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+    <button (click)="saveResource()" class="btn btn-success">Save</button>
+  </div>
 </div>

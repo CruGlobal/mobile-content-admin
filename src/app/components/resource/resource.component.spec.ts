@@ -1,19 +1,19 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {LanguageService} from '../../service/language.service';
-import {FormsModule} from '@angular/forms';
-import {TranslationComponent} from '../translation/translation.component';
-import {Resource} from '../../models/resource';
-import {Translation} from '../../models/translation';
-import {Language} from '../../models/language';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LanguageService } from '../../service/language.service';
+import { FormsModule } from '@angular/forms';
+import { TranslationComponent } from '../translation/translation.component';
+import { Resource } from '../../models/resource';
+import { Translation } from '../../models/translation';
+import { Language } from '../../models/language';
 import anything = jasmine.anything;
-import {By} from '@angular/platform-browser';
-import {DraftService} from '../../service/draft.service';
-import {ResourceComponent} from './resource.component';
-import {ResourcesComponent} from '../resources/resources.component';
+import { By } from '@angular/platform-browser';
+import { DraftService } from '../../service/draft.service';
+import { ResourceComponent } from './resource.component';
+import { ResourcesComponent } from '../resources/resources.component';
 
 describe('ResourceComponent', () => {
-  let comp:    ResourceComponent;
+  let comp: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
 
   const buildTranslation = (languageId): Translation => {
@@ -25,26 +25,32 @@ describe('ResourceComponent', () => {
     return t;
   };
 
-  const languageServiceStub = {
-    getLanguage() {}
-  } as unknown as LanguageService;
-  const languageStub = {
-    _placeHolder: true
-  } as unknown as Language;
+  const languageServiceStub = ({
+    getLanguage() {},
+  } as unknown) as LanguageService;
+  const languageStub = ({
+    _placeHolder: true,
+  } as unknown) as Language;
 
   const resource: Resource = new Resource();
 
   beforeEach(async(() => {
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(Promise.resolve(languageStub));
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+      Promise.resolve(languageStub),
+    );
 
     TestBed.configureTestingModule({
-      declarations: [ ResourcesComponent, ResourceComponent, TranslationComponent ],
-      imports: [ NgbModule.forRoot(), FormsModule ],
+      declarations: [
+        ResourcesComponent,
+        ResourceComponent,
+        TranslationComponent,
+      ],
+      imports: [NgbModule.forRoot(), FormsModule],
       providers: [
-        {provide: LanguageService, useValue: languageServiceStub},
-        {provide: NgbModal},
-        {provide: DraftService}
-      ]
+        { provide: LanguageService, useValue: languageServiceStub },
+        { provide: NgbModal },
+        { provide: DraftService },
+      ],
     }).compileComponents();
   }));
 
@@ -61,7 +67,10 @@ describe('ResourceComponent', () => {
     const languageIdTwo = 24;
 
     beforeEach(() => {
-      resource['latest-drafts-translations'] = [ buildTranslation(languageIdOne), buildTranslation(languageIdTwo) ];
+      resource['latest-drafts-translations'] = [
+        buildTranslation(languageIdOne),
+        buildTranslation(languageIdTwo),
+      ];
       resource['pages'] = [];
     });
 
@@ -69,8 +78,14 @@ describe('ResourceComponent', () => {
       comp.ngOnInit();
 
       setTimeout(() => {
-        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(languageIdOne, anything());
-        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(languageIdTwo, anything());
+        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(
+          languageIdOne,
+          anything(),
+        );
+        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(
+          languageIdTwo,
+          anything(),
+        );
 
         done();
       });
@@ -80,7 +95,10 @@ describe('ResourceComponent', () => {
       comp.ngOnInit();
 
       setTimeout(() => {
-        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(anything(), 'custom_pages,custom_tips');
+        expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(
+          anything(),
+          'custom_pages,custom_tips',
+        );
 
         done();
       });
@@ -92,7 +110,10 @@ describe('ResourceComponent', () => {
       setTimeout(() => {
         fixture.detectChanges();
 
-        expect(fixture.debugElement.queryAll(By.directive(TranslationComponent)).length).toBe(0);
+        expect(
+          fixture.debugElement.queryAll(By.directive(TranslationComponent))
+            .length,
+        ).toBe(0);
 
         done();
       });

@@ -1,8 +1,8 @@
-import {Component, Input, OnDestroy, ViewChild} from '@angular/core';
-import {Page} from '../../models/page';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {PageService} from '../../service/page.service';
-import {AceEditorDirective} from 'ng2-ace-editor';
+import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Page } from '../../models/page';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PageService } from '../../service/page.service';
+import { AceEditorDirective } from 'ng2-ace-editor';
 
 @Component({
   selector: 'admin-create-page',
@@ -16,16 +16,20 @@ export class CreatePageComponent implements OnDestroy {
   saving = false;
   errorMessage: string;
 
-  constructor(private pageService: PageService, private activeModal: NgbActiveModal) {}
+  constructor(
+    private pageService: PageService,
+    private activeModal: NgbActiveModal,
+  ) {}
 
   savePage(): void {
     this.errorMessage = null;
     this.saving = true;
 
-    this.pageService.create(this.page)
+    this.pageService
+      .create(this.page)
       .then(() => this.activeModal.close())
-      .catch(message => this.errorMessage = message)
-      .then(() => this.saving = false);
+      .catch((message) => (this.errorMessage = message))
+      .then(() => (this.saving = false));
   }
 
   dismissModal(): void {

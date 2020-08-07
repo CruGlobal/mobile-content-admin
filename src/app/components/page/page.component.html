@@ -1,8 +1,9 @@
-<admin-xml-editor [(structure)]="page.structure"
-                  [filename]="page.filename"
-                  [type]="'Page'"
-                  [resource]="page.resource"
-                  (onSave)="updatePage()"
-                  (onCancel)="cancel()"
-                  class="d-block modal-body"
+<admin-xml-editor
+  [(structure)]="page.structure"
+  [filename]="page.filename"
+  [type]="'Page'"
+  [resource]="page.resource"
+  (onSave)="updatePage()"
+  (onCancel)="cancel()"
+  class="d-block modal-body"
 ></admin-xml-editor>

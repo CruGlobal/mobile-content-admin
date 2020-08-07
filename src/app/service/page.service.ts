@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Http} from '@angular/http';
-import {Page} from '../models/page';
-import {JsonApiDataStore} from 'jsonapi-datastore';
-import {AuthService} from './auth/auth.service';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { Http } from '@angular/http';
+import { Page } from '../models/page';
+import { JsonApiDataStore } from 'jsonapi-datastore';
+import { AuthService } from './auth/auth.service';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 @Injectable()
 export class PageService extends AbstractService {
@@ -23,15 +23,20 @@ export class PageService extends AbstractService {
           structure: page.structure,
           resource_id: page.resource.id,
           position: page.position,
-          filename: page.filename
-        }
-      }
+          filename: page.filename,
+        },
+      },
     };
 
-    return this.http.post(this.pagesUrl, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .post(
+        this.pagesUrl,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
-      .catch(response => Promise.reject(response.json().errors));
+      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .catch((response) => Promise.reject(response.json().errors));
   }
 
   update(pageId: number, structure: string): Promise<Page> {
@@ -42,14 +47,15 @@ export class PageService extends AbstractService {
         id: pageId,
         type: 'page',
         attributes: {
-          structure: structure
-        }
-      }
+          structure: structure,
+        },
+      },
     };
 
-    return this.http.put(url, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }

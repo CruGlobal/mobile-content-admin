@@ -1,6 +1,6 @@
 <div class="container">
   <div>
-    <h5>Add new tip to resource {{tip.resource.name}}</h5>
+    <h5>Add new tip to resource {{ tip.resource.name }}</h5>
   </div>
 
   <div class="row">
@@ -8,19 +8,20 @@
       <label>Name</label>
     </div>
     <div class="col">
-      <input placeholder="Name" [(ngModel)]="tip.name"/>
+      <input placeholder="Name" [(ngModel)]="tip.name" />
     </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <div ace-editor
-           [(text)]="tip.structure"
-           [mode]="'xml'"
-           [autoUpdateContent]="true"
-           [options]="{wrap : true}"
-           style="min-height: 500px; width:100%; overflow: auto;">
-      </div>
+      <div
+        ace-editor
+        [(text)]="tip.structure"
+        [mode]="'xml'"
+        [autoUpdateContent]="true"
+        [options]="{ wrap: true }"
+        style="min-height: 500px; width: 100%; overflow: auto;"
+      ></div>
     </div>
   </div>
 
@@ -48,5 +49,4 @@
       <button (click)="saveTip()" class="btn btn-success">Save</button>
     </div>
   </div>
-
 </div>

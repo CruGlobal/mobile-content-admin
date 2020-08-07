@@ -1,8 +1,9 @@
-<admin-xml-editor [(structure)]="tip.structure"
-                  [filename]="tip.name"
-                  [type]="'Tip'"
-                  [resource]="tip.resource"
-                  (onSave)="updateTip()"
-                  (onCancel)="cancel()"
-                  class="d-block modal-body"
+<admin-xml-editor
+  [(structure)]="tip.structure"
+  [filename]="tip.name"
+  [type]="'Tip'"
+  [resource]="tip.resource"
+  (onSave)="updateTip()"
+  (onCancel)="cancel()"
+  class="d-block modal-body"
 ></admin-xml-editor>

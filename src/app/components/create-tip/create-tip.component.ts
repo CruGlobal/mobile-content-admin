@@ -1,8 +1,8 @@
-import {Component, Input, OnDestroy, ViewChild} from '@angular/core';
-import {Tip} from '../../models/tip';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {TipService} from '../../service/tip.service';
-import {AceEditorDirective} from 'ng2-ace-editor';
+import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Tip } from '../../models/tip';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TipService } from '../../service/tip.service';
+import { AceEditorDirective } from 'ng2-ace-editor';
 
 @Component({
   selector: 'admin-create-tip',
@@ -16,16 +16,20 @@ export class CreateTipComponent implements OnDestroy {
   saving = false;
   errorMessage: string;
 
-  constructor(private tipService: TipService, private activeModal: NgbActiveModal) {}
+  constructor(
+    private tipService: TipService,
+    private activeModal: NgbActiveModal,
+  ) {}
 
   saveTip(): void {
     this.errorMessage = null;
     this.saving = true;
 
-    this.tipService.create(this.tip)
+    this.tipService
+      .create(this.tip)
       .then(() => this.activeModal.close())
-      .catch(message => this.errorMessage = message)
-      .then(() => this.saving = false);
+      .catch((message) => (this.errorMessage = message))
+      .then(() => (this.saving = false));
   }
 
   dismissModal(): void {

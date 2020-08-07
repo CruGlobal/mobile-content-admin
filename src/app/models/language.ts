@@ -1,4 +1,4 @@
-import {CustomPage} from './custom-page';
+import { CustomPage } from './custom-page';
 
 export class Language {
   id: number;

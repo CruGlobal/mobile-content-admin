@@ -1,22 +1,25 @@
-import {Component, Input, ViewChild} from '@angular/core';
-import {Page} from '../../models/page';
-import {PageService} from '../../service/page.service';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {XmlEditorComponent} from '../xml-editor/xml-editor.component';
+import { Component, Input, ViewChild } from '@angular/core';
+import { Page } from '../../models/page';
+import { PageService } from '../../service/page.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 
 @Component({
   selector: 'admin-page',
-  templateUrl: './page.component.html'
+  templateUrl: './page.component.html',
 })
 export class PageComponent {
   @Input() page: Page;
   @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
-  constructor(private pageService: PageService,
-              private activeModal: NgbActiveModal) {}
+  constructor(
+    private pageService: PageService,
+    private activeModal: NgbActiveModal,
+  ) {}
 
   updatePage(): void {
-    this.pageService.update(this.page.id, this.page.structure)
+    this.pageService
+      .update(this.page.id, this.page.structure)
       .then(() => this.activeModal.close())
       .catch(this.handleError.bind(this));
   }

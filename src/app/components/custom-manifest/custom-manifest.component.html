@@ -6,12 +6,13 @@
   {{loadingError}}
 </ngb-alert>
 -->
-<admin-xml-editor *ngIf="!loading"
-                  [(structure)]="customManifest.structure"
-                  [type]="'Custom Manifest'"
-                  [language]="customManifest.language"
-                  [resource]="customManifest.resource"
-                  (onCancel)="cancel()"
-                  (onSave)="updateCustomManifest()"
-                  class="d-block modal-body"
+<admin-xml-editor
+  *ngIf="!loading"
+  [(structure)]="customManifest.structure"
+  [type]="'Custom Manifest'"
+  [language]="customManifest.language"
+  [resource]="customManifest.resource"
+  (onCancel)="cancel()"
+  (onSave)="updateCustomManifest()"
+  class="d-block modal-body"
 ></admin-xml-editor>

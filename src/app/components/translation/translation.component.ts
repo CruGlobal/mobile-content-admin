@@ -1,22 +1,30 @@
-import {Component, Input, OnInit, SimpleChanges, OnChanges, Output, EventEmitter} from '@angular/core';
-import {Translation} from '../../models/translation';
-import {DraftService} from '../../service/draft.service';
-import {CustomPage} from '../../models/custom-page';
-import {CustomTip} from '../../models/custom-tip';
-import {AbstractPage} from '../../models/abstract-page';
-import {AbstractTip} from '../../models/abstract-tip';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CustomPageComponent} from '../custom-page/custom-page.component';
-import {CustomTipComponent} from '../custom-tip/custom-tip.component';
-import {UpdateResourceLanguageComponent} from '../edit-resource-language/update-resource-language/update-resource-language.component';
-import {Page} from '../../models/page';
-import {Tip} from '../../models/tip';
-import {Language} from '../../models/language';
-import {CustomPageService} from '../../service/custom-page.service';
-import {CustomTipService} from '../../service/custom-tip.service';
-import {CustomManifest} from '../../models/custom-manifest';
-import {CustomManifestService} from '../../service/custom-manifest.service';
-import {CustomManifestComponent} from '../custom-manifest/custom-manifest.component';
+import {
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+  OnChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { Translation } from '../../models/translation';
+import { DraftService } from '../../service/draft.service';
+import { CustomPage } from '../../models/custom-page';
+import { CustomTip } from '../../models/custom-tip';
+import { AbstractPage } from '../../models/abstract-page';
+import { AbstractTip } from '../../models/abstract-tip';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomPageComponent } from '../custom-page/custom-page.component';
+import { CustomTipComponent } from '../custom-tip/custom-tip.component';
+import { UpdateResourceLanguageComponent } from '../edit-resource-language/update-resource-language/update-resource-language.component';
+import { Page } from '../../models/page';
+import { Tip } from '../../models/tip';
+import { Language } from '../../models/language';
+import { CustomPageService } from '../../service/custom-page.service';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { CustomManifest } from '../../models/custom-manifest';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { CustomManifestComponent } from '../custom-manifest/custom-manifest.component';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
 
@@ -25,7 +33,6 @@ import { Observable } from 'rxjs';
   templateUrl: './translation.component.html',
 })
 export class TranslationComponent implements OnInit, OnChanges {
-
   @Input() language: Language;
   @Input() resource: Resource;
   @Input() translationLoaded: Observable<number>;
@@ -38,11 +45,13 @@ export class TranslationComponent implements OnInit, OnChanges {
   publishing = false;
   errorMessage: string;
 
-  constructor(private customPageService: CustomPageService,
-              private customTipService: CustomTipService,
-              private draftService: DraftService,
-              private customManifestService: CustomManifestService,
-              private modalService: NgbModal) {}
+  constructor(
+    private customPageService: CustomPageService,
+    private customTipService: CustomTipService,
+    private draftService: DraftService,
+    private customManifestService: CustomManifestService,
+    private modalService: NgbModal,
+  ) {}
 
   ngOnInit(): void {
     this.translation = this.getLatestTranslation(this.language);
@@ -55,14 +64,20 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(pChanges: SimpleChanges): void {
-    if (pChanges.resource && pChanges.resource.previousValue && pChanges.resource.currentValue) {
+    if (
+      pChanges.resource &&
+      pChanges.resource.previousValue &&
+      pChanges.resource.currentValue
+    ) {
       this.customManifest = this.getCustomManifest();
     }
   }
 
   getPages(): AbstractPage[] {
-    const _tPages = this.translation.resource.pages.map(page => {
-      const customPage: CustomPage = this.translation.language['custom-pages'].find(c => c.page && c.page.id === page.id);
+    const _tPages = this.translation.resource.pages.map((page) => {
+      const customPage: CustomPage = this.translation.language[
+        'custom-pages'
+      ].find((c) => c.page && c.page.id === page.id);
       if (!customPage) {
         return page;
       } else {
@@ -74,8 +89,10 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   getTips(): AbstractTip[] {
-    const _tTips = this.translation.resource.tips.map(tip => {
-      const customTip: CustomTip = this.translation.language['custom-tips'].find(c => c.tip && c.tip.id === tip.id);
+    const _tTips = this.translation.resource.tips.map((tip) => {
+      const customTip: CustomTip = this.translation.language[
+        'custom-tips'
+      ].find((c) => c.tip && c.tip.id === tip.id);
       if (!customTip) {
         return tip;
       } else {
@@ -112,7 +129,7 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   showPages(): void {
-    this.translation.resource.translations.forEach(t => ( t.show = false ));
+    this.translation.resource.translations.forEach((t) => (t.show = false));
     this.translation.show = true;
   }
 
@@ -121,7 +138,7 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   showTips(): void {
-    this.translation.resource.translations.forEach(t => ( t.showTips = false ));
+    this.translation.resource.translations.forEach((t) => (t.showTips = false));
     this.translation.showTips = true;
   }
 
@@ -136,20 +153,22 @@ export class TranslationComponent implements OnInit, OnChanges {
     const t = Translation.copy(this.translation);
     t.is_published = true;
 
-    this.draftService.updateDraft(t)
+    this.draftService
+      .updateDraft(t)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this))
-      .then(() => this.publishing = false);
+      .then(() => (this.publishing = false));
   }
 
   createDraft(): void {
     this.saving = true;
     this.errorMessage = null;
 
-    this.draftService.createDraft(this.translation)
+    this.draftService
+      .createDraft(this.translation)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this))
-      .then(() => this.saving = false);
+      .then(() => (this.saving = false));
   }
 
   createCustomPage(page: Page): void {
@@ -158,7 +177,7 @@ export class TranslationComponent implements OnInit, OnChanges {
     customPage.language = this.translation.language;
     customPage.structure = page.structure;
 
-    const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
+    const modal = this.modalService.open(CustomPageComponent, { size: 'lg' });
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
     modal.result
@@ -172,7 +191,7 @@ export class TranslationComponent implements OnInit, OnChanges {
     customTip.language = this.translation.language;
     customTip.structure = tip.structure;
 
-    const modal = this.modalService.open(CustomTipComponent, {size: 'lg'});
+    const modal = this.modalService.open(CustomTipComponent, { size: 'lg' });
     modal.componentInstance.customTip = customTip;
     modal.componentInstance.translation = this.translation;
     modal.result
@@ -181,25 +200,27 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   openCustomPage(customPage: CustomPage): void {
-    const modal = this.modalService.open(CustomPageComponent, {size: 'lg'});
+    const modal = this.modalService.open(CustomPageComponent, { size: 'lg' });
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
   }
 
   openCustomTip(customTip: CustomTip): void {
-    const modal = this.modalService.open(CustomTipComponent, {size: 'lg'});
+    const modal = this.modalService.open(CustomTipComponent, { size: 'lg' });
     modal.componentInstance.customTip = customTip;
     modal.componentInstance.translation = this.translation;
   }
 
   deleteCustomPage(customPage: CustomPage): void {
-    this.customPageService.delete(customPage.id)
+    this.customPageService
+      .delete(customPage.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
   }
 
   deleteCustomTip(customTip: CustomTip): void {
-    this.customTipService.delete(customTip.id)
+    this.customTipService
+      .delete(customTip.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
   }
@@ -215,17 +236,23 @@ export class TranslationComponent implements OnInit, OnChanges {
       manifest = CustomManifest.copy(this.customManifest);
     }
 
-    const modal = this.modalService.open(CustomManifestComponent, {size: 'lg'});
-    modal.componentInstance.customManifest = manifest;
-    modal.result.then((customManifest) => {
-      this.customManifest = customManifest;
-    }).catch(() => {
-      // Modal cancelled: Do nothing, manifest has original structure
+    const modal = this.modalService.open(CustomManifestComponent, {
+      size: 'lg',
     });
+    modal.componentInstance.customManifest = manifest;
+    modal.result
+      .then((customManifest) => {
+        this.customManifest = customManifest;
+      })
+      .catch(() => {
+        // Modal cancelled: Do nothing, manifest has original structure
+      });
   }
 
   openResourceLanguage(): void {
-    const modal = this.modalService.open(UpdateResourceLanguageComponent, {size: 'lg'});
+    const modal = this.modalService.open(UpdateResourceLanguageComponent, {
+      size: 'lg',
+    });
     modal.componentInstance.resourceLanguage.language = this.language;
     modal.componentInstance.resourceLanguage.resource = this.resource;
     // TODO
@@ -233,16 +260,22 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   deleteCustomManifest(): void {
-    if (typeof this.customManifest === 'undefined' || typeof this.customManifest.id === 'undefined') {
+    if (
+      typeof this.customManifest === 'undefined' ||
+      typeof this.customManifest.id === 'undefined'
+    ) {
       return;
     }
-    this.customManifestService.delete(this.customManifest.id)
+    this.customManifestService
+      .delete(this.customManifest.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
   }
 
   private getLatestTranslation(language: Language): Translation {
-    let latest = this.resource['latest-drafts-translations'].find(t => t.language.id === language.id);
+    let latest = this.resource['latest-drafts-translations'].find(
+      (t) => t.language.id === language.id,
+    );
     if (!latest) {
       latest = new Translation();
       latest.language = language;
@@ -256,7 +289,9 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   private getCustomManifest(): CustomManifest {
-    return this.resource['custom-manifests'].find(m => m.language.id === this.language.id);
+    return this.resource['custom-manifests'].find(
+      (m) => m.language.id === this.language.id,
+    );
   }
 
   private loadAllResources() {

@@ -2,7 +2,11 @@
   <div class="card-header">
     <span class="h3">Attachments</span>
     <div class="float-right">
-      <button type="button" class="btn btn-default" (click)="showInstructions = !showInstructions">
+      <button
+        type="button"
+        class="btn btn-default"
+        (click)="showInstructions = !showInstructions"
+      >
         Toggle instructions
       </button>
     </div>
@@ -13,29 +17,61 @@
       <ul>
         <li>
           <strong>View Attachments</strong>
-          <p>Each resource is listed below.  For each resource, any attachment that is available for use is displayed in its section.</p>
-          <p><strong>ID</strong> identifies the attachment in the API.
-            These values are mainly useful to developers who need to know how the attachment is referenced.</p>
-          <p>The <strong>filename</strong> can be used by content editors to use the attachment in the resource.</p>
+          <p>
+            Each resource is listed below. For each resource, any attachment
+            that is available for use is displayed in its section.
+          </p>
+          <p>
+            <strong>ID</strong> identifies the attachment in the API. These
+            values are mainly useful to developers who need to know how the
+            attachment is referenced.
+          </p>
+          <p>
+            The <strong>filename</strong> can be used by content editors to use
+            the attachment in the resource.
+          </p>
           <p>Simply click <strong>View</strong> to see the attachment.</p>
         </li>
-        <li><strong>Upload Attachment</strong>
-          <p>New attachments can be uploaded and then used in a resource.  Attachments are scoped to a particular resource, so when uploading
-            a new attachment, you must also choose the resource to associate it with.  To associate an attachment to multiple resources, it currently must
-            be uploaded one time for each resource it needs to be associated with.</p>
+        <li>
+          <strong>Upload Attachment</strong>
+          <p>
+            New attachments can be uploaded and then used in a resource.
+            Attachments are scoped to a particular resource, so when uploading a
+            new attachment, you must also choose the resource to associate it
+            with. To associate an attachment to multiple resources, it currently
+            must be uploaded one time for each resource it needs to be
+            associated with.
+          </p>
         </li>
       </ul>
       <hr />
     </div>
     <h5>Upload new attachment</h5>
-    <input type="file" ng2FileSelect [uploader]="uploader" #uploadElement />
-    Resource
-    <select [(ngModel)]="selectedResource">
-      <option *ngFor="let resource of resources" [ngValue]="resource">{{ resource.name }}</option>
-    </select>
-    <button (click)="uploadNewFile()" class="btn btn-success">
-      <i class="fa fa-cloud-upload"></i> Upload
-    </button>
+    <div class="input-group mb-3">
+      <div class="custom-file">
+        <input
+          type="file"
+          ng2FileSelect
+          [uploader]="uploader"
+          #uploadElement
+          class="custom-file-input"
+          id="newAttachment"
+        />
+        <label class="custom-file-label" for="newAttachment">Choose file</label>
+      </div>
+      <select [(ngModel)]="selectedResource" class="custom-select">
+        <option value="undefined" disabled selected hidden>Resource</option>
+        <option *ngFor="let resource of resources" [ngValue]="resource">{{
+          resource.name
+        }}</option>
+      </select>
+      <div class="input-group-append">
+        <button (click)="uploadNewFile()" class="btn btn-success">
+          <i class="fa fa-cloud-upload"></i> Upload
+        </button>
+      </div>
+    </div>
+
     <ngb-alert type="info" [dismissible]="false" *ngIf="uploader.isUploading">
       Uploading...
     </ngb-alert>
@@ -45,19 +81,30 @@
   </div>
 </div>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-  {{errorMessage}}
+  {{ errorMessage }}
 </ngb-alert>
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
 <div *ngFor="let resource of resources" class="card mb-3">
-  <div class="card-header" (click)="resource.showAttachments = !resource.showAttachments">
-    <span class="h4" style="cursor:pointer">{{resource.name}}</span>
+  <div
+    class="card-header"
+    (click)="resource.showAttachments = !resource.showAttachments"
+  >
+    <span class="h4" style="cursor: pointer;">{{ resource.name }}</span>
   </div>
-  <div *ngIf="resource.attachments.length == 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
+  <div
+    *ngIf="resource.attachments.length == 0"
+    class="card-body"
+    [ngbCollapse]="!resource.showAttachments"
+  >
     No Attachments
   </div>
-  <div *ngIf="resource.attachments.length > 0" class="card-body" [ngbCollapse]="!resource.showAttachments">
+  <div
+    *ngIf="resource.attachments.length > 0"
+    class="card-body"
+    [ngbCollapse]="!resource.showAttachments"
+  >
     <div class="container">
       <strong>
         <div class="row">
@@ -75,27 +122,54 @@
       <div *ngFor="let attachment of resource.attachments">
         <div class="row">
           <div class="col">
-            {{attachment.id}}
+            {{ attachment.id }}
           </div>
           <div class="col">
-            {{attachment['file-file-name']}}
+            {{ attachment['file-file-name'] }}
           </div>
 
           <div class="col">
-            <button (click)="showAttachment(attachment)" class="btn btn-secondary">
-              View
-            </button>
-            <button (click)="showConfirmButton(attachment)" class="btn btn-danger">
-              Delete
-            </button>
+            <div class="btn-group" role="group">
+              <button
+                (click)="showAttachment(attachment)"
+                class="btn btn-secondary"
+              >
+                View
+              </button>
+              <button
+                (click)="showConfirmButton(attachment)"
+                class="btn btn-danger"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <ngb-alert type="danger" [dismissible]="false" *ngIf="attachment.canConfirmDelete">
-              Are you sure you want to delete {{attachment['file-file-name']}}?
-              <button (click)="deleteAttachment(attachment)" class="btn btn-dark">Confirm</button>
-              <button (click)="attachment.canConfirmDelete = !attachment.canConfirmDelete" class="btn btn-secondary">Cancel</button>
+            <ngb-alert
+              type="danger"
+              [dismissible]="false"
+              *ngIf="attachment.canConfirmDelete"
+            >
+              Are you sure you want to delete
+              {{ attachment['file-file-name'] }}?
+              <div class="btn-group" role="group">
+                <button
+                  (click)="deleteAttachment(attachment)"
+                  class="btn btn-dark"
+                >
+                  Confirm
+                </button>
+                <button
+                  (click)="
+                    attachment.canConfirmDelete = !attachment.canConfirmDelete
+                  "
+                  class="btn btn-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
             </ngb-alert>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Http} from '@angular/http';
-import {Tip} from '../models/tip';
-import {JsonApiDataStore} from 'jsonapi-datastore';
-import {AuthService} from './auth/auth.service';
-import {environment} from '../../environments/environment';
-import {AbstractService} from './abstract.service';
+import { Http } from '@angular/http';
+import { Tip } from '../models/tip';
+import { JsonApiDataStore } from 'jsonapi-datastore';
+import { AuthService } from './auth/auth.service';
+import { environment } from '../../environments/environment';
+import { AbstractService } from './abstract.service';
 
 @Injectable()
 export class TipService extends AbstractService {
@@ -23,14 +23,19 @@ export class TipService extends AbstractService {
           structure: tip.structure,
           resource_id: tip.resource.id,
           position: tip.position,
-          name: tip.name
-        }
-      }
+          name: tip.name,
+        },
+      },
     };
 
-    return this.http.post(this.tipsUrl, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .post(
+        this.tipsUrl,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
@@ -42,14 +47,15 @@ export class TipService extends AbstractService {
         id: tipId,
         type: 'tip',
         attributes: {
-          structure: structure
-        }
-      }
+          structure: structure,
+        },
+      },
     };
 
-    return this.http.put(url, payload, this.authService.getAuthorizationAndOptions())
+    return this.http
+      .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then(response => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }
