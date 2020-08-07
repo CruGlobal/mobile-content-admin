@@ -1,8 +1,8 @@
-<div class="container">
-  <div>
-    <h5>Add new tip to resource {{ tip.resource.name }}</h5>
-  </div>
+<div class="modal-header">
+  <h5>Add new tip to resource {{ tip.resource.name }}</h5>
+</div>
 
+<div class="modal-body">
   <div class="row">
     <div class="col">
       <label>Name</label>
@@ -40,13 +40,11 @@
       </ngb-alert>
     </div>
   </div>
+</div>
 
-  <div class="row">
-    <div class="col">
-      <button (click)="dismissModal()" class="btn btn-danger">Cancel</button>
-    </div>
-    <div class="col">
-      <button (click)="saveTip()" class="btn btn-success">Save</button>
-    </div>
+<div class="modal-footer">
+  <div class="btn-group" role="group">
+    <button (click)="dismissModal()" class="btn btn-danger">Cancel</button>
+    <button (click)="saveTip()" class="btn btn-success">Save</button>
   </div>
 </div>

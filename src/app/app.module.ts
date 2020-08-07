@@ -103,6 +103,7 @@ import 'brace/mode/xml';
     TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
+    CreatePageComponent,
     CustomTipComponent,
     CreateTipComponent,
     LoginComponent,
