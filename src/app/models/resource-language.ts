@@ -10,4 +10,5 @@ export class ResourceLanguage {
   language: Language;
   customPages: CustomPage[];
   customTips: CustomTip[];
+  'attr-include-tips': 'true' | 'false';
 }

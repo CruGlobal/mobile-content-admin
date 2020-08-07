@@ -23,8 +23,13 @@ export class UpdateResourceLanguageComponent
   }
 
   ngOnInit(): void {
-    // TODO need to use the service to somehow get the resource data
-    this.resourceLanguage.includeTips = true;
+    this.resourceLanguage.includeTips = false;
+    this.resourceLanguageService
+      .getResourceLanguage(this.resourceLanguage)
+      .then((resourceLanguage) => {
+        this.resourceLanguage.includeTips =
+          resourceLanguage['attr-include-tips'] === 'true';
+      });
   }
 
   saveResourceLanguage(): void {
