@@ -129,24 +129,6 @@ export class TranslationComponent implements OnInit, OnChanges {
     return tip as Tip;
   }
 
-  showPages(): void {
-    this.translation.resource.translations.forEach((t) => (t.show = false));
-    this.translation.show = true;
-  }
-
-  hidePages(): void {
-    this.translation.show = false;
-  }
-
-  showTips(): void {
-    this.translation.resource.translations.forEach((t) => (t.showTips = false));
-    this.translation.showTips = true;
-  }
-
-  hideTips(): void {
-    this.translation.showTips = false;
-  }
-
   publishDraft(): void {
     this.publishing = true;
     this.errorMessage = null;

@@ -1,14 +1,17 @@
-<div class="row">
-  <div class="col">
-    {{ translation.language.name }}
-  </div>
-  <div class="col">
-    <admin-translation-version-badge
-      [translation]="translation"
-    ></admin-translation-version-badge>
-  </div>
-  <div class="col">
-    <div class="btn-group" role="group">
+<div class="d-flex justify-content-between">
+  <h4 class="card-title">
+    <strong>
+      {{ translation.language.name }} ({{ translation.language.code }})
+    </strong>
+    <admin-translation-version-badge [translation]="translation">
+    </admin-translation-version-badge>
+  </h4>
+
+  <div>
+    <div class="btn-group mr-2" role="group">
+      <button type="button" class="btn btn-secondary" disabled>
+        Custom Manifest
+      </button>
       <button
         type="button"
         class="btn btn-secondary"
@@ -34,13 +37,9 @@
         <i class="fa fa-trash"></i> Remove
       </button>
     </div>
-  </div>
-  <div class="col">
+
     <div class="btn-group" role="group">
-      <button
-        (click)="openResourceLanguage(); $event.stopPropagation()"
-        class="btn btn-primary"
-      >
+      <button (click)="openResourceLanguage()" class="btn btn-primary">
         <i class="fa fa-pencil"></i> Details
       </button>
       <button
@@ -51,189 +50,118 @@
       >
         <i class="fa fa-cloud-upload"></i> Publish
       </button>
-    </div>
-    <div class="btn-group" role="group">
       <button
-        (click)="showPages()"
-        *ngIf="
-          !translation.is_published && !translation.show && !translation.none
-        "
-        type="button"
-        class="btn btn-warning"
+        *ngIf="translation.is_published || translation.none"
+        (click)="createDraft()"
+        class="btn btn-secondary"
       >
-        <i class="fa fa-chevron-down"></i> Show pages
-      </button>
-      <button
-        (click)="hidePages()"
-        *ngIf="
-          !translation.is_published && translation.show && !translation.none
-        "
-        type="button"
-        class="btn btn-warning"
-      >
-        <i class="fa fa-chevron-up"></i> Hide pages
-      </button>
-      <button
-        (click)="showTips()"
-        *ngIf="
-          !translation.is_published &&
-          !translation.showTips &&
-          !translation.none
-        "
-        type="button"
-        class="btn btn-warning"
-      >
-        <i class="fa fa-chevron-down"></i> Show tips
-      </button>
-      <button
-        (click)="hideTips()"
-        *ngIf="
-          !translation.is_published && translation.showTips && !translation.none
-        "
-        type="button"
-        class="btn btn-warning"
-      >
-        <i class="fa fa-chevron-up"></i> Hide tips
+        <i class="fa fa-plus"></i> New Draft
       </button>
     </div>
-    <button
-      *ngIf="translation.is_published || translation.none"
-      (click)="createDraft()"
-      class="btn btn-secondary"
-    >
-      <i class="fa fa-plus"></i> New Draft
-    </button>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <ngb-alert type="success" [dismissible]="false" *ngIf="publishing">
-      Publishing...
-    </ngb-alert>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
-    <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
-      Saving...
-    </ngb-alert>
-  </div>
-</div>
-<div class="row">
-  <div class="col">
-    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </ngb-alert>
-  </div>
-</div>
+<ngb-alert type="success" [dismissible]="false" *ngIf="publishing">
+  Publishing...
+</ngb-alert>
+<ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+  Saving...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{ errorMessage }}
+</ngb-alert>
 
-<div class="row mt-3" *ngIf="translation.show">
+<div class="row mt-3">
   <div class="col">
-    <table class="table border border-dark">
-      <thead class="thead-dark">
-        <tr>
-          <th colspan="2">
-            {{ translation.language.name }} Page Customizations
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
+    <div class="card">
+      <h5 class="card-header bg-info text-white">
+        Page Customizations
+      </h5>
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let page of getPages(); trackBy: pagesTrackBy"
           [ngSwitch]="page['_type']"
         >
-          <td>{{ getBasePage(page).filename }}</td>
-          <td>
-            <div class="container">
-              <div class="float-right">
-                <ng-container *ngSwitchCase="'page'">
-                  <button
-                    (click)="createCustomPage(page)"
-                    class="btn btn-primary"
-                    data-action="create"
-                  >
-                    <i class="fa fa-plus"></i> Create
-                  </button>
-                </ng-container>
-                <ng-container *ngSwitchCase="'custom-page'">
-                  <div class="btn-group" role="group">
-                    <button
-                      (click)="openCustomPage(page)"
-                      class="btn btn-outline-dark"
-                      data-action="edit"
-                    >
-                      <i class="fa fa-pencil"></i> Edit
-                    </button>
-                    <button
-                      (click)="deleteCustomPage(page)"
-                      class="btn btn-danger"
-                      data-action="delete"
-                    >
-                      <i class="fa fa-times"></i> Remove
-                    </button>
-                  </div>
-                </ng-container>
+          <span>{{ getBasePage(page).filename }}</span>
+          <div>
+            <ng-container *ngSwitchCase="'page'">
+              <button
+                (click)="createCustomPage(page)"
+                class="btn btn-primary"
+                data-action="create"
+              >
+                <i class="fa fa-plus"></i> Create
+              </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="'custom-page'">
+              <div class="btn-group" role="group">
+                <button
+                  (click)="openCustomPage(page)"
+                  class="btn btn-outline-dark"
+                  data-action="edit"
+                >
+                  <i class="fa fa-pencil"></i> Edit
+                </button>
+                <button
+                  (click)="deleteCustomPage(page)"
+                  class="btn btn-danger"
+                  data-action="delete"
+                >
+                  <i class="fa fa-times"></i> Remove
+                </button>
               </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </ng-container>
+          </div>
+        </li>
+        <li class="list-group-item">No pages to customize</li>
+      </ul>
+    </div>
   </div>
-</div>
-<div class="row mt-3" *ngIf="translation.showTips">
   <div class="col">
-    <table class="table border border-dark">
-      <thead class="thead-dark">
-        <tr>
-          <th colspan="2">
-            {{ translation.language.name }} Tip Customizations
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
+    <div class="card">
+      <h5 class="card-header bg-warning text-white">
+        Tip Customizations
+      </h5>
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item bg-warning text-white d-flex justify-content-between align-items-center"
           *ngFor="let tip of getTips(); trackBy: tipsTrackBy"
           [ngSwitch]="tip['_type']"
         >
-          <td>{{ getBaseTip(tip).name }}</td>
-          <td>
-            <div class="container">
-              <div class="float-right">
-                <ng-container *ngSwitchCase="'tip'">
-                  <button
-                    (click)="createCustomTip(tip)"
-                    class="btn btn-primary"
-                    data-action="create"
-                  >
-                    <i class="fa fa-plus"></i> Create
-                  </button>
-                </ng-container>
-                <ng-container *ngSwitchCase="'custom-tip'">
-                  <div class="btn-group" role="group">
-                    <button
-                      (click)="openCustomTip(tip)"
-                      class="btn btn-outline-dark"
-                      data-action="edit"
-                    >
-                      <i class="fa fa-pencil"></i> Edit
-                    </button>
-                    <button
-                      (click)="deleteCustomTip(tip)"
-                      class="btn btn-danger"
-                      data-action="delete"
-                    >
-                      <i class="fa fa-times"></i> Remove
-                    </button>
-                  </div>
-                </ng-container>
+          <span>{{ getBaseTip(tip).filename }}</span>
+          <div>
+            <ng-container *ngSwitchCase="'tip'">
+              <button
+                (click)="createCustomTip(tip)"
+                class="btn btn-primary"
+                data-action="create"
+              >
+                <i class="fa fa-plus"></i> Create
+              </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="'custom-tip'">
+              <div class="btn-group" role="group">
+                <button
+                  (click)="openCustomTip(tip)"
+                  class="btn btn-outline-dark"
+                  data-action="edit"
+                >
+                  <i class="fa fa-pencil"></i> Edit
+                </button>
+                <button
+                  (click)="deleteCustomTip(tip)"
+                  class="btn btn-danger"
+                  data-action="delete"
+                >
+                  <i class="fa fa-times"></i> Remove
+                </button>
               </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </ng-container>
+          </div>
+        </li>
+        <li class="list-group-item">No tips to customize</li>
+      </ul>
+    </div>
   </div>
 </div>
-<hr />
