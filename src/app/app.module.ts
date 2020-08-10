@@ -44,6 +44,7 @@ import { MultipleDraftGeneratorComponent } from './components/multiple-draft-gen
 import { ResourceComponent } from './components/resource/resource.component';
 import { CustomManifestService } from './service/custom-manifest.service';
 import 'brace/mode/xml';
+import { TranslationVersionBadgeComponent } from './components/translation/translation-version-badge/translation-version-badge.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import 'brace/mode/xml';
     CreateTipComponent,
     XmlEditorComponent,
     MultipleDraftGeneratorComponent,
+    TranslationVersionBadgeComponent,
   ],
   imports: [
     AceEditorModule,

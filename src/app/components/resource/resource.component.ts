@@ -5,20 +5,40 @@ import {
   OnChanges,
   SimpleChanges,
   OnDestroy,
+  ViewChild,
 } from '@angular/core';
 import { Resource } from '../../models/resource';
 import { Page } from '../../models/page';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbTypeahead,
+} from '@ng-bootstrap/ng-bootstrap';
 import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
 import { MultipleDraftGeneratorComponent } from '../multiple-draft-generator/multiple-draft-generator.component';
 import { LanguageService } from '../../service/language.service';
 import { ResourcesComponent } from '../resources/resources.component';
 import { PageComponent } from '../page/page.component';
 import { CreatePageComponent } from '../create-page/create-page.component';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Tip } from '../../models/tip';
 import { TipComponent } from '../tip/tip.component';
 import { CreateTipComponent } from '../create-tip/create-tip.component';
+import { merge } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+} from 'rxjs/operators';
+import { Language } from '../../models/language';
+import { Translation } from '../../models/translation';
+import { getLatestTranslation } from '../translation/utilities';
+
+interface LanguageSearchResult {
+  language: Language;
+  latestTranslation: Translation;
+}
 
 @Component({
   selector: 'admin-resource',
@@ -28,9 +48,11 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resource: Resource;
   @Input() resourcesComponent: ResourcesComponent;
 
-  showLanguages = false;
-  showDefaultPages = false;
-  showDefaultTips = false;
+  @ViewChild('instance') instance: NgbTypeahead;
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
+
+  showDetails = false;
   errorMessage: string;
 
   private _translationLoaded = new Subject<number>();
@@ -130,4 +152,38 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   private handleError(message): void {
     this.errorMessage = message;
   }
+
+  languageSearch = (
+    text$: Observable<string>,
+  ): Observable<LanguageSearchResult[]> => {
+    const debouncedText$ = text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+    );
+    const clicksWithClosedPopup$ = this.click$.pipe(
+      filter(() => !this.instance.isPopupOpen()),
+    );
+    const inputFocus$ = this.focus$;
+
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map((query) => {
+        const terms = query.toLowerCase().split(' ');
+        return this.resourcesComponent.languages
+          .filter((language) =>
+            terms.some(
+              (term) =>
+                language.name.toLowerCase().includes(term) ||
+                language.code.toLowerCase().includes(term),
+            ),
+          )
+          .map((language) => ({
+            language,
+            latestTranslation: getLatestTranslation(this.resource, language),
+          }));
+      }),
+    );
+  };
+
+  languageFormatter = (result: LanguageSearchResult) =>
+    `${result.language.name} (${result.language.code})`;
 }

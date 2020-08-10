@@ -1,0 +1,9 @@
+<span
+  class="badge badge-secondary"
+  *ngIf="!translation.is_published && !translation.none"
+  >{{ translation.version }} | Draft</span
+>
+<span class="badge badge-success" *ngIf="translation.is_published"
+  >{{ translation.version }} | Live</span
+>
+<span class="badge badge-warning" *ngIf="translation.none">None</span>
