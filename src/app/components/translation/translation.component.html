@@ -114,7 +114,9 @@
             </ng-container>
           </div>
         </li>
-        <li class="list-group-item">No pages to customize</li>
+        <li class="list-group-item" *ngIf="getPages().length === 0">
+          No pages to customize
+        </li>
       </ul>
     </div>
   </div>
@@ -125,11 +127,11 @@
       </h5>
       <ul class="list-group list-group-flush">
         <li
-          class="list-group-item bg-warning text-white d-flex justify-content-between align-items-center"
+          class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let tip of getTips(); trackBy: tipsTrackBy"
           [ngSwitch]="tip['_type']"
         >
-          <span>{{ getBaseTip(tip).filename }}</span>
+          <span>{{ getBaseTip(tip).name }}</span>
           <div>
             <ng-container *ngSwitchCase="'tip'">
               <button
@@ -160,7 +162,9 @@
             </ng-container>
           </div>
         </li>
-        <li class="list-group-item">No tips to customize</li>
+        <li class="list-group-item" *ngIf="getTips().length === 0">
+          No tips to customize
+        </li>
       </ul>
     </div>
   </div>

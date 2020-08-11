@@ -9,8 +9,6 @@ export class Translation {
   resource: Resource;
   version: number;
 
-  show: boolean;
-  showTips: boolean;
   generateDraft: boolean;
   none: boolean;
 
