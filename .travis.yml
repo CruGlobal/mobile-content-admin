@@ -11,41 +11,60 @@ addons:
 services:
   - xvfb
 
+stages:
+  - name: test
+  - name: release
+    if: type = push
+
 cache:
   yarn: true
   directories:
     - node_modules
 
-before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
+jobs:
+  include:
+    - stage: test
 
-script:
-  - ng test --watch=false --code-coverage
-  - ng lint --type-check
-  - yarn prettier:check
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then ng build -c production; fi
-  - if [ "$TRAVIS_BRANCH" != "master" ]; then ng build -c staging; fi
+      before_install:
+        - export CHROME_BIN=/usr/bin/google-chrome
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+      script:
+        - ng test --watch=false --code-coverage
+        - ng lint --type-check
+        - yarn prettier:check
+        - ng build -c staging
+        - ng build -c production
 
-deploy:
-  - provider: s3
-    bucket: 'cru-mobilecontentadmin-prod'
-    region: us-east-1
-    skip_cleanup: true
-    local_dir: dist
-    acl: public_read
-    on:
-      branch: master
-  - provider: s3
-    bucket: 'cru-mobilecontentadmin-staging'
-    region: us-east-1
-    skip_cleanup: true
-    local_dir: dist
-    acl: public_read
-    on:
-      branch: staging
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+
+    - name: 'Release Staging'
+      stage: release
+      if: branch = staging
+
+      script: ng build -c staging
+
+      deploy:
+        - provider: s3
+          bucket: 'cru-mobilecontentadmin-staging'
+          region: us-east-1
+          skip_cleanup: true
+          local_dir: dist
+          acl: public_read
+
+    - name: 'Release Production'
+      stage: release
+      if: branch = master
+
+      script: ng build -c production
+
+      deploy:
+        - provider: s3
+          bucket: 'cru-mobilecontentadmin-prod'
+          region: us-east-1
+          skip_cleanup: true
+          local_dir: dist
+          acl: public_read
 
 notifications:
   email: false
