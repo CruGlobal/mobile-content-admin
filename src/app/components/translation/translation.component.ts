@@ -27,6 +27,7 @@ import { CustomManifestService } from '../../service/custom-manifest.service';
 import { CustomManifestComponent } from '../custom-manifest/custom-manifest.component';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
+import { getLatestTranslation } from './utilities';
 
 @Component({
   selector: 'admin-translation',
@@ -54,7 +55,7 @@ export class TranslationComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.translation = this.getLatestTranslation(this.language);
+    this.translation = getLatestTranslation(this.resource, this.language);
     this.customManifest = this.getCustomManifest();
     this.translationLoaded.subscribe((langId) => {
       if (langId === this.language.id) {
@@ -104,7 +105,7 @@ export class TranslationComponent implements OnInit, OnChanges {
   }
 
   reloadTranslation(): void {
-    this.translation = this.getLatestTranslation(this.language);
+    this.translation = getLatestTranslation(this.resource, this.language);
   }
 
   pagesTrackBy(pIx: number, pItem: AbstractPage): any {
@@ -112,6 +113,13 @@ export class TranslationComponent implements OnInit, OnChanges {
       return null;
     }
     return pItem.id;
+  }
+
+  tipsTrackBy(tIx: number, tItem: AbstractTip): any {
+    if (!tItem || tIx < 0) {
+      return null;
+    }
+    return tItem.id;
   }
 
   getBasePage(page: AbstractPage): Page {
@@ -126,24 +134,6 @@ export class TranslationComponent implements OnInit, OnChanges {
       return (tip as CustomTip).tip;
     }
     return tip as Tip;
-  }
-
-  showPages(): void {
-    this.translation.resource.translations.forEach((t) => (t.show = false));
-    this.translation.show = true;
-  }
-
-  hidePages(): void {
-    this.translation.show = false;
-  }
-
-  showTips(): void {
-    this.translation.resource.translations.forEach((t) => (t.showTips = false));
-    this.translation.showTips = true;
-  }
-
-  hideTips(): void {
-    this.translation.showTips = false;
   }
 
   publishDraft(): void {
@@ -270,22 +260,6 @@ export class TranslationComponent implements OnInit, OnChanges {
       .delete(this.customManifest.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
-  }
-
-  private getLatestTranslation(language: Language): Translation {
-    let latest = this.resource['latest-drafts-translations'].find(
-      (t) => t.language.id === language.id,
-    );
-    if (!latest) {
-      latest = new Translation();
-      latest.language = language;
-      latest.resource = this.resource;
-      latest.none = true;
-    }
-    if (this.translation) {
-      latest.show = this.translation.show;
-    }
-    return latest;
   }
 
   private getCustomManifest(): CustomManifest {

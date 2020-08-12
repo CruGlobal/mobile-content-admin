@@ -16,6 +16,7 @@ import { CustomPageService } from '../../service/custom-page.service';
 import { CustomManifestService } from '../../service/custom-manifest.service';
 import { CustomManifest } from '../../models/custom-manifest';
 import { CustomTipService } from '../../service/custom-tip.service';
+import { TranslationVersionBadgeComponent } from './translation-version-badge/translation-version-badge.component';
 
 describe('TranslationComponent', () => {
   let comp: TranslationComponent;
@@ -92,7 +93,7 @@ describe('TranslationComponent', () => {
     customManifestServiceStub.delete();
 
     TestBed.configureTestingModule({
-      declarations: [TranslationComponent],
+      declarations: [TranslationComponent, TranslationVersionBadgeComponent],
       imports: [NgbModule.forRoot()],
       providers: [
         { provide: DraftService },
@@ -124,6 +125,7 @@ describe('TranslationComponent', () => {
 
     const resource = new Resource();
     resource.pages = [buildPage(1), pageWithCustomPage];
+    resource.tips = [];
     resource['custom-manifests'] = [
       buildCustomManifest(12, language, resource),
     ];
@@ -138,9 +140,9 @@ describe('TranslationComponent', () => {
     });
 
     it(`should show action button with 'New Draft'`, () => {
-      const element: DebugElement = fixture.debugElement.query(
-        By.css('.btn.btn-secondary'),
-      );
+      const element: DebugElement = fixture.debugElement
+        .queryAll(By.css('.btn.btn-secondary'))
+        .pop();
       expect(element.nativeElement.textContent.trim()).toBe('New Draft');
     });
 
@@ -171,14 +173,9 @@ describe('TranslationComponent', () => {
       let pages: DebugElement[];
 
       beforeEach(() => {
-        const showPagesButton: DebugElement = fixture.debugElement.query(
-          By.css('.btn.btn-warning'),
+        pages = fixture.debugElement.queryAll(
+          By.css('.list-group .list-group-item'),
         );
-        showPagesButton.nativeElement.click();
-
-        fixture.detectChanges();
-
-        pages = fixture.debugElement.queryAll(By.css('tbody tr'));
       });
 
       describe('with no CustomPage', () => {
@@ -295,9 +292,9 @@ describe('TranslationComponent', () => {
 
         fixture.detectChanges();
 
-        const element: DebugElement = fixture.debugElement.query(
-          By.css('.btn.btn-secondary'),
-        );
+        const element: DebugElement = fixture.debugElement
+          .queryAll(By.css('.btn.btn-secondary'))
+          .pop();
         expect(element.nativeElement.textContent.trim()).toBe('New Draft');
       });
 
