@@ -51,6 +51,8 @@ jobs:
           skip_cleanup: true
           local_dir: dist
           acl: public_read
+          on:
+            branch: staging
 
     - name: 'Release Production'
       stage: release
@@ -65,6 +67,8 @@ jobs:
           skip_cleanup: true
           local_dir: dist
           acl: public_read
+          on:
+            branch: master
 
 notifications:
   email: false
