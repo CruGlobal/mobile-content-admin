@@ -22,62 +22,68 @@
     </div>
   </div>
   <div class="card-body bg-dark" [ngbCollapse]="!showDetails">
-    <!-- Pages UI -->
-    <div class="card">
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
-        <span class="h5 mb-0">Default Pages</span>
-        <button class="btn btn-secondary" (click)="createPage()">
-          <i class="fa fa-file"></i> Add new page
-        </button>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li
-          class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let page of resource.pages"
-        >
-          {{ page.filename }}
-          <button
-            (click)="openPage(page)"
-            class="btn btn-outline-dark float-right"
+    <div class="row mt-3">
+      <div class="col">
+        <!-- Pages UI -->
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
           >
-            <i class="fa fa-pencil"></i> Edit
-          </button>
-        </li>
-        <li class="list-group-item" *ngIf="!(resource.pages.length > 0)">
-          No pages added
-        </li>
-      </ul>
-    </div>
+            <span class="h5 mb-0">Default Pages</span>
+            <button class="btn btn-secondary" (click)="createPage()">
+              <i class="fa fa-file"></i> Add new page
+            </button>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let page of resource.pages"
+            >
+              {{ page.filename }}
+              <button
+                (click)="openPage(page)"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+            <li class="list-group-item" *ngIf="!(resource.pages.length > 0)">
+              No pages added
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    <!-- Tips UI -->
-    <div class="card mt-3">
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
-        <span class="h5 mb-0">Default Tips</span>
-        <button class="btn btn-secondary" (click)="createTip()">
-          <i class="fa fa-file"></i> Add new tip
-        </button>
-      </div>
-      <ul class="list-group list-group-flush">
-        <li
-          class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let tip of resource.tips"
-        >
-          {{ tip.name }}
-          <button
-            (click)="openTip(tip)"
-            class="btn btn-outline-dark float-right"
+      <div class="col">
+        <!-- Tips UI -->
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
           >
-            <i class="fa fa-pencil"></i> Edit
-          </button>
-        </li>
-        <li class="list-group-item" *ngIf="!(resource.tips.length > 0)">
-          No tips added
-        </li>
-      </ul>
+            <span class="h5 mb-0">Default Tips</span>
+            <button class="btn btn-secondary" (click)="createTip()">
+              <i class="fa fa-file"></i> Add new tip
+            </button>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let tip of resource.tips"
+            >
+              {{ tip.name }}
+              <button
+                (click)="openTip(tip)"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+            <li class="list-group-item" *ngIf="!(resource.tips.length > 0)">
+              No tips added
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Customize Languages UI -->
