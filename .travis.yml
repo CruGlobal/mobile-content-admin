@@ -23,8 +23,8 @@ script:
   - ng test --watch=false --code-coverage
   - ng lint --type-check
   - yarn prettier:check
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then ng build -c production; fi
-  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" == "staging" ]; then ng build -c staging; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then ng build -c production; fi
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then ng build -c staging; fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
