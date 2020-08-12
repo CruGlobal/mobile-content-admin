@@ -53,6 +53,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   click$ = new Subject<string>();
 
   showDetails = false;
+  selectedLanguage: LanguageSearchResult = undefined;
   errorMessage: string;
 
   private _translationLoaded = new Subject<number>();

@@ -115,6 +115,13 @@ export class TranslationComponent implements OnInit, OnChanges {
     return pItem.id;
   }
 
+  tipsTrackBy(tIx: number, tItem: AbstractTip): any {
+    if (!tItem || tIx < 0) {
+      return null;
+    }
+    return tItem.id;
+  }
+
   getBasePage(page: AbstractPage): Page {
     if (page['_type'] === 'custom-page') {
       return (page as CustomPage).page;
