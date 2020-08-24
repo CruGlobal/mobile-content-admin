@@ -1,0 +1,17 @@
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+  Loading...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="loadingError">
+  {{ loadingError }}
+</ngb-alert>
+<admin-xml-editor
+  *ngIf="!loading && !loadingError"
+  [(structure)]="customTip.structure"
+  [filename]="customTip.tip.name"
+  [type]="'Custom Tip'"
+  [language]="customTip.language"
+  [resource]="customTip.tip.resource"
+  (onCancel)="cancel()"
+  (onSave)="updateCustomTip()"
+  class="d-block modal-body"
+></admin-xml-editor>

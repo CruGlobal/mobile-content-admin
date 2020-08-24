@@ -9,6 +9,7 @@ import { Resource } from '../../models/resource';
 import { DraftService } from '../../service/draft.service';
 import { ResourceComponent } from '../resource/resource.component';
 import { Language } from '../../models/language';
+import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
 
 describe('ResourcesComponent', () => {
   let comp: ResourcesComponent;
@@ -39,6 +40,7 @@ describe('ResourcesComponent', () => {
         ResourcesComponent,
         ResourceComponent,
         TranslationComponent,
+        TranslationVersionBadgeComponent,
       ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
@@ -60,7 +62,7 @@ describe('ResourcesComponent', () => {
 
     setTimeout(() => {
       expect(resourceServiceStub.getResources).toHaveBeenCalledWith(
-        'translations,pages,custom-manifests',
+        'translations,pages,custom-manifests,tips',
       );
 
       done();

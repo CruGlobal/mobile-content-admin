@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { DraftService } from '../../service/draft.service';
 import { ResourceComponent } from './resource.component';
 import { ResourcesComponent } from '../resources/resources.component';
+import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
 
 describe('ResourceComponent', () => {
   let comp: ResourceComponent;
@@ -44,6 +45,7 @@ describe('ResourceComponent', () => {
         ResourcesComponent,
         ResourceComponent,
         TranslationComponent,
+        TranslationVersionBadgeComponent,
       ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
@@ -72,6 +74,7 @@ describe('ResourceComponent', () => {
         buildTranslation(languageIdTwo),
       ];
       resource['pages'] = [];
+      resource['tips'] = [];
     });
 
     it('should be done with latest drafts and translations', (done) => {
@@ -91,13 +94,13 @@ describe('ResourceComponent', () => {
       });
     });
 
-    it('should include custom pages when loading a language', (done) => {
+    it('should include custom pages and tips when loading a language', (done) => {
       comp.ngOnInit();
 
       setTimeout(() => {
         expect(languageServiceStub.getLanguage).toHaveBeenCalledWith(
           anything(),
-          'custom_pages',
+          'custom_pages,custom_tips',
         );
 
         done();

@@ -10,17 +10,24 @@ import {
 import { Translation } from '../../models/translation';
 import { DraftService } from '../../service/draft.service';
 import { CustomPage } from '../../models/custom-page';
+import { CustomTip } from '../../models/custom-tip';
 import { AbstractPage } from '../../models/abstract-page';
+import { AbstractTip } from '../../models/abstract-tip';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomPageComponent } from '../custom-page/custom-page.component';
+import { CustomTipComponent } from '../custom-tip/custom-tip.component';
+import { UpdateResourceLanguageComponent } from '../edit-resource-language/update-resource-language/update-resource-language.component';
 import { Page } from '../../models/page';
+import { Tip } from '../../models/tip';
 import { Language } from '../../models/language';
 import { CustomPageService } from '../../service/custom-page.service';
+import { CustomTipService } from '../../service/custom-tip.service';
 import { CustomManifest } from '../../models/custom-manifest';
 import { CustomManifestService } from '../../service/custom-manifest.service';
 import { CustomManifestComponent } from '../custom-manifest/custom-manifest.component';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
+import { getLatestTranslation } from './utilities';
 
 @Component({
   selector: 'admin-translation',
@@ -41,13 +48,14 @@ export class TranslationComponent implements OnInit, OnChanges {
 
   constructor(
     private customPageService: CustomPageService,
+    private customTipService: CustomTipService,
     private draftService: DraftService,
     private customManifestService: CustomManifestService,
     private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
-    this.translation = this.getLatestTranslation(this.language);
+    this.translation = getLatestTranslation(this.resource, this.language);
     this.customManifest = this.getCustomManifest();
     this.translationLoaded.subscribe((langId) => {
       if (langId === this.language.id) {
@@ -81,8 +89,23 @@ export class TranslationComponent implements OnInit, OnChanges {
     return _tPages;
   }
 
+  getTips(): AbstractTip[] {
+    const _tTips = this.translation.resource.tips.map((tip) => {
+      const customTip: CustomTip = this.translation.language[
+        'custom-tips'
+      ].find((c) => c.tip && c.tip.id === tip.id);
+      if (!customTip) {
+        return tip;
+      } else {
+        customTip.tip = tip;
+        return customTip;
+      }
+    });
+    return _tTips;
+  }
+
   reloadTranslation(): void {
-    this.translation = this.getLatestTranslation(this.language);
+    this.translation = getLatestTranslation(this.resource, this.language);
   }
 
   pagesTrackBy(pIx: number, pItem: AbstractPage): any {
@@ -92,6 +115,13 @@ export class TranslationComponent implements OnInit, OnChanges {
     return pItem.id;
   }
 
+  tipsTrackBy(tIx: number, tItem: AbstractTip): any {
+    if (!tItem || tIx < 0) {
+      return null;
+    }
+    return tItem.id;
+  }
+
   getBasePage(page: AbstractPage): Page {
     if (page['_type'] === 'custom-page') {
       return (page as CustomPage).page;
@@ -99,13 +129,11 @@ export class TranslationComponent implements OnInit, OnChanges {
     return page as Page;
   }
 
-  showPages(): void {
-    this.translation.resource.translations.forEach((t) => (t.show = false));
-    this.translation.show = true;
-  }
-
-  hidePages(): void {
-    this.translation.show = false;
+  getBaseTip(tip: AbstractTip): Tip {
+    if (tip['_type'] === 'custom-tip') {
+      return (tip as CustomTip).tip;
+    }
+    return tip as Tip;
   }
 
   publishDraft(): void {
@@ -147,15 +175,42 @@ export class TranslationComponent implements OnInit, OnChanges {
       .catch(this.handleError.bind(this));
   }
 
+  createCustomTip(tip: Tip): void {
+    const customTip = new CustomTip();
+    customTip.tip = tip;
+    customTip.language = this.translation.language;
+    customTip.structure = tip.structure;
+
+    const modal = this.modalService.open(CustomTipComponent, { size: 'lg' });
+    modal.componentInstance.customTip = customTip;
+    modal.componentInstance.translation = this.translation;
+    modal.result
+      .then(this.loadAllResources.bind(this))
+      .catch(this.handleError.bind(this));
+  }
+
   openCustomPage(customPage: CustomPage): void {
     const modal = this.modalService.open(CustomPageComponent, { size: 'lg' });
     modal.componentInstance.customPage = customPage;
     modal.componentInstance.translation = this.translation;
   }
 
+  openCustomTip(customTip: CustomTip): void {
+    const modal = this.modalService.open(CustomTipComponent, { size: 'lg' });
+    modal.componentInstance.customTip = customTip;
+    modal.componentInstance.translation = this.translation;
+  }
+
   deleteCustomPage(customPage: CustomPage): void {
     this.customPageService
       .delete(customPage.id)
+      .then(() => this.loadAllResources())
+      .catch(this.handleError.bind(this));
+  }
+
+  deleteCustomTip(customTip: CustomTip): void {
+    this.customTipService
+      .delete(customTip.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
   }
@@ -184,6 +239,16 @@ export class TranslationComponent implements OnInit, OnChanges {
       });
   }
 
+  openResourceLanguage(): void {
+    const modal = this.modalService.open(UpdateResourceLanguageComponent, {
+      size: 'lg',
+    });
+    modal.componentInstance.resourceLanguage.language = this.language;
+    modal.componentInstance.resourceLanguage.resource = this.resource;
+    // TODO
+    // modal.componentInstance.translation = this.translation;
+  }
+
   deleteCustomManifest(): void {
     if (
       typeof this.customManifest === 'undefined' ||
@@ -195,22 +260,6 @@ export class TranslationComponent implements OnInit, OnChanges {
       .delete(this.customManifest.id)
       .then(() => this.loadAllResources())
       .catch(this.handleError.bind(this));
-  }
-
-  private getLatestTranslation(language: Language): Translation {
-    let latest = this.resource['latest-drafts-translations'].find(
-      (t) => t.language.id === language.id,
-    );
-    if (!latest) {
-      latest = new Translation();
-      latest.language = language;
-      latest.resource = this.resource;
-      latest.none = true;
-    }
-    if (this.translation) {
-      latest.show = this.translation.show;
-    }
-    return latest;
   }
 
   private getCustomManifest(): CustomManifest {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ResourcesComponent } from './components/resources/resources.component';
 import { ResourceService } from './service/resource/resource.service';
+import { ResourceLanguageService } from './service/resource-language/resource-language.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,17 +20,23 @@ import { AttachmentsComponent } from './components/attachments/attachments.compo
 import { FileUploadModule } from 'ng2-file-upload';
 import { PageService } from './service/page.service';
 import { PageComponent } from './components/page/page.component';
+import { TipService } from './service/tip.service';
+import { TipComponent } from './components/tip/tip.component';
 import { CustomManifestComponent } from './components/custom-manifest/custom-manifest.component';
 import { CustomPageComponent } from './components/custom-page/custom-page.component';
 import { CustomPageService } from './service/custom-page.service';
+import { CustomTipComponent } from './components/custom-tip/custom-tip.component';
+import { CustomTipService } from './service/custom-tip.service';
 import { SystemService } from './service/system.service';
 import { ResourceTypeService } from './service/resource-type.service';
 import { UpdateResourceComponent } from './components/edit-resource/update-resource/update-resource.component';
 import { CreateResourceComponent } from './components/edit-resource/create-resource/create-resource.component';
+import { UpdateResourceLanguageComponent } from './components/edit-resource-language/update-resource-language/update-resource-language.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageComponent } from './components/image/image.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { CreatePageComponent } from './components/create-page/create-page.component';
+import { CreateTipComponent } from './components/create-tip/create-tip.component';
 import { XmlEditorComponent } from './components/xml-editor/xml-editor.component';
 import { AuthGuardService } from './service/auth-guard/auth-guard.service';
 import { AttachmentService } from './service/attachment.service';
@@ -37,6 +44,7 @@ import { MultipleDraftGeneratorComponent } from './components/multiple-draft-gen
 import { ResourceComponent } from './components/resource/resource.component';
 import { CustomManifestService } from './service/custom-manifest.service';
 import 'brace/mode/xml';
+import { TranslationVersionBadgeComponent } from './components/translation/translation-version-badge/translation-version-badge.component';
 
 @NgModule({
   declarations: [
@@ -48,14 +56,19 @@ import 'brace/mode/xml';
     LanguagesComponent,
     AttachmentsComponent,
     PageComponent,
+    TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
+    CustomTipComponent,
     UpdateResourceComponent,
     CreateResourceComponent,
+    UpdateResourceLanguageComponent,
     ImageComponent,
     CreatePageComponent,
+    CreateTipComponent,
     XmlEditorComponent,
     MultipleDraftGeneratorComponent,
+    TranslationVersionBadgeComponent,
   ],
   imports: [
     AceEditorModule,
@@ -69,11 +82,14 @@ import 'brace/mode/xml';
   providers: [
     ResourceService,
     LanguageService,
+    ResourceLanguageService,
     DraftService,
     AuthService,
     WindowRefService,
     PageService,
     CustomPageService,
+    CustomTipService,
+    TipService,
     SystemService,
     ResourceTypeService,
     AuthGuardService,
@@ -83,11 +99,15 @@ import 'brace/mode/xml';
   entryComponents: [
     UpdateResourceComponent,
     CreateResourceComponent,
+    UpdateResourceLanguageComponent,
     ImageComponent,
     PageComponent,
+    TipComponent,
     CustomManifestComponent,
     CustomPageComponent,
     CreatePageComponent,
+    CustomTipComponent,
+    CreateTipComponent,
     LoginComponent,
     MultipleDraftGeneratorComponent,
   ],

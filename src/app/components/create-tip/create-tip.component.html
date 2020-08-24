@@ -1,30 +1,14 @@
 <div class="modal-header">
-  <h5>Add new page to resource {{ page.resource.name }}</h5>
+  <h5>Add new tip to resource {{ tip.resource.name }}</h5>
 </div>
+
 <div class="modal-body">
   <div class="row">
     <div class="col">
-      <label>Filename</label>
+      <label>Name</label>
     </div>
     <div class="col">
-      <input
-        class="form-control"
-        placeholder="Filename"
-        [(ngModel)]="page.filename"
-      />
-    </div>
-  </div>
-
-  <div class="row my-2">
-    <div class="col">
-      <label>Position</label>
-    </div>
-    <div class="col">
-      <input
-        class="form-control"
-        placeholder="Position"
-        [(ngModel)]="page.position"
-      />
+      <input placeholder="Name" [(ngModel)]="tip.name" />
     </div>
   </div>
 
@@ -32,7 +16,7 @@
     <div class="col">
       <div
         ace-editor
-        [(text)]="page.structure"
+        [(text)]="tip.structure"
         [mode]="'xml'"
         [autoUpdateContent]="true"
         [options]="{ wrap: true }"
@@ -60,9 +44,7 @@
 
 <div class="modal-footer">
   <div class="btn-group" role="group">
-    <button (click)="dismissModal()" class="btn btn-danger">
-      Cancel
-    </button>
-    <button (click)="savePage()" class="btn btn-success">Save</button>
+    <button (click)="dismissModal()" class="btn btn-danger">Cancel</button>
+    <button (click)="saveTip()" class="btn btn-success">Save</button>
   </div>
 </div>

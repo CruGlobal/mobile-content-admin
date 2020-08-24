@@ -5,7 +5,7 @@ import { CustomManifest } from '../../models/custom-manifest';
 import { CustomManifestService } from '../../service/custom-manifest.service';
 
 @Component({
-  selector: 'admin-custom-page',
+  selector: 'admin-custom-page', // this doesn't look right?
   templateUrl: './custom-manifest.component.html',
 })
 export class CustomManifestComponent {

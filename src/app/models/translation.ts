@@ -9,7 +9,6 @@ export class Translation {
   resource: Resource;
   version: number;
 
-  show: boolean;
   generateDraft: boolean;
   none: boolean;
 
