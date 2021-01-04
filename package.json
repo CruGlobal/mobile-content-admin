@@ -27,7 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "angular2-uuid": "^1.1.1",
     "components-font-awesome": "^4.6.3",
-    "core-js": "^2.4.1",
+    "core-js": "^3.8.2",
     "jsonapi-datastore": "^0.4.0-beta",
     "karma-coverage": "^2.0.2",
     "ng2-ace-editor": "0.3.9",
