@@ -113,7 +113,11 @@
           <div class="col">Actions</div>
         </div>
       </strong>
-      <div *ngFor="let attachment of resource.attachments">
+      <div
+        *ngFor="
+          let attachment of resource.attachments | orderBy: 'file-file-name'
+        "
+      >
         <div class="row">
           <div class="col">
             {{ attachment.id }}

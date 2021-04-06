@@ -9,6 +9,7 @@ import { Attachment } from '../../models/attachment';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { FileSelectDirective } from 'ng2-file-upload';
+import { NgArrayPipesModule } from 'ngx-pipes';
 
 describe('AttachmentsComponent', () => {
   let comp: AttachmentsComponent;
@@ -47,7 +48,7 @@ describe('AttachmentsComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AttachmentsComponent, FileSelectDirective],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: WindowRefService, useValue: windowRefStub },
