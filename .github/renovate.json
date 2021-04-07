@@ -1,5 +1,4 @@
 {
   "extends": [":preserveSemverRanges", "config:base"],
-  "labels": ["dependencies"],
-  "automerge": true
+  "labels": ["dependencies"]
 }
