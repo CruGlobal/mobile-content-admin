@@ -31,9 +31,9 @@
     </div>
     <div class="col">
       <select class="form-control" [(ngModel)]="resource.system">
-        <option *ngFor="let system of systems" [ngValue]="system">{{
-          system.name
-        }}</option>
+        <option *ngFor="let system of systems" [ngValue]="system">
+          {{ system.name }}
+        </option>
       </select>
     </div>
   </div>
@@ -44,9 +44,9 @@
     </div>
     <div class="col">
       <select class="form-control" [(ngModel)]="resource.resourceType">
-        <option *ngFor="let type of resourceTypes" [ngValue]="type">{{
-          type.name
-        }}</option>
+        <option *ngFor="let type of resourceTypes" [ngValue]="type">
+          {{ type.name }}
+        </option>
       </select>
     </div>
   </div>
@@ -90,15 +90,13 @@
       [autoUpdateContent]="true"
       [options]="{ wrap: true }"
       class="col"
-      style="min-height: 250px; overflow: auto;"
+      style="min-height: 250px; overflow: auto"
     ></div>
   </div>
 
   <div class="row" *ngIf="saving">
     <div class="col">
-      <ngb-alert type="info" [dismissible]="false">
-        Saving...
-      </ngb-alert>
+      <ngb-alert type="info" [dismissible]="false">Saving...</ngb-alert>
     </div>
   </div>
 

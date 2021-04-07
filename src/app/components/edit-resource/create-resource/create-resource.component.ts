@@ -12,7 +12,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   selector: 'admin-create-resource',
   templateUrl: '../edit-resource.component.html',
 })
-export class CreateResourceComponent extends AbstractEditResourceComponent
+export class CreateResourceComponent
+  extends AbstractEditResourceComponent
   implements OnInit {
   @Input() resource: Resource = new Resource();
   resourceTypes: ResourceType[];
