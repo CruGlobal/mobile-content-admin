@@ -1,4 +1,5 @@
 {
   "extends": [":preserveSemverRanges", "config:base"],
-  "labels": ["dependencies"]
+  "labels": ["dependencies"],
+  "dependencyDashboard": true
 }
