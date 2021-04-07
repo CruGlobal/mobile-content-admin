@@ -61,9 +61,9 @@
       </div>
       <select [(ngModel)]="selectedResource" class="custom-select">
         <option value="undefined" disabled selected hidden>Resource</option>
-        <option *ngFor="let resource of resources" [ngValue]="resource">{{
-          resource.name
-        }}</option>
+        <option *ngFor="let resource of resources" [ngValue]="resource">
+          {{ resource.name }}
+        </option>
       </select>
       <div class="input-group-append">
         <button (click)="uploadNewFile()" class="btn btn-success">
@@ -91,7 +91,7 @@
     class="card-header"
     (click)="resource.showAttachments = !resource.showAttachments"
   >
-    <span class="h4" style="cursor: pointer;">{{ resource.name }}</span>
+    <span class="h4" style="cursor: pointer">{{ resource.name }}</span>
   </div>
   <div
     *ngIf="resource.attachments.length == 0"
@@ -108,15 +108,9 @@
     <div class="container">
       <strong>
         <div class="row">
-          <div class="col">
-            ID
-          </div>
-          <div class="col">
-            Filename
-          </div>
-          <div class="col">
-            Actions
-          </div>
+          <div class="col">ID</div>
+          <div class="col">Filename</div>
+          <div class="col">Actions</div>
         </div>
       </strong>
       <div *ngFor="let attachment of resource.attachments">
