@@ -65,10 +65,5 @@
   },
   "main": "index.js",
   "repository": "https://github.com/CruGlobal/mobile-content-admin.git",
-  "author": "dsgoers <daniel.goers@cru.org>",
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  "author": "dsgoers <daniel.goers@cru.org>"
 }
