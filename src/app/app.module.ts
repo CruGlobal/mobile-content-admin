@@ -45,6 +45,7 @@ import { ResourceComponent } from './components/resource/resource.component';
 import { CustomManifestService } from './service/custom-manifest.service';
 import 'brace/mode/xml';
 import { TranslationVersionBadgeComponent } from './components/translation/translation-version-badge/translation-version-badge.component';
+import { NgArrayPipesModule } from 'ngx-pipes';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { TranslationVersionBadgeComponent } from './components/translation/trans
     FormsModule,
     AppRoutingModule,
     HttpModule,
+    NgArrayPipesModule,
     NgbModule.forRoot(),
   ],
   providers: [

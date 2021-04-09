@@ -86,7 +86,7 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<div *ngFor="let resource of resources" class="card mb-3">
+<div *ngFor="let resource of resources | orderBy: 'name'" class="card mb-3">
   <div
     class="card-header"
     (click)="resource.showAttachments = !resource.showAttachments"
@@ -113,7 +113,11 @@
           <div class="col">Actions</div>
         </div>
       </strong>
-      <div *ngFor="let attachment of resource.attachments">
+      <div
+        *ngFor="
+          let attachment of resource.attachments | orderBy: 'file-file-name'
+        "
+      >
         <div class="row">
           <div class="col">
             {{ attachment.id }}
