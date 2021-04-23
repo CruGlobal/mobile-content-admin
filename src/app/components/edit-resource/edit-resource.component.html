@@ -83,6 +83,7 @@
     </div>
     <div class="col">
       <input
+        class="form-control"
         placeholder="Youtube Video Id"
         [(ngModel)]="resource.aboutOverviewVideoYoutube"
       />
@@ -94,7 +95,11 @@
       <label>Banner</label>
     </div>
     <div class="col">
-      <input placeholder="Attachment Id" [(ngModel)]="resource.banner" />
+      <input
+        class="form-control"
+        placeholder="Attachment Id"
+        [(ngModel)]="resource.banner"
+      />
     </div>
   </div>
 
@@ -103,13 +108,30 @@
       <label>Banner (About)</label>
     </div>
     <div class="col">
-      <input placeholder="Attachment Id" [(ngModel)]="resource.bannerAbout" />
+      <input
+        class="form-control"
+        placeholder="Attachment Id"
+        [(ngModel)]="resource.bannerAbout"
+      />
     </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <label>Manifest</label>
+      <label>Order</label>
+    </div>
+    <div class="col">
+      <input
+        class="form-control"
+        placeholder="Order"
+        [(ngModel)]="resource['attr-default-order']"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Manifest XML</label>
     </div>
   </div>
   <div class="row">
