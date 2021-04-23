@@ -26,6 +26,7 @@ export class Resource {
   aboutOverviewVideoYoutube?: string;
   bannerAbout?: number;
   banner?: number;
+  'attr-default-order'?: number;
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;
