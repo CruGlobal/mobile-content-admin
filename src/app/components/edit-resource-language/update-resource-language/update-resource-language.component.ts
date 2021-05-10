@@ -11,7 +11,8 @@ import { AbstractEditResourceLanguageComponent } from '../abstract-edit-resource
 })
 export class UpdateResourceLanguageComponent
   extends AbstractEditResourceLanguageComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() resourceLanguage: ResourceLanguage;
 
   constructor(

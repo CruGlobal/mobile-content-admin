@@ -13,9 +13,9 @@ describe('TipComponent', () => {
   let fixture: ComponentFixture<TipComponent>;
   let xmlEditor: DebugElement;
 
-  const tipServiceStub = ({
+  const tipServiceStub = {
     update() {},
-  } as unknown) as TipService;
+  } as unknown as TipService;
 
   beforeEach(async(() => {
     spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));

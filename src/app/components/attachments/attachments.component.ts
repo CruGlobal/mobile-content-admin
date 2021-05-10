@@ -66,9 +66,8 @@ export class AttachmentsComponent implements OnInit {
 
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
-    this.uploader.authToken = this.windowRef.nativeWindow.localStorage.getItem(
-      'Authorization',
-    );
+    this.uploader.authToken =
+      this.windowRef.nativeWindow.localStorage.getItem('Authorization');
     this.uploader.options.additionalParameter = { resource_id: resourceId };
     this.uploader.uploadAll();
   }

@@ -32,16 +32,16 @@ describe('AttachmentsComponent', () => {
     },
   };
 
-  const modalServiceStub = ({
+  const modalServiceStub = {
     open() {},
-  } as unknown) as NgbModal;
+  } as unknown as NgbModal;
 
   const file = 'roger.txt';
-  const modalRef = ({
+  const modalRef = {
     componentInstance: {
       source: null,
     },
-  } as unknown) as NgbModalRef;
+  } as unknown as NgbModalRef;
 
   beforeEach(() => {
     spyOn(modalServiceStub, 'open').and.returnValue(modalRef);

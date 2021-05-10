@@ -16,9 +16,9 @@ describe('CustomPageComponent', () => {
   let fixture: ComponentFixture<CustomPageComponent>;
   let xmlEditor: DebugElement;
 
-  const customPageServiceStub = ({
+  const customPageServiceStub = {
     upsert() {},
-  } as unknown) as CustomPageService;
+  } as unknown as CustomPageService;
   const draftServiceStub = {
     getPage() {
       return Promise.resolve('xml response');

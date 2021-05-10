@@ -16,9 +16,9 @@ describe('CustomTipComponent', () => {
   let fixture: ComponentFixture<CustomTipComponent>;
   let xmlEditor: DebugElement;
 
-  const customTipServiceStub = ({
+  const customTipServiceStub = {
     upsert() {},
-  } as unknown) as CustomTipService;
+  } as unknown as CustomTipService;
   const draftServiceStub = {
     getTip() {
       return Promise.resolve('xml response');
