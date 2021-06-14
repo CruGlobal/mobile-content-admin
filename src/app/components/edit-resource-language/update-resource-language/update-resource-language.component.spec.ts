@@ -15,9 +15,9 @@ describe('UpdateResourceLanguageComponent', () => {
   let fixture: ComponentFixture<UpdateResourceLanguageComponent>;
 
   const resourceLanguage = new ResourceLanguage();
-  const resourceLanguageServiceStub = ({
+  const resourceLanguageServiceStub = {
     update() {},
-  } as unknown) as ResourceLanguageService;
+  } as unknown as ResourceLanguageService;
 
   beforeEach(() => {
     spyOn(resourceLanguageServiceStub, 'update').and.returnValue(

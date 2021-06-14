@@ -14,7 +14,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CreateResourceComponent
   extends AbstractEditResourceComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() resource: Resource = new Resource();
   resourceTypes: ResourceType[];
   systems: System[];

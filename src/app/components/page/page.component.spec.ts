@@ -13,9 +13,9 @@ describe('PageComponent', () => {
   let fixture: ComponentFixture<PageComponent>;
   let xmlEditor: DebugElement;
 
-  const pageServiceStub = ({
+  const pageServiceStub = {
     update() {},
-  } as unknown) as PageService;
+  } as unknown as PageService;
 
   beforeEach(async(() => {
     spyOn(pageServiceStub, 'update').and.returnValue(

@@ -26,12 +26,12 @@ describe('ResourceComponent', () => {
     return t;
   };
 
-  const languageServiceStub = ({
+  const languageServiceStub = {
     getLanguage() {},
-  } as unknown) as LanguageService;
-  const languageStub = ({
+  } as unknown as LanguageService;
+  const languageStub = {
     _placeHolder: true,
-  } as unknown) as Language;
+  } as unknown as Language;
 
   const resource: Resource = new Resource();
 

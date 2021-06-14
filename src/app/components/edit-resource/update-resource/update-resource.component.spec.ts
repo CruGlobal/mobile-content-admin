@@ -15,9 +15,9 @@ describe('UpdateResourceComponent', () => {
   let fixture: ComponentFixture<UpdateResourceComponent>;
 
   const resource = new Resource();
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     update() {},
-  } as unknown) as ResourceService;
+  } as unknown as ResourceService;
 
   beforeEach(() => {
     spyOn(resourceServiceStub, 'update').and.returnValue(

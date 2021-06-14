@@ -14,10 +14,10 @@ describe('CustomManifestComponent', () => {
   let fixture: ComponentFixture<CustomManifestComponent>;
   let xmlEditor: DebugElement;
 
-  const customManifestServiceStub = ({
+  const customManifestServiceStub = {
     upsert() {},
     delete() {},
-  } as unknown) as CustomManifestService;
+  } as unknown as CustomManifestService;
 
   beforeEach(async(() => {
     spyOn(customManifestServiceStub, 'upsert').and.returnValue(

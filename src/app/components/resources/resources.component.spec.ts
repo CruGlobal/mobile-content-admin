@@ -15,15 +15,15 @@ describe('ResourcesComponent', () => {
   let comp: ResourcesComponent;
   let fixture: ComponentFixture<ResourcesComponent>;
 
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     getResources() {},
-  } as unknown) as ResourceService;
-  const languageServiceStub = ({
+  } as unknown as ResourceService;
+  const languageServiceStub = {
     getLanguage() {},
-  } as unknown) as LanguageService;
-  const languageStub = ({
+  } as unknown as LanguageService;
+  const languageStub = {
     _placeHolder: true,
-  } as unknown) as Language;
+  } as unknown as Language;
 
   const resource: Resource = new Resource();
 
