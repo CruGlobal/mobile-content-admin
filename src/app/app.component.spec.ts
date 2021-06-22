@@ -31,7 +31,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: NgbModal, useValue: modalServiceStub },
         { provide: AuthService },
-      ]
+      ],
     }).compileComponents();
   }));
 

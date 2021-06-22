@@ -97,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
               break;
             case 'loadUserProfile':
               errorMessage =
-                'Failed to load logged in user\'s profile.' +
+                'Failed to load logged in users profile.' +
                 (tResp.error ? `<br/>${tResp.error}` : '');
               break;
             case 'getToken':
