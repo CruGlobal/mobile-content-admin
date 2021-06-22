@@ -46,6 +46,11 @@ import { CustomManifestService } from './service/custom-manifest.service';
 import 'brace/mode/xml';
 import { TranslationVersionBadgeComponent } from './components/translation/translation-version-badge/translation-version-badge.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { OklaLoginComponent } from './components/okla-login/okla-login.component';
+import { UserAuthSessionService } from './service/auth/user-auth-session.service';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { HttpClientModule } from '@angular/common/http';
+import { OklaLoginErrorComponent } from './components/okla-login-error/okla-login-error.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +75,8 @@ import { NgArrayPipesModule } from 'ngx-pipes';
     XmlEditorComponent,
     MultipleDraftGeneratorComponent,
     TranslationVersionBadgeComponent,
+    OklaLoginComponent,
+    OklaLoginErrorComponent,
   ],
   imports: [
     AceEditorModule,
@@ -80,6 +87,8 @@ import { NgArrayPipesModule } from 'ngx-pipes';
     HttpModule,
     NgArrayPipesModule,
     NgbModule.forRoot(),
+    HttpClientModule,
+    OAuthModule.forRoot(),
   ],
   providers: [
     ResourceService,
@@ -97,6 +106,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
     AuthGuardService,
     AttachmentService,
     CustomManifestService,
+    UserAuthSessionService,
   ],
   entryComponents: [
     UpdateResourceComponent,
@@ -112,6 +122,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
     CreateTipComponent,
     LoginComponent,
     MultipleDraftGeneratorComponent,
+    OklaLoginErrorComponent,
   ],
   bootstrap: [AppComponent],
 })

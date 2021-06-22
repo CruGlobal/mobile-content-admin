@@ -1,7 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-  <h5>{{ title }}</h5>
-  <a routerLink="/translations" class="nav-link">Translations</a>
-  <a routerLink="/attachments" class="nav-link">Attachments</a>
-  <a routerLink="/languages" class="nav-link">Languages</a>
-</nav>
-<router-outlet></router-outlet>
+<ng-container *ngIf="appReady">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <h5>{{ title }}</h5>
+    <a *ngIf="sessionReady | async" routerLink="/translations" class="nav-link"
+      >Translations</a
+    >
+    <a *ngIf="sessionReady | async" routerLink="/attachments" class="nav-link"
+      >Attachments</a
+    >
+    <a *ngIf="sessionReady | async" routerLink="/languages" class="nav-link"
+      >Languages</a
+    >
+  </nav>
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-container *ngIf="!appReady">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+    <h5>{{ title }}</h5>
+  </nav>
+  <div class="row">
+    <div class="col-md-4 offset-md-4" style="height: 80px; margin: 80px auto">
+      <ngb-alert type="warning" [dismissible]="false"> Loading... </ngb-alert>
+    </div>
+  </div>
+</ng-container>
