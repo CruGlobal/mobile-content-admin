@@ -2,12 +2,36 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { AuthService } from './service/auth/auth.service';
 
 describe('AppComponent', () => {
+  const modalServiceStub = ({
+    open() {},
+  } as unknown) as NgbModal;
+
+  const modalRef = ({
+    componentInstance: {
+      source: null,
+    },
+  } as unknown) as NgbModalRef;
+
   beforeEach(async(() => {
+    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [RouterTestingModule],
+      imports: [
+        RouterTestingModule,
+        NgbModule.forRoot(),
+        HttpClientModule,
+        OAuthModule.forRoot(),
+      ],
+      providers: [
+        { provide: NgbModal, useValue: modalServiceStub },
+        { provide: AuthService },
+      ]
     }).compileComponents();
   }));
 
