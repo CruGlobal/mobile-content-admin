@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'admin-okla-login-error',
-  templateUrl: './okla-login-error.component.html',
+  selector: 'admin-okta-login-error',
+  templateUrl: './okta-login-error.component.html',
 })
-export class OklaLoginErrorComponent implements OnInit {
+export class OktaLoginErrorComponent implements OnInit {
   @Input() errorMessage: string;
 
   constructor() {}

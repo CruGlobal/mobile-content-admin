@@ -46,11 +46,11 @@ import { CustomManifestService } from './service/custom-manifest.service';
 import 'brace/mode/xml';
 import { TranslationVersionBadgeComponent } from './components/translation/translation-version-badge/translation-version-badge.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
-import { OklaLoginComponent } from './components/okla-login/okla-login.component';
+import { OktaLoginComponent } from './components/okta-login/okta-login.component';
 import { UserAuthSessionService } from './service/auth/user-auth-session.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
-import { OklaLoginErrorComponent } from './components/okla-login-error/okla-login-error.component';
+import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 
 @NgModule({
   declarations: [
@@ -75,8 +75,8 @@ import { OklaLoginErrorComponent } from './components/okla-login-error/okla-logi
     XmlEditorComponent,
     MultipleDraftGeneratorComponent,
     TranslationVersionBadgeComponent,
-    OklaLoginComponent,
-    OklaLoginErrorComponent,
+    OktaLoginComponent,
+    OktaLoginErrorComponent,
   ],
   imports: [
     AceEditorModule,
@@ -122,7 +122,7 @@ import { OklaLoginErrorComponent } from './components/okla-login-error/okla-logi
     CreateTipComponent,
     LoginComponent,
     MultipleDraftGeneratorComponent,
-    OklaLoginErrorComponent,
+    OktaLoginErrorComponent,
   ],
   bootstrap: [AppComponent],
 })

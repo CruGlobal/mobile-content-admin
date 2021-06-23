@@ -3,10 +3,10 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'admin-okla-login',
-  templateUrl: './okla-login.component.html',
+  selector: 'admin-okta-login',
+  templateUrl: './okta-login.component.html',
 })
-export class OklaLoginComponent implements OnInit, OnDestroy {
+export class OktaLoginComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
 
   inprogress: boolean;

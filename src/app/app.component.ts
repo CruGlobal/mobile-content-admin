@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { OklaLoginErrorComponent } from './components/okla-login-error/okla-login-error.component';
+import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 import { UserAuthSessionService } from './service/auth/user-auth-session.service';
 
 @Component({
@@ -90,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
           switch (errorStep) {
             case 'tDicoveryDocObservable':
               errorMessage =
-                'Failed to connect to the Okla instance.' +
+                'Failed to connect to the Okta instance.' +
                 (tResp.error ? `<br/>${tResp.error}` : '');
               break;
             case 'tokenValidation':
@@ -110,7 +110,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           if (errorMessage) {
             const modalRef: NgbModalRef = this.modalService.open(
-              OklaLoginErrorComponent,
+              OktaLoginErrorComponent,
               { size: 'lg' },
             );
             modalRef.componentInstance.errorMessage = errorMessage;

@@ -5,7 +5,7 @@ import { ResourcesComponent } from './components/resources/resources.component';
 import { LanguagesComponent } from './components/languages/languages.component';
 import { AttachmentsComponent } from './components/attachments/attachments.component';
 import { AuthGuardService } from './service/auth-guard/auth-guard.service';
-import { OklaLoginComponent } from './components/okla-login/okla-login.component';
+import { OktaLoginComponent } from './components/okta-login/okta-login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/translations', pathMatch: 'full' },
@@ -26,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'login/callback',
-    component: OklaLoginComponent,
+    component: OktaLoginComponent,
   },
 ];
 
