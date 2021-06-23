@@ -15,7 +15,7 @@ describe('AuthGuardService', () => {
     const mockNgbModal = new NgbModal(null, null, null, null);
     spyOn(mockNgbModal, 'open');
 
-    const service = new AuthGuardService(mockDraftService, mockNgbModal);
+    const service = new AuthGuardService(mockDraftService, mockNgbModal, null);
     service.canActivate();
 
     setTimeout(() => {

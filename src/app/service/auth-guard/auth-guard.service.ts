@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { OktaLoginErrorComponent } from '../../components/okta-login-error/okta-login-error.component';
 import { DraftService } from '../draft.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LoginComponent } from '../../components/login/login.component';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
   constructor(
     private draftService: DraftService,
     private modalService: NgbModal,
+    private router: Router,
   ) {}
 
   canActivate() {
@@ -20,7 +21,13 @@ export class AuthGuardService implements CanActivate {
       })
       .catch(() => {
         console.log('User is not authenticated.');
-        this.modalService.open(LoginComponent);
+        const errorMessage = 'Login required.';
+        const modalRef: NgbModalRef = this.modalService.open(
+          OktaLoginErrorComponent,
+          { size: 'lg' },
+        );
+        modalRef.componentInstance.errorMessage = errorMessage;
+        this.router.navigate(['/', 'login', 'callback']);
         return false;
       });
   }
