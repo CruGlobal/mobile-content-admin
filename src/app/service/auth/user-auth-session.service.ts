@@ -109,7 +109,7 @@ export class UserAuthSessionService {
   clearSavedUserSessionData(): void {
     this._oauthUser.next({ sub: '' });
     sessionStorage.clear();
-    localStorage.removeItem('Authorization');
+    //localStorage.removeItem('Authorization');
   }
 
   setOautSessionError(pError: IOauthSessionCheckResult): void {
