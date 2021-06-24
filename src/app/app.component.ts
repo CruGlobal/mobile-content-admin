@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
+import { oauthConfig } from './models/oauth-session-check-result';
 import { UserAuthSessionService } from './service/auth/user-auth-session.service';
 
 @Component({
@@ -21,11 +23,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private userSessionService: UserAuthSessionService,
+    private oauthService: OAuthService,
     private router: Router,
     private modalService: NgbModal,
   ) {}
 
   ngOnInit() {
+    this.oauthService.configure(oauthConfig);
+    this.oauthService.setStorage(sessionStorage);
     this.awaitOauthSessionError();
 
     this.router.events
@@ -92,6 +97,9 @@ export class AppComponent implements OnInit, OnDestroy {
               errorMessage =
                 'Failed to connect to the Okta instance.' +
                 (tResp.error ? `<br/>${tResp.error}` : '');
+              setTimeout(() => {
+                this.router.navigate(['/', 'login', 'callback']);
+              }, 100);
               break;
             case 'tokenValidation':
               break;

@@ -3,10 +3,7 @@ import { OAuthService, UserInfo } from 'angular-oauth2-oidc';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthToken } from '../../models/auth-token';
-import {
-  IOauthSessionCheckResult,
-  oauthConfig,
-} from '../../models/oauth-session-check-result';
+import { IOauthSessionCheckResult } from '../../models/oauth-session-check-result';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -32,17 +29,16 @@ export class UserAuthSessionService {
   checkOauthSession(): Observable<IOauthSessionCheckResult> {
     const tResult: IOauthSessionCheckResult = { hasValidSession: false };
 
-    this._oauthService.configure(oauthConfig);
-    this._oauthService.setStorage(sessionStorage);
-    this._oauthService.setupAutomaticSilentRefresh();
-
     const tDicoveryDocObservable: Observable<boolean> = from(
       this._oauthService.loadDiscoveryDocumentAndTryLogin(),
     );
 
     return tDicoveryDocObservable.pipe(
       catchError((tErr) => {
-        tResult.error = tErr;
+        tResult.error =
+          tErr && tErr.params && tErr.params.error_description
+            ? tErr.params.error_description
+            : '';
         tResult.erroredAt = 'tDicoveryDocObservable';
         return of(false);
       }),
@@ -60,7 +56,12 @@ export class UserAuthSessionService {
         );
         return tLoadUserProfileObservable.pipe(
           catchError((tProfileErr) => {
-            tResult.error = tProfileErr;
+            tResult.error =
+              tProfileErr &&
+              tProfileErr.params &&
+              tProfileErr.params.error_description
+                ? tProfileErr.params.error_description
+                : '';
             tResult.erroredAt = 'loadUserProfile';
             return of(false);
           }),
@@ -77,7 +78,12 @@ export class UserAuthSessionService {
 
             return tTokenObservable.pipe(
               catchError((tGetTokenError) => {
-                tResult.error = tGetTokenError;
+                tResult.error =
+                  tGetTokenError &&
+                  tGetTokenError.error &&
+                  tGetTokenError.error.error
+                    ? tGetTokenError.error.error
+                    : '';
                 tResult.erroredAt = 'getToken';
                 return of(false);
               }),
