@@ -71,7 +71,7 @@ export class UserAuthSessionService {
               return of(tResult);
             }
 
-            const tToken = this._oauthService.getIdToken();
+            const tToken = this._oauthService.getAccessToken();
             const tTokenObservable: Observable<AuthToken> = from(
               this._authService.createAuthToken(tToken),
             );
