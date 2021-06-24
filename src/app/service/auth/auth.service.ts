@@ -27,7 +27,7 @@ export class AuthService extends AbstractService {
     return this.http
       .post(
         this.authUrl,
-        `{"data": {"attributes": {"code":"${accessCode}"}}}`,
+        `{"data": {"attributes": {"id_token":"${accessCode}"}}}`,
         this.requestOptions,
       )
       .toPromise()
