@@ -21,9 +21,11 @@ export class AuthGuardService implements CanActivate {
       .catch(() => {
         console.log('User is not authenticated.');
         this.userSessionService.clearSavedUserSessionData();
-        setTimeout(() => {
-          this.router.navigate(['/', 'login', 'callback']);
-        }, 0);
+        if (this.router) {
+          setTimeout(() => {
+            this.router.navigate(['/', 'login', 'callback']);
+          }, 0);
+        }
         return false;
       });
   }
