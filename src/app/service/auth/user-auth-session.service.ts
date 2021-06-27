@@ -10,6 +10,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UserAuthSessionService {
+  private _sessionReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false,
+  );
   private _oauthUser: BehaviorSubject<UserInfo> = new BehaviorSubject<UserInfo>(
     { sub: '' },
   );
@@ -20,6 +23,8 @@ export class UserAuthSessionService {
   );
 
   oauthSessionError$: Observable<IOauthSessionCheckResult> = this._erroredAt.asObservable();
+  oauthUser$: Observable<UserInfo> = this._oauthUser.asObservable();
+  sessionReady$: Observable<boolean> = this._sessionReady.asObservable();
 
   constructor(
     private _oauthService: OAuthService,
@@ -97,6 +102,9 @@ export class UserAuthSessionService {
                 tResult.user = tUserInfo;
                 tResult.hasValidSession = true;
                 this._oauthUser.next(tUserInfo);
+                setTimeout(() => {
+                  this._sessionReady.next(true);
+                }, 0);
                 return of(tResult);
               }),
             );
@@ -109,7 +117,10 @@ export class UserAuthSessionService {
   clearSavedUserSessionData(): void {
     this._oauthUser.next({ sub: '' });
     sessionStorage.clear();
-    //localStorage.removeItem('Authorization');
+    localStorage.removeItem('Authorization');
+    setTimeout(() => {
+      this._sessionReady.next(false);
+    }, 0);
   }
 
   setOautSessionError(pError: IOauthSessionCheckResult): void {

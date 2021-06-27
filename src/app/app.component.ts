@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private _appSessionReady = new Subject<any>();
 
   appReady: boolean;
-  sessionReady$: Observable<boolean> = this._appSessionReady.asObservable();
+  sessionReady$: Observable<boolean>;
   title = 'Mobile Content Admin';
 
   constructor(
@@ -26,7 +26,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private oauthService: OAuthService,
     private router: Router,
     private modalService: NgbModal,
-  ) {}
+  ) {
+    this.sessionReady$ = this.userSessionService.sessionReady$;
+  }
 
   ngOnInit() {
     this.oauthService.configure(oauthConfig);
@@ -40,13 +42,16 @@ export class AppComponent implements OnInit, OnDestroy {
           if (!this.router.navigated) {
             if (event.url.startsWith(environment.oidc_auth.login_result_url)) {
               this.awaitSavedSessionCheckResult(true);
-            } else {
-              this.userSessionService.clearSavedUserSessionData();
-              setTimeout(() => {
-                this.appReady = true;
-                this._appSessionReady.next();
-              }, 200);
             }
+          }
+        } else if (event instanceof NavigationEnd) {
+          if (
+            event.urlAfterRedirects !== '/' &&
+            !event.urlAfterRedirects.startsWith(
+              environment.oidc_auth.login_result_url,
+            )
+          ) {
+            this.awaitSavedSessionCheckResult(false);
           }
         }
       });
@@ -64,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((tResp) => {
         if (tResp && tResp.hasValidSession) {
           if (isLoginScreen) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/', 'translations']);
             setTimeout(() => {
               this.appReady = true;
             }, 0);
@@ -74,6 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }, 0);
           }
         } else if (tResp.erroredAt && isLoginScreen) {
+          this.appReady = true;
           this.userSessionService.setOautSessionError(tResp);
         } else {
           this.userSessionService.clearSavedUserSessionData();

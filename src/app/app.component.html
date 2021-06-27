@@ -1,14 +1,17 @@
 <ng-container *ngIf="appReady">
   <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <h5>{{ title }}</h5>
-    <a *ngIf="sessionReady | async" routerLink="/translations" class="nav-link"
+    <a *ngIf="sessionReady$ | async" routerLink="/translations" class="nav-link"
       >Translations</a
     >
-    <a *ngIf="sessionReady | async" routerLink="/attachments" class="nav-link"
+    <a *ngIf="sessionReady$ | async" routerLink="/attachments" class="nav-link"
       >Attachments</a
     >
-    <a *ngIf="sessionReady | async" routerLink="/languages" class="nav-link"
+    <a *ngIf="sessionReady$ | async" routerLink="/languages" class="nav-link"
       >Languages</a
+    >
+    <a *ngIf="sessionReady$ | async" routerLink="/my-account" class="nav-link"
+      >My Account</a
     >
   </nav>
   <router-outlet></router-outlet>
