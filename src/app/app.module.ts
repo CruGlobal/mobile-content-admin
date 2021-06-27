@@ -51,6 +51,7 @@ import { UserAuthSessionService } from './service/auth/user-auth-session.service
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
+import { MyAccountComponent } from './components/my-account/my-account.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { OktaLoginErrorComponent } from './components/okta-login-error/okta-logi
     TranslationVersionBadgeComponent,
     OktaLoginComponent,
     OktaLoginErrorComponent,
+    MyAccountComponent,
   ],
   imports: [
     AceEditorModule,

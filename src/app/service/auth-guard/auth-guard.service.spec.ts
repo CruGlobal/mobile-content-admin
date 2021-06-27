@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
 import { AuthGuardService } from './auth-guard.service';
 import { DraftService } from '../draft.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserAuthSessionService } from '../auth/user-auth-session.service';
 
 class MockDraftService extends DraftService {
   canGetDrafts() {
@@ -12,14 +12,18 @@ class MockDraftService extends DraftService {
 describe('AuthGuardService', () => {
   it('opens login modal', (done) => {
     const mockDraftService = new MockDraftService(null, null);
-    const mockNgbModal = new NgbModal(null, null, null, null);
-    spyOn(mockNgbModal, 'open');
+    const mockUserAuthService = new UserAuthSessionService(null, null);
+    spyOn(mockUserAuthService, 'clearSavedUserSessionData');
 
-    const service = new AuthGuardService(mockDraftService, mockNgbModal, null);
+    const service = new AuthGuardService(
+      mockDraftService,
+      mockUserAuthService,
+      null,
+    );
     service.canActivate();
 
     setTimeout(() => {
-      expect(mockNgbModal.open).toHaveBeenCalled();
+      expect(mockUserAuthService.clearSavedUserSessionData).toHaveBeenCalled();
       done();
     });
   });
