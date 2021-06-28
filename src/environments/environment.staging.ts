@@ -7,6 +7,6 @@ export const environment = {
     scope: 'openid profile email',
     response_type: 'code',
     issuer: 'https://signon.okta.com',
-    login_result_url: '/login/callback',
+    login_result_url: '/auth/okta',
   },
 };

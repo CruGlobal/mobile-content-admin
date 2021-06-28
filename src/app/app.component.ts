@@ -83,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userSessionService.setOautSessionError(tResp);
         } else {
           this.userSessionService.clearSavedUserSessionData();
-          this.router.navigate(['/', 'login', 'callback']);
+          this.router.navigate(['/', 'auth', 'okta']);
           setTimeout(() => {
             this.appReady = true;
           }, 10);
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 'Failed to connect to the Okta instance.' +
                 (tResp.error ? `<br/>${tResp.error}` : '');
               setTimeout(() => {
-                this.router.navigate(['/', 'login', 'callback']);
+                this.router.navigate(['/', 'auth', 'okta']);
               }, 100);
               break;
             case 'tokenValidation':
