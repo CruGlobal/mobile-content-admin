@@ -18,7 +18,7 @@ export class AuthService extends AbstractService {
     const options: RequestOptionsArgs = this.requestOptions;
     options.headers.set(
       'Authorization',
-      this.windowRef.nativeWindow.localStorage.getItem('Authorization'),
+      this.windowRef.nativeWindow.sessionStorage.getItem('Authorization'),
     );
     return options;
   }
@@ -33,7 +33,7 @@ export class AuthService extends AbstractService {
       .toPromise()
       .then((response) => {
         const token: AuthToken = new JsonApiDataStore().sync(response.json());
-        this.windowRef.nativeWindow.localStorage.setItem(
+        this.windowRef.nativeWindow.sessionStorage.setItem(
           'Authorization',
           token.token,
         );
