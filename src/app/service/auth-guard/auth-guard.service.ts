@@ -23,7 +23,7 @@ export class AuthGuardService implements CanActivate {
         this.userSessionService.clearSavedUserSessionData();
         if (this.router) {
           setTimeout(() => {
-            this.router.navigate(['/', 'login', 'callback']);
+            this.router.navigate(['/', 'auth', 'okta']);
           }, 0);
         }
         return false;

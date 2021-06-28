@@ -31,7 +31,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'login/callback',
+    path: 'auth/okta',
     component: OktaLoginComponent,
   },
 ];
