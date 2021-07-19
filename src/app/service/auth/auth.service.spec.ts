@@ -39,7 +39,7 @@ describe('AuthService', () => {
   });
 
   it('sets auth header', (done) => {
-    windowRef.nativeWindow.localStorage.setItem('Authorization', token);
+    windowRef.nativeWindow.sessionStorage.setItem('Authorization', token);
 
     const result: RequestOptionsArgs = service.getAuthorizationAndOptions();
 
@@ -53,9 +53,9 @@ describe('AuthService', () => {
     service.createAuthToken('code');
 
     setTimeout(() => {
-      expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
-        token,
-      );
+      expect(
+        windowRef.nativeWindow.sessionStorage.getItem('Authorization'),
+      ).toBe(token);
       done();
     });
   });
