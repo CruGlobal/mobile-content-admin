@@ -24,7 +24,7 @@ describe('AttachmentsComponent', () => {
   const authToken = 'c43ac439-99c8-4551-99a3-0cf53f4a4bcd';
   const windowRefStub = {
     nativeWindow: {
-      localStorage: {
+      sessionStorage: {
         getItem(key: string) {
           return key === 'Authorization' ? authToken : null;
         },
