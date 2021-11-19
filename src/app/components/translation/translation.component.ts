@@ -28,6 +28,7 @@ import { CustomManifestComponent } from '../custom-manifest/custom-manifest.comp
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
 import { getLatestTranslation } from './utilities';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'admin-translation',
@@ -41,6 +42,7 @@ export class TranslationComponent implements OnInit, OnChanges {
 
   translation: Translation;
   customManifest: CustomManifest;
+  baseDownloadUrl = environment.base_url + 'translations/';
 
   saving = false;
   publishing = false;
