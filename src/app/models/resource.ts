@@ -33,6 +33,7 @@ export class Resource {
     | 'growth'
     | 'training';
   'attr-default-order'?: number;
+  'attr-hidden'?: boolean;
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;

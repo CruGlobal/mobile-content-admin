@@ -79,6 +79,7 @@ export class ResourceService extends AbstractService {
             resource.aboutOverviewVideoYoutube || null,
           'attr-category': resource['attr-category'] || null,
           'attr-default-order': resource['attr-default-order'] || null,
+          'attr-hidden': resource['attr-hidden'] || null,
         },
       },
     };
