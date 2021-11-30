@@ -1,6 +1,6 @@
 <div class="modal-body">
   <div class="row mb-2">
-    <div class="col-8">
+    <div class="col-6">
       <label for="name">Name</label>
       <input
         id="name"
@@ -9,7 +9,7 @@
         [(ngModel)]="resource.name"
       />
     </div>
-    <div class="col-4">
+    <div class="col-3">
       <label for="abbrev">Abbreviation</label>
       <input
         id="abbrev"
@@ -18,10 +18,7 @@
         [(ngModel)]="resource.abbreviation"
       />
     </div>
-  </div>
-
-  <div class="row mb-2">
-    <div class="col">
+    <div class="col-3">
       <label>System</label>
       <select class="custom-select" [(ngModel)]="resource.system">
         <option *ngFor="let system of systems" [ngValue]="system">
@@ -29,6 +26,9 @@
         </option>
       </select>
     </div>
+  </div>
+
+  <div class="row mb-2">
     <div class="col">
       <label>Type</label>
       <select class="custom-select" [(ngModel)]="resource.resourceType">
@@ -38,20 +38,29 @@
       </select>
     </div>
     <div class="col">
-      <label>OneSky Project ID</label>
-      <input
-        class="form-control"
-        placeholder="OneSky Project ID"
-        [(ngModel)]="resource.oneskyProjectId"
-      />
+      <label>Category</label>
+      <select class="custom-select" [(ngModel)]="resource['attr-category']">
+        <option value="articles">Articles</option>
+        <option value="growth">Christian Growth</option>
+        <option value="conversation_starter">Conversation Starter</option>
+        <option value="gospel">Gospel Invitation</option>
+        <option value="training">Training</option>
+      </select>
     </div>
-
     <div class="col">
       <label>Order</label>
       <input
         class="form-control"
         placeholder="Order"
         [(ngModel)]="resource['attr-default-order']"
+      />
+    </div>
+    <div class="col">
+      <label>OneSky Project ID</label>
+      <input
+        class="form-control"
+        placeholder="OneSky Project ID"
+        [(ngModel)]="resource.oneskyProjectId"
       />
     </div>
   </div>

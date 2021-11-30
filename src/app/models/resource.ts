@@ -26,6 +26,12 @@ export class Resource {
   aboutOverviewVideoYoutube?: string;
   bannerAbout?: number;
   banner?: number;
+  'attr-category'?:
+    | 'articles'
+    | 'conversation_starter'
+    | 'gospel'
+    | 'growth'
+    | 'training';
   'attr-default-order'?: number;
 
   static getResourceTypeId(resource: Resource): number {
