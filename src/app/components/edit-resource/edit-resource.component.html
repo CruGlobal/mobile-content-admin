@@ -1,36 +1,26 @@
 <div class="modal-body">
-  <div class="row">
-    <div class="col">
-      <label>Name</label>
-    </div>
-    <div class="col">
+  <div class="row mb-2">
+    <div class="col-6">
+      <label for="name">Name</label>
       <input
+        id="name"
         class="form-control"
         placeholder="Name"
         [(ngModel)]="resource.name"
       />
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <label>Abbreviation</label>
-    </div>
-    <div class="col">
+    <div class="col-3">
+      <label for="abbrev">Abbreviation</label>
       <input
+        id="abbrev"
         class="form-control"
         placeholder="Abbreviation"
         [(ngModel)]="resource.abbreviation"
       />
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
+    <div class="col-3">
       <label>System</label>
-    </div>
-    <div class="col">
-      <select class="form-control" [(ngModel)]="resource.system">
+      <select class="custom-select" [(ngModel)]="resource.system">
         <option *ngFor="let system of systems" [ngValue]="system">
           {{ system.name }}
         </option>
@@ -38,25 +28,38 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mb-2">
     <div class="col">
       <label>Type</label>
-    </div>
-    <div class="col">
-      <select class="form-control" [(ngModel)]="resource.resourceType">
+      <select class="custom-select" [(ngModel)]="resource.resourceType">
         <option *ngFor="let type of resourceTypes" [ngValue]="type">
           {{ type.name }}
         </option>
       </select>
     </div>
-  </div>
-
-  <div class="row">
     <div class="col">
-      <label>OneSky Project ID</label>
+      <label>Category</label>
+      <select class="custom-select" [(ngModel)]="resource['attr-category']">
+        <option value="articles">Articles</option>
+        <option value="growth">Christian Growth</option>
+        <option value="conversation_starter">Conversation Starter</option>
+        <option value="gospel">Gospel Invitation</option>
+        <option value="training">Training</option>
+      </select>
     </div>
     <div class="col">
+      <label for="order">Order</label>
       <input
+        id="order"
+        class="form-control"
+        placeholder="Order"
+        [(ngModel)]="resource['attr-default-order']"
+      />
+    </div>
+    <div class="col">
+      <label for="onesky">OneSky Project ID</label>
+      <input
+        id="onesky"
         class="form-control"
         placeholder="OneSky Project ID"
         [(ngModel)]="resource.oneskyProjectId"
@@ -64,68 +67,87 @@
     </div>
   </div>
 
+  <div class="row mb-2">
+    <div class="col-3">
+      <label>Banner</label>
+      <div class="row">
+        <div class="col">
+          <label>Image</label>
+          <select class="custom-select" [(ngModel)]="resource.banner">
+            <option
+              *ngFor="
+                let attachment of resource.attachments
+                  | orderBy: 'file-file-name'
+              "
+              [ngValue]="attachment.id"
+            >
+              {{ attachment['file-file-name'] }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-9">
+      <label>Banner (About)</label>
+      <div class="row">
+        <div class="col">
+          <label>Image</label>
+          <select class="custom-select" [(ngModel)]="resource.bannerAbout">
+            <option
+              *ngFor="
+                let attachment of resource.attachments
+                  | orderBy: 'file-file-name'
+              "
+              [ngValue]="attachment.id"
+            >
+              {{ attachment['file-file-name'] }}
+            </option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="about_banner_youtube">Youtube</label>
+          <input
+            id="about_banner_youtube"
+            class="form-control"
+            placeholder="Youtube Video Id"
+            [(ngModel)]="resource.aboutOverviewVideoYoutube"
+          />
+        </div>
+        <div class="col">
+          <label>Animation (Coming Soon)</label>
+          <!-- <select class="custom-select" [(ngModel)]="resource.animation">
+            <option *ngFor="let attachment of resource.attachments | orderBy: 'file-file-name'" [ngValue]="attachment.id">
+              {{ attachment['file-file-name'] }}
+            </option>
+          </select> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
+    <div class="col">
+      <input
+        id="hidden"
+        placeholder="hidden"
+        type="checkbox"
+        [(ngModel)]="resource['attr-hidden']"
+      />
+      &nbsp;
+      <label for="hidden">Hidden</label>
+    </div>
+  </div>
+
+  <div class="row mb-2">
     <div class="col">
       <label>Description</label>
-    </div>
-    <div class="col">
-      <input
+      <textarea
+        name="description"
         class="form-control"
         placeholder="Description"
+        rows="3"
         [(ngModel)]="resource.description"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <label>Youtube Video Id</label>
-    </div>
-    <div class="col">
-      <input
-        class="form-control"
-        placeholder="Youtube Video Id"
-        [(ngModel)]="resource.aboutOverviewVideoYoutube"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <label>Banner</label>
-    </div>
-    <div class="col">
-      <input
-        class="form-control"
-        placeholder="Attachment Id"
-        [(ngModel)]="resource.banner"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <label>Banner (About)</label>
-    </div>
-    <div class="col">
-      <input
-        class="form-control"
-        placeholder="Attachment Id"
-        [(ngModel)]="resource.bannerAbout"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <label>Order</label>
-    </div>
-    <div class="col">
-      <input
-        class="form-control"
-        placeholder="Order"
-        [(ngModel)]="resource['attr-default-order']"
-      />
+      ></textarea>
     </div>
   </div>
 
@@ -135,15 +157,16 @@
     </div>
   </div>
   <div class="row">
-    <div
-      ace-editor
-      [(text)]="resource.manifest"
-      [mode]="'xml'"
-      [autoUpdateContent]="true"
-      [options]="{ wrap: true }"
-      class="col"
-      style="min-height: 250px; overflow: auto"
-    ></div>
+    <div class="col">
+      <div
+        ace-editor
+        [(text)]="resource.manifest"
+        [mode]="'xml'"
+        [autoUpdateContent]="true"
+        [options]="{ wrap: true }"
+        style="min-height: 250px; overflow: auto"
+      ></div>
+    </div>
   </div>
 
   <div class="row" *ngIf="saving">

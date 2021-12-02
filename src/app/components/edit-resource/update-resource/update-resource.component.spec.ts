@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AceEditorDirective } from 'ng2-ace-editor';
 import { By } from '@angular/platform-browser';
 import { Resource } from '../../../models/resource';
+import { NgArrayPipesModule } from 'ngx-pipes';
 
 describe('UpdateResourceComponent', () => {
   let comp: UpdateResourceComponent;
@@ -30,7 +31,7 @@ describe('UpdateResourceComponent', () => {
         XmlEditorComponent,
         AceEditorDirective,
       ],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: SystemService },
