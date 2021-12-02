@@ -48,16 +48,18 @@
       </select>
     </div>
     <div class="col">
-      <label>Order</label>
+      <label for="order">Order</label>
       <input
+        id="order"
         class="form-control"
         placeholder="Order"
         [(ngModel)]="resource['attr-default-order']"
       />
     </div>
     <div class="col">
-      <label>OneSky Project ID</label>
+      <label for="onesky">OneSky Project ID</label>
       <input
+        id="onesky"
         class="form-control"
         placeholder="OneSky Project ID"
         [(ngModel)]="resource.oneskyProjectId"
@@ -103,8 +105,9 @@
           </select>
         </div>
         <div class="col">
-          <label>Youtube</label>
+          <label for="about_banner_youtube">Youtube</label>
           <input
+            id="about_banner_youtube"
             class="form-control"
             placeholder="Youtube Video Id"
             [(ngModel)]="resource.aboutOverviewVideoYoutube"
