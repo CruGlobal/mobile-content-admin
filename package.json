@@ -60,7 +60,7 @@
     "prettier": "2.2.1",
     "pretty-quick": "3.1.3",
     "protractor": "7.0.0",
-    "ts-node": "9.1.1",
+    "ts-node": "10.4.0",
     "tslint": "5.20.1",
     "tslint-jasmine-rules": "1.6.1",
     "typescript": "3.2.4"
