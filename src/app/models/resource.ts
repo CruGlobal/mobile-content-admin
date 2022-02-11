@@ -34,7 +34,7 @@ export class Resource {
     | 'training';
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
-  'attr-isSpotlight': boolean;
+  'attr-spotlight': boolean;
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;
