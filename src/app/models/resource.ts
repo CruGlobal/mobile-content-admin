@@ -16,6 +16,7 @@ export class Resource {
   description: string;
   manifest: string;
   showTranslations: boolean;
+  isSpotlight: boolean;
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
