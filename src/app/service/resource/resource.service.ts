@@ -80,7 +80,7 @@ export class ResourceService extends AbstractService {
           'attr-category': resource['attr-category'] || null,
           'attr-default-order': resource['attr-default-order'] || null,
           'attr-hidden': resource['attr-hidden'] || null,
-          'attr-isSpotlight': resource['attr-isSpotlight'],
+          'attr-spotlight': resource['attr-spotlight'],
         },
       },
     };
