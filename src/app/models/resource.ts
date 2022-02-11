@@ -16,7 +16,6 @@ export class Resource {
   description: string;
   manifest: string;
   showTranslations: boolean;
-  isSpotlight: boolean;
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
@@ -35,6 +34,7 @@ export class Resource {
     | 'training';
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
+  'attr-isSpotlight': boolean;
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;
