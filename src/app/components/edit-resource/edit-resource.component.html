@@ -126,18 +126,7 @@
   </div>
 
   <div class="row">
-    <div class="col">
-      <input
-        id="hidden"
-        placeholder="hidden"
-        type="checkbox"
-        [(ngModel)]="resource['attr-hidden']"
-      />
-      &nbsp;
-      <label for="hidden">Hidden</label>
-    </div>
-
-    <div class="col">
+    <div class="col-3">
       <input
         id="spotlight"
         placeholder="spotlight"
@@ -146,6 +135,17 @@
       />
       &nbsp;
       <label for="spotlight">Spotlight</label>
+    </div>
+    
+    <div class="col-3">
+      <input
+        id="hidden"
+        placeholder="hidden"
+        type="checkbox"
+        [(ngModel)]="resource['attr-hidden']"
+      />
+      &nbsp;
+      <label for="hidden">Hidden</label>
     </div>
   </div>
 
