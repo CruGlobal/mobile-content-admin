@@ -5021,10 +5021,10 @@ ng2-file-upload@1.4.0:
   dependencies:
     tslib "^1.9.0"
 
-ngx-pipes@2.7.6:
-  version "2.7.6"
-  resolved "https://registry.yarnpkg.com/ngx-pipes/-/ngx-pipes-2.7.6.tgz#d7e26f9d5080c05ad914834cf93e563631e1c5b8"
-  integrity sha512-FAeMd1mI8jCnnrhUuNLXs+PaVT1ujhA0QD3KRBDuzGFcbnP7NMXR2EJ5KYbV39LDNuRCluhpfwZudQu/NvrVuA==
+ngx-pipes@2.7.8:
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/ngx-pipes/-/ngx-pipes-2.7.8.tgz#c32270ef960d7f448b7766c2ad610e8bc3336ae6"
+  integrity sha512-NeYuzecv2Agmhcig1fD5RnCUrInAP8EkOkQEI3hViXMCTnQaEWT1ipPPSHSHEQ3IMsTntZfdDgSdQ1cQfJq1rA==
   dependencies:
     tslib "^2.0.0"
 
