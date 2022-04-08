@@ -74,6 +74,7 @@
         <div class="col">
           <label>Image</label>
           <select class="custom-select" [(ngModel)]="resource.banner">
+            <option value=""></option>
             <option
               *ngFor="
                 let attachment of resource.attachments
@@ -93,6 +94,7 @@
         <div class="col">
           <label>Image</label>
           <select class="custom-select" [(ngModel)]="resource.bannerAbout">
+            <option value=""></option>
             <option
               *ngFor="
                 let attachment of resource.attachments
