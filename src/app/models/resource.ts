@@ -26,6 +26,7 @@ export class Resource {
   aboutOverviewVideoYoutube?: string;
   bannerAbout?: number;
   banner?: number;
+  'attr-about-banner-animation'?: number;
   'attr-category'?:
     | 'articles'
     | 'conversation_starter'

@@ -75,6 +75,8 @@ export class ResourceService extends AbstractService {
           manifest: resource.manifest,
           'attr-banner': resource.banner || null,
           'attr-banner-about': resource.bannerAbout || null,
+          'attr-about-banner-animation':
+            resource['attr-about-banner-animation'] || null,
           'attr-about-overview-video-youtube':
             resource.aboutOverviewVideoYoutube || null,
           'attr-category': resource['attr-category'] || null,
