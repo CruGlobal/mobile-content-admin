@@ -16,6 +16,8 @@ export class Resource {
   description: string;
   manifest: string;
   showTranslations: boolean;
+  metatool?: Resource;
+  variants: Resource[];
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
@@ -33,9 +35,18 @@ export class Resource {
     | 'gospel'
     | 'growth'
     | 'training';
+  'attr-default-variant'?: string;
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;
+
+  static isMetaTool(resource: Resource): boolean {
+    return (
+      (resource.resourceType && resource.resourceType.name
+        ? resource.resourceType.name
+        : resource['resource-type']) === 'metatool'
+    );
+  }
 
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;

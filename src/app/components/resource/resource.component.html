@@ -1,9 +1,10 @@
 <div class="card mb-3">
   <div
     class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
+    [ngStyle]="{ cursor: isMetaTool() ? 'default' : 'pointer' }"
     (click)="showDetails = !showDetails"
   >
-    <span class="h4 mb-0" style="cursor: pointer">
+    <span class="h4 mb-0">
       {{ resource.name }}
     </span>
     <div class="btn-group" role="group">
@@ -16,12 +17,13 @@
       <button
         (click)="openGenerateModal(resource); $event.stopPropagation()"
         class="btn btn-secondary"
+        *ngIf="!isMetaTool()"
       >
         <i class="fa fa-plus"></i> Generate multiple drafts
       </button>
     </div>
   </div>
-  <div class="card-body bg-dark" [ngbCollapse]="!showDetails">
+  <div class="card-body bg-dark" [ngbCollapse]="!showDetails || isMetaTool()">
     <div class="row mt-3">
       <div class="col">
         <!-- Pages UI -->

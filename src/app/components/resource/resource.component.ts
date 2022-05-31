@@ -82,6 +82,10 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     this._translationLoaded.complete();
   }
 
+  isMetaTool(): boolean {
+    return Resource.isMetaTool(this.resource);
+  }
+
   createPage(): void {
     const modal = this.modalService.open(CreatePageComponent, { size: 'lg' });
     modal.componentInstance.page.resource = this.resource;

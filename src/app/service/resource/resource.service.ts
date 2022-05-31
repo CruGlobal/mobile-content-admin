@@ -15,9 +15,11 @@ export class ResourceService extends AbstractService {
     super();
   }
 
-  getResources(include: string): Promise<Resource[]> {
+  getResources(include?: string): Promise<Resource[]> {
     return this.http
-      .get(`${this.resourcesUrl}?include=${include}`)
+      .get(
+        include ? `${this.resourcesUrl}?include=${include}` : this.resourcesUrl,
+      )
       .toPromise()
       .then((response) => {
         return new JsonApiDataStore().sync(response.json());
@@ -70,6 +72,7 @@ export class ResourceService extends AbstractService {
           abbreviation: resource.abbreviation,
           system_id: Resource.getSystemId(resource),
           resource_type_id: Resource.getResourceTypeId(resource),
+          metatool_id: (resource.metatool && resource.metatool.id) || null,
           onesky_project_id: resource.oneskyProjectId,
           description: resource.description,
           manifest: resource.manifest,
@@ -80,6 +83,7 @@ export class ResourceService extends AbstractService {
           'attr-about-overview-video-youtube':
             resource.aboutOverviewVideoYoutube || null,
           'attr-category': resource['attr-category'] || null,
+          'attr-default-variant': resource['attr-default-variant'] || null,
           'attr-default-order': resource['attr-default-order'] || null,
           'attr-hidden': resource['attr-hidden'] || null,
           'attr-spotlight': resource['attr-spotlight'] || null,

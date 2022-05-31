@@ -29,7 +29,7 @@
   </div>
 
   <div class="row mb-2">
-    <div class="col">
+    <div class="col-3">
       <label>Type</label>
       <select class="custom-select" [(ngModel)]="resource.resourceType">
         <option *ngFor="let type of resourceTypes" [ngValue]="type">
@@ -37,7 +37,34 @@
         </option>
       </select>
     </div>
-    <div class="col">
+    <div class="col-3" *ngIf="!isMetaTool()">
+      <label>Metatool</label>
+      <select
+        class="custom-select"
+        [(ngModel)]="resource.metatool"
+        [compareWith]="compareTools"
+      >
+        <option value=""></option>
+        <option *ngFor="let tool of metatools" [ngValue]="tool">
+          {{ tool.name }}
+        </option>
+      </select>
+    </div>
+    <div class="col-3" *ngIf="isMetaTool()">
+      <label>Default Variant</label>
+      <select
+        class="custom-select"
+        [(ngModel)]="resource['attr-default-variant']"
+      >
+        <option
+          *ngFor="let variant of resource.variants"
+          [ngValue]="variant.abbreviation"
+        >
+          {{ variant.name }}
+        </option>
+      </select>
+    </div>
+    <div class="col" *ngIf="!isMetaTool()">
       <label>Category</label>
       <select class="custom-select" [(ngModel)]="resource['attr-category']">
         <option value="articles">Articles</option>
@@ -47,7 +74,7 @@
         <option value="training">Training</option>
       </select>
     </div>
-    <div class="col">
+    <div class="col" *ngIf="!isMetaTool()">
       <label for="order">Order</label>
       <input
         id="order"
@@ -56,18 +83,9 @@
         [(ngModel)]="resource['attr-default-order']"
       />
     </div>
-    <div class="col">
-      <label for="onesky">OneSky Project ID</label>
-      <input
-        id="onesky"
-        class="form-control"
-        placeholder="OneSky Project ID"
-        [(ngModel)]="resource.oneskyProjectId"
-      />
-    </div>
   </div>
 
-  <div class="row mb-2">
+  <div class="row mb-2" *ngIf="!isMetaTool()">
     <div class="col-3">
       <label>Banner</label>
       <div class="row">
@@ -137,7 +155,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="!isMetaTool()">
     <div class="col-3">
       <input
         id="spotlight"
@@ -159,9 +177,19 @@
       &nbsp;
       <label for="hidden">Hidden</label>
     </div>
+    <div class="col-3"></div>
+    <div class="col-3" *ngIf="!isMetaTool()">
+      <label for="onesky">OneSky Project ID</label>
+      <input
+        id="onesky"
+        class="form-control"
+        placeholder="OneSky Project ID"
+        [(ngModel)]="resource.oneskyProjectId"
+      />
+    </div>
   </div>
 
-  <div class="row mb-2">
+  <div class="row mb-2" *ngIf="!isMetaTool()">
     <div class="col">
       <label>Description</label>
       <textarea
@@ -174,13 +202,9 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="!isMetaTool()">
     <div class="col">
       <label>Manifest XML</label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
       <div
         ace-editor
         [(text)]="resource.manifest"
