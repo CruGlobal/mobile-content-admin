@@ -55,7 +55,12 @@ export class AttachmentsComponent implements OnInit {
 
     this.resourceService
       .getResources('attachments')
-      .then((resources) => (this.resources = resources))
+      .then(
+        (resources) =>
+          (this.resources = resources.filter(
+            (tool) => !Resource.isMetaTool(tool),
+          )),
+      )
       .catch(this.handleError.bind(this))
       .then(() => (this.loading = false));
   }
