@@ -16,6 +16,7 @@ export class Resource {
   description: string;
   manifest: string;
   showTranslations: boolean;
+  variants: Resource[];
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
@@ -33,6 +34,7 @@ export class Resource {
     | 'gospel'
     | 'growth'
     | 'training';
+  'attr-default-variant'?: string;
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;

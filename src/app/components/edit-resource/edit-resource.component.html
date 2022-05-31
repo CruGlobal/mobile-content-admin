@@ -47,6 +47,20 @@
         <option value="training">Training</option>
       </select>
     </div>
+    <div class="col-3" *ngIf="isMetaTool()">
+      <label>Default Variant</label>
+      <select
+        class="custom-select"
+        [(ngModel)]="resource['attr-default-variant']"
+      >
+        <option
+          *ngFor="let variant of resource.variants"
+          [ngValue]="variant.abbreviation"
+        >
+          {{ variant.name }}
+        </option>
+      </select>
+    </div>
     <div class="col" *ngIf="!isMetaTool()">
       <label for="order">Order</label>
       <input
