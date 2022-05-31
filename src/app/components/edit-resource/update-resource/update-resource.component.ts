@@ -20,12 +20,12 @@ export class UpdateResourceComponent
   systems: System[];
 
   constructor(
-    private resourceService: ResourceService,
+    resourceService: ResourceService,
     systemService: SystemService,
     resourceTypeService: ResourceTypeService,
     activeModal: NgbActiveModal,
   ) {
-    super(systemService, resourceTypeService, activeModal);
+    super(systemService, resourceTypeService, resourceService, activeModal);
   }
 
   ngOnInit(): void {

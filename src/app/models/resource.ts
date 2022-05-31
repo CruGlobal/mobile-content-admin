@@ -16,6 +16,7 @@ export class Resource {
   description: string;
   manifest: string;
   showTranslations: boolean;
+  metatool?: Resource;
   variants: Resource[];
   translations: Translation[];
   attachments: Attachment[];

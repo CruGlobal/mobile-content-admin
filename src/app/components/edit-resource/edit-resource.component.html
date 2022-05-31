@@ -37,14 +37,17 @@
         </option>
       </select>
     </div>
-    <div class="col" *ngIf="!isMetaTool()">
-      <label>Category</label>
-      <select class="custom-select" [(ngModel)]="resource['attr-category']">
-        <option value="articles">Articles</option>
-        <option value="growth">Christian Growth</option>
-        <option value="conversation_starter">Conversation Starter</option>
-        <option value="gospel">Gospel Invitation</option>
-        <option value="training">Training</option>
+    <div class="col-3" *ngIf="!isMetaTool()">
+      <label>Metatool</label>
+      <select
+        class="custom-select"
+        [(ngModel)]="resource.metatool"
+        [compareWith]="compareTools"
+      >
+        <option value=""></option>
+        <option *ngFor="let tool of metatools" [ngValue]="tool">
+          {{ tool.name }}
+        </option>
       </select>
     </div>
     <div class="col-3" *ngIf="isMetaTool()">
@@ -62,21 +65,22 @@
       </select>
     </div>
     <div class="col" *ngIf="!isMetaTool()">
+      <label>Category</label>
+      <select class="custom-select" [(ngModel)]="resource['attr-category']">
+        <option value="articles">Articles</option>
+        <option value="growth">Christian Growth</option>
+        <option value="conversation_starter">Conversation Starter</option>
+        <option value="gospel">Gospel Invitation</option>
+        <option value="training">Training</option>
+      </select>
+    </div>
+    <div class="col" *ngIf="!isMetaTool()">
       <label for="order">Order</label>
       <input
         id="order"
         class="form-control"
         placeholder="Order"
         [(ngModel)]="resource['attr-default-order']"
-      />
-    </div>
-    <div class="col" *ngIf="!isMetaTool()">
-      <label for="onesky">OneSky Project ID</label>
-      <input
-        id="onesky"
-        class="form-control"
-        placeholder="OneSky Project ID"
-        [(ngModel)]="resource.oneskyProjectId"
       />
     </div>
   </div>
@@ -172,6 +176,16 @@
       />
       &nbsp;
       <label for="hidden">Hidden</label>
+    </div>
+    <div class="col-3"></div>
+    <div class="col-3" *ngIf="!isMetaTool()">
+      <label for="onesky">OneSky Project ID</label>
+      <input
+        id="onesky"
+        class="form-control"
+        placeholder="OneSky Project ID"
+        [(ngModel)]="resource.oneskyProjectId"
+      />
     </div>
   </div>
 
