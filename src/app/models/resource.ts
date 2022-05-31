@@ -37,6 +37,14 @@ export class Resource {
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;
 
+  static isMetaTool(resource: Resource): boolean {
+    return (
+      (resource.resourceType && resource.resourceType.name
+        ? resource.resourceType.name
+        : resource['resource-type']) === 'metatool'
+    );
+  }
+
   static getResourceTypeId(resource: Resource): number {
     return resource.resourceType ? resource.resourceType.id : null;
   }
