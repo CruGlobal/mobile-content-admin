@@ -51,6 +51,10 @@ export abstract class AbstractEditResourceComponent implements OnDestroy {
     this.activeModal.dismiss('dismissed');
   }
 
+  isMetaTool(): boolean {
+    return Resource.isMetaTool(this.resource);
+  }
+
   protected handleError(message): void {
     this.saving = false;
     this.errorMessage = message;
