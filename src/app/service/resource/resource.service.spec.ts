@@ -36,7 +36,7 @@ describe('ResourceService', () => {
     );
 
     spyOn(mockHttp, 'put').and.returnValue(
-      Observable.create((observer) => observer.complete()),
+      new Observable((observer) => observer.complete()),
     );
   });
 
