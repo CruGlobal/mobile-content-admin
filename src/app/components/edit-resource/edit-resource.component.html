@@ -54,12 +54,10 @@
       <label>Default Variant</label>
       <select
         class="custom-select"
-        [(ngModel)]="resource['attr-default-variant']"
+        [(ngModel)]="resource['default-variant']"
+        [compareWith]="compareTools"
       >
-        <option
-          *ngFor="let variant of resource.variants"
-          [ngValue]="variant.abbreviation"
-        >
+        <option *ngFor="let variant of resource.variants" [ngValue]="variant">
           {{ variant.name }}
         </option>
       </select>
