@@ -18,6 +18,7 @@ export class Resource {
   showTranslations: boolean;
   metatool?: Resource;
   variants: Resource[];
+  'default-variant'?: Resource;
   translations: Translation[];
   attachments: Attachment[];
   pages: Page[];
@@ -35,7 +36,6 @@ export class Resource {
     | 'gospel'
     | 'growth'
     | 'training';
-  'attr-default-variant'?: string;
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;
