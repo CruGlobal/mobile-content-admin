@@ -73,6 +73,9 @@ export class ResourceService extends AbstractService {
           system_id: Resource.getSystemId(resource),
           resource_type_id: Resource.getResourceTypeId(resource),
           metatool_id: (resource.metatool && resource.metatool.id) || null,
+          default_variant_id:
+            (resource['default-variant'] && resource['default-variant'].id) ||
+            null,
           onesky_project_id: resource.oneskyProjectId,
           description: resource.description,
           manifest: resource.manifest,
@@ -83,7 +86,6 @@ export class ResourceService extends AbstractService {
           'attr-about-overview-video-youtube':
             resource.aboutOverviewVideoYoutube || null,
           'attr-category': resource['attr-category'] || null,
-          'attr-default-variant': resource['attr-default-variant'] || null,
           'attr-default-order': resource['attr-default-order'] || null,
           'attr-hidden': resource['attr-hidden'] || null,
           'attr-spotlight': resource['attr-spotlight'] || null,
