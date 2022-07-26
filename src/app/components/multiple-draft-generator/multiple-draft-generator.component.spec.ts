@@ -52,7 +52,6 @@ describe('MultipleDraftGeneratorComponent', () => {
 
     const r = new Resource();
     r['latest-drafts-translations'] = translations;
-    r.translations = translations;
     comp.resource = r;
 
     fixture.detectChanges();

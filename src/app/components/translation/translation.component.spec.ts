@@ -163,7 +163,6 @@ describe('TranslationComponent', () => {
       translation.language = language;
       translation.resource = comp.resource;
 
-      comp.resource.translations = [translation];
       comp.resource['latest-drafts-translations'] = [translation];
       comp.reloadTranslation();
       fixture.detectChanges();

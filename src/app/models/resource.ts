@@ -19,7 +19,7 @@ export class Resource {
   metatool?: Resource;
   variants: Resource[];
   'default-variant'?: Resource;
-  translations: Translation[];
+  'latest-drafts-translations': Translation[];
   attachments: Attachment[];
   pages: Page[];
   tips: Tip[];
