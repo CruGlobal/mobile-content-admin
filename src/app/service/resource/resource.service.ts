@@ -27,17 +27,6 @@ export class ResourceService extends AbstractService {
       .catch(this.handleError);
   }
 
-  getResource(id: number, include: string): Promise<Resource> {
-    const url = `${this.resourcesUrl}/${id}?include=${include}`;
-    return this.http
-      .get(url)
-      .toPromise()
-      .then(function (response) {
-        return new JsonApiDataStore().sync(response.json());
-      })
-      .catch(this.handleError);
-  }
-
   create(resource: Resource): Promise<Resource> {
     return this.http
       .post(
