@@ -25,7 +25,7 @@ export class MultipleDraftGeneratorComponent {
   ) {}
 
   showConfirmAlert(): void {
-    this.translations = this.resource.translations.filter(
+    this.translations = this.resource['latest-drafts-translations'].filter(
       (translation) => translation.generateDraft,
     );
     if (this.translations.length === 0) {
