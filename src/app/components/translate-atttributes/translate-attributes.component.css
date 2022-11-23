@@ -1,0 +1,25 @@
+.translation-attributes {
+    margin: 20px 0;
+
+    
+}
+
+.translation-attributes .row {
+    padding: 8px 20px;
+}
+
+.translation-attributes .row:nth-child(2n+1) {
+    background: #e2e3e5;
+}
+
+
+.translation-attributes label {
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.translation-attributes .btn-warn.col-1 {
+    background: #f8d7da;
+    height: 36px;
+    margin-top: 17px;
+}

@@ -1,0 +1,78 @@
+<div class="modal-body">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5>Translation Attributes</h5>
+        <!-- Add button -->
+        <button class="btn btn-secondary" (click)="createAttribute()">
+            <i class="fa fa-file"></i> Add new Translation Attribute
+        </button>
+    </div>
+    
+    <!-- Loop through items and render -->
+    <div class="translation-attributes">
+        <div class="row md-2" *ngFor="let attr of resource['translated-attributes']" >
+            <div class="col-4">
+                <label for="attr-{{attr.id}}-key">Key</label>
+                <input
+                    id="attr-{{attr.id}}-key"
+                    class="form-control"
+                    placeholder="Key"
+                    [(ngModel)]="attr.key"
+                />
+            </div>
+            <div class="col-5">
+                <label for="attr-{{attr.id}}-onesky">Onesky Phrase ID</label>
+                <input
+                    id="attr-{{attr.id}}-onesky"
+                    class="form-control"
+                    placeholder="Onesky Phrase ID"
+                    [(ngModel)]="attr['onesky-phrase-id']"
+                />
+            </div>
+            <div class="col-2">
+                <label for="attr-{{attr.id}}-required">Required?</label>
+                <input
+                    id="attr-{{attr.id}}-required"
+                    type="checkbox"
+                    placeholder="Required?"
+                    [(ngModel)]="attr.required"
+                />
+            </div>
+            <button (click)="removeAttribute(attr)" class="btn btn-warn col-1">
+                <i class="fa fa-times"></i>
+            </button>        
+        </div>  
+    </div>
+  
+    <div class="row" *ngIf="saving">
+      <div class="col">
+        <ngb-alert type="info" [dismissible]="false">Saving...</ngb-alert>
+      </div>
+    </div>
+  
+    <div class="row" *ngIf="errorMessage">
+      <div class="col">
+        <ngb-alert type="danger" [dismissible]="false">
+          {{ errorMessage }}
+        </ngb-alert>
+      </div>
+    </div>
+
+    <div *ngIf="multipleActionsResults.length > 0">
+        <div class="row" *ngFor="let result of multipleActionsResults">
+            <div class="col">
+              <ngb-alert type="{{result.type}}" [dismissible]="false">
+                {{ result.text }}
+              </ngb-alert>
+            </div>
+        </div>
+    </div>
+
+  </div>
+  
+  <div class="modal-footer">
+    <div class="btn-group" role="group">
+      <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+      <button (click)="multipleActions()" class="btn btn-success">Save All</button>
+    </div>
+  </div>
+  

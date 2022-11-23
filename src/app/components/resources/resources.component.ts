@@ -35,7 +35,7 @@ export class ResourcesComponent implements OnInit {
 
     this.resourceService
       .getResources(
-        'latest-drafts-translations,pages,custom-manifests,tips,attachments,variants',
+        'latest-drafts-translations,pages,custom-manifests,tips,attachments,variants,translated-attributes',
       )
       .then((resources) => {
         this.resources = resources;
