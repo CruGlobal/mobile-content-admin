@@ -54,7 +54,6 @@ export class AttachmentsComponent implements OnInit {
   }
 
   fileUploaderOnChange(): void {
-    console.log("this.uploadElement[0].name",this.uploadElement.nativeElement.files[0].name)
     this.fileName = this.uploadElement.nativeElement.files[0].name
   }
 
