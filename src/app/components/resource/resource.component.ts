@@ -128,7 +128,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   openAttributeTranslationsModal(resource: Resource): void {
     const modalRef: NgbModalRef = this.modalService.open(
       TranslateAttributesComponent,
-      {size: 'lg'}
+      { size: 'lg' },
     );
 
     modalRef.componentInstance.resource = resource;
