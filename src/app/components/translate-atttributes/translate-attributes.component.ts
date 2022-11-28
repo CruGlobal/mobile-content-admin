@@ -10,7 +10,7 @@ import { AttributeTranslationService } from '../../service/attribute-translation
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'translate-attributes',
+  selector: 'admin-translate-attributes',
   templateUrl: './translate-attributes.component.html',
   styleUrls: ['./translate-attributes.component.css']
 })
@@ -36,7 +36,7 @@ export class TranslateAttributesComponent implements OnInit {
   ) {}
 
     ngOnInit(): void {
-        this.loadAttributes()                
+        this.loadAttributes()
     }
 
     loadAttributes(): void {
@@ -50,10 +50,10 @@ export class TranslateAttributesComponent implements OnInit {
 
     multipleActions(): void {
 
-        let localAttributes = new Map();
-        let remoteAttributes = new Map();
+        const localAttributes = new Map();
+        const remoteAttributes = new Map();
 
-        this.resource['translated-attributes'].forEach((attr)=> {
+        this.resource['translated-attributes'].forEach((attr) => {
             localAttributes.set(attr.id, attr)
         });
 
@@ -62,7 +62,7 @@ export class TranslateAttributesComponent implements OnInit {
             id: number
             data: AttributeTranslation
         }
-        const promises:IPromises[] = [];
+        const promises: IPromises[] = [];
 
         this.attributeTranslationService
         .getAttributes(this.resource.id)
@@ -72,22 +72,24 @@ export class TranslateAttributesComponent implements OnInit {
                 this.multipleActionsResults = []
                 this.saving = true;
 
-                console.log("this.resource",this.resource['translated-attributes'])
-                console.log("res['translated-attributes']", res['translated-attributes'])
+                console.log('this.resource', this.resource['translated-attributes'])
+                console.log('res[translated-attributes]', res['translated-attributes'])
 
-                res['translated-attributes'].forEach((attr)=> {
+                res['translated-attributes'].forEach((attr) => {
                     remoteAttributes.set(attr.id, attr)
                 })
 
-                console.log("Delete checks - start")
+                console.log('Delete checks - start')
                 // Check for local deleted items
                 remoteAttributes.forEach((attr) => {
                     const localVersion = localAttributes.get(attr.id);
-                    if (!localVersion) promises.push({type: 'delete', id: attr.key, data: attr})
+                    if (!localVersion) {
+                        promises.push({type: 'delete', id: attr.key, data: attr})
+                    }
                 })
-                console.log("Delete checks - complete")
+                console.log('Delete checks - complete')
 
-                console.log("Update & Create checks - start")
+                console.log('Update & Create checks - start')
                 localAttributes.forEach((attr) => {
                     const remoteVersion = remoteAttributes.get(attr.id);
 
@@ -96,121 +98,131 @@ export class TranslateAttributesComponent implements OnInit {
                         // Check to ensure all data is the same
                         let needsToBeUpdated = false;
 
-                        if(remoteVersion.key !== attr.key) needsToBeUpdated = true;
-                        if(remoteVersion['onesky-phrase-id'] !== attr['onesky-phrase-id']) needsToBeUpdated = true;
-                        if(remoteVersion.required !== attr.required) needsToBeUpdated = true;
+                        if (remoteVersion.key !== attr.key) {
+                            needsToBeUpdated = true;
+                        }
+                        if (remoteVersion['onesky-phrase-id'] !== attr['onesky-phrase-id']) {
+                            needsToBeUpdated = true;
+                        }
+                        if (remoteVersion.required !== attr.required) {
+                            needsToBeUpdated = true;
+                        }
 
-                        if (needsToBeUpdated) promises.push({type: 'update', id: attr.key, data: attr})
+                        if (needsToBeUpdated) {
+                            promises.push({type: 'update', id: attr.key, data: attr})
+                        }
                     } else {
-                        console.log("attr.key",attr.key)
+                        console.log('attr.key', attr.key)
                         // New Items
-                        if (!attr.key) throw new Error("Please ensure all Keys have a value.")
-                        if (!attr['onesky-phrase-id']) throw new Error("Please ensure all Onesky Phase IDs have a value.")
-                        
+                        if (!attr.key) {
+                            throw new Error('Please ensure all Keys have a value.')
+                        }
+                        if (!attr['onesky-phrase-id']) {
+                            throw new Error('Please ensure all Onesky Phase IDs have a value.')
+                        }
+
                         promises.push({type: 'create', id: attr.key, data: attr})
                     }
 
                     // Ensure keys are unique
                     localAttributes.forEach((attribute) => {
-                        if (attr.id === attribute.id) return
-                        if (attr.key === attribute.key) throw new Error("2 or more keys are the same. Please make keys are unique.")
+                        if (attr.id === attribute.id) { return }
+                        if (attr.key === attribute.key) { throw new Error('2 or more keys are the same. Please make keys are unique.') }
                     })
                 })
-                console.log("Update & Create checks - complete")
+                console.log('Update & Create checks - complete')
 
-                console.log("promises",promises)
+                console.log('promises', promises)
 
-                // Sort promises 
+                // Sort promises
                 // 1. delete items first
                 // 2. update items second
                 // 3. create items last
                 promises.sort((a, b) => {
-                    if (a.type === "delete") return -1
-                    if (b.type === "delete") return 1
+                    if (b.type === 'delete') { return 1 }
+                    if (a.type === 'delete') { return -1 }
 
-                    if (a.type === "create" && b.type === "create") return -1
-                    if (a.type === "create") return 1
-                    if (b.type === "create") return -1
+                    if (a.type === 'create' && b.type === 'create') { return -1 }
+                    if (a.type === 'create') { return 1 }
+                    if (b.type === 'create') { return -1 }
                 })
 
 
                 let hasError = false
-                let errors = []
+                const errors = []
 
                 // Need to await for this
                 const sendPromises = new Promise(async (resolve, reject) => {
-                    console.log("Start Promises")
+                    console.log('Start Promises')
                     for (const promise of promises) {
-                        console.log("promise.data",promise.data)
-                        if (promise.type === "delete") {
+                        console.log('promise.data', promise.data)
+                        if (promise.type === 'delete') {
                             await this.attributeTranslationService
                             .delete(promise.data)
-                            .then((res) => {
-                                console.log("successfully deleted", res)
+                            .then(() => {
+
                                 this.multipleActionsResults.push({
-                                    type: "success",
+                                    type: 'success',
                                     text: `Successfully deleted attribute ${promise.id}`
                                 })
                             })
-                            .catch((err) => {
+                            .catch(() => {
                                 hasError = true;
 
                                 this.multipleActionsResults.push({
-                                    type: "danger",
+                                    type: 'danger',
                                     text: `Error while deleting attribute ${promise.id}`
                                 })
                             });
-                        } else if (promise.type === "update") {
+                        } else if (promise.type === 'update') {
                             await this.attributeTranslationService
                             .update(promise.data)
-                            .then((res) => {
-                                console.log("successfully saved", res)
+                            .then(() => {
                                 this.multipleActionsResults.push({
-                                    type: "success",
+                                    type: 'success',
                                     text: `Successfully updated attribute ${promise.id}`
                                 })
                             })
-                            .catch((err) => {
+                            .catch(() => {
                                 hasError = true;
 
                                 this.multipleActionsResults.push({
-                                    type: "danger",
+                                    type: 'danger',
                                     text: `Error while updating attribute ${promise.id}`
                                 })
                             });
-                        } else if (promise.type === "create") {
+                        } else if (promise.type === 'create') {
                             await this.attributeTranslationService
                             .create(this.resource.id, promise.data)
-                            .then((res) => {
-                                console.log("successfully created", res)
+                            .then(() => {
                                 this.multipleActionsResults.push({
-                                    type: "success",
+                                    type: 'success',
                                     text: `Successfully created attribute ${promise.id}`
                                 })
                             })
-                            .catch((err) => {
+                            .catch(() => {
                                 hasError = true;
 
                                 this.multipleActionsResults.push({
-                                    type: "danger",
+                                    type: 'danger',
                                     text: `Error while creating attribute ${promise.id}`
                                 })
                             });
                         }
                     }
-                    console.log("End Promises", hasError)
-                    console.log("errors",errors)
-                    
-                    if(hasError) {
-                        reject("Error")
+                    console.log('End Promises', hasError)
+                    console.log('errors', errors)
+
+                    if (hasError) {
+                        reject('Error')
                     } else {
-                        resolve("Completed")
+                        resolve('Completed')
                     }
                 })
 
-                const sendingRequests = await Promise.all([sendPromises])
-                this.saving = false;          
-            } catch(err) {
+                await Promise.all([sendPromises])
+                this.saving = false;
+            } catch (err) {
                 this.handleError(err.message)
             }
         });
@@ -219,7 +231,7 @@ export class TranslateAttributesComponent implements OnInit {
     createAttribute(): void {
         // CHECK 1: Ensure Keys aren't the same
         const generateId = Math.floor(Math.random() * 999999)
-        console.log("generateId",generateId)
+        console.log('generateId', generateId)
 
         const attribute: AttributeTranslation = {
             id: generateId,
@@ -232,20 +244,21 @@ export class TranslateAttributesComponent implements OnInit {
     }
 
     updateAttribute(attribute: AttributeTranslation): void {
-        console.log("updateAttribute", attribute)
+        console.log('updateAttribute', attribute)
         this.attributeTranslationService
         .update(attribute)
         .then((res) => {
-            console.log("successfully saved", res)
+            console.log('successfully saved', res)
             // this.activeModal.close()
         })
         .catch(this.handleError.bind(this));
     }
 
     removeAttribute(attribute: AttributeTranslation): void {
-        console.log("Attribute to be removed", attribute)
+        console.log('Attribute to be removed', attribute)
 
-        this.resource['translated-attributes'] = this.resource['translated-attributes'].filter((i:AttributeTranslation) => {
+        this.resource['translated-attributes'] = this.resource['translated-attributes']
+        .filter((i: AttributeTranslation) => {
             return i.id !== attribute.id
         })
     }
@@ -256,8 +269,8 @@ export class TranslateAttributesComponent implements OnInit {
 
     protected saveResource(): void {
         this.saving = true;
-        console.log("this.resource",this.resource)
-    
+        console.log('this.resource', this.resource)
+
         this.resourceService
           .update(this.resource)
           .then(() =>  this.activeModal.close('closed'))
@@ -265,7 +278,7 @@ export class TranslateAttributesComponent implements OnInit {
     }
 
     protected handleError(message): void {
-        console.log("handleError",message)
+        console.log('handleError', message)
         this.saving = false;
         this.errorMessage = message;
     }
