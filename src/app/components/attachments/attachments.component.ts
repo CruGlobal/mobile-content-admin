@@ -39,8 +39,6 @@ export class AttachmentsComponent implements OnInit {
   ngOnInit(): void {
     this.loadAttachments();
 
-    console.log("this.uploadElement",this.uploadElement.nativeElement.files)
-
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       this.showSuccess();
       this.loadAttachments();
