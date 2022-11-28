@@ -16,7 +16,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 
-
 export class TranslateAttributesComponent implements OnInit {
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
@@ -126,15 +125,14 @@ export class TranslateAttributesComponent implements OnInit {
                 // 2. update items second
                 // 3. create items last
                 promises.sort((a, b) => {
-                    if (a.type === "create") return -1
-                    if (b.type === "create") return 1
+                    if (a.type === "delete") return -1
+                    if (b.type === "delete") return 1
 
                     if (a.type === "create" && b.type === "create") return -1
-                    if (a.type === "delete") return 1
-                    if (b.type === "delete") return -1
+                    if (a.type === "create") return 1
+                    if (b.type === "create") return -1
                 })
 
-                console.log("sorted promises", promises)
 
                 let hasError = false
                 let errors = []
@@ -231,15 +229,6 @@ export class TranslateAttributesComponent implements OnInit {
         }
 
         this.resource['translated-attributes'].push(attribute)
-
-        // this.attributeTranslationService
-        // .create(this.resource.id,attribute)
-        // .then((res) => {
-        //     console.log("successfully created", res)
-        //     // this.activeModal.close()
-        //     this.loadAttributes()
-        // })
-        // .catch(this.handleError.bind(this));
     }
 
     updateAttribute(attribute: AttributeTranslation): void {
@@ -259,26 +248,12 @@ export class TranslateAttributesComponent implements OnInit {
         this.resource['translated-attributes'] = this.resource['translated-attributes'].filter((i:AttributeTranslation) => {
             return i.id !== attribute.id
         })
-        
-
-        // // Remove from server
-        // this.attributeTranslationService
-        // .delete(attribute)
-        // .then((res) => {
-        //     console.log("successfully deleted", res)
-        //     // this.activeModal.close()
-
-        //     // Remove locally first
-        //     this.resource['translated-attributes'] = this.resource['translated-attributes'].filter((i:AttributeTranslation) => {
-        //         return i.id !== attribute.id
-        //     })
-        // })
-        // .catch(this.handleError.bind(this));
     }
 
     closeEditModal() {
         this.activeModal.dismiss('dismissed');
     }
+
     protected saveResource(): void {
         this.saving = true;
         console.log("this.resource",this.resource)
