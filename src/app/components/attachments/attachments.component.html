@@ -58,8 +58,18 @@
           id="newAttachment"
           (change)="fileUploaderOnChange($event)"
         />
-        <label class="custom-file-label" for="newAttachment" *ngIf="fileName != ''">{{fileName}}</label>
-        <label class="custom-file-label" for="newAttachment" *ngIf="fileName == ''">Choose file</label>
+        <label
+          class="custom-file-label"
+          for="newAttachment"
+          *ngIf="fileName != ''"
+          >{{ fileName }}</label
+        >
+        <label
+          class="custom-file-label"
+          for="newAttachment"
+          *ngIf="fileName == ''"
+          >Choose file</label
+        >
       </div>
       <select [(ngModel)]="selectedResource" class="custom-select">
         <option value="undefined" disabled selected hidden>Resource</option>

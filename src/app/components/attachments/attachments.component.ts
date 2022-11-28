@@ -27,7 +27,7 @@ export class AttachmentsComponent implements OnInit {
   loading = false;
   success = false;
   errorMessage: string;
-  fileName: String = ''
+  fileName: String = '';
 
   constructor(
     private resourceService: ResourceService,
@@ -52,7 +52,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   fileUploaderOnChange(): void {
-    this.fileName = this.uploadElement.nativeElement.files[0].name
+    this.fileName = this.uploadElement.nativeElement.files[0].name;
   }
 
   private loadAttachments(): void {
