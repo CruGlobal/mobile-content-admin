@@ -5,7 +5,7 @@ import { System } from './system';
 import { ResourceType } from './resource-type';
 import { Attachment } from './attachment';
 import { CustomManifest } from './custom-manifest';
-import {AttributeTranslation} from './attribute-translation'
+import { AttributeTranslation } from './attribute-translation';
 
 export class Resource {
   id: number;
