@@ -15,12 +15,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./translate-attributes.component.css'],
 })
 export class TranslateAttributesComponent implements OnInit {
-  @Input() resourceid: Number;
+  @Input() resourceId: Number;
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
   saving: Boolean = false;
   errorMessage: string;
+  changesMade: Boolean = false
   multipleActionsError: Boolean = false;
   multipleActionsPromises: IPromises[] = [];
   multipleActionsResults: {
@@ -38,9 +39,8 @@ export class TranslateAttributesComponent implements OnInit {
   }
 
   loadAttributes(): void {
-    console.log("this.resourceid", this.resourceid)
     this.attributeTranslationService
-      .getAttributes(this.resourceid)
+      .getAttributes(this.resourceId)
       .then((res) => {
         this.resource = res;
       });
@@ -280,6 +280,7 @@ export class TranslateAttributesComponent implements OnInit {
     // CHECK 1: Ensure Keys aren't the same
     const generateId = Math.floor(Math.random() * 999999);
     console.log('generateId', generateId);
+    this.changeMade();
 
     const attribute: AttributeTranslation = {
       id: generateId,
@@ -293,6 +294,7 @@ export class TranslateAttributesComponent implements OnInit {
 
   removeAttribute(attribute: AttributeTranslation): void {
     console.log('Attribute to be removed', attribute);
+    this.changeMade();
 
     this.resource['translated-attributes'] = this.resource[
       'translated-attributes'
@@ -301,9 +303,15 @@ export class TranslateAttributesComponent implements OnInit {
     });
   }
 
+
   closeEditModal() {
     this.activeModal.dismiss('dismissed');
   }
+
+  changeMade(): void {
+    this.changesMade = true;
+  }
+
   protected handleError(message): void {
     console.log('handleError', message);
     this.saving = false;

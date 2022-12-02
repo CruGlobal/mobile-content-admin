@@ -28,6 +28,7 @@
           class="form-control"
           placeholder="Key"
           [(ngModel)]="attr.key"
+          (input)="changeMade()"
         />
       </div>
       <div class="col-5">
@@ -37,6 +38,7 @@
           class="form-control"
           placeholder="Onesky Phrase ID"
           [(ngModel)]="attr['onesky-phrase-id']"
+          (input)="changeMade()"
         />
       </div>
       <div class="col-2">
@@ -46,6 +48,7 @@
           type="checkbox"
           placeholder="Required?"
           [(ngModel)]="attr.required"
+          (change)="changeMade()"
         />
       </div>
       <button (click)="removeAttribute(attr)" class="btn btn-warn col-1">
@@ -82,7 +85,7 @@
 <div class="modal-footer">
   <div class="btn-group" role="group">
     <button (click)="closeEditModal()" class="btn btn-secondary">Close</button>
-    <button (click)="multipleActions()" class="btn btn-success">
+    <button (click)="multipleActions()" class="btn btn-success" [disabled]="!this.changesMade">
       Save All Changes
     </button>
   </div>
