@@ -130,10 +130,8 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       TranslateAttributesComponent,
       { size: 'lg' },
     );
-    console.log("resource",resource)
-    console.log("resource.id",resource.id)
 
-    modalRef.componentInstance.resourceid = resource.id;
+    modalRef.componentInstance.resourceId = resource.id;
     modalRef.result.then(
       () => this.resourcesComponent.loadResources(),
       console.log,
