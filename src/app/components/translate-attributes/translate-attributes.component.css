@@ -19,7 +19,16 @@
 }
 
 .translation-attributes .btn-warn.col-1 {
-    background: #f8d7da;
+    background: #c5c5c5;
     height: 36px;
     margin-top: 17px;
+}
+
+.translation-attributes .no-attributes {
+    padding: 50px 0;
+}
+
+.translation-attributes .no-attributes p {
+    text-align: center;
+    margin: 0
 }

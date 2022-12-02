@@ -31,7 +31,7 @@ import { SystemService } from './service/system.service';
 import { ResourceTypeService } from './service/resource-type.service';
 import { AttributeTranslationService } from './service/attribute-translation.service';
 import { UpdateResourceComponent } from './components/edit-resource/update-resource/update-resource.component';
-import { TranslateAttributesComponent } from './components/translate-atttributes/translate-attributes.component';
+import { TranslateAttributesComponent } from './components/translate-attributes/translate-attributes.component';
 import { CreateResourceComponent } from './components/edit-resource/create-resource/create-resource.component';
 import { UpdateResourceLanguageComponent } from './components/edit-resource-language/update-resource-language/update-resource-language.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';

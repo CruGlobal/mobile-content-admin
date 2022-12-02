@@ -2,13 +2,21 @@
   <div class="d-flex justify-content-between align-items-center">
     <h5>Translation Attributes</h5>
     <!-- Add button -->
-    <button class="btn btn-secondary" (click)="createAttribute()">
+    <button
+      class="btn btn-secondary add-new-translation-attribute"
+      (click)="createAttribute()"
+    >
       <i class="fa fa-file"></i> Add new Translation Attribute
     </button>
   </div>
 
   <!-- Loop through items and render -->
-  <div class="translation-attributes">
+  <div class="translation-attributes" *ngIf="resource">
+
+    <div *ngIf="!resource['translated-attributes'].length" class="no-attributes">
+      <p>They're are currently no translated attributes</p>
+    </div>
+
     <div
       class="row md-2"
       *ngFor="let attr of resource['translated-attributes']"
@@ -41,7 +49,7 @@
         />
       </div>
       <button (click)="removeAttribute(attr)" class="btn btn-warn col-1">
-        <i class="fa fa-times"></i>
+        <i class="fa fa-trash"></i>
       </button>
     </div>
   </div>
@@ -73,7 +81,7 @@
 
 <div class="modal-footer">
   <div class="btn-group" role="group">
-    <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+    <button (click)="closeEditModal()" class="btn btn-secondary">Close</button>
     <button (click)="multipleActions()" class="btn btn-success">
       Save All Changes
     </button>
