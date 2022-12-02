@@ -14,22 +14,23 @@
       >
         <i class="fa fa-pencil"></i> Details
       </button>
-
-      <button
-        (click)="openGenerateModal(resource); $event.stopPropagation()"
-        class="btn btn-secondary mb-2 mb-sm-2 mb-lg-0"
-        *ngIf="!isMetaTool()"
-      >
-        <i class="fa fa-plus"></i> Generate multiple drafts
-      </button>
       <button
         (click)="
           openAttributeTranslationsModal(resource); $event.stopPropagation()
         "
-        class="btn btn-primary"
+        class="btn btn-primary mb-2 mb-sm-2 mb-lg-0"
+        *ngIf="!isMetaTool()"
       >
         <i class="fa fa-language"></i> Translated Attributes
       </button>
+      <button
+        (click)="openGenerateModal(resource); $event.stopPropagation()"
+        class="btn btn-secondary"
+        *ngIf="!isMetaTool()"
+      >
+        <i class="fa fa-plus"></i> Generate multiple drafts
+      </button>
+      
     </div>
   </div>
   <div class="card-body bg-dark" [ngbCollapse]="!showDetails || isMetaTool()">

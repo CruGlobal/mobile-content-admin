@@ -15,7 +15,7 @@ import {
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
-import { TranslateAttributesComponent } from '../translate-atttributes/translate-attributes.component';
+import { TranslateAttributesComponent } from '../translate-attributes/translate-attributes.component';
 import { MultipleDraftGeneratorComponent } from '../multiple-draft-generator/multiple-draft-generator.component';
 import { LanguageService } from '../../service/language.service';
 import { ResourcesComponent } from '../resources/resources.component';
@@ -130,8 +130,10 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       TranslateAttributesComponent,
       { size: 'lg' },
     );
+    console.log("resource",resource)
+    console.log("resource.id",resource.id)
 
-    modalRef.componentInstance.resource = resource;
+    modalRef.componentInstance.resourceid = resource.id;
     modalRef.result.then(
       () => this.resourcesComponent.loadResources(),
       console.log,

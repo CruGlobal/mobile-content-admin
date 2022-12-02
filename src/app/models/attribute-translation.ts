@@ -7,3 +7,9 @@ export class AttributeTranslation {
   required: boolean;
   resource?: Resource;
 }
+
+export interface IPromises {
+  type: String;
+  id: String;
+  data: AttributeTranslation;
+}

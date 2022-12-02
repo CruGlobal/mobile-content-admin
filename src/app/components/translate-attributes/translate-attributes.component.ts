@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Resource } from '../../models/resource';
 import { ResourceType } from '../../models/resource-type';
 import { System } from '../../models/system';
-import { AttributeTranslation } from '../../models/attribute-translation';
-import { ResourceService } from '../../service/resource/resource.service';
-import { SystemService } from '../../service/system.service';
-import { ResourceTypeService } from '../../service/resource-type.service';
+import {
+  AttributeTranslation,
+  IPromises,
+} from '../../models/attribute-translation';
 import { AttributeTranslationService } from '../../service/attribute-translation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,22 +15,22 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./translate-attributes.component.css'],
 })
 export class TranslateAttributesComponent implements OnInit {
+  @Input() resourceid: Number;
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
   saving: Boolean = false;
   errorMessage: string;
+  multipleActionsError: Boolean = false;
+  multipleActionsPromises: IPromises[] = [];
   multipleActionsResults: {
     text: String;
     type: String;
   }[] = [];
 
   constructor(
-    protected resourceService: ResourceService,
-    protected systemService: SystemService,
-    protected resourceTypeService: ResourceTypeService,
-    protected activeModal: NgbActiveModal,
     protected attributeTranslationService: AttributeTranslationService,
+    protected activeModal: NgbActiveModal,
   ) {}
 
   ngOnInit(): void {
@@ -38,8 +38,9 @@ export class TranslateAttributesComponent implements OnInit {
   }
 
   loadAttributes(): void {
+    console.log("this.resourceid", this.resourceid)
     this.attributeTranslationService
-      .getAttributes(this.resource.id)
+      .getAttributes(this.resourceid)
       .then((res) => {
         this.resource = res;
       });
@@ -48,25 +49,21 @@ export class TranslateAttributesComponent implements OnInit {
   multipleActions(): void {
     const localAttributes = new Map();
     const remoteAttributes = new Map();
+    console.log('multipleActionsFunc');
 
     this.resource['translated-attributes'].forEach((attr) => {
       localAttributes.set(attr.id, attr);
     });
-
-    interface IPromises {
-      type: String;
-      id: number;
-      data: AttributeTranslation;
-    }
-    const promises: IPromises[] = [];
 
     this.attributeTranslationService
       .getAttributes(this.resource.id)
       .then(async (res) => {
         try {
           this.errorMessage = '';
+          this.multipleActionsError = false;
           this.multipleActionsResults = [];
           this.saving = true;
+          this.multipleActionsPromises = [];
 
           console.log('this.resource', this.resource['translated-attributes']);
           console.log(
@@ -83,7 +80,11 @@ export class TranslateAttributesComponent implements OnInit {
           remoteAttributes.forEach((attr) => {
             const localVersion = localAttributes.get(attr.id);
             if (!localVersion) {
-              promises.push({ type: 'delete', id: attr.key, data: attr });
+              this.multipleActionsPromises.push({
+                type: 'delete',
+                id: attr.key,
+                data: attr,
+              });
             }
           });
           console.log('Delete checks - complete');
@@ -110,7 +111,11 @@ export class TranslateAttributesComponent implements OnInit {
               }
 
               if (needsToBeUpdated) {
-                promises.push({ type: 'update', id: attr.key, data: attr });
+                this.multipleActionsPromises.push({
+                  type: 'update',
+                  id: attr.key,
+                  data: attr,
+                });
               }
             } else {
               console.log('attr.key', attr.key);
@@ -124,7 +129,11 @@ export class TranslateAttributesComponent implements OnInit {
                 );
               }
 
-              promises.push({ type: 'create', id: attr.key, data: attr });
+              this.multipleActionsPromises.push({
+                type: 'create',
+                id: attr.key,
+                data: attr,
+              });
             }
 
             // Ensure keys are unique
@@ -134,103 +143,34 @@ export class TranslateAttributesComponent implements OnInit {
               }
               if (attr.key === attribute.key) {
                 throw new Error(
-                  '2 or more keys are the same. Please make keys are unique.',
+                  '2 or more keys are the same. Please make sure all keys are unique.',
                 );
               }
             });
           });
           console.log('Update & Create checks - complete');
 
-          console.log('promises', promises);
+          console.log('promises', this.multipleActionsPromises);
 
           // Sort promises
-          // 1. delete items first
-          // 2. update items second
-          // 3. create items last
-          promises.sort((a, b) => {
-            if (b.type === 'delete') {
-              return 1;
-            }
-            if (a.type === 'delete') {
-              return -1;
-            }
-
-            if (a.type === 'create' && b.type === 'create') {
-              return -1;
-            }
-            if (a.type === 'create') {
-              return 1;
-            }
-            if (b.type === 'create') {
-              return -1;
-            }
-          });
-
-          let hasError = false;
-          const errors = [];
+          await this.mulitipleActionSortPromises();
 
           // Need to await for this
           const sendPromises = new Promise(async (resolve, reject) => {
             console.log('Start Promises');
-            for (const promise of promises) {
+            for (const promise of this.multipleActionsPromises) {
               console.log('promise.data', promise.data);
               if (promise.type === 'delete') {
-                await this.attributeTranslationService
-                  .delete(promise.data)
-                  .then(() => {
-                    this.multipleActionsResults.push({
-                      type: 'success',
-                      text: `Successfully deleted attribute ${promise.id}`,
-                    });
-                  })
-                  .catch(() => {
-                    hasError = true;
-
-                    this.multipleActionsResults.push({
-                      type: 'danger',
-                      text: `Error while deleting attribute ${promise.id}`,
-                    });
-                  });
+                await this.mulitipleActionDelete(promise);
               } else if (promise.type === 'update') {
-                await this.attributeTranslationService
-                  .update(promise.data)
-                  .then(() => {
-                    this.multipleActionsResults.push({
-                      type: 'success',
-                      text: `Successfully updated attribute ${promise.id}`,
-                    });
-                  })
-                  .catch(() => {
-                    hasError = true;
-
-                    this.multipleActionsResults.push({
-                      type: 'danger',
-                      text: `Error while updating attribute ${promise.id}`,
-                    });
-                  });
+                await this.mulitipleActionUpdate(promise);
               } else if (promise.type === 'create') {
-                await this.attributeTranslationService
-                  .create(this.resource.id, promise.data)
-                  .then(() => {
-                    this.multipleActionsResults.push({
-                      type: 'success',
-                      text: `Successfully created attribute ${promise.id}`,
-                    });
-                  })
-                  .catch(() => {
-                    hasError = true;
-
-                    this.multipleActionsResults.push({
-                      type: 'danger',
-                      text: `Error while creating attribute ${promise.id}`,
-                    });
-                  });
+                await this.mulitipleActionCreate(promise);
               }
             }
-            console.log('End Promises', hasError);
-            console.log('errors', errors);
+            console.log('Had Error?', this.multipleActionsError);
 
-            if (hasError) {
+            if (this.multipleActionsError) {
               reject('Error');
             } else {
               resolve('Completed');
@@ -239,10 +179,101 @@ export class TranslateAttributesComponent implements OnInit {
 
           await Promise.all([sendPromises]);
           this.saving = false;
+          setTimeout(() => this.closeEditModal(), 2000);
         } catch (err) {
           this.handleError(err.message);
         }
       });
+  }
+
+  mulitipleActionSortPromises(): void {
+    // Sort promises
+    // 1. delete items first ()
+    // 2. update items second
+    // 3. create items last
+    this.multipleActionsPromises.sort((a, b) => {
+      if (b.type === 'delete') {
+        return 1;
+      }
+      if (a.type === 'delete') {
+        return -1;
+      }
+      if (a.type === 'create' && b.type === 'create') {
+        return -1;
+      }
+      if (a.type === 'create') {
+        return 1;
+      }
+      if (b.type === 'create') {
+        return -1;
+      }
+    });
+  }
+
+  async mulitipleActionDelete(promise: IPromises): Promise<Boolean> {
+    console.log('mulitipleActionDelete', 'Start');
+    await this.attributeTranslationService
+      .delete(promise.data)
+      .then(() => {
+        this.multipleActionsResults.push({
+          type: 'success',
+          text: `Successfully deleted attribute ${promise.id}`,
+        });
+      })
+      .catch(() => {
+        this.multipleActionsError = true;
+
+        this.multipleActionsResults.push({
+          type: 'danger',
+          text: `Error while deleting attribute ${promise.id}`,
+        });
+      });
+    console.log('mulitipleActionDelete', 'End');
+    return true;
+  }
+
+  async mulitipleActionUpdate(promise: IPromises): Promise<Boolean> {
+    console.log('mulitipleActionUpdate', 'Start');
+    await this.attributeTranslationService
+      .update(promise.data)
+      .then(() => {
+        this.multipleActionsResults.push({
+          type: 'success',
+          text: `Successfully updated attribute ${promise.id}`,
+        });
+      })
+      .catch(() => {
+        this.multipleActionsError = true;
+
+        this.multipleActionsResults.push({
+          type: 'danger',
+          text: `Error while updating attribute ${promise.id}`,
+        });
+      });
+    console.log('mulitipleActionUpdate', 'End');
+    return true;
+  }
+
+  async mulitipleActionCreate(promise: IPromises): Promise<Boolean> {
+    console.log('mulitipleActionCreate', 'Start');
+    await this.attributeTranslationService
+      .create(this.resource.id, promise.data)
+      .then(() => {
+        this.multipleActionsResults.push({
+          type: 'success',
+          text: `Successfully created attribute ${promise.id}`,
+        });
+      })
+      .catch(() => {
+        this.multipleActionsError = true;
+
+        this.multipleActionsResults.push({
+          type: 'danger',
+          text: `Error while creating attribute ${promise.id}`,
+        });
+      });
+    console.log('mulitipleActionCreate', 'End');
+    return true;
   }
 
   createAttribute(): void {
@@ -260,17 +291,6 @@ export class TranslateAttributesComponent implements OnInit {
     this.resource['translated-attributes'].push(attribute);
   }
 
-  updateAttribute(attribute: AttributeTranslation): void {
-    console.log('updateAttribute', attribute);
-    this.attributeTranslationService
-      .update(attribute)
-      .then((res) => {
-        console.log('successfully saved', res);
-        // this.activeModal.close()
-      })
-      .catch(this.handleError.bind(this));
-  }
-
   removeAttribute(attribute: AttributeTranslation): void {
     console.log('Attribute to be removed', attribute);
 
@@ -284,17 +304,6 @@ export class TranslateAttributesComponent implements OnInit {
   closeEditModal() {
     this.activeModal.dismiss('dismissed');
   }
-
-  protected saveResource(): void {
-    this.saving = true;
-    console.log('this.resource', this.resource);
-
-    this.resourceService
-      .update(this.resource)
-      .then(() => this.activeModal.close('closed'))
-      .catch((error) => this.handleError(error));
-  }
-
   protected handleError(message): void {
     console.log('handleError', message);
     this.saving = false;
