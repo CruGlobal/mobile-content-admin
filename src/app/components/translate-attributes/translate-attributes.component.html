@@ -12,8 +12,10 @@
 
   <!-- Loop through items and render -->
   <div class="translation-attributes" *ngIf="resource">
-
-    <div *ngIf="!resource['translated-attributes'].length" class="no-attributes">
+    <div
+      *ngIf="!resource['translated-attributes'].length"
+      class="no-attributes"
+    >
       <p>They're are currently no translated attributes</p>
     </div>
 
@@ -85,7 +87,11 @@
 <div class="modal-footer">
   <div class="btn-group" role="group">
     <button (click)="closeEditModal()" class="btn btn-secondary">Close</button>
-    <button (click)="multipleActions()" class="btn btn-success" [disabled]="!this.changesMade">
+    <button
+      (click)="multipleActions()"
+      class="btn btn-success"
+      [disabled]="!this.changesMade"
+    >
       Save All Changes
     </button>
   </div>

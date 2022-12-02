@@ -21,7 +21,7 @@ export class TranslateAttributesComponent implements OnInit {
   systems: System[];
   saving: Boolean = false;
   errorMessage: string;
-  changesMade: Boolean = false
+  changesMade: Boolean = false;
   multipleActionsError: Boolean = false;
   multipleActionsPromises: IPromises[] = [];
   multipleActionsResults: {
@@ -302,7 +302,6 @@ export class TranslateAttributesComponent implements OnInit {
       return i.id !== attribute.id;
     });
   }
-
 
   closeEditModal() {
     this.activeModal.dismiss('dismissed');
