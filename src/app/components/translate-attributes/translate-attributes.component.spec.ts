@@ -151,4 +151,161 @@ describe('TranslateAttributesComponent', () => {
     expect(comp.multipleActionsPromises[1].type).toEqual('update');
     expect(comp.multipleActionsPromises[2].type).toEqual('create');
   });
+
+  describe('checkRemoteResourceForDifferences', () => {
+    const remoteResource = new Resource();
+    remoteResource.name = 'Renderer Tests';
+    remoteResource.id = 3;
+
+    beforeEach(() => {
+      comp.multipleActionsPromises = [];
+      remoteResource['translated-attributes'] = [];
+    });
+
+    it('Ensure compares correctly and create correct multipleActionsPromises', () => {
+      comp.resource['translated-attributes'] = [
+        {
+          id: 111111,
+          key: 'test_key_for_testing_one',
+          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          required: false,
+        },
+        {
+          id: 222222,
+          key: 'test_key_for_testing_two',
+          'onesky-phrase-id': 'test_onesky_phrase_id_two',
+          required: false,
+        },
+        {
+          id: 444444,
+          key: 'test_key_for_testing_four',
+          'onesky-phrase-id': 'test_onesky_phrase_id_four',
+          required: false,
+        },
+      ];
+
+      remoteResource['translated-attributes'] = [
+        {
+          id: 111111,
+          key: 'test_key_for_testing_One_OLD',
+          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          required: false,
+        },
+        {
+          id: 222222,
+          key: 'test_key_for_testing_two',
+          'onesky-phrase-id': 'test_onesky_phrase_id_two_OLD',
+          required: false,
+        },
+        {
+          id: 333333,
+          key: 'test_key_for_testing_three',
+          'onesky-phrase-id': 'test_key_for_testing_three',
+          required: false,
+        },
+      ];
+
+      comp.checkRemoteResourceForDifferences(remoteResource);
+      comp.mulitipleActionSortPromises();
+
+      // Ensure test_key_for_testing_three is prepped for deletion
+      expect(comp.multipleActionsPromises[0].type).toEqual('delete');
+      expect(comp.multipleActionsPromises[0].id).toEqual(
+        'test_key_for_testing_three',
+      );
+
+      // Ensure test_key_for_testing_one is prepped for updating Key
+      expect(comp.multipleActionsPromises[1].type).toEqual('update');
+      expect(comp.multipleActionsPromises[1].id).toEqual(
+        'test_key_for_testing_one',
+      );
+
+      // Ensure test_key_for_testing_two is prepped for updating Onesky phase ID
+      expect(comp.multipleActionsPromises[2].type).toEqual('update');
+      expect(comp.multipleActionsPromises[2].id).toEqual(
+        'test_key_for_testing_two',
+      );
+
+      // Ensure test_key_for_testing_four is prepped for being created
+      expect(comp.multipleActionsPromises[3].type).toEqual('create');
+      expect(comp.multipleActionsPromises[3].id).toEqual(
+        'test_key_for_testing_four',
+      );
+    });
+
+    it('Ensure Errors if Key is empty', async () => {
+      comp.resource['translated-attributes'] = [
+        {
+          id: 111111,
+          key: '',
+          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          required: false,
+        },
+      ];
+
+      const checkDifferences = await comp.checkRemoteResourceForDifferences(
+        remoteResource,
+      );
+      console.log('checkDifferences', checkDifferences);
+      // Ensure checkRemoteResourceForDifferences Errors
+      expect(checkDifferences.successful).toEqual(false);
+      expect(checkDifferences.message).toEqual(
+        'Please ensure all Keys have a value.',
+      );
+
+      // Onesky key have value
+
+      // 2 or more keys aren't the same
+    });
+
+    it('Ensure Errors if Onesky Phase ID is empty', async () => {
+      comp.resource['translated-attributes'] = [
+        {
+          id: 111111,
+          key: 'test_key_for_testing_One',
+          'onesky-phrase-id': '',
+          required: false,
+        },
+      ];
+
+      const checkDifferences = await comp.checkRemoteResourceForDifferences(
+        remoteResource,
+      );
+      console.log('checkDifferences', checkDifferences);
+
+      // Ensure checkRemoteResourceForDifferences Errors
+      expect(checkDifferences.successful).toEqual(false);
+      expect(checkDifferences.message).toEqual(
+        'Please ensure all Onesky Phase IDs have a value.',
+      );
+    });
+
+    it('Ensure Errors if 2 attributes have same key', async () => {
+      comp.resource['translated-attributes'] = [
+        {
+          id: 111111,
+          key: 'test_key_for_testing_One',
+          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          required: false,
+        },
+        {
+          id: 222222,
+          key: 'test_key_for_testing_One',
+          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          required: false,
+        },
+      ];
+
+      const checkDifferences = await comp.checkRemoteResourceForDifferences(
+        remoteResource,
+      );
+
+      console.log('checkDifferences', checkDifferences);
+      // Ensure checkRemoteResourceForDifferences Errors
+      expect(checkDifferences.successful).toEqual(false);
+      expect(checkDifferences.message).toEqual(
+        '2 or more keys are the same. Please make sure all keys are unique.',
+      );
+    });
+  });
 });
