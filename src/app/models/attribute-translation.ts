@@ -8,7 +8,7 @@ export class AttributeTranslation {
   resource?: Resource;
 }
 
-export interface IPromises {
+export interface IAttributeTranslationPromises {
   type: String;
   id: String;
   data: AttributeTranslation;

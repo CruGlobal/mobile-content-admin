@@ -126,15 +126,63 @@ describe('TranslateAttributesComponent', () => {
         'onesky-phrase-id': 'test_onesky_phrase_id_two',
         required: false,
       },
+      {
+        id: 333333,
+        key: 'test_key_for_testing_three',
+        'onesky-phrase-id': 'test_onesky_phrase_id_three',
+        required: false,
+      },
+      {
+        id: 444444,
+        key: 'test_key_for_testing_four',
+        'onesky-phrase-id': 'test_onesky_phrase_id_four',
+        required: false,
+      },
+      {
+        id: 555555,
+        key: 'test_key_for_testing_five',
+        'onesky-phrase-id': 'test_onesky_phrase_id_five',
+        required: false,
+      },
     ];
     comp.multipleActionsPromises = [
+      {
+        type: 'create',
+        id: comp.resource['translated-attributes'][3].key,
+        data: comp.resource['translated-attributes'][3],
+      },
+      {
+        type: 'update',
+        id: comp.resource['translated-attributes'][2].key,
+        data: comp.resource['translated-attributes'][2],
+      },
+      {
+        type: 'update',
+        id: comp.resource['translated-attributes'][3].key,
+        data: comp.resource['translated-attributes'][3],
+      },
       {
         type: 'create',
         id: comp.resource['translated-attributes'][0].key,
         data: comp.resource['translated-attributes'][0],
       },
       {
+        type: 'create',
+        id: comp.resource['translated-attributes'][4].key,
+        data: comp.resource['translated-attributes'][4],
+      },
+      {
+        type: 'update',
+        id: comp.resource['translated-attributes'][4].key,
+        data: comp.resource['translated-attributes'][4],
+      },
+      {
         type: 'delete',
+        id: comp.resource['translated-attributes'][0].key,
+        data: comp.resource['translated-attributes'][0],
+      },
+      {
+        type: 'update',
         id: comp.resource['translated-attributes'][0].key,
         data: comp.resource['translated-attributes'][0],
       },
@@ -149,7 +197,13 @@ describe('TranslateAttributesComponent', () => {
 
     expect(comp.multipleActionsPromises[0].type).toEqual('delete');
     expect(comp.multipleActionsPromises[1].type).toEqual('update');
-    expect(comp.multipleActionsPromises[2].type).toEqual('create');
+    expect(comp.multipleActionsPromises[2].type).toEqual('update');
+    expect(comp.multipleActionsPromises[3].type).toEqual('update');
+    expect(comp.multipleActionsPromises[4].type).toEqual('update');
+    expect(comp.multipleActionsPromises[5].type).toEqual('update');
+    expect(comp.multipleActionsPromises[6].type).toEqual('create');
+    expect(comp.multipleActionsPromises[7].type).toEqual('create');
+    expect(comp.multipleActionsPromises[8].type).toEqual('create');
   });
 
   describe('checkRemoteResourceForDifferences', () => {
