@@ -28,6 +28,8 @@ export class TranslateAttributesComponent implements OnInit {
     text: String;
     type: String;
   }[] = [];
+  multipleActionsLocalAttributes = new Map<Number, any>();
+  multipleActionsRemoteAttributes = new Map<Number, any>();
 
   constructor(
     protected attributeTranslationService: AttributeTranslationService,
@@ -46,14 +48,114 @@ export class TranslateAttributesComponent implements OnInit {
       });
   }
 
-  multipleActions(): void {
-    const localAttributes = new Map();
-    const remoteAttributes = new Map();
-    console.log('multipleActionsFunc');
+  async checkRemoteResourceForDifferences(
+    remoteResource: Resource,
+  ): Promise<{ successful: Boolean; message: string }> {
+    try {
+      this.resource['translated-attributes'].forEach((attr) => {
+        this.multipleActionsLocalAttributes.set(attr.id, attr);
+      });
 
-    this.resource['translated-attributes'].forEach((attr) => {
-      localAttributes.set(attr.id, attr);
-    });
+      console.log('this.resource', this.resource['translated-attributes']);
+      console.log(
+        'res[translated-attributes]',
+        remoteResource['translated-attributes'],
+      );
+
+      remoteResource['translated-attributes'].forEach((attr) => {
+        this.multipleActionsRemoteAttributes.set(attr.id, attr);
+      });
+
+      console.log('Delete checks - start');
+      // Check for local deleted items
+      this.multipleActionsRemoteAttributes.forEach((attr) => {
+        const localVersion = this.multipleActionsLocalAttributes.get(attr.id);
+        if (!localVersion) {
+          this.multipleActionsPromises.push({
+            type: 'delete',
+            id: attr.key,
+            data: attr,
+          });
+        }
+      });
+
+      console.log('Delete checks - complete');
+
+      console.log('Update & Create checks - start');
+      this.multipleActionsLocalAttributes.forEach((attr) => {
+        const remoteVersion = this.multipleActionsRemoteAttributes.get(attr.id);
+
+        // Can I find this ID in remoteAttributes
+        if (remoteVersion) {
+          // Check to ensure all data is the same
+          let needsToBeUpdated = false;
+
+          if (remoteVersion.key !== attr.key) {
+            needsToBeUpdated = true;
+          }
+          if (remoteVersion['onesky-phrase-id'] !== attr['onesky-phrase-id']) {
+            needsToBeUpdated = true;
+          }
+          if (remoteVersion.required !== attr.required) {
+            needsToBeUpdated = true;
+          }
+
+          if (needsToBeUpdated) {
+            this.multipleActionsPromises.push({
+              type: 'update',
+              id: attr.key,
+              data: attr,
+            });
+          }
+        } else {
+          console.log('attr.key', attr.key);
+          // New Items
+          if (!attr.key) {
+            throw new Error('Please ensure all Keys have a value.');
+          }
+          if (!attr['onesky-phrase-id']) {
+            throw new Error('Please ensure all Onesky Phase IDs have a value.');
+          }
+
+          this.multipleActionsPromises.push({
+            type: 'create',
+            id: attr.key,
+            data: attr,
+          });
+        }
+
+        // Ensure keys are unique
+        this.multipleActionsLocalAttributes.forEach((attribute) => {
+          if (attr.id === attribute.id) {
+            return;
+          }
+          if (attr.key === attribute.key) {
+            throw new Error(
+              '2 or more keys are the same. Please make sure all keys are unique.',
+            );
+          }
+        });
+      });
+      console.log('Update & Create checks - complete');
+
+      console.log('promises', this.multipleActionsPromises);
+      return {
+        successful: true,
+        message: 'Successful',
+      };
+    } catch (err) {
+      console.log('ERR', err);
+      return {
+        successful: false,
+        message: err.message,
+      };
+    }
+  }
+
+  multipleActions(): void {
+    this.multipleActionsLocalAttributes.clear();
+    this.multipleActionsRemoteAttributes.clear();
+    console.log('multipleActionsFunc');
 
     this.attributeTranslationService
       .getAttributes(this.resource.id)
@@ -65,92 +167,12 @@ export class TranslateAttributesComponent implements OnInit {
           this.saving = true;
           this.multipleActionsPromises = [];
 
-          console.log('this.resource', this.resource['translated-attributes']);
-          console.log(
-            'res[translated-attributes]',
-            res['translated-attributes'],
+          const checkDifferences = await this.checkRemoteResourceForDifferences(
+            res,
           );
-
-          res['translated-attributes'].forEach((attr) => {
-            remoteAttributes.set(attr.id, attr);
-          });
-
-          console.log('Delete checks - start');
-          // Check for local deleted items
-          remoteAttributes.forEach((attr) => {
-            const localVersion = localAttributes.get(attr.id);
-            if (!localVersion) {
-              this.multipleActionsPromises.push({
-                type: 'delete',
-                id: attr.key,
-                data: attr,
-              });
-            }
-          });
-          console.log('Delete checks - complete');
-
-          console.log('Update & Create checks - start');
-          localAttributes.forEach((attr) => {
-            const remoteVersion = remoteAttributes.get(attr.id);
-
-            // Can I find this ID in remoteAttributes
-            if (remoteVersion) {
-              // Check to ensure all data is the same
-              let needsToBeUpdated = false;
-
-              if (remoteVersion.key !== attr.key) {
-                needsToBeUpdated = true;
-              }
-              if (
-                remoteVersion['onesky-phrase-id'] !== attr['onesky-phrase-id']
-              ) {
-                needsToBeUpdated = true;
-              }
-              if (remoteVersion.required !== attr.required) {
-                needsToBeUpdated = true;
-              }
-
-              if (needsToBeUpdated) {
-                this.multipleActionsPromises.push({
-                  type: 'update',
-                  id: attr.key,
-                  data: attr,
-                });
-              }
-            } else {
-              console.log('attr.key', attr.key);
-              // New Items
-              if (!attr.key) {
-                throw new Error('Please ensure all Keys have a value.');
-              }
-              if (!attr['onesky-phrase-id']) {
-                throw new Error(
-                  'Please ensure all Onesky Phase IDs have a value.',
-                );
-              }
-
-              this.multipleActionsPromises.push({
-                type: 'create',
-                id: attr.key,
-                data: attr,
-              });
-            }
-
-            // Ensure keys are unique
-            localAttributes.forEach((attribute) => {
-              if (attr.id === attribute.id) {
-                return;
-              }
-              if (attr.key === attribute.key) {
-                throw new Error(
-                  '2 or more keys are the same. Please make sure all keys are unique.',
-                );
-              }
-            });
-          });
-          console.log('Update & Create checks - complete');
-
-          console.log('promises', this.multipleActionsPromises);
+          if (!checkDifferences.successful) {
+            throw new Error(checkDifferences.message);
+          }
 
           // Sort promises
           await this.mulitipleActionSortPromises();
