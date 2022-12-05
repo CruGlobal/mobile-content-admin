@@ -4,7 +4,7 @@ import { ResourceType } from '../../models/resource-type';
 import { System } from '../../models/system';
 import {
   AttributeTranslation,
-  IPromises,
+  IAttributeTranslationPromises,
 } from '../../models/attribute-translation';
 import { AttributeTranslationService } from '../../service/attribute-translation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ export class TranslateAttributesComponent implements OnInit {
   errorMessage: string;
   changesMade: Boolean = false;
   multipleActionsError: Boolean = false;
-  multipleActionsPromises: IPromises[] = [];
+  multipleActionsPromises: IAttributeTranslationPromises[] = [];
   multipleActionsResults: {
     text: String;
     type: String;
@@ -44,8 +44,13 @@ export class TranslateAttributesComponent implements OnInit {
     this.attributeTranslationService
       .getAttributes(this.resourceId)
       .then((res) => {
+        // Sort attributes base on their keys
+        res['translated-attributes'] = res['translated-attributes'].sort((a,b) => {
+          return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
+        })
         this.resource = res;
       });
+
   }
 
   async checkRemoteResourceForDifferences(
@@ -220,19 +225,20 @@ export class TranslateAttributesComponent implements OnInit {
       if (a.type === 'delete') {
         return -1;
       }
-      if (a.type === 'create' && b.type === 'create') {
-        return -1;
-      }
       if (a.type === 'create') {
         return 1;
       }
       if (b.type === 'create') {
         return -1;
       }
+      if (a.type === b.type) {
+        return 0;
+      }
+      return 0
     });
   }
 
-  async mulitipleActionDelete(promise: IPromises): Promise<Boolean> {
+  async mulitipleActionDelete(promise: IAttributeTranslationPromises): Promise<Boolean> {
     console.log('mulitipleActionDelete', 'Start');
     await this.attributeTranslationService
       .delete(promise.data)
@@ -254,7 +260,7 @@ export class TranslateAttributesComponent implements OnInit {
     return true;
   }
 
-  async mulitipleActionUpdate(promise: IPromises): Promise<Boolean> {
+  async mulitipleActionUpdate(promise: IAttributeTranslationPromises): Promise<Boolean> {
     console.log('mulitipleActionUpdate', 'Start');
     await this.attributeTranslationService
       .update(promise.data)
@@ -276,7 +282,7 @@ export class TranslateAttributesComponent implements OnInit {
     return true;
   }
 
-  async mulitipleActionCreate(promise: IPromises): Promise<Boolean> {
+  async mulitipleActionCreate(promise: IAttributeTranslationPromises): Promise<Boolean> {
     console.log('mulitipleActionCreate', 'Start');
     await this.attributeTranslationService
       .create(this.resource.id, promise.data)
