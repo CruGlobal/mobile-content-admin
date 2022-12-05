@@ -45,12 +45,13 @@ export class TranslateAttributesComponent implements OnInit {
       .getAttributes(this.resourceId)
       .then((res) => {
         // Sort attributes base on their keys
-        res['translated-attributes'] = res['translated-attributes'].sort((a,b) => {
-          return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
-        })
+        res['translated-attributes'] = res['translated-attributes'].sort(
+          (a, b) => {
+            return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
+          },
+        );
         this.resource = res;
       });
-
   }
 
   async checkRemoteResourceForDifferences(
@@ -234,11 +235,13 @@ export class TranslateAttributesComponent implements OnInit {
       if (a.type === b.type) {
         return 0;
       }
-      return 0
+      return 0;
     });
   }
 
-  async mulitipleActionDelete(promise: IAttributeTranslationPromises): Promise<Boolean> {
+  async mulitipleActionDelete(
+    promise: IAttributeTranslationPromises,
+  ): Promise<Boolean> {
     console.log('mulitipleActionDelete', 'Start');
     await this.attributeTranslationService
       .delete(promise.data)
@@ -260,7 +263,9 @@ export class TranslateAttributesComponent implements OnInit {
     return true;
   }
 
-  async mulitipleActionUpdate(promise: IAttributeTranslationPromises): Promise<Boolean> {
+  async mulitipleActionUpdate(
+    promise: IAttributeTranslationPromises,
+  ): Promise<Boolean> {
     console.log('mulitipleActionUpdate', 'Start');
     await this.attributeTranslationService
       .update(promise.data)
@@ -282,7 +287,9 @@ export class TranslateAttributesComponent implements OnInit {
     return true;
   }
 
-  async mulitipleActionCreate(promise: IAttributeTranslationPromises): Promise<Boolean> {
+  async mulitipleActionCreate(
+    promise: IAttributeTranslationPromises,
+  ): Promise<Boolean> {
     console.log('mulitipleActionCreate', 'Start');
     await this.attributeTranslationService
       .create(this.resource.id, promise.data)
