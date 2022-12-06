@@ -29,8 +29,13 @@ jobs:
           node-version: 12
       - name: Install Dependenices
         run: npm install
+      - uses: browser-actions/setup-chrome@latest
       - name: Run Test with CodeCov
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
         run: npm run test:codecov
+      - name: Codecov
+        uses: codecov/codecov-action@v1.1.1
       - name: Run Lint & Prettier Tests
         run: |
           npm run lint:type

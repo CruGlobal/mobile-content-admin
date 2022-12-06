@@ -9,7 +9,7 @@
     "build:stage": "ng build -c staging",
     "build:prod": "ng build -c production",
     "test": "ng test",
-    "test:codecov": "ng test --watch=false --code-coverage",
+    "test:codecov": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",
     "lint:type": "ng lint --type-check",
     "e2e": "ng e2e",
