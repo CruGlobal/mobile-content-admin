@@ -15,7 +15,6 @@
     "e2e": "ng e2e",
     "prettier:check": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
-    "codecov": "bash <(curl -s https://codecov.io/bash)"
   },
   "private": true,
   "dependencies": {
