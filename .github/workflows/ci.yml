@@ -21,11 +21,15 @@ jobs:
   test:
     name: Checks & Build Test
     runs-on: ubuntu-latest
+    env:
+      environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 12
+      - name: Test Variable
+        run: echo "Environment equals $environment."
       - name: Install Dependenices
         run: yarn
       - name: Run Lint & Prettier Tests
@@ -45,11 +49,11 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     if: |
-      (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production')
+      (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/master')
       && github.event_name == 'push'
     env:
       environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
-    environment: $environment
+    environment: ${{env.environment}}
     needs: test
     steps:
       - uses: actions/checkout@v3
@@ -58,7 +62,7 @@ jobs:
           node-version: 12
       - name: Install Dependenices
         run: yarn
-      - name: Build $environment
+      - name: Build
         run: yarn build:$environment
       - uses: aws-actions/configure-aws-credentials@v1
         with:
