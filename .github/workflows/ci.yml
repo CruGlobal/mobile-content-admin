@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [staging]
+    branches: [master, staging]
   pull_request:
-    branches: [staging]
+    branches: [master, staging]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -47,7 +47,7 @@ jobs:
   deployStaging:
     name: Deploy Staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
     environment: stage
     needs: test
     steps:
@@ -68,7 +68,7 @@ jobs:
   deployProduction:
     name: Deploy Production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     environment: prod
     needs: test
     steps:
