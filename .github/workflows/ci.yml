@@ -57,7 +57,7 @@ jobs:
         run: npm install
       - name: Build Staging
         run: npm run build:stage
-      - uses: aws-actions/configure-aws-credentials@v1-node12
+      - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
           aws-region: us-east-1
