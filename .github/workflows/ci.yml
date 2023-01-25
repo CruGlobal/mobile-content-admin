@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [GT-1880-migrate-travis-ci-to-github-actions, staging]
+    branches: [staging]
   pull_request:
-    branches: [GT-1880-migrate-travis-ci-to-github-actions, staging]
+    branches: [staging]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,6 +12,10 @@ concurrency:
 
 env:
   CHROME_BIN: /usr/bin/google-chrome
+
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
   test:
@@ -46,9 +50,6 @@ jobs:
     if: github.ref == 'refs/heads/staging'
     environment: stage
     needs: test
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -64,22 +65,23 @@ jobs:
           aws-region: us-east-1
       - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"
 
-  # release:
-  #   name: Release Production
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/master'
-  #   environment: prod
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 12
-  #     - name: Install Dependenices
-  #       run: npm install
-  #     - name: Build Production
-  #       run: npm run build:prod
-  #     - uses: aws-actions/configure-aws-credentials@v1-node12
-  #       with:
-  #         role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
-  #         aws-region: us-east-1
-  #     - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_PRODUCTION }} --region us-east-1 --acl public-read --cache-control "max-age=300"
+  deployProduction:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    environment: prod
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+      - name: Install Dependenices
+        run: npm install
+      - name: Build Production
+        run: npm run build:prod
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+          aws-region: us-east-1
+      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"
