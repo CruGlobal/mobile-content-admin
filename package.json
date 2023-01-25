@@ -6,8 +6,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:stage": "ng build -c staging",
+    "build:prod": "ng build -c production",
     "test": "ng test",
+    "test:codecov": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",
+    "lint:type": "ng lint --type-check",
     "e2e": "ng e2e",
     "prettier:check": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,e2e,__{tests,mocks}__}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write"
