@@ -12,6 +12,7 @@ concurrency:
 
 env:
   CHROME_BIN: /usr/bin/google-chrome
+  ENVIRONMENT: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
 
 permissions:
   id-token: write
@@ -47,9 +48,7 @@ jobs:
     if: |
       (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/master')
       && github.event_name == 'push'
-    env:
-      environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
-    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
+    environment: ${{env.ENVIRONMENT}}
     needs: test
     steps:
       - uses: actions/checkout@v3
@@ -59,7 +58,7 @@ jobs:
       - name: Install Dependenices
         run: yarn
       - name: Build
-        run: yarn build:$environment
+        run: yarn build:$ENVIRONMENT
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: '${{ secrets.AWS_IAM_ROLE_ARN }}'
