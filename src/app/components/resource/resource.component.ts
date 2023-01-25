@@ -15,6 +15,7 @@ import {
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
+import { TranslateAttributesComponent } from '../translate-attributes/translate-attributes.component';
 import { MultipleDraftGeneratorComponent } from '../multiple-draft-generator/multiple-draft-generator.component';
 import { LanguageService } from '../../service/language.service';
 import { ResourcesComponent } from '../resources/resources.component';
@@ -118,6 +119,19 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       { size: 'lg' },
     );
     modalRef.componentInstance.resource = resource;
+    modalRef.result.then(
+      () => this.resourcesComponent.loadResources(),
+      console.log,
+    );
+  }
+
+  openAttributeTranslationsModal(resource: Resource): void {
+    const modalRef: NgbModalRef = this.modalService.open(
+      TranslateAttributesComponent,
+      { size: 'lg' },
+    );
+
+    modalRef.componentInstance.resourceId = resource.id;
     modalRef.result.then(
       () => this.resourcesComponent.loadResources(),
       console.log,

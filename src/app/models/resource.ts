@@ -5,6 +5,7 @@ import { System } from './system';
 import { ResourceType } from './resource-type';
 import { Attachment } from './attachment';
 import { CustomManifest } from './custom-manifest';
+import { AttributeTranslation } from './attribute-translation';
 
 export class Resource {
   id: number;
@@ -39,6 +40,7 @@ export class Resource {
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;
+  'translated-attributes'?: AttributeTranslation[];
 
   static isMetaTool(resource: Resource): boolean {
     return (
