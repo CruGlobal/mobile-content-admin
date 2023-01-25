@@ -39,21 +39,21 @@ jobs:
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 
-    - name: 'Release Staging'
-      stage: release
-      if: branch = staging
+    # - name: 'Release Staging'
+    #   stage: release
+    #   if: branch = staging
 
-      script: ng build -c staging
+    #   script: ng build -c staging
 
-      deploy:
-        - provider: s3
-          bucket: 'cru-mobilecontentadmin-staging'
-          region: us-east-1
-          skip_cleanup: true
-          local_dir: dist
-          acl: public_read
-          on:
-            branch: staging
+    #   deploy:
+    #     - provider: s3
+    #       bucket: 'cru-mobilecontentadmin-staging'
+    #       region: us-east-1
+    #       skip_cleanup: true
+    #       local_dir: dist
+    #       acl: public_read
+    #       on:
+    #         branch: staging
 
     - name: 'Release Production'
       stage: release
