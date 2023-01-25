@@ -21,15 +21,11 @@ jobs:
   test:
     name: Checks & Build Test
     runs-on: ubuntu-latest
-    env:
-      environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 12
-      - name: Test Variable
-        run: echo "Environment equals $environment."
       - name: Install Dependenices
         run: yarn
       - name: Run Lint & Prettier Tests
@@ -53,7 +49,7 @@ jobs:
       && github.event_name == 'push'
     env:
       environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
-    environment: ${{env.environment}}
+    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
     needs: test
     steps:
       - uses: actions/checkout@v3
