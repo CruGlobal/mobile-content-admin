@@ -39,7 +39,7 @@ jobs:
       - name: Run Test with CodeCov
         run: yarn test:codecov
       - name: Code coverage test
-        uses: codecov/codecov-action@v1.1.1
+        uses: codecov/codecov-action@v3.1.1
 
   deploy:
     name: Deployment
