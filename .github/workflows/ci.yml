@@ -12,7 +12,6 @@ concurrency:
 
 env:
   CHROME_BIN: /usr/bin/google-chrome
-  ENVIRONMENT: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
 
 permissions:
   id-token: write
@@ -58,7 +57,7 @@ jobs:
       - name: Install Dependenices
         run: yarn
       - name: Build
-        run: yarn build:$ENVIRONMENT
+        run: yarn build:${{vars.ENVIRONMENT}}
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: '${{ secrets.AWS_IAM_ROLE_ARN }}'
