@@ -48,7 +48,7 @@ jobs:
     if: |
       (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/master')
       && github.event_name == 'push'
-    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
+    environment: ${{ $ENVIRONMENT }}
     needs: test
     steps:
       - uses: actions/checkout@v3
