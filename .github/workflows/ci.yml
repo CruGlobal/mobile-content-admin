@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [staging]
+    branches: [master, staging]
   pull_request:
-    branches: [staging]
+    branches: [master, staging]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,28 +27,27 @@ jobs:
         with:
           node-version: 12
       - name: Install Dependenices
-        run: npm install
-      - name: Run Test with CodeCov
-        env:
-          CHROME_BIN: /usr/bin/google-chrome
-        run: npm run test:codecov
+        run: yarn
       - name: Run Lint & Prettier Tests
         run: |
-          npm run lint:type
-          npm run prettier:check
-      - name: Build staging
-        run: npm run build:stage
-      - name: build production
-        run: npm run build:prod
+          yarn lint:type
+          yarn prettier:check
+      - name: Build Staging
+        run: yarn build:stage
+      - name: Build Production
+        run: yarn build:prod
+      - name: Run Test with CodeCov
+        run: yarn test:codecov
       - name: Code coverage test
-        if: success()
         uses: codecov/codecov-action@v1.1.1
 
-  deployStaging:
-    name: Deploy Staging
+  deploy:
+    name: Deployment
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
-    environment: stage
+    if: |
+      (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/master')
+      && github.event_name == 'push'
+    environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
     needs: test
     steps:
       - uses: actions/checkout@v3
@@ -56,32 +55,11 @@ jobs:
         with:
           node-version: 12
       - name: Install Dependenices
-        run: npm install
-      - name: Build Staging
-        run: npm run build:stage
+        run: yarn
+      - name: Build
+        run: yarn build:${{vars.ENVIRONMENT}}
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: '${{ secrets.AWS_IAM_ROLE_ARN }}'
-          aws-region: us-east-1
-      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"
-
-  deployProduction:
-    name: Deploy Production
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    environment: prod
-    needs: test
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 12
-      - name: Install Dependenices
-        run: npm install
-      - name: Build Production
-        run: npm run build:prod
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
           aws-region: us-east-1
       - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"
