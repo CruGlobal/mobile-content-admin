@@ -54,6 +54,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
+import { ToolGroupsComponent } from './components/tool-groups/tool-groups.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { MyAccountComponent } from './components/my-account/my-account.component
     OktaLoginComponent,
     OktaLoginErrorComponent,
     MyAccountComponent,
+    ToolGroupsComponent,
   ],
   imports: [
     AceEditorModule,
