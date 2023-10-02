@@ -7,6 +7,7 @@ import { AttachmentsComponent } from './components/attachments/attachments.compo
 import { AuthGuardService } from './service/auth-guard/auth-guard.service';
 import { OktaLoginComponent } from './components/okta-login/okta-login.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
+import { ToolGroupsComponent } from './components/tool-groups/tool-groups.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/translations', pathMatch: 'full' },
@@ -28,6 +29,11 @@ const routes: Routes = [
   {
     path: 'my-account',
     component: MyAccountComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'tool-groups',
+    component: ToolGroupsComponent,
     canActivate: [AuthGuardService],
   },
   {
