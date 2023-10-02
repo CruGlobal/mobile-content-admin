@@ -1,0 +1,35 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <span class="h3">Tool Groups</span>
+    <div class="float-right">
+      <button
+        type="button"
+        class="btn btn-default"
+        (click)="showInstructions = !showInstructions"
+      >
+        Toggle instructions
+      </button>
+    </div>
+  </div>
+  <div class="card-body" [ngbCollapse]="!showInstructions">
+    <h5>Instructions - Coming Soon</h5>
+  </div>
+</div>
+<ngb-alert
+  type="warning"
+  [dismissible]="false"
+  *ngIf="loadingResources"
+>
+  Loading...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{ errorMessage }}
+</ngb-alert>
+<div>
+  <div *ngFor="let resource of resources; trackBy: trackByFunction">
+    <admin-resource
+      [resource]="resource"
+      [resourcesComponent]="this"
+    ></admin-resource>
+  </div>
+</div>
