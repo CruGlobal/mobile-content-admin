@@ -11,8 +11,14 @@
       </button>
     </div>
   </div>
-  <div class="card-body" [ngbCollapse]="!showInstructions">
-    <h5>Instructions - Coming Soon</h5>
+  <div class="card-body">
+    <div [ngbCollapse]="!showInstructions">
+      <h5>Instructions - Coming Soon</h5>
+    </div>
+
+    <button (click)="openCreateModal()" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> Add new Tool Group
+    </button>
   </div>
 </div>
 <ngb-alert
@@ -26,10 +32,10 @@
   {{ errorMessage }}
 </ngb-alert>
 <div>
-  <div *ngFor="let resource of resources; trackBy: trackByFunction">
-    <admin-resource
-      [resource]="resource"
-      [resourcesComponent]="this"
-    ></admin-resource>
+  <div *ngFor="let toolGroup of toolGroups; trackBy: trackByFunction">
+    <admin-tool-group
+      [toolGroup]="toolGroup"
+      [toolGroupsComponent]="this"
+    ></admin-tool-group>
   </div>
 </div>
