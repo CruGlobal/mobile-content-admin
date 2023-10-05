@@ -31,7 +31,7 @@ export class ToolGroupService extends AbstractService {
       .catch(this.handleError);
   }
 
-  getToolGroup(id: number, include: string): Promise<Language> {
+  getToolGroup(id: number, include?: string): Promise<Language> {
     return this.http
       .get(
         `${this.toolGroupsUrl}/${id}?include=${include}`,
