@@ -1,0 +1,89 @@
+<div class="card mb-3">
+  <div
+    class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
+    [ngStyle]="{ cursor: 'pointer' }"
+    (click)="showDetails = !showDetails"
+  >
+    <span class="h4 mb-0">
+      {{ toolGroup.name }}
+    </span>
+    <div class="btn-group justify-content-end flex-wrap" role="group">
+      <button
+        (click)="openUpdateModal(toolGroup); $event.stopPropagation()"
+        class="btn btn-warning mb-2 mb-sm-2 mb-lg-0"
+      >
+        <i class="fa fa-pencil"></i> Details
+      </button>
+    </div>
+  </div>
+  <div class="card-body bg-dark" [ngbCollapse]="!showDetails ">
+    <div class="row mt-3">
+      <div class="col">
+        <!-- Languages UI -->
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Languages</span>
+            <button class="btn btn-secondary" (click)="createPage()">
+              <i class="fa fa-file"></i> Add new language
+            </button>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let language of toolGroup.rules-language "
+            >
+              {{ language.name }}
+              <button
+                (click)="openPage(page)"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Delete
+              </button>
+            </li>
+            <li class="list-group-item" *ngIf="!(toolGroup.rules-language?.length)">
+              No languages added
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <!-- Countries UI -->
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Countries</span>
+            <button class="btn btn-secondary" (click)="createTip()">
+              <i class="fa fa-file"></i> Add new country
+            </button>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let country of toolGroup.rules-country"
+            >
+              {{ country.name }}
+              <button
+                (click)="openPage(page)"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Delete
+              </button>
+            </li>
+            <li class="list-group-item" *ngIf="!(toolGroup.rules-country?.length)">
+              No countries added
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </ngb-alert>
+  </div>
+</div>

@@ -55,6 +55,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { ToolGroupsComponent } from './components/tool-groups/tool-groups.component';
+import { ToolGroupService } from './service/tool-group/tool-group.service';
+import { CreateToolGroupComponent } from './components/edit-tool-group/create-tool-group/create-tool-group.component';
+import { ToolGroupComponent } from './components/tool-group/tool-group.component';
+import { LanguageBCP47Service } from './service/languages-bcp47-tag.service';
 
 @NgModule({
   declarations: [
@@ -84,6 +88,8 @@ import { ToolGroupsComponent } from './components/tool-groups/tool-groups.compon
     OktaLoginErrorComponent,
     MyAccountComponent,
     ToolGroupsComponent,
+    CreateToolGroupComponent,
+    ToolGroupComponent,
   ],
   imports: [
     AceEditorModule,
@@ -115,6 +121,8 @@ import { ToolGroupsComponent } from './components/tool-groups/tool-groups.compon
     CustomManifestService,
     UserAuthSessionService,
     AttributeTranslationService,
+    ToolGroupService,
+    LanguageBCP47Service,
   ],
   entryComponents: [
     UpdateResourceComponent,
@@ -132,6 +140,7 @@ import { ToolGroupsComponent } from './components/tool-groups/tool-groups.compon
     LoginComponent,
     MultipleDraftGeneratorComponent,
     OktaLoginErrorComponent,
+    CreateToolGroupComponent,
   ],
   bootstrap: [AppComponent],
 })
