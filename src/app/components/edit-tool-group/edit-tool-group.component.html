@@ -1,5 +1,5 @@
 <div class="modal-body">
-  <div class="row mb-2">
+  <div class="row mb-3">
     <div class="col-6">
       <label for="name">Name</label>
       <input
@@ -19,16 +19,11 @@
       />
     </div>
   </div>
-  <div class="row mb-2">
+  <div class="row mb-3">
     <div class="col-12">
-      <label for="name">Countries</label>
-      <div>
-        Selected countries:
-        <ul>
-          <li *ngFor="let country of selectedCountries">
-            {{ country.name }}
-          </li>
-        </ul>
+      <label for="name" class="mb-0">Countries</label>
+      <div class="mb-2" style="display: flex; flex-wrap: wrap">
+        <span *ngFor="let country of selectedCountries" class="badge badge-secondary mr-1 mb-1 mt-1 p-2">{{ country.name }}</span>
       </div>
       <select
         class="custom-select"
@@ -45,14 +40,9 @@
 
   <div class="row mb-2">
     <div class="col-12">
-      <label for="name">Languages</label>
-      <div>
-        Selected Lanuages:
-        <ul>
-          <li *ngFor="let language of selectedLanguages">
-            {{ language.name }}
-          </li>
-        </ul>
+      <label for="name" class="mb-0">Languages</label>
+      <div class="mb-2" style="display: flex; flex-wrap: wrap">
+        <span *ngFor="let language of selectedLanguages" class="badge badge-secondary mr-1 mb-1 mt-1 p-2">{{ language.name }}</span>
       </div>
       <select
         class="custom-select"
