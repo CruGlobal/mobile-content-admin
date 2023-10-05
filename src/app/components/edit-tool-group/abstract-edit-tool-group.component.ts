@@ -34,7 +34,7 @@ export abstract class AbstractEditToolGroupComponent {
   }
 
   handleSelectedCountry(event) {
-    if (this.isAlreadySelected(this.selectedCountries, event.code)) {
+    if (this.selectedCountries.find(item => item.code === event.code)) {
       this.handleError('Already selected Country')
       return
     };
@@ -42,15 +42,11 @@ export abstract class AbstractEditToolGroupComponent {
   }
 
   handleSelectedLanguage(event) {
-    if (this.isAlreadySelected(this.selectedLanguages, event.code)) {
+    if (this.selectedLanguages.find(item => item.code === event.code)) {
       this.handleError('Already selected Language')
       return
     };
     this.selectedLanguages = [...this.selectedLanguages, event]
-  }
-
-  isAlreadySelected(dataArray: countriesType[] | LanguageBCP47[], code: string) {
-    return dataArray.find(item => item.code === code);
   }
 
   closeEditModal() {
