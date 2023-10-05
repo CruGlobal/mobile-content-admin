@@ -1,0 +1,90 @@
+<div class="modal-body">
+  <div class="row mb-2">
+    <div class="col-6">
+      <label for="name">Name</label>
+      <input
+        id="name"
+        class="form-control"
+        placeholder="Name"
+        [(ngModel)]="toolGroup.name"
+      />
+    </div>
+    <div class="col-6">
+      <label for="abbrev">Suggested Weight</label>
+      <input
+        id="abbrev"
+        class="form-control"
+        placeholder="1.0"
+        [(ngModel)]="toolGroup.suggestedWeight"
+      />
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="name">Countries</label>
+      <div>
+        Selected countries:
+        <ul>
+          <li *ngFor="let country of selectedCountries">
+            {{ country.name }}
+          </li>
+        </ul>
+      </div>
+      <select
+        class="custom-select"
+        [(ngModel)]="selectedCountry"
+        (ngModelChange)="handleSelectedCountry($event)"
+      >
+        <option value=""></option>
+        <option *ngFor="let country of countries" [ngValue]="country">
+          {{ country.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <label for="name">Languages</label>
+      <div>
+        Selected Lanuages:
+        <ul>
+          <li *ngFor="let language of selectedLanguages">
+            {{ language.name }}
+          </li>
+        </ul>
+      </div>
+      <select
+        class="custom-select"
+        [(ngModel)]="selectedLanguage"
+        (ngModelChange)="handleSelectedLanguage($event)"
+      >
+        <option value=""></option>
+        <option *ngFor="let language of languages" [ngValue]="language">
+          {{ language.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="saving">
+    <div class="col">
+      <ngb-alert type="info" [dismissible]="false">Saving...</ngb-alert>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="errorMessage">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false">
+        {{ errorMessage }}
+      </ngb-alert>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="btn-group" role="group">
+    <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+    <button (click)="saveToolGroup()" class="btn btn-success">Save</button>
+  </div>
+</div>

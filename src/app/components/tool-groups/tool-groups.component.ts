@@ -1,50 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { Resource } from '../../models/resource';
-import { ResourceService } from '../../service/resource/resource.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CreateResourceComponent } from '../edit-resource/create-resource/create-resource.component';
-import { Language } from '../../models/language';
-import { LanguageService } from '../../service/language.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { ToolGroup } from '../../models/tool-group';
+import { CreateToolGroupComponent } from '../edit-tool-group/create-tool-group/create-tool-group.component';
 
 @Component({
   selector: 'admin-tool-groups',
   templateUrl: './tool-groups.component.html',
 })
 export class ToolGroupsComponent implements OnInit {
-  resources: Resource[];
+  toolGroups: ToolGroup[];
   showInstructions = false;
-  loadingResources = false;
+  loadingToolGroups = false;
   errorMessage: string;
 
   constructor(
-    private resourceService: ResourceService,
+    private toolGroupService: ToolGroupService,
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
-    this.loadResources();
+    this.loadToolGroups();
   }
 
-  loadResources(): void {
-    this.loadingResources = true;
-
-    this.resourceService
-      .getResources(
-        'latest-drafts-translations,pages,custom-manifests,tips,attachments,variants',
-      )
-      .then((resources) => {
-        this.resources = resources;
-      })
+  loadToolGroups(): void {
+    this.loadingToolGroups = true;
+    this.toolGroupService
+      .getToolGroups()
+      .then((toolGroups) => (this.toolGroups = toolGroups))
       .catch(this.handleError.bind(this))
-      .then(() => (this.loadingResources = false));
+      .then(() => (this.loadingToolGroups = false));
   }
 
-  trackByFunction(pIx: number, pItem: Resource) {
+  trackByFunction(pIx: number, pItem: ToolGroup) {
     if (!pItem || pIx < 0) {
       return null;
     }
     return pItem.id;
   }
 
+  openCreateModal(): void {
+    const modalRef: NgbModalRef = this.modalService.open(
+      CreateToolGroupComponent,
+    );
+    modalRef.result.then(() => this.loadToolGroups(), console.log);
+  }
 
   private handleError(message): void {
     this.errorMessage = message;
