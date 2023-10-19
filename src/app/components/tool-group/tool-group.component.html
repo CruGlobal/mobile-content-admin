@@ -2,14 +2,14 @@
   <div
     class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
     [ngStyle]="{ cursor: 'pointer' }"
-    (click)="showDetails = !showDetails"
+    (click)="handleToggleAccordian()"
   >
     <span class="h4 mb-0">
       {{ toolGroup.name }}
     </span>
     <div class="btn-group justify-content-end flex-wrap" role="group">
       <button
-        (click)="openUpdateModal(toolGroup); $event.stopPropagation()"
+        (click)="openUpdateModal(); $event.stopPropagation()"
         class="btn btn-warning mb-2 mb-sm-2 mb-lg-0"
       >
         <i class="fa fa-pencil"></i> Details
@@ -20,29 +20,39 @@
     <div class="row mt-3">
       <div class="col">
         <!-- Languages UI -->
-        <div class="card">
+        <div class="card autoScroll">
           <div
             class="card-header d-flex justify-content-between align-items-center"
           >
             <span class="h5 mb-0">Languages</span>
-            <button class="btn btn-secondary" (click)="createPage()">
-              <i class="fa fa-file"></i> Add new language
+            <button class="btn btn-secondary" (click)="createRule('language')">
+              <i class="fa fa-file"></i> Add language rule
             </button>
           </div>
-          <ul class="list-group list-group-flush">
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-language']"
+          >
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let language of toolGroup.rules-language "
             >
-              {{ language.name }}
+              Rule #{{rule.id}}
+              <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
-                (click)="openPage(page)"
+                (click)="openRuleModal(rule, 'language')"
                 class="btn btn-outline-dark float-right"
               >
-                <i class="fa fa-pencil"></i> Delete
+                <i class="fa fa-pencil"></i> Edit
               </button>
             </li>
-            <li class="list-group-item" *ngIf="!(toolGroup.rules-language?.length)">
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let language of rule.languages"
+            >{{getReadableValue(language,'language').name}} ({{ language }})</li>
+
+            <li class="list-group-item" *ngIf="!(rule.languages?.length)">
               No languages added
             </li>
           </ul>
@@ -51,29 +61,40 @@
 
       <div class="col">
         <!-- Countries UI -->
-        <div class="card">
+
+        <div class="card autoScroll">
           <div
             class="card-header d-flex justify-content-between align-items-center"
           >
             <span class="h5 mb-0">Countries</span>
-            <button class="btn btn-secondary" (click)="createTip()">
-              <i class="fa fa-file"></i> Add new country
+            <button class="btn btn-secondary" (click)="createRule('country')">
+              <i class="fa fa-file"></i> Add country rule
             </button>
           </div>
-          <ul class="list-group list-group-flush">
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-country']"
+          >
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let country of toolGroup.rules-country"
             >
-              {{ country.name }}
+              Rule #{{rule.id}}
+              <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
-                (click)="openPage(page)"
+                (click)="openRuleModal(rule, 'country')"
                 class="btn btn-outline-dark float-right"
               >
-                <i class="fa fa-pencil"></i> Delete
+                <i class="fa fa-pencil"></i> Edit
               </button>
             </li>
-            <li class="list-group-item" *ngIf="!(toolGroup.rules-country?.length)">
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let country of rule.countries"
+            >{{getReadableValue(country,'country').name}} ({{ country }})</li>
+
+            <li class="list-group-item" *ngIf="!(rule.countries?.length)">
               No countries added
             </li>
           </ul>
