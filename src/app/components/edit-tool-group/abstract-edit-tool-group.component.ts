@@ -1,56 +1,81 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { countries, ICountry } from 'countries-list'
-import { Input } from '@angular/core';
-import { ToolGroup } from '../../models/tool-group';
+import { ICountry } from 'countries-list'
+import { Input, Output, EventEmitter } from '@angular/core';
+import { ToolGroup, ToolGroupRule, RuleTypeEnum } from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47Service, LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
+import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
 export type countriesType = (ICountry & {code: string})
 
 export abstract class AbstractEditToolGroupComponent {
-  saving = false;
-  errorMessage: string;
-
   @Input() toolGroup: ToolGroup = new ToolGroup();
   @Input() selectedCountries: countriesType[] = [];
   @Input() selectedLanguages: LanguageBCP47[] = [];
-  countries: countriesType[];
-  languages: LanguageBCP47[];
+  @Output() EditedToolGroup: EventEmitter<any> = new EventEmitter();
+  saving = false;
+  errorMessage: string;
+  countryRule: ToolGroupRule;
+  languageRule: ToolGroupRule;
+  isNewToolGroup = false;
 
   protected constructor(
     protected toolGroupService: ToolGroupService,
     protected activeModal: NgbActiveModal,
-    protected languageBCP47Service: LanguageBCP47Service,
-  ) {}
+  ) {
+    this.countryRule = new ToolGroupRule();
+    this.countryRule['tool-group'] = this.toolGroup
+    this.languageRule = new ToolGroupRule();
+    this.languageRule['tool-group'] = this.toolGroup
+  }
 
   init(): void {
-    this.countries = Object.entries(countries).map(country => {
-      return {
-        code: country[0],
-        ...country[1]
-      } as countriesType
-    })
-    this.languages = this.languageBCP47Service.getLanguages()
+    if (!this.toolGroup.id) this.isNewToolGroup = true;
+
+    if (!this.isNewToolGroup && this.toolGroup['rules-country'].length) {
+      this.countryRule = this.toolGroup['rules-country'][0];
+    }
+
+    if (!this.isNewToolGroup && this.toolGroup['rules-language'].length) {
+      this.languageRule = this.toolGroup['rules-language'][0];
+    }
   }
 
-  handleSelectedCountry(event) {
-    if (this.selectedCountries.find(item => item.code === event.code)) {
-      this.handleError('Already selected Country')
-      return
-    };
-    this.selectedCountries = [...this.selectedCountries, event]
+  updateSelected(selectedItems: (countriesType | LanguageBCP47)[], type:RuleTypeEnum): void {
+    switch(type) {
+      case RuleTypeEnum.COUNTRY:
+        this.selectedCountries = selectedItems as countriesType[];
+        this.toolGroup['rules-country'][0].countries = this.getCodes(selectedItems);
+        break;
+      case RuleTypeEnum.LANGUAGE:
+        this.selectedLanguages = selectedItems as LanguageBCP47[];
+        this.toolGroup['rules-language'][0].languages = this.getCodes(selectedItems);
+        break;
+    }
   }
 
-  handleSelectedLanguage(event) {
-    if (this.selectedLanguages.find(item => item.code === event.code)) {
-      this.handleError('Already selected Language')
-      return
-    };
-    this.selectedLanguages = [...this.selectedLanguages, event]
+  updateNegativeRule(negativeRule: boolean, type:RuleTypeEnum): void {
+    switch(type) {
+      case RuleTypeEnum.COUNTRY:
+        this.countryRule['negative-rule'] = negativeRule;
+        this.toolGroup['rules-country'][0]['negative-rule'] = negativeRule;
+        break;
+      case RuleTypeEnum.LANGUAGE:
+        this.languageRule['negative-rule'] = negativeRule;
+        ;
+        break;
+    }
   }
 
   closeEditModal() {
     this.activeModal.dismiss('dismissed');
+  }
+
+  deleteToolGroup(): void {
+    this.saving = true;
+    this.toolGroupService
+      .deleteToolGroup(this.toolGroup.id)
+      .then(() => this.activeModal.close())
+      .catch(this.handleError.bind(this))
   }
 
   protected handleError(message): void {
@@ -58,7 +83,12 @@ export abstract class AbstractEditToolGroupComponent {
     this.errorMessage = message;
   }
 
+  protected getCodes(items: (countriesType | LanguageBCP47)[]): string[] {
+    return items.map((item) => item.code);
+  }
+
   protected saveToolGroup(): void {
+    this.EditedToolGroup.emit(this.toolGroup);
     this.activeModal.close('closed');
   }
 }

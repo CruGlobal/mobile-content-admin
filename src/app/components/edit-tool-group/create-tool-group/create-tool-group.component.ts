@@ -1,8 +1,8 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, Input, OnInit } from '@angular/core';
-import { ToolGroupService, createRuleTypeEnum } from '../../../service/tool-group/tool-group.service';
-import { LanguageBCP47Service, LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
-import { ToolGroup } from '../../../models/tool-group';
+import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
+import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
+import { ToolGroup, RuleTypeEnum } from '../../../models/tool-group';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
 import { countriesType } from '../abstract-edit-tool-group.component';
 
@@ -20,9 +20,8 @@ export class CreateToolGroupComponent
   constructor(
     toolGroupService: ToolGroupService,
     activeModal: NgbActiveModal,
-    languageBCP47Service: LanguageBCP47Service,
   ) {
-    super(toolGroupService, activeModal, languageBCP47Service);
+    super(toolGroupService, activeModal);
   }
 
   ngOnInit(): void {
@@ -34,10 +33,12 @@ export class CreateToolGroupComponent
     try {
       const toolGroup = await this.toolGroupService.createToolGroup(this.toolGroup);
       if (this.selectedCountries.length) {
-        this.toolGroupService.createRule(toolGroup.id, false, this.selectedCountries, createRuleTypeEnum.COUNTRY);
+        const data = super.getCodes(this.selectedCountries);
+        this.toolGroupService.createOrUpdateRule(toolGroup.id, null, this.countryRule['negative-rule'], data, RuleTypeEnum.COUNTRY);
       }
       if (this.selectedLanguages.length) {
-        this.toolGroupService.createRule(toolGroup.id, false, this.selectedLanguages, createRuleTypeEnum.LANGUAGE);
+        const data = super.getCodes(this.selectedLanguages);
+        this.toolGroupService.createOrUpdateRule(toolGroup.id, null, this.languageRule['negative-rule'], data, RuleTypeEnum.LANGUAGE);
       }
     }
     catch(error) {
