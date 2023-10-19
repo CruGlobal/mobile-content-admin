@@ -1,3 +1,7 @@
+<div class="modal-header">
+  <h5 *ngIf="!isNewToolGroup">Edit Tool Group</h5>
+  <h5 *ngIf="isNewToolGroup">New Tool Group</h5>
+</div>
 <div class="modal-body">
   <div class="row mb-3">
     <div class="col-6">
@@ -19,43 +23,22 @@
       />
     </div>
   </div>
-  <div class="row mb-3">
-    <div class="col-12">
-      <label for="name" class="mb-0">Countries</label>
-      <div class="mb-2" style="display: flex; flex-wrap: wrap">
-        <span *ngFor="let country of selectedCountries" class="badge badge-secondary mr-1 mb-1 mt-1 p-2">{{ country.name }}</span>
-      </div>
-      <select
-        class="custom-select"
-        [(ngModel)]="selectedCountry"
-        (ngModelChange)="handleSelectedCountry($event)"
-      >
-        <option value=""></option>
-        <option *ngFor="let country of countries" [ngValue]="country">
-          {{ country.name }}
-        </option>
-      </select>
-    </div>
-  </div>
 
-  <div class="row mb-2">
-    <div class="col-12">
-      <label for="name" class="mb-0">Languages</label>
-      <div class="mb-2" style="display: flex; flex-wrap: wrap">
-        <span *ngFor="let language of selectedLanguages" class="badge badge-secondary mr-1 mb-1 mt-1 p-2">{{ language.name }}</span>
-      </div>
-      <select
-        class="custom-select"
-        [(ngModel)]="selectedLanguage"
-        (ngModelChange)="handleSelectedLanguage($event)"
-      >
-        <option value=""></option>
-        <option *ngFor="let language of languages" [ngValue]="language">
-          {{ language.name }}
-        </option>
-      </select>
-    </div>
-  </div>
+  <admin-tool-group-rule-reuseable
+    [rule]="languageRule"
+    [ruleType]="'language'"
+    (selectedItemsEmit)="updateSelected($event, 'language')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'language')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="countryRule"
+    [ruleType]="'country'"
+    (selectedItemsEmit)="updateSelected($event, 'country')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'country')"
+  >
+  </admin-tool-group-rule-reuseable>
 
   <div class="row" *ngIf="saving">
     <div class="col">
@@ -72,7 +55,12 @@
   </div>
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" style="justify-content: space-between;">
+  <span *ngIf="isNewToolGroup"></span>
+  <button
+    *ngIf="!isNewToolGroup"
+    (click)="deleteToolGroup()"
+    class="btn btn-outline-danger">Delete Tool Group</button>
   <div class="btn-group" role="group">
     <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
     <button (click)="saveToolGroup()" class="btn btn-success">Save</button>
