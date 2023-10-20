@@ -4,14 +4,35 @@
 </div>
 <div class="modal-body">
 
+  <div *ngIf="ruleType !== 'praxis'">
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      (selectedItemsEmit)="updateSelected($event)"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+  </div>
 
-  <admin-tool-group-rule-reuseable
-    [rule]="rule"
-    [ruleType]="ruleType"
-    (selectedItemsEmit)="updateSelected($event, ruleType)"
-    (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
-  >
-  </admin-tool-group-rule-reuseable>
+  <div *ngIf="ruleType === 'praxis'">
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      [praxisType]="'confidence'"
+      (selectedItemsEmit)="updateSelected($event, 'confidence')"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      [praxisType]="'openness'"
+      (selectedItemsEmit)="updateSelected($event, 'openness')"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+  </div>
 
   <div class="row">
     <div class="col">

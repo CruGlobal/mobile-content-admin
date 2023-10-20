@@ -8,6 +8,11 @@ import { AbstractService } from '../abstract.service';
 import { LanguageBCP47Service, LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 import { countries, ICountry } from 'countries-list'
 
+
+type PraxisData = {
+  confidence: string[],
+  openness: string[],
+}
 @Injectable()
 export class ToolGroupService extends AbstractService {
   private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
@@ -87,7 +92,7 @@ export class ToolGroupService extends AbstractService {
     toolGroupId: number,
     ruleId: number,
     negativeRule: boolean,
-    data: string[],
+    data: string[]|PraxisData,
     type: RuleTypeEnum,
   ) {
     const isUpdate = (ruleId) ? true : false;
@@ -109,6 +114,14 @@ export class ToolGroupService extends AbstractService {
           'negative-rule': negativeRule,
         }
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-language`;
+        break;
+      case RuleTypeEnum.PRAXIS:
+        dataType = 'tool-group-rules-praxis';
+        attributes = {
+          ...data,
+          'negative-rule': negativeRule,
+        }
+        url = `${this.toolGroupsUrl}/${toolGroupId}/rules-praxis`;
         break;
       default:
         return
@@ -157,6 +170,9 @@ export class ToolGroupService extends AbstractService {
       case RuleTypeEnum.LANGUAGE:
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-language/${ruleId}`;
         break;
+      case RuleTypeEnum.PRAXIS:
+        url = `${this.toolGroupsUrl}/${toolGroupId}/rules-praxis/${ruleId}`;
+        break;
       default:
         return
     }
@@ -181,6 +197,42 @@ export class ToolGroupService extends AbstractService {
     }
     if (type === RuleTypeEnum.COUNTRY) {
       return countries[code]
+    }
+  }
+
+  praxisConfidentData = {
+    0: {
+      name: 'Very confident',
+    },
+    1: {
+      name: 'Somewhat confident',
+    },
+    2: {
+      name: 'Neutral',
+    },
+    3: {
+      name: 'Not very confident',
+    },
+    4: {
+      name: 'Not confident at all',
+    },
+  }
+
+  praxisOpennessData = {
+    0: {
+      name: 'Very Open',
+    },
+    1: {
+      name: 'Somewhat open',
+    },
+    2: {
+      name: 'Neutral',
+    },
+    3: {
+      name: 'Not very open or interested',
+    },
+    4: {
+      name: 'Not open at all',
     }
   }
 }

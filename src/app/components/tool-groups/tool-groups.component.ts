@@ -23,13 +23,13 @@ export class ToolGroupsComponent implements OnInit {
     this.loadToolGroups();
   }
 
-  loadToolGroups(): void {
+  loadToolGroups(): Promise<void> {
     this.loadingToolGroups = true;
-    this.toolGroupService
+    return this.toolGroupService
       .getToolGroups()
-      .then((toolGroups) => (this.toolGroups = toolGroups))
+      .then((toolGroups) => {this.toolGroups = toolGroups})
       .catch(this.handleError.bind(this))
-      .then(() => (this.loadingToolGroups = false));
+      .then(() => {this.loadingToolGroups = false});
   }
 
   trackByFunction(pIx: number, pItem: ToolGroup) {

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
-import { ToolGroup, ToolGroupRule, RuleTypeEnum } from '../../../models/tool-group';
+import { ToolGroup, ToolGroupRule, RuleTypeEnum, Praxis } from '../../../models/tool-group';
 import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
 import { countriesType } from '../abstract-edit-tool-group.component';
 
@@ -16,8 +16,12 @@ export class UpdateToolGroupComponent
   @Input() toolGroup: ToolGroup;
   @Input() selectedCountries: countriesType[] = [];
   @Input() selectedLanguages: LanguageBCP47[] = [];
+  @Input() selectedPraxisConfidence: Praxis[] = [];
+  @Input() selectedPraxisOpenness: Praxis[] = [];
+  initialToolGroup: ToolGroup;
   countryRule: ToolGroupRule;
   languageRule: ToolGroupRule;
+  praxisRule: ToolGroupRule;
 
   constructor(
     toolGroupService: ToolGroupService,
@@ -28,6 +32,7 @@ export class UpdateToolGroupComponent
 
   ngOnInit(): void {
     this.toolGroup.suggestedWeight = this.toolGroup['suggestions-weight'];
+    this.initialToolGroup = { ...this.toolGroup };
     super.init();
   }
 
@@ -40,9 +45,14 @@ export class UpdateToolGroupComponent
     this.saving = true;
     try {
       const countryCodes = super.getCodes(this.selectedCountries);
-      const hasCountriesChanges = !this.isEqual(this.countryRule.countries, countryCodes);
+      const hasCountriesChanges = !this.isEqual(this.countryRule.countries || [], countryCodes);
       const languageCodes = super.getCodes(this.selectedLanguages);
-      const hasLanguagesChanges = !this.isEqual(this.languageRule.languages, languageCodes);
+      const hasLanguagesChanges = !this.isEqual(this.languageRule.languages || [], languageCodes);
+      const praxisConfidenceCodes = super.getCodes(this.selectedPraxisConfidence);
+      const hasPraxisConfidenceChanges = !this.isEqual(this.praxisRule.confidence || [], praxisConfidenceCodes);
+      const praxisOpennessCodes = super.getCodes(this.selectedPraxisOpenness);
+      const hasPraxisOpennessChanges = !this.isEqual(this.praxisRule.openness || [], praxisOpennessCodes);
+
       const promises = []
 
       if (hasCountriesChanges) {
@@ -62,6 +72,20 @@ export class UpdateToolGroupComponent
           languageCodes,
           RuleTypeEnum.LANGUAGE
         ));
+      }
+      if (hasPraxisConfidenceChanges ||  hasPraxisOpennessChanges) {
+        promises.push(
+          this.toolGroupService.createOrUpdateRule(
+            this.toolGroup.id,
+            this.praxisRule.id,
+            this.praxisRule['negative-rule'],
+            {
+              confidence: praxisConfidenceCodes,
+              openness: praxisOpennessCodes,
+            },
+            RuleTypeEnum.PRAXIS
+          )
+        )
       }
 
       Promise.all([promises])

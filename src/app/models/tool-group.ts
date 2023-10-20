@@ -21,6 +21,9 @@ export class ToolGroupRule {
   _type: string;
   countries?: string[];
   languages?: string[];
+  openness?: string[];
+  confidence?: string[];
+
 }
 
 export type CountryRule = {
@@ -43,9 +46,29 @@ export type LanguageRule = {
   _type: string;
 }
 
+export type PraxisRule = {
+  id: number,
+  openness: string[],
+  confidence: string[],
+  'negative-rule': boolean,
+  'tool-group': ToolGroup,
+  _attributes: string[];
+  _relationships: string[];
+  _type: string;
+}
+
+export type Praxis = {
+  code: string;
+  name: string;
+}
 
 export enum RuleTypeEnum {
   COUNTRY = 'country',
   LANGUAGE = 'language',
   PRAXIS = 'praxis',
+}
+
+export enum PraxisTypeEnum {
+  OPENNESS = 'openness',
+  CONFIDENCE = 'confidence',
 }

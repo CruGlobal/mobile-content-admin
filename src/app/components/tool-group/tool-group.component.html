@@ -103,6 +103,57 @@
     </div>
 
 
+    <div class="row mt-3">
+      <div class="col">
+        <!-- Praxis UI -->
+        <div class="card autoScroll">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Praxis</span>
+            <button class="btn btn-secondary" (click)="createRule('praxis')">
+              <i class="fa fa-file"></i> Add praxis rule
+            </button>
+          </div>
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-praxis']"
+          >
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              Rule #{{rule.id}}
+              <span *ngIf="rule['negative-rule']">(Reverse)</span>
+              <button
+                (click)="openRuleModal(rule, 'praxis')"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let confidence of rule.confidence"
+            >Confidence - {{getReadableValue(confidence,'praxis','confidence').name}}</li>
+            <li class="list-group-item" *ngIf="!(rule.confidence?.length)">
+              No praxis confidence added
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let openness of rule.openness"
+            >Openness - {{getReadableValue(openness,'praxis','openness').name}}</li>
+
+            <li class="list-group-item" *ngIf="!(rule.openness?.length)">
+              No praxis openness added
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
     <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
       {{ errorMessage }}
     </ngb-alert>

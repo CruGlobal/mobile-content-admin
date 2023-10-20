@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ICountry } from 'countries-list'
-import { CountryRule, LanguageRule, RuleTypeEnum } from '../../models/tool-group';
+import { CountryRule, LanguageRule, PraxisRule, Praxis, RuleTypeEnum, PraxisTypeEnum } from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
@@ -12,13 +12,13 @@ export type countriesType = (ICountry & {code: string})
   templateUrl: './tool-group-rule.component.html',
 })
 export class ToolGroupRuleComponent implements OnInit {
-  @Input() rule: CountryRule & LanguageRule | LanguageRule & CountryRule;
+  @Input() rule: CountryRule & LanguageRule & PraxisRule | LanguageRule & PraxisRule & CountryRule | PraxisRule & CountryRule & LanguageRule;
   @Input() ruleType: RuleTypeEnum;
   @Output() EditedRule: EventEmitter<any> = new EventEmitter();
   saving = false;
   isNewRule = false;
   errorMessage: string;
-  ruleData: string[]
+  ruleData: any;
 
   constructor(
     protected toolGroupService: ToolGroupService,
@@ -29,28 +29,42 @@ export class ToolGroupRuleComponent implements OnInit {
     if (!this.rule.id) {
       this.isNewRule = true
     }
+    if (this.ruleType === RuleTypeEnum.PRAXIS) {
+      this.ruleData = {
+        confidence: [],
+        openness: [],
+      }
+    } else this.ruleData = [];
   }
 
-  updateSelected(selectedItems: (countriesType | LanguageBCP47)[]): void {
+  updateSelected(selectedItems: (countriesType | LanguageBCP47 | Praxis)[], praxisType: PraxisTypeEnum): void {
     const codes = selectedItems.map((item) => item.code)
-    this.ruleData = codes;
-
     switch(this.ruleType) {
       case RuleTypeEnum.COUNTRY:
-        this.rule.countries = codes
+        this.rule.countries = codes;
+        this.ruleData = codes;
       break;
       case RuleTypeEnum.LANGUAGE:
-        this.rule.languages = codes
+        this.rule.languages = codes;
+        this.ruleData = codes;
       break;
       case RuleTypeEnum.PRAXIS:
-        // TODO
+        switch(praxisType) {
+          case PraxisTypeEnum.CONFIDENCE:
+            this.rule.confidence = codes
+            this.ruleData.confidence = codes;
+            break;
+          case PraxisTypeEnum.OPENNESS:
+            this.rule.openness = codes;
+            this.ruleData.openness = codes;
+            break;
+        }
       break;
     }
 
   }
 
   updateNegativeRule(negativeRule: boolean): void {
-    console.log('negativeRule', negativeRule)
     this.rule['negative-rule'] = negativeRule
   }
 
