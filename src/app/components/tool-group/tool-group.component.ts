@@ -11,11 +11,11 @@ import {
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { ToolGroup, ToolGroupRule, RuleTypeEnum, CountryRule, LanguageRule } from '../../models/tool-group';
+import { ToolGroup, ToolGroupRule, RuleTypeEnum, CountryRule, LanguageRule, PraxisTypeEnum } from '../../models/tool-group';
 import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-resource.component';
 import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47Service, LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
+import { LanguageBCP47Service } from '../../service/languages-bcp47-tag.service';
 import { ToolGroupRuleComponent } from '../edit-tool-group-rule/tool-group-rule.component';
 import { countries } from 'countries-list'
 
@@ -23,7 +23,7 @@ import { countries } from 'countries-list'
   selector: 'admin-tool-group',
   templateUrl: './tool-group.component.html',
 })
-export class ToolGroupComponent implements OnInit, OnDestroy {
+export class ToolGroupComponent implements OnDestroy {
   @Input() toolGroup: ToolGroup;
   @Input() toolGroupsComponent: ToolGroupsComponent;
 
@@ -45,10 +45,6 @@ export class ToolGroupComponent implements OnInit, OnDestroy {
     protected toolGroupService: ToolGroupService,
   ) {}
 
-  ngOnInit(): void {
-    console.log('toolGrouptoolGroup', this.toolGroup);
-  }
-
   ngOnDestroy(): void {
     this._translationLoaded.complete();
   }
@@ -60,11 +56,11 @@ export class ToolGroupComponent implements OnInit, OnDestroy {
         { size: 'lg' },
       );
       modalRef.componentInstance.toolGroup = toolGroup;
-      modalRef.componentInstance.EditedToolGroup.subscribe((data) => {
-        this.toolGroup = data
-      });
-      modalRef.result.then(
-        () => this.toolGroupsComponent.loadToolGroups(),
+      modalRef.result.then(() => {
+          this.toolGroupsComponent.loadToolGroups().then(() => {
+            this.loadAllDetails(true)
+          })
+        },
         console.log,
       );
     })
@@ -72,7 +68,7 @@ export class ToolGroupComponent implements OnInit, OnDestroy {
 
   openRuleModal(
     rule: CountryRule & LanguageRule | LanguageRule & CountryRule,
-    ruleType: RuleTypeEnum
+    ruleType: RuleTypeEnum,
   ): void {
     const modalRef: NgbModalRef = this.modalService.open(
       ToolGroupRuleComponent,
@@ -101,13 +97,27 @@ export class ToolGroupComponent implements OnInit, OnDestroy {
     });
   }
 
-  getReadableValue(code: string, type: RuleTypeEnum): LanguageBCP47 {
-    if (type === RuleTypeEnum.LANGUAGE) {
-      return this.languageBCP47Service.getLanguage(code);
+  getReadableValue(code: string, type: RuleTypeEnum, praxisType: PraxisTypeEnum): any {
+    let value
+    switch(type) {
+      case RuleTypeEnum.LANGUAGE:
+        value = this.languageBCP47Service.getLanguage(code);
+        break;
+      case RuleTypeEnum.COUNTRY:
+        value = countries[code];
+        break;
+      case RuleTypeEnum.PRAXIS:
+        switch(praxisType) {
+          case PraxisTypeEnum.CONFIDENCE:
+            value = this.toolGroupService.praxisConfidentData[code]
+            break;
+          case PraxisTypeEnum.OPENNESS:
+            value = this.toolGroupService.praxisOpennessData[code]
+            break;
+        }
+        break;
     }
-    if (type === RuleTypeEnum.COUNTRY) {
-      return countries[code]
-    }
+    return value
   }
 
 
@@ -116,8 +126,8 @@ export class ToolGroupComponent implements OnInit, OnDestroy {
     await this.loadAllDetails();
   }
 
-  async loadAllDetails(): Promise<ToolGroup> {
-    if (!this.hasLoadedInitialDetails) {
+  async loadAllDetails(force = false): Promise<ToolGroup> {
+    if (!this.hasLoadedInitialDetails || force) {
       this.toolGroup = await this.toolGroupService.getToolGroup(this.toolGroup.id);
       this.hasLoadedInitialDetails = true;
     }
