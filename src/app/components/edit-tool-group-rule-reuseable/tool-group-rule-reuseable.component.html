@@ -24,7 +24,6 @@
       [(ngModel)]="selectedItem"
       (ngModelChange)="handleSelectedItem($event)"
     >
-      <option value=""></option>
       <option *ngFor="let item of items" [ngValue]="item">
         {{ item.name }} ({{item.code}})
       </option>
@@ -32,7 +31,7 @@
   </div>
 </div>
 
-<div class="row mb-3">
+<div class="row mb-3" *ngIf="ruleType !== 'praxis'">
   <div class="col-12">
     <div class="pl-4" style="position: relative">
       <input

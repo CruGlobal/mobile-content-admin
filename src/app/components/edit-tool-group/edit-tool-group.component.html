@@ -14,7 +14,7 @@
       />
     </div>
     <div class="col-6">
-      <label for="abbrev">Suggested Weight</label>
+      <label for="abbrev">Suggestions Weight</label>
       <input
         id="abbrev"
         class="form-control"
@@ -37,6 +37,24 @@
     [ruleType]="'country'"
     (selectedItemsEmit)="updateSelected($event, 'country')"
     (negativeRuleOutput)="updateNegativeRule($event, 'country')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="praxisRule"
+    [ruleType]="'praxis'"
+    [praxisType]="'confidence'"
+    (selectedItemsEmit)="updateSelected($event, 'praxis', 'confidence')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis', 'confidence')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="praxisRule"
+    [ruleType]="'praxis'"
+    [praxisType]="'openness'"
+    (selectedItemsEmit)="updateSelected($event, 'praxis', 'openness')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis', 'openness')"
   >
   </admin-tool-group-rule-reuseable>
 
