@@ -1,16 +1,17 @@
+import { Resource } from './resource';
+
 export class ToolGroup {
   id: number;
   name: string;
   suggestedWeight: string;
   'rules-country': CountryRule[];
   'rules-language': LanguageRule[];
-  'rules-praxis': any;
-  tools: any;
+  'rules-praxis': PraxisRule[];
+  tools: Tools[];
   _attributes: string[];
   _relationships: string[];
   _type: string;
 }
-
 
 export class ToolGroupRule {
   id: number;
@@ -23,52 +24,63 @@ export class ToolGroupRule {
   languages?: string[];
   openness?: string[];
   confidence?: string[];
-
 }
 
-export type CountryRule = {
-  id: number,
-  countries: string[],
-  'negative-rule': boolean,
-  'tool-group': ToolGroup,
+export interface CountryRule {
+  id: number;
+  countries: string[];
+  'negative-rule': boolean;
+  'tool-group': ToolGroup;
   _attributes: string[];
   _relationships: string[];
   _type: string;
 }
 
-export type LanguageRule = {
-  id: number,
-  languages: string[],
-  'negative-rule': boolean,
-  'tool-group': ToolGroup,
+export interface LanguageRule {
+  id: number;
+  languages: string[];
+  'negative-rule': boolean;
+  'tool-group': ToolGroup;
   _attributes: string[];
   _relationships: string[];
   _type: string;
 }
 
-export type PraxisRule = {
-  id: number,
-  openness: string[],
-  confidence: string[],
-  'negative-rule': boolean,
-  'tool-group': ToolGroup,
+export interface PraxisRule {
+  id: number;
+  openness: string[];
+  confidence: string[];
+  'negative-rule': boolean;
+  'tool-group': ToolGroup;
   _attributes: string[];
   _relationships: string[];
   _type: string;
 }
 
-export type Praxis = {
+export interface Praxis {
   code: string;
   name: string;
 }
-
+// Created for HTML pages
+export type RuleType = 'country' | 'language' | 'praxis';
 export enum RuleTypeEnum {
   COUNTRY = 'country',
   LANGUAGE = 'language',
   PRAXIS = 'praxis',
 }
 
+export type PraxisType = 'openness' | 'confidence';
 export enum PraxisTypeEnum {
   OPENNESS = 'openness',
   CONFIDENCE = 'confidence',
+}
+
+export interface Tools {
+  id: string;
+  suggestionsWeight: string;
+  tool: Resource;
+  'tool-group': ToolGroup;
+  _attributes?: string[];
+  _relationships?: string[];
+  _type?: string;
 }

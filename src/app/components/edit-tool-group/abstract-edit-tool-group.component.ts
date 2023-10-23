@@ -1,11 +1,19 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICountry } from 'countries-list'
+import { ICountry } from 'countries-list';
 import { Input, Output, EventEmitter } from '@angular/core';
-import { ToolGroup, ToolGroupRule, Praxis, RuleTypeEnum, PraxisTypeEnum } from '../../models/tool-group';
+import {
+  ToolGroup,
+  ToolGroupRule,
+  Praxis,
+  RuleTypeEnum,
+  PraxisTypeEnum,
+  RuleType,
+  PraxisType,
+} from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
-export type countriesType = (ICountry & {code: string})
+export type countriesType = ICountry & { code: string };
 
 export abstract class AbstractEditToolGroupComponent {
   @Input() toolGroup: ToolGroup = new ToolGroup();
@@ -26,15 +34,17 @@ export abstract class AbstractEditToolGroupComponent {
     protected activeModal: NgbActiveModal,
   ) {
     this.countryRule = new ToolGroupRule();
-    this.countryRule['tool-group'] = this.toolGroup
+    this.countryRule['tool-group'] = this.toolGroup;
     this.languageRule = new ToolGroupRule();
-    this.languageRule['tool-group'] = this.toolGroup
+    this.languageRule['tool-group'] = this.toolGroup;
     this.praxisRule = new ToolGroupRule();
-    this.praxisRule['tool-group'] = this.toolGroup
+    this.praxisRule['tool-group'] = this.toolGroup;
   }
 
   init(): void {
-    if (!this.toolGroup.id) this.isNewToolGroup = true;
+    if (!this.toolGroup.id) {
+      this.isNewToolGroup = true;
+    }
 
     if (!this.isNewToolGroup && this.toolGroup['rules-country'].length) {
       this.countryRule = this.toolGroup['rules-country'][0];
@@ -49,17 +59,20 @@ export abstract class AbstractEditToolGroupComponent {
     }
   }
 
-  updateSelected(selectedItems: (countriesType|LanguageBCP47|Praxis)[], type:RuleTypeEnum, subType:PraxisTypeEnum): void {
-    switch(type) {
+  updateSelected(
+    selectedItems: (countriesType | LanguageBCP47 | Praxis)[],
+    type: RuleType,
+    subType: PraxisType,
+  ): void {
+    switch (type) {
       case RuleTypeEnum.COUNTRY:
         this.selectedCountries = selectedItems as countriesType[];
-        this.toolGroup['rules-country']
         break;
       case RuleTypeEnum.LANGUAGE:
         this.selectedLanguages = selectedItems as LanguageBCP47[];
         break;
       case RuleTypeEnum.PRAXIS:
-        switch(subType) {
+        switch (subType) {
           case PraxisTypeEnum.CONFIDENCE:
             this.selectedPraxisConfidence = selectedItems as Praxis[];
             break;
@@ -71,8 +84,8 @@ export abstract class AbstractEditToolGroupComponent {
     }
   }
 
-  updateNegativeRule(negativeRule: boolean, type:RuleTypeEnum): void {
-    switch(type) {
+  updateNegativeRule(negativeRule: boolean, type: RuleType): void {
+    switch (type) {
       case RuleTypeEnum.COUNTRY:
         this.countryRule['negative-rule'] = negativeRule;
         break;
@@ -92,7 +105,7 @@ export abstract class AbstractEditToolGroupComponent {
     this.toolGroupService
       .deleteToolGroup(this.toolGroup.id)
       .then(() => this.activeModal.close())
-      .catch(this.handleError.bind(this))
+      .catch(this.handleError.bind(this));
   }
 
   protected handleError(message): void {
@@ -100,7 +113,9 @@ export abstract class AbstractEditToolGroupComponent {
     this.errorMessage = message;
   }
 
-  protected getCodes(items: (countriesType|LanguageBCP47|Praxis)[]): string[] {
+  protected getCodes(
+    items: (countriesType | LanguageBCP47 | Praxis)[],
+  ): string[] {
     return items.map((item) => item.code);
   }
 

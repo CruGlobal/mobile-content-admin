@@ -1,23 +1,28 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import {
   NgbModal,
   NgbModalRef,
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { ToolGroup, ToolGroupRule, RuleTypeEnum, CountryRule, LanguageRule, PraxisTypeEnum } from '../../models/tool-group';
-import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-resource.component';
-import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
+import { countries } from 'countries-list';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47Service } from '../../service/languages-bcp47-tag.service';
+import {
+  ToolGroup,
+  ToolGroupRule,
+  RuleTypeEnum,
+  CountryRule,
+  LanguageRule,
+  PraxisTypeEnum,
+  RuleType,
+  PraxisType,
+} from '../../models/tool-group';
+import { Resource } from '../../models/resource';
+import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-resource.component';
+import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 import { ToolGroupRuleComponent } from '../edit-tool-group-rule/tool-group-rule.component';
-import { countries } from 'countries-list'
+import { ToolGroupResourceComponent } from '../edit-tool-group-resource/tool-group-resource.component';
 
 @Component({
   selector: 'admin-tool-group',
@@ -30,11 +35,11 @@ export class ToolGroupComponent implements OnDestroy {
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
-
+  resources: Resource[];
   showDetails = false;
-  hasLoadedInitialDetails = false
+  hasLoadedInitialDetails = false;
   errorMessage: string;
-  languages: string[][] = []
+  languages: string[][] = [];
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();
@@ -50,25 +55,23 @@ export class ToolGroupComponent implements OnDestroy {
   }
 
   openUpdateModal(): void {
-    this.loadAllDetails().then(toolGroup => {
+    this.loadAllDetails().then((toolGroup) => {
       const modalRef: NgbModalRef = this.modalService.open(
         UpdateToolGroupComponent,
         { size: 'lg' },
       );
       modalRef.componentInstance.toolGroup = toolGroup;
       modalRef.result.then(() => {
-          this.toolGroupsComponent.loadToolGroups().then(() => {
-            this.loadAllDetails(true)
-          })
-        },
-        console.log,
-      );
-    })
+        this.toolGroupsComponent.loadToolGroups().then(() => {
+          this.loadAllDetails(true);
+        });
+      }, console.log);
+    });
   }
 
   openRuleModal(
-    rule: CountryRule & LanguageRule | LanguageRule & CountryRule,
-    ruleType: RuleTypeEnum,
+    rule: (CountryRule & LanguageRule) | (LanguageRule & CountryRule),
+    ruleType: RuleType,
   ): void {
     const modalRef: NgbModalRef = this.modalService.open(
       ToolGroupRuleComponent,
@@ -77,11 +80,13 @@ export class ToolGroupComponent implements OnDestroy {
     modalRef.componentInstance.rule = rule;
     modalRef.componentInstance.ruleType = ruleType;
     modalRef.result.then(async () => {
-      this.toolGroup = await this.toolGroupService.getToolGroup(this.toolGroup.id);
+      this.toolGroup = await this.toolGroupService.getToolGroup(
+        this.toolGroup.id,
+      );
     });
   }
 
-  createRule(ruleType: RuleTypeEnum): void {
+  createRule(ruleType: RuleType): void {
     const modalRef: NgbModalRef = this.modalService.open(
       ToolGroupRuleComponent,
       { size: 'lg' },
@@ -93,13 +98,27 @@ export class ToolGroupComponent implements OnDestroy {
     modalRef.componentInstance.rule = newRule;
     modalRef.componentInstance.ruleType = ruleType;
     modalRef.result.then(async () => {
-      this.toolGroup = await this.toolGroupService.getToolGroup(this.toolGroup.id);
+      this.toolGroup = await this.toolGroupService.getToolGroup(
+        this.toolGroup.id,
+      );
     });
   }
 
-  getReadableValue(code: string, type: RuleTypeEnum, praxisType: PraxisTypeEnum): any {
-    let value
-    switch(type) {
+  addResource(): void {
+    const modalRef: NgbModalRef = this.modalService.open(
+      ToolGroupResourceComponent,
+      { size: 'lg' },
+    );
+    modalRef.componentInstance.resources = this.toolGroupsComponent.resources;
+    modalRef.componentInstance.toolGroup = this.toolGroup;
+    modalRef.result.then(async () => {
+      await this.loadAllDetails(true);
+    });
+  }
+
+  getReadableValue(code: string, type: RuleType, praxisType: PraxisType): any {
+    let value;
+    switch (type) {
       case RuleTypeEnum.LANGUAGE:
         value = this.languageBCP47Service.getLanguage(code);
         break;
@@ -107,19 +126,18 @@ export class ToolGroupComponent implements OnDestroy {
         value = countries[code];
         break;
       case RuleTypeEnum.PRAXIS:
-        switch(praxisType) {
+        switch (praxisType) {
           case PraxisTypeEnum.CONFIDENCE:
-            value = this.toolGroupService.praxisConfidentData[code]
+            value = this.toolGroupService.praxisConfidentData[code];
             break;
           case PraxisTypeEnum.OPENNESS:
-            value = this.toolGroupService.praxisOpennessData[code]
+            value = this.toolGroupService.praxisOpennessData[code];
             break;
         }
         break;
     }
-    return value
+    return value;
   }
-
 
   async handleToggleAccordian(): Promise<void> {
     this.showDetails = !this.showDetails;
@@ -128,13 +146,19 @@ export class ToolGroupComponent implements OnDestroy {
 
   async loadAllDetails(force = false): Promise<ToolGroup> {
     if (!this.hasLoadedInitialDetails || force) {
-      this.toolGroup = await this.toolGroupService.getToolGroup(this.toolGroup.id);
+      this.toolGroup = await this.toolGroupService.getToolGroup(
+        this.toolGroup.id,
+      );
       this.hasLoadedInitialDetails = true;
+      if (this.toolGroup.tools.length) {
+        this.toolGroup.tools = this.toolGroup.tools.map((tool) => {
+          return {
+            ...tool,
+            suggestionsWeight: tool['suggestions-weight'],
+          };
+        });
+      }
     }
-    return this.toolGroup
-  }
-
-  private handleError(message): void {
-    this.errorMessage = message;
+    return this.toolGroup;
   }
 }

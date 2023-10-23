@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
-import { AuthService } from '../auth/auth.service';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { environment } from '../../../environments/environment';
+import { countries, ICountry } from 'countries-list';
+import { AuthService } from '../auth/auth.service';
+import {
+  LanguageBCP47Service,
+  LanguageBCP47,
+} from '../../service/languages-bcp47-tag.service';
 import { AbstractService } from '../abstract.service';
-import { LanguageBCP47Service, LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
-import { countries, ICountry } from 'countries-list'
+import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
+import { environment } from '../../../environments/environment';
 
-
-type PraxisData = {
-  confidence: string[],
-  openness: string[],
+interface PraxisData {
+  confidence: string[];
+  openness: string[];
 }
 @Injectable()
 export class ToolGroupService extends AbstractService {
-  private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
-
   constructor(
     private http: Http,
     private authService: AuthService,
@@ -24,23 +24,60 @@ export class ToolGroupService extends AbstractService {
   ) {
     super();
   }
+  private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
+
+  praxisConfidentData = {
+    0: {
+      name: 'Very confident',
+    },
+    1: {
+      name: 'Somewhat confident',
+    },
+    2: {
+      name: 'Neutral',
+    },
+    3: {
+      name: 'Not very confident',
+    },
+    4: {
+      name: 'Not confident at all',
+    },
+  };
+
+  praxisOpennessData = {
+    0: {
+      name: 'Very Open',
+    },
+    1: {
+      name: 'Somewhat open',
+    },
+    2: {
+      name: 'Neutral',
+    },
+    3: {
+      name: 'Not very open or interested',
+    },
+    4: {
+      name: 'Not open at all',
+    },
+  };
 
   getToolGroups(): Promise<ToolGroup[]> {
     return this.http
-      .get(
-        this.toolGroupsUrl,
-        this.authService.getAuthorizationAndOptions()
-      )
+      .get(this.toolGroupsUrl, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 
-  getToolGroup(id: number, include = 'rules-language,rules-praxis,rules-country'): Promise<ToolGroup> {
+  getToolGroup(
+    id: number,
+    include = 'rules-language,rules-praxis,rules-country,tools,tools.tool',
+  ): Promise<ToolGroup> {
     return this.http
       .get(
         `${this.toolGroupsUrl}/${id}?include=${include}`,
-        this.authService.getAuthorizationAndOptions()
+        this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
       .then((response) => new JsonApiDataStore().sync(response.json()))
@@ -68,10 +105,7 @@ export class ToolGroupService extends AbstractService {
       .catch(this.handleError);
   }
 
-
-  deleteToolGroup(
-    toolGroupId: number,
-  ) {
+  deleteToolGroup(toolGroupId: number) {
     return this.http
       .delete(
         `${this.toolGroupsUrl}/${toolGroupId}`,
@@ -80,31 +114,31 @@ export class ToolGroupService extends AbstractService {
       .toPromise()
       .then(() => {
         return {
-          status: 'success'
-        }
+          status: 'success',
+        };
       })
       .catch(this.handleError);
   }
-
-
 
   createOrUpdateRule(
     toolGroupId: number,
     ruleId: number,
     negativeRule: boolean,
-    data: string[]|PraxisData,
+    data: string[] | PraxisData,
     type: RuleTypeEnum,
   ) {
-    const isUpdate = (ruleId) ? true : false;
-    let dataType = '', attributes = {}, url = '';
+    const isUpdate = ruleId ? true : false;
+    let dataType = '',
+      attributes = {},
+      url = '';
 
-    switch(type) {
+    switch (type) {
       case RuleTypeEnum.COUNTRY:
         dataType = 'tool-group-rules-country';
         attributes = {
           countries: data,
           'negative-rule': negativeRule,
-        }
+        };
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-country`;
         break;
       case RuleTypeEnum.LANGUAGE:
@@ -112,7 +146,7 @@ export class ToolGroupService extends AbstractService {
         attributes = {
           languages: data,
           'negative-rule': negativeRule,
-        }
+        };
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-language`;
         break;
       case RuleTypeEnum.PRAXIS:
@@ -120,50 +154,40 @@ export class ToolGroupService extends AbstractService {
         attributes = {
           ...data,
           'negative-rule': negativeRule,
-        }
+        };
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-praxis`;
         break;
       default:
-        return
+        return;
     }
 
     const payload = {
       data: {
         type: dataType,
-        attributes
-      }
-    }
+        attributes,
+      },
+    };
 
     url += isUpdate ? `/${ruleId}` : '';
 
     if (isUpdate) {
-      return this.http.put(
-          url,
-          payload,
-          this.authService.getAuthorizationAndOptions(),
-        )
+      return this.http
+        .put(url, payload, this.authService.getAuthorizationAndOptions())
         .toPromise()
         .then((response) => new JsonApiDataStore().sync(response.json()))
         .catch(this.handleError);
     } else {
-      return this.http.post(
-        url,
-        payload,
-        this.authService.getAuthorizationAndOptions(),
-      )
-      .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
-      .catch(this.handleError);
+      return this.http
+        .post(url, payload, this.authService.getAuthorizationAndOptions())
+        .toPromise()
+        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .catch(this.handleError);
     }
   }
 
-  deleteRule(
-    toolGroupId: number,
-    ruleId: number,
-    type: RuleTypeEnum,
-  ) {
+  deleteRule(toolGroupId: number, ruleId: number, type: RuleTypeEnum) {
     let url = '';
-    switch(type) {
+    switch (type) {
       case RuleTypeEnum.COUNTRY:
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-country/${ruleId}`;
         break;
@@ -174,19 +198,16 @@ export class ToolGroupService extends AbstractService {
         url = `${this.toolGroupsUrl}/${toolGroupId}/rules-praxis/${ruleId}`;
         break;
       default:
-        return
+        return;
     }
 
     return this.http
-      .delete(
-        url,
-        this.authService.getAuthorizationAndOptions(),
-      )
+      .delete(url, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then(() => {
         return {
-          status: 'success'
-        }
+          status: 'success',
+        };
       })
       .catch(this.handleError);
   }
@@ -196,43 +217,69 @@ export class ToolGroupService extends AbstractService {
       return this.languageBCP47Service.getLanguage(code);
     }
     if (type === RuleTypeEnum.COUNTRY) {
-      return countries[code]
+      return countries[code];
     }
   }
 
-  praxisConfidentData = {
-    0: {
-      name: 'Very confident',
-    },
-    1: {
-      name: 'Somewhat confident',
-    },
-    2: {
-      name: 'Neutral',
-    },
-    3: {
-      name: 'Not very confident',
-    },
-    4: {
-      name: 'Not confident at all',
-    },
+  addOrUpdateTool(
+    toolGroupId: number,
+    id: string,
+    toolID: string,
+    suggestionsWeight: string,
+    isUpdate: boolean,
+  ) {
+    const payload = {
+      data: {
+        type: 'tool-group-tool',
+        attributes: {
+          'suggestions-weight': suggestionsWeight,
+        },
+        relationships: {
+          tool: {
+            data: {
+              type: 'resource',
+              id: toolID,
+            },
+          },
+        },
+      },
+    };
+
+    if (isUpdate) {
+      return this.http
+        .put(
+          `${this.toolGroupsUrl}/${toolGroupId}/tools/${id}`,
+          payload,
+          this.authService.getAuthorizationAndOptions(),
+        )
+        .toPromise()
+        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .catch(this.handleError);
+    } else {
+      return this.http
+        .post(
+          `${this.toolGroupsUrl}/${toolGroupId}/tools`,
+          payload,
+          this.authService.getAuthorizationAndOptions(),
+        )
+        .toPromise()
+        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .catch(this.handleError);
+    }
   }
 
-  praxisOpennessData = {
-    0: {
-      name: 'Very Open',
-    },
-    1: {
-      name: 'Somewhat open',
-    },
-    2: {
-      name: 'Neutral',
-    },
-    3: {
-      name: 'Not very open or interested',
-    },
-    4: {
-      name: 'Not open at all',
-    }
+  deleteTool(toolGroupId: number, id: string) {
+    return this.http
+      .delete(
+        `${this.toolGroupsUrl}/${toolGroupId}/tools/${id}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
+      .toPromise()
+      .then(() => {
+        return {
+          status: 'success',
+        };
+      })
+      .catch(this.handleError);
   }
 }

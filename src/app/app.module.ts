@@ -62,6 +62,8 @@ import { LanguageBCP47Service } from './service/languages-bcp47-tag.service';
 import { UpdateToolGroupComponent } from './components/edit-tool-group/update-tool-group/update-resource.component';
 import { ToolGroupRuleComponent } from './components/edit-tool-group-rule/tool-group-rule.component';
 import { ToolGroupRuleReuseableComponent } from './components/edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
+import { ToolGroupToolReuseableComponent } from './components/edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { ToolGroupResourceComponent } from './components/edit-tool-group-resource/tool-group-resource.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,8 @@ import { ToolGroupRuleReuseableComponent } from './components/edit-tool-group-ru
     UpdateToolGroupComponent,
     ToolGroupRuleComponent,
     ToolGroupRuleReuseableComponent,
+    ToolGroupResourceComponent,
+    ToolGroupToolReuseableComponent,
   ],
   imports: [
     AceEditorModule,
@@ -149,6 +153,7 @@ import { ToolGroupRuleReuseableComponent } from './components/edit-tool-group-ru
     CreateToolGroupComponent,
     UpdateToolGroupComponent,
     ToolGroupRuleComponent,
+    ToolGroupResourceComponent,
   ],
   bootstrap: [AppComponent],
 })

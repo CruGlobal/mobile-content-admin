@@ -19,10 +19,7 @@ export class CreateToolGroupComponent
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
 
-  constructor(
-    toolGroupService: ToolGroupService,
-    activeModal: NgbActiveModal,
-  ) {
+  constructor(toolGroupService: ToolGroupService, activeModal: NgbActiveModal) {
     super(toolGroupService, activeModal);
   }
 
@@ -33,8 +30,10 @@ export class CreateToolGroupComponent
   async saveToolGroup(): Promise<void> {
     this.saving = true;
     try {
-      const toolGroup = await this.toolGroupService.createToolGroup(this.toolGroup);
-      const promises = []
+      const toolGroup = await this.toolGroupService.createToolGroup(
+        this.toolGroup,
+      );
+      const promises = [];
 
       if (this.selectedCountries.length) {
         const data = super.getCodes(this.selectedCountries);
@@ -44,9 +43,9 @@ export class CreateToolGroupComponent
             null,
             this.countryRule['negative-rule'],
             data,
-            RuleTypeEnum.COUNTRY
-          )
-        )
+            RuleTypeEnum.COUNTRY,
+          ),
+        );
       }
       if (this.selectedLanguages.length) {
         const data = super.getCodes(this.selectedLanguages);
@@ -56,11 +55,14 @@ export class CreateToolGroupComponent
             null,
             this.languageRule['negative-rule'],
             data,
-            RuleTypeEnum.LANGUAGE
-          )
+            RuleTypeEnum.LANGUAGE,
+          ),
         );
       }
-      if (this.selectedPraxisConfidence.length || this.selectedPraxisOpenness.length) {
+      if (
+        this.selectedPraxisConfidence.length ||
+        this.selectedPraxisOpenness.length
+      ) {
         const confidence = super.getCodes(this.selectedPraxisConfidence);
         const openness = super.getCodes(this.selectedPraxisOpenness);
         promises.push(
@@ -70,21 +72,20 @@ export class CreateToolGroupComponent
             this.praxisRule['negative-rule'],
             {
               confidence,
-              openness
+              openness,
             },
-            RuleTypeEnum.PRAXIS
-          )
-        )
+            RuleTypeEnum.PRAXIS,
+          ),
+        );
       }
 
       Promise.all([promises])
-      .then(() => {
-        super.saveToolGroup();
-      })
-      .catch((error) => super.handleError(error));
-    }
-    catch(error) {
-      super.handleError(error)
+        .then(() => {
+          super.saveToolGroup();
+        })
+        .catch((error) => super.handleError(error));
+    } catch (error) {
+      super.handleError(error);
     }
   }
 }

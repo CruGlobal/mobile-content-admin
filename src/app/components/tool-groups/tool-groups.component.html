@@ -21,11 +21,7 @@
     </button>
   </div>
 </div>
-<ngb-alert
-  type="warning"
-  [dismissible]="false"
-  *ngIf="loadingResources"
->
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loadingToolGroups">
   Loading...
 </ngb-alert>
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">

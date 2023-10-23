@@ -27,7 +27,7 @@
   <admin-tool-group-rule-reuseable
     [rule]="languageRule"
     [ruleType]="'language'"
-    (selectedItemsEmit)="updateSelected($event, 'language')"
+    (selectedItemsEmit)="updateSelected($event, 'language', null)"
     (negativeRuleOutput)="updateNegativeRule($event, 'language')"
   >
   </admin-tool-group-rule-reuseable>
@@ -35,7 +35,7 @@
   <admin-tool-group-rule-reuseable
     [rule]="countryRule"
     [ruleType]="'country'"
-    (selectedItemsEmit)="updateSelected($event, 'country')"
+    (selectedItemsEmit)="updateSelected($event, 'country', null)"
     (negativeRuleOutput)="updateNegativeRule($event, 'country')"
   >
   </admin-tool-group-rule-reuseable>
@@ -45,7 +45,7 @@
     [ruleType]="'praxis'"
     [praxisType]="'confidence'"
     (selectedItemsEmit)="updateSelected($event, 'praxis', 'confidence')"
-    (negativeRuleOutput)="updateNegativeRule($event, 'praxis', 'confidence')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
   >
   </admin-tool-group-rule-reuseable>
 
@@ -54,7 +54,7 @@
     [ruleType]="'praxis'"
     [praxisType]="'openness'"
     (selectedItemsEmit)="updateSelected($event, 'praxis', 'openness')"
-    (negativeRuleOutput)="updateNegativeRule($event, 'praxis', 'openness')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
   >
   </admin-tool-group-rule-reuseable>
 
@@ -73,12 +73,15 @@
   </div>
 </div>
 
-<div class="modal-footer" style="justify-content: space-between;">
+<div class="modal-footer" style="justify-content: space-between">
   <span *ngIf="isNewToolGroup"></span>
   <button
     *ngIf="!isNewToolGroup"
     (click)="deleteToolGroup()"
-    class="btn btn-outline-danger">Delete Tool Group</button>
+    class="btn btn-outline-danger"
+  >
+    Delete Tool Group
+  </button>
   <div class="btn-group" role="group">
     <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
     <button (click)="saveToolGroup()" class="btn btn-success">Save</button>

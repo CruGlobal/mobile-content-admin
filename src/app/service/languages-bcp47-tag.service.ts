@@ -1,21 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AbstractService } from './abstract.service';
 
-export type LanguageBCP47 = {
+export interface LanguageBCP47 {
   code: string;
   language: string;
   region: string;
   name: string;
-}
-
-@Injectable()
-export class LanguageBCP47Service extends AbstractService {
-  getLanguages(): LanguageBCP47[] {
-    return languages
-  }
-  getLanguage(code: string): LanguageBCP47 | null {
-    return languages.find(language => language.code === code);
-  }
 }
 
 const languages: LanguageBCP47[] = [
@@ -336,5 +326,14 @@ const languages: LanguageBCP47[] = [
     language: 'Chinese',
     region: 'Taiwan',
     name: 'Taiwan, traditional characters',
+  },
+];
+@Injectable()
+export class LanguageBCP47Service extends AbstractService {
+  getLanguages(): LanguageBCP47[] {
+    return languages;
   }
-]
+  getLanguage(code: string): LanguageBCP47 | null {
+    return languages.find((language) => language.code === code);
+  }
+}
