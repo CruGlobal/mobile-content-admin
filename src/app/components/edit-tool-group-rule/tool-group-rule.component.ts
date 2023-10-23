@@ -1,18 +1,28 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICountry } from 'countries-list'
-import { CountryRule, LanguageRule, PraxisRule, Praxis, RuleTypeEnum, PraxisTypeEnum } from '../../models/tool-group';
+import { ICountry } from 'countries-list';
+import {
+  CountryRule,
+  LanguageRule,
+  PraxisRule,
+  Praxis,
+  RuleTypeEnum,
+  PraxisTypeEnum,
+} from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
-export type countriesType = (ICountry & {code: string})
+export type countriesType = ICountry & { code: string };
 
 @Component({
   selector: 'admin-tool-group-rule',
   templateUrl: './tool-group-rule.component.html',
 })
 export class ToolGroupRuleComponent implements OnInit {
-  @Input() rule: CountryRule & LanguageRule & PraxisRule | LanguageRule & PraxisRule & CountryRule | PraxisRule & CountryRule & LanguageRule;
+  @Input() rule:
+    | (CountryRule & LanguageRule & PraxisRule)
+    | (LanguageRule & PraxisRule & CountryRule)
+    | (PraxisRule & CountryRule & LanguageRule);
   @Input() ruleType: RuleTypeEnum;
   @Output() EditedRule: EventEmitter<any> = new EventEmitter();
   saving = false;
@@ -23,35 +33,40 @@ export class ToolGroupRuleComponent implements OnInit {
   constructor(
     protected toolGroupService: ToolGroupService,
     protected activeModal: NgbActiveModal,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (!this.rule.id) {
-      this.isNewRule = true
+      this.isNewRule = true;
     }
     if (this.ruleType === RuleTypeEnum.PRAXIS) {
       this.ruleData = {
         confidence: [],
         openness: [],
-      }
-    } else this.ruleData = [];
+      };
+    } else {
+      this.ruleData = [];
+    }
   }
 
-  updateSelected(selectedItems: (countriesType | LanguageBCP47 | Praxis)[], praxisType: PraxisTypeEnum): void {
-    const codes = selectedItems.map((item) => item.code)
-    switch(this.ruleType) {
+  updateSelected(
+    selectedItems: (countriesType | LanguageBCP47 | Praxis)[],
+    praxisType: PraxisTypeEnum,
+  ): void {
+    const codes = selectedItems.map((item) => item.code);
+    switch (this.ruleType) {
       case RuleTypeEnum.COUNTRY:
         this.rule.countries = codes;
         this.ruleData = codes;
-      break;
+        break;
       case RuleTypeEnum.LANGUAGE:
         this.rule.languages = codes;
         this.ruleData = codes;
-      break;
+        break;
       case RuleTypeEnum.PRAXIS:
-        switch(praxisType) {
+        switch (praxisType) {
           case PraxisTypeEnum.CONFIDENCE:
-            this.rule.confidence = codes
+            this.rule.confidence = codes;
             this.ruleData.confidence = codes;
             break;
           case PraxisTypeEnum.OPENNESS:
@@ -59,13 +74,12 @@ export class ToolGroupRuleComponent implements OnInit {
             this.ruleData.openness = codes;
             break;
         }
-      break;
+        break;
     }
-
   }
 
   updateNegativeRule(negativeRule: boolean): void {
-    this.rule['negative-rule'] = negativeRule
+    this.rule['negative-rule'] = negativeRule;
   }
 
   createOrUpdateRule(): void {
@@ -76,10 +90,10 @@ export class ToolGroupRuleComponent implements OnInit {
         this.rule.id,
         this.rule['negative-rule'],
         this.ruleData,
-        this.ruleType
+        this.ruleType,
       )
       .then(() => this.activeModal.close())
-      .catch(this.handleError.bind(this))
+      .catch(this.handleError.bind(this));
   }
 
   cancel() {
@@ -91,7 +105,7 @@ export class ToolGroupRuleComponent implements OnInit {
     this.toolGroupService
       .deleteRule(this.rule['tool-group'].id, this.rule.id, this.ruleType)
       .then(() => this.activeModal.close())
-      .catch(this.handleError.bind(this))
+      .catch(this.handleError.bind(this));
   }
 
   protected getCodes(items: (countriesType | LanguageBCP47)[]): string[] {

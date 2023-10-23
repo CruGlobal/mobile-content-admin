@@ -2,7 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
-import { ToolGroup, ToolGroupRule, RuleTypeEnum, Praxis } from '../../../models/tool-group';
+import {
+  ToolGroup,
+  ToolGroupRule,
+  RuleTypeEnum,
+  Praxis,
+} from '../../../models/tool-group';
 import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
 import { countriesType } from '../abstract-edit-tool-group.component';
 
@@ -23,10 +28,7 @@ export class UpdateToolGroupComponent
   languageRule: ToolGroupRule;
   praxisRule: ToolGroupRule;
 
-  constructor(
-    toolGroupService: ToolGroupService,
-    activeModal: NgbActiveModal,
-  ) {
+  constructor(toolGroupService: ToolGroupService, activeModal: NgbActiveModal) {
     super(toolGroupService, activeModal);
   }
 
@@ -38,42 +40,66 @@ export class UpdateToolGroupComponent
 
   isEqual = (array1: string[], array2: string[]): boolean => {
     const array2Sorted = array2.slice().sort();
-    return array1.length === array2.length && array1.slice().sort().every((value, index) => value === array2Sorted[index]);
-  }
+    return (
+      array1.length === array2.length &&
+      array1
+        .slice()
+        .sort()
+        .every((value, index) => value === array2Sorted[index])
+    );
+  };
 
   async saveToolGroup(): Promise<void> {
     this.saving = true;
     try {
       const countryCodes = super.getCodes(this.selectedCountries);
-      const hasCountriesChanges = !this.isEqual(this.countryRule.countries || [], countryCodes);
+      const hasCountriesChanges = !this.isEqual(
+        this.countryRule.countries || [],
+        countryCodes,
+      );
       const languageCodes = super.getCodes(this.selectedLanguages);
-      const hasLanguagesChanges = !this.isEqual(this.languageRule.languages || [], languageCodes);
-      const praxisConfidenceCodes = super.getCodes(this.selectedPraxisConfidence);
-      const hasPraxisConfidenceChanges = !this.isEqual(this.praxisRule.confidence || [], praxisConfidenceCodes);
+      const hasLanguagesChanges = !this.isEqual(
+        this.languageRule.languages || [],
+        languageCodes,
+      );
+      const praxisConfidenceCodes = super.getCodes(
+        this.selectedPraxisConfidence,
+      );
+      const hasPraxisConfidenceChanges = !this.isEqual(
+        this.praxisRule.confidence || [],
+        praxisConfidenceCodes,
+      );
       const praxisOpennessCodes = super.getCodes(this.selectedPraxisOpenness);
-      const hasPraxisOpennessChanges = !this.isEqual(this.praxisRule.openness || [], praxisOpennessCodes);
+      const hasPraxisOpennessChanges = !this.isEqual(
+        this.praxisRule.openness || [],
+        praxisOpennessCodes,
+      );
 
-      const promises = []
+      const promises = [];
 
       if (hasCountriesChanges) {
-        promises.push(this.toolGroupService.createOrUpdateRule(
-          this.toolGroup.id,
-          this.countryRule.id,
-          this.countryRule['negative-rule'],
-          countryCodes,
-          RuleTypeEnum.COUNTRY,
-        ));
+        promises.push(
+          this.toolGroupService.createOrUpdateRule(
+            this.toolGroup.id,
+            this.countryRule.id,
+            this.countryRule['negative-rule'],
+            countryCodes,
+            RuleTypeEnum.COUNTRY,
+          ),
+        );
       }
       if (hasLanguagesChanges) {
-        promises.push(this.toolGroupService.createOrUpdateRule(
-          this.toolGroup.id,
-          this.languageRule.id,
-          this.languageRule['negative-rule'],
-          languageCodes,
-          RuleTypeEnum.LANGUAGE
-        ));
+        promises.push(
+          this.toolGroupService.createOrUpdateRule(
+            this.toolGroup.id,
+            this.languageRule.id,
+            this.languageRule['negative-rule'],
+            languageCodes,
+            RuleTypeEnum.LANGUAGE,
+          ),
+        );
       }
-      if (hasPraxisConfidenceChanges ||  hasPraxisOpennessChanges) {
+      if (hasPraxisConfidenceChanges || hasPraxisOpennessChanges) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -83,19 +109,18 @@ export class UpdateToolGroupComponent
               confidence: praxisConfidenceCodes,
               openness: praxisOpennessCodes,
             },
-            RuleTypeEnum.PRAXIS
-          )
-        )
+            RuleTypeEnum.PRAXIS,
+          ),
+        );
       }
 
       Promise.all([promises])
-      .then(() => {
-        super.saveToolGroup();
-      })
-      .catch((error) => super.handleError(error));
-    }
-    catch(error) {
-      super.handleError(error)
+        .then(() => {
+          super.saveToolGroup();
+        })
+        .catch((error) => super.handleError(error));
+    } catch (error) {
+      super.handleError(error);
     }
   }
 }

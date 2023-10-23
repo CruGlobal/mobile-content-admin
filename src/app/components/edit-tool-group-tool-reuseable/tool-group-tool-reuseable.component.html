@@ -1,0 +1,43 @@
+<div class="row mb-4">
+  <div class="col-12" style="justify-content: space-between">
+    <strong>Tool</strong>
+    <button
+      type="button"
+      class="btn btn-secondary close"
+      aria-label="Delete"
+      style="padding: 5px"
+      (click)="handleDeleteResource()"
+    >
+      <i class="fa fa-close"></i>
+    </button>
+  </div>
+
+  <div class="col-12">
+    <label for="name" class="mb-0">Resource</label>
+    <select
+      class="custom-select"
+      [(ngModel)]="selectedResource"
+      (ngModelChange)="handleSelectedResource($event)"
+    >
+      <option *ngFor="let resource of resources" [ngValue]="resource">
+        {{ resource.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-12 mb-2 mt-2">
+    <div class="pl-4" style="position: relative">
+      <input
+        id="{{ suggestionsWeightInputId }}"
+        type="checkbox"
+        class="custom-control-input"
+        placeholder="1.0"
+        [(ngModel)]="suggestionsWeight"
+        (ngModelChange)="handleSuggestionsWeight($event)"
+      />
+      <label class="custom-control-label" for="{{ suggestionsWeightInputId }}"
+        >Suggestions Weight</label
+      >
+    </div>
+  </div>
+</div>
