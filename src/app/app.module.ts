@@ -54,6 +54,16 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
+import { ToolGroupsComponent } from './components/tool-groups/tool-groups.component';
+import { ToolGroupService } from './service/tool-group/tool-group.service';
+import { CreateToolGroupComponent } from './components/edit-tool-group/create-tool-group/create-tool-group.component';
+import { ToolGroupComponent } from './components/tool-group/tool-group.component';
+import { LanguageBCP47Service } from './service/languages-bcp47-tag.service';
+import { UpdateToolGroupComponent } from './components/edit-tool-group/update-tool-group/update-resource.component';
+import { ToolGroupRuleComponent } from './components/edit-tool-group-rule/tool-group-rule.component';
+import { ToolGroupRuleReuseableComponent } from './components/edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
+import { ToolGroupToolReuseableComponent } from './components/edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { ToolGroupResourceComponent } from './components/edit-tool-group-resource/tool-group-resource.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +92,14 @@ import { MyAccountComponent } from './components/my-account/my-account.component
     OktaLoginComponent,
     OktaLoginErrorComponent,
     MyAccountComponent,
+    ToolGroupsComponent,
+    CreateToolGroupComponent,
+    ToolGroupComponent,
+    UpdateToolGroupComponent,
+    ToolGroupRuleComponent,
+    ToolGroupRuleReuseableComponent,
+    ToolGroupResourceComponent,
+    ToolGroupToolReuseableComponent,
   ],
   imports: [
     AceEditorModule,
@@ -113,6 +131,8 @@ import { MyAccountComponent } from './components/my-account/my-account.component
     CustomManifestService,
     UserAuthSessionService,
     AttributeTranslationService,
+    ToolGroupService,
+    LanguageBCP47Service,
   ],
   entryComponents: [
     UpdateResourceComponent,
@@ -130,6 +150,10 @@ import { MyAccountComponent } from './components/my-account/my-account.component
     LoginComponent,
     MultipleDraftGeneratorComponent,
     OktaLoginErrorComponent,
+    CreateToolGroupComponent,
+    UpdateToolGroupComponent,
+    ToolGroupRuleComponent,
+    ToolGroupResourceComponent,
   ],
   bootstrap: [AppComponent],
 })
