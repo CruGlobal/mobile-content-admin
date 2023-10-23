@@ -1,9 +1,8 @@
 <div class="modal-header">
-  <h5 *ngIf="!isNewRule">{{ruleType}} rule #{{rule.id}}</h5>
-  <h5 *ngIf="isNewRule">New {{ruleType}} rule</h5>
+  <h5 *ngIf="!isNewRule">{{ ruleType }} rule #{{ rule.id }}</h5>
+  <h5 *ngIf="isNewRule">New {{ ruleType }} rule</h5>
 </div>
 <div class="modal-body">
-
   <div *ngIf="ruleType !== 'praxis'">
     <admin-tool-group-rule-reuseable
       [rule]="rule"
@@ -51,12 +50,15 @@
   </div>
 </div>
 
-<div class="modal-footer" style="justify-content: space-between;">
+<div class="modal-footer" style="justify-content: space-between">
   <span *ngIf="isNewRule"></span>
   <button
     *ngIf="!isNewRule"
     (click)="deleteRule()"
-    class="btn btn-outline-danger">Delete Rule</button>
+    class="btn btn-outline-danger"
+  >
+    Delete Rule
+  </button>
   <div class="btn-group" role="group">
     <button (click)="cancel()" class="btn btn-danger">Cancel</button>
     <button (click)="createOrUpdateRule()" class="btn btn-success">Save</button>
