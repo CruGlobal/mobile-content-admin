@@ -18,6 +18,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+If you want to only run a single test on a file, change the file's root `describe` to `fdescribe` and Jamsine will only test that file. 
 
 ## Running end-to-end tests
 
