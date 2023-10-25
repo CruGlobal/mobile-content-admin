@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import {
+  CountriesType,
   CountryRule,
   LanguageRule,
   PraxisRule,
@@ -8,17 +9,16 @@ import {
   PraxisTypeEnum,
 } from '../../models/tool-group';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { countries, ICountry } from 'countries-list';
+import { countries } from 'countries-list';
 import {
   LanguageBCP47Service,
   LanguageBCP47,
 } from '../../service/languages-bcp47-tag.service';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 
-export type countriesType = ICountry & { code: string };
 type Item =
-  | (LanguageBCP47 & countriesType & Praxis)
-  | (countriesType & Praxis & LanguageBCP47);
+  | (LanguageBCP47 & CountriesType & Praxis)
+  | (CountriesType & Praxis & LanguageBCP47);
 
 @Component({
   selector: 'admin-tool-group-rule-reuseable',
@@ -32,14 +32,14 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   @Input() ruleType: RuleTypeEnum;
   @Input() praxisType: PraxisTypeEnum;
   @Output() selectedItemsEmit = new EventEmitter<
-    (LanguageBCP47 | countriesType | Praxis)[]
+    (LanguageBCP47 | CountriesType | Praxis)[]
   >();
   @Output() negativeRuleOutput = new EventEmitter<boolean>();
-  selectedItems: (LanguageBCP47 | countriesType | Praxis)[] = [];
+  selectedItems: (LanguageBCP47 | CountriesType | Praxis)[] = [];
   negativeRule = false;
   negativeInputId: number;
-  items: (LanguageBCP47 | countriesType | Praxis)[];
-  selectedItem: LanguageBCP47 | countriesType | Praxis;
+  items: (LanguageBCP47 | CountriesType | Praxis)[];
+  selectedItem: LanguageBCP47 | CountriesType | Praxis;
   name: string;
   errorMessage: string;
 
@@ -59,12 +59,12 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
           return {
             code: country[0],
             ...country[1],
-          } as countriesType;
+          } as CountriesType;
         });
         if (this.rule.countries) {
           this.selectedItems = (this.rule.countries.map((countryCode) => {
             return this.items.find((country) => country.code === countryCode);
-          }) as unknown) as countriesType[];
+          }) as unknown) as CountriesType[];
         }
         this.name = 'Countries';
         break;
@@ -133,7 +133,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   handleDeleteSelectedItem(selecteditem: Item): void {
     this.selectedItems = (this.selectedItems.filter(
       (item) => item.code !== selecteditem.code,
-    ) as unknown) as LanguageBCP47[] | countriesType[];
+    ) as unknown) as LanguageBCP47[] | CountriesType[];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 
