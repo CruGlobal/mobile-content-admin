@@ -84,7 +84,7 @@ export class ToolGroupService extends AbstractService {
       .catch(this.handleError);
   }
 
-  createToolGroup(toolGroup: ToolGroup): Promise<ToolGroup> {
+  createOrUpdateToolGroup(toolGroup: ToolGroup, isUpdate: boolean): Promise<ToolGroup> {
     const payload = {
       data: {
         type: 'tool-group',
@@ -94,6 +94,18 @@ export class ToolGroupService extends AbstractService {
         },
       },
     };
+
+    if (isUpdate) {
+      return this.http
+      .put(
+        `${this.toolGroupsUrl}/${toolGroup.id}`,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
+      .toPromise()
+      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .catch(this.handleError);
+    }
     return this.http
       .post(
         this.toolGroupsUrl,
@@ -176,13 +188,12 @@ export class ToolGroupService extends AbstractService {
         .toPromise()
         .then((response) => new JsonApiDataStore().sync(response.json()))
         .catch(this.handleError);
-    } else {
-      return this.http
-        .post(url, payload, this.authService.getAuthorizationAndOptions())
-        .toPromise()
-        .then((response) => new JsonApiDataStore().sync(response.json()))
-        .catch(this.handleError);
     }
+    return this.http
+      .post(url, payload, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .catch(this.handleError);
   }
 
   deleteRule(toolGroupId: number, ruleId: number, type: RuleTypeEnum) {

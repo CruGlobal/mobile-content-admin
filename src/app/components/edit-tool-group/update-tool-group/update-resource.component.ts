@@ -3,13 +3,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
 import {
+  CountriesType,
   ToolGroup,
   ToolGroupRule,
   RuleTypeEnum,
   Praxis,
 } from '../../../models/tool-group';
 import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
-import { countriesType } from '../abstract-edit-tool-group.component';
 
 @Component({
   selector: 'admin-edit-tool-group',
@@ -19,7 +19,7 @@ export class UpdateToolGroupComponent
   extends AbstractEditToolGroupComponent
   implements OnInit {
   @Input() toolGroup: ToolGroup;
-  @Input() selectedCountries: countriesType[] = [];
+  @Input() selectedCountries: CountriesType[] = [];
   @Input() selectedLanguages: LanguageBCP47[] = [];
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
@@ -76,6 +76,16 @@ export class UpdateToolGroupComponent
       );
 
       const promises = [];
+
+      if (
+        this.initialToolGroup.name !== this.toolGroup.name
+        || this.initialToolGroup.suggestedWeight !== this.toolGroup.suggestedWeight
+      ) {
+        promises.push(this.toolGroupService.createOrUpdateToolGroup(
+          this.toolGroup,
+          true,
+        ));
+      }
 
       if (hasCountriesChanges) {
         promises.push(
