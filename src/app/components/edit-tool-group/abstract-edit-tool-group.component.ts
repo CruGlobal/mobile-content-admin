@@ -1,7 +1,7 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICountry } from 'countries-list';
 import { Input, Output, EventEmitter } from '@angular/core';
 import {
+  CountriesType,
   ToolGroup,
   ToolGroupRule,
   Praxis,
@@ -13,11 +13,9 @@ import {
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
-export type countriesType = ICountry & { code: string };
-
 export abstract class AbstractEditToolGroupComponent {
   @Input() toolGroup: ToolGroup = new ToolGroup();
-  @Input() selectedCountries: countriesType[] = [];
+  @Input() selectedCountries: CountriesType[] = [];
   @Input() selectedLanguages: LanguageBCP47[] = [];
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
@@ -60,13 +58,13 @@ export abstract class AbstractEditToolGroupComponent {
   }
 
   updateSelected(
-    selectedItems: (countriesType | LanguageBCP47 | Praxis)[],
+    selectedItems: (CountriesType | LanguageBCP47 | Praxis)[],
     type: RuleType,
     subType: PraxisType,
   ): void {
     switch (type) {
       case RuleTypeEnum.COUNTRY:
-        this.selectedCountries = selectedItems as countriesType[];
+        this.selectedCountries = selectedItems as CountriesType[];
         break;
       case RuleTypeEnum.LANGUAGE:
         this.selectedLanguages = selectedItems as LanguageBCP47[];
@@ -114,7 +112,7 @@ export abstract class AbstractEditToolGroupComponent {
   }
 
   protected getCodes(
-    items: (countriesType | LanguageBCP47 | Praxis)[],
+    items: (CountriesType | LanguageBCP47 | Praxis)[],
   ): string[] {
     return items.map((item) => item.code);
   }
