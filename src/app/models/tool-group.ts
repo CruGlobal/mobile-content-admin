@@ -1,3 +1,4 @@
+import { ICountry } from 'countries-list';
 import { Resource } from './resource';
 
 export class ToolGroup {
@@ -74,6 +75,8 @@ export enum PraxisTypeEnum {
   OPENNESS = 'openness',
   CONFIDENCE = 'confidence',
 }
+
+export type CountriesType = ICountry & { code: string };
 
 export interface Tools {
   id: string;
