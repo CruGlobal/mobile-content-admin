@@ -94,7 +94,7 @@ export class UpdateToolGroupComponent
     }
   }
 
-  hasMadeChanges(codes, type): boolean {
+  hasMadeChanges(codes: string[], type: RuleTypeEnum): boolean {
     const values = this.getValues(type);
 
     if (!values.initialRule && (codes || values.negativeRule)) {
