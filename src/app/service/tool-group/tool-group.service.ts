@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { countries, ICountry } from 'countries-list';
 import { AuthService } from '../auth/auth.service';
-import {
-  LanguageBCP47Service,
-  LanguageBCP47,
-} from '../../service/languages-bcp47-tag.service';
 import { AbstractService } from '../abstract.service';
 import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
@@ -17,11 +12,7 @@ interface PraxisData {
 }
 @Injectable()
 export class ToolGroupService extends AbstractService {
-  constructor(
-    private http: Http,
-    private authService: AuthService,
-    private languageBCP47Service: LanguageBCP47Service,
-  ) {
+  constructor(private http: Http, private authService: AuthService) {
     super();
   }
   private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
@@ -72,7 +63,7 @@ export class ToolGroupService extends AbstractService {
 
   getToolGroup(
     id: number,
-    include = 'rules-language,rules-praxis,rules-country,tools,tools.tool',
+    include = 'rules-language,rules-praxis,rules-country,tools.tool',
   ): Promise<ToolGroup> {
     return this.http
       .get(
@@ -84,7 +75,10 @@ export class ToolGroupService extends AbstractService {
       .catch(this.handleError);
   }
 
-  createOrUpdateToolGroup(toolGroup: ToolGroup, isUpdate: boolean): Promise<ToolGroup> {
+  createOrUpdateToolGroup(
+    toolGroup: ToolGroup,
+    isUpdate: boolean,
+  ): Promise<ToolGroup> {
     const payload = {
       data: {
         type: 'tool-group',
@@ -97,14 +91,14 @@ export class ToolGroupService extends AbstractService {
 
     if (isUpdate) {
       return this.http
-      .put(
-        `${this.toolGroupsUrl}/${toolGroup.id}`,
-        payload,
-        this.authService.getAuthorizationAndOptions(),
-      )
-      .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
-      .catch(this.handleError);
+        .put(
+          `${this.toolGroupsUrl}/${toolGroup.id}`,
+          payload,
+          this.authService.getAuthorizationAndOptions(),
+        )
+        .toPromise()
+        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .catch(this.handleError);
     }
     return this.http
       .post(
@@ -221,15 +215,6 @@ export class ToolGroupService extends AbstractService {
         };
       })
       .catch(this.handleError);
-  }
-
-  getReadableValue(code: string, type: RuleTypeEnum): LanguageBCP47 | ICountry {
-    if (type === RuleTypeEnum.LANGUAGE) {
-      return this.languageBCP47Service.getLanguage(code);
-    }
-    if (type === RuleTypeEnum.COUNTRY) {
-      return countries[code];
-    }
   }
 
   addOrUpdateTool(

@@ -89,6 +89,6 @@ export interface Tools {
 }
 
 export type RulesType =
-| (CountryRule & LanguageRule & PraxisRule)
-| (LanguageRule & PraxisRule & CountryRule)
-| (PraxisRule & CountryRule & LanguageRule)
+  | (CountryRule & LanguageRule & PraxisRule)
+  | (LanguageRule & PraxisRule & CountryRule)
+  | (PraxisRule & CountryRule & LanguageRule);

@@ -4,12 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
-import { LanguageBCP47Service } from '../../../service/languages-bcp47-tag.service';
-import { RuleTypeEnum, ToolGroup, ToolGroupRule } from '../../../models/tool-group';
-import {languageUKMock, countryUKMock } from '../../../_tests/toolGroupMocks'
+import { LanguageService } from '../../../service/language.service';
+import {
+  RuleTypeEnum,
+  ToolGroup,
+  ToolGroupRule,
+} from '../../../models/tool-group';
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
 import { ToolGroupRuleReuseableComponent } from '../../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { CreateToolGroupComponent } from './create-tool-group.component';
-
+import { Language } from '../../../models/language';
 
 describe('CreateToolGroupComponent', () => {
   let comp: CreateToolGroupComponent;
@@ -19,13 +23,14 @@ describe('CreateToolGroupComponent', () => {
     createOrUpdateToolGroup() {},
     createOrUpdateRule() {},
   } as unknown) as ToolGroupService;
-  const languageBCP47ServiceStub = ({
-    getLanguage() {},
-  } as unknown) as LanguageBCP47Service;
+  const languageServiceStub = ({
+    getLanguages() {},
+  } as unknown) as LanguageService;
 
-  const toolGroup = new ToolGroup()
-  const toolGroupRule = new ToolGroupRule()
+  const toolGroup = new ToolGroup();
+  const toolGroupRule = new ToolGroupRule();
   const createdToolGroupID = 16;
+  const mocks = new ToolGroupMocks();
 
   beforeEach(() => {
     spyOn(toolGroupServiceStub, 'createOrUpdateToolGroup').and.returnValue(
@@ -37,19 +42,16 @@ describe('CreateToolGroupComponent', () => {
     spyOn(toolGroupServiceStub, 'createOrUpdateRule').and.returnValue(
       Promise.resolve<ToolGroupRule>(toolGroupRule),
     );
-    spyOn(languageBCP47ServiceStub, 'getLanguage').and.returnValue(
-      languageUKMock,
+    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+      Promise.resolve<Language[]>([mocks.languageUKMock]),
     );
 
     TestBed.configureTestingModule({
-      declarations: [
-        CreateToolGroupComponent,
-        ToolGroupRuleReuseableComponent,
-      ],
+      declarations: [CreateToolGroupComponent, ToolGroupRuleReuseableComponent],
       imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
       providers: [
         { provide: ToolGroupService, useValue: toolGroupServiceStub },
-        { provide: LanguageBCP47Service, useValue: languageBCP47ServiceStub },
+        { provide: LanguageService, useValue: languageServiceStub },
         { provide: NgbActiveModal },
       ],
     }).compileComponents();
@@ -64,44 +66,67 @@ describe('CreateToolGroupComponent', () => {
       .query(By.css('.btn.btn-success'))
       .nativeElement.click();
 
-    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(comp.toolGroup, false);
+    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(
+      comp.toolGroup,
+      false,
+    );
   });
 
   it('creates Country Rule', (done) => {
-    comp.selectedCountries = [countryUKMock]
-    comp.countryRule['negative-rule'] = true
+    comp.selectedCountries = [mocks.countryUKMock];
+    comp.countryRule['negative-rule'] = true;
     fixture.debugElement
       .query(By.css('.btn.btn-success'))
       .nativeElement.click();
 
-    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(comp.toolGroup, false);
+    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(
+      comp.toolGroup,
+      false,
+    );
 
     setTimeout(() => {
-      expect(toolGroupServiceStub.createOrUpdateRule).toHaveBeenCalledWith(createdToolGroupID, null, true, ['GB'], RuleTypeEnum.COUNTRY);
+      expect(toolGroupServiceStub.createOrUpdateRule).toHaveBeenCalledWith(
+        createdToolGroupID,
+        null,
+        true,
+        ['GB'],
+        RuleTypeEnum.COUNTRY,
+      );
       done();
-    })
+    });
   });
 
   it('creates Language Rule', (done) => {
-    comp.selectedLanguages = [languageUKMock]
-    comp.languageRule['negative-rule'] = false
+    comp.selectedLanguages = [mocks.languageUKMock];
+    comp.languageRule['negative-rule'] = false;
     fixture.debugElement
       .query(By.css('.btn.btn-success'))
       .nativeElement.click();
 
-    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(comp.toolGroup, false);
+    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(
+      comp.toolGroup,
+      false,
+    );
 
     setTimeout(() => {
-      expect(toolGroupServiceStub.createOrUpdateRule).toHaveBeenCalledWith(createdToolGroupID, null, false, ['en-GB'], RuleTypeEnum.LANGUAGE);
+      expect(toolGroupServiceStub.createOrUpdateRule).toHaveBeenCalledWith(
+        createdToolGroupID,
+        null,
+        false,
+        ['en-GB'],
+        RuleTypeEnum.LANGUAGE,
+      );
       done();
-    })
+    });
   });
 
   it('creates Praxis Rule', (done) => {
-    comp.selectedPraxisConfidence = [{
-      name: 'test 1',
-      code: '0',
-    }];
+    comp.selectedPraxisConfidence = [
+      {
+        name: 'test 1',
+        code: '0',
+      },
+    ];
     comp.selectedPraxisOpenness = [
       {
         name: 'test 1',
@@ -110,14 +135,17 @@ describe('CreateToolGroupComponent', () => {
       {
         name: 'test 1',
         code: '4',
-      }
+      },
     ];
-    comp.praxisRule['negative-rule'] = false
+    comp.praxisRule['negative-rule'] = false;
     fixture.debugElement
       .query(By.css('.btn.btn-success'))
       .nativeElement.click();
 
-    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(comp.toolGroup, false);
+    expect(toolGroupServiceStub.createOrUpdateToolGroup).toHaveBeenCalledWith(
+      comp.toolGroup,
+      false,
+    );
 
     setTimeout(() => {
       expect(toolGroupServiceStub.createOrUpdateRule).toHaveBeenCalledWith(
@@ -126,11 +154,11 @@ describe('CreateToolGroupComponent', () => {
         false,
         {
           confidence: ['0'],
-          openness: ['3','4'],
+          openness: ['3', '4'],
         },
-        RuleTypeEnum.PRAXIS
+        RuleTypeEnum.PRAXIS,
       );
       done();
-    })
+    });
   });
 });
