@@ -2,9 +2,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, Input, OnInit } from '@angular/core';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
-import { ToolGroup, RuleTypeEnum, Praxis } from '../../../models/tool-group';
+import { CountriesType, ToolGroup, RuleTypeEnum, Praxis } from '../../../models/tool-group';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
-import { countriesType } from '../abstract-edit-tool-group.component';
 
 @Component({
   selector: 'admin-create-tool-group',
@@ -14,7 +13,7 @@ export class CreateToolGroupComponent
   extends AbstractEditToolGroupComponent
   implements OnInit {
   @Input() toolGroup: ToolGroup = new ToolGroup();
-  @Input() selectedCountries: countriesType[] = [];
+  @Input() selectedCountries: CountriesType[] = [];
   @Input() selectedLanguages: LanguageBCP47[] = [];
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
@@ -30,8 +29,9 @@ export class CreateToolGroupComponent
   async saveToolGroup(): Promise<void> {
     this.saving = true;
     try {
-      const toolGroup = await this.toolGroupService.createToolGroup(
+      const toolGroup = await this.toolGroupService.createOrUpdateToolGroup(
         this.toolGroup,
+        false
       );
       const promises = [];
 

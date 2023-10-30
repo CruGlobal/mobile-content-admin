@@ -26,18 +26,13 @@
   </div>
 
   <div class="col-12 mb-2 mt-2">
-    <div class="pl-4" style="position: relative">
-      <input
-        id="{{ suggestionsWeightInputId }}"
-        type="checkbox"
-        class="custom-control-input"
-        placeholder="1.0"
-        [(ngModel)]="suggestionsWeight"
-        (ngModelChange)="handleSuggestionsWeight($event)"
-      />
-      <label class="custom-control-label" for="{{ suggestionsWeightInputId }}"
-        >Suggestions Weight</label
-      >
-    </div>
+    <label for="{{ suggestionsWeightInputId }}">Suggestions Weight</label>
+    <input
+      id="{{ suggestionsWeightInputId }}"
+      class="form-control"
+      placeholder="1.0"
+      [(ngModel)]="suggestionsWeight"
+      (ngModelChange)="handleSuggestionsWeight($event)"
+    />
   </div>
 </div>

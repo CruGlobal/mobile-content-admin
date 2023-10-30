@@ -1,3 +1,4 @@
+import { ICountry } from 'countries-list';
 import { Resource } from './resource';
 
 export class ToolGroup {
@@ -75,6 +76,8 @@ export enum PraxisTypeEnum {
   CONFIDENCE = 'confidence',
 }
 
+export type CountriesType = ICountry & { code: string };
+
 export interface Tools {
   id: string;
   suggestionsWeight: string;
@@ -84,3 +87,8 @@ export interface Tools {
   _relationships?: string[];
   _type?: string;
 }
+
+export type RulesType =
+| (CountryRule & LanguageRule & PraxisRule)
+| (LanguageRule & PraxisRule & CountryRule)
+| (PraxisRule & CountryRule & LanguageRule)

@@ -1,10 +1,8 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ICountry } from 'countries-list';
 import {
-  CountryRule,
-  LanguageRule,
-  PraxisRule,
+  CountriesType,
+  RulesType,
   Praxis,
   RuleTypeEnum,
   PraxisTypeEnum,
@@ -12,17 +10,13 @@ import {
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
-export type countriesType = ICountry & { code: string };
 
 @Component({
   selector: 'admin-tool-group-rule',
   templateUrl: './tool-group-rule.component.html',
 })
 export class ToolGroupRuleComponent implements OnInit {
-  @Input() rule:
-    | (CountryRule & LanguageRule & PraxisRule)
-    | (LanguageRule & PraxisRule & CountryRule)
-    | (PraxisRule & CountryRule & LanguageRule);
+  @Input() rule: RulesType;
   @Input() ruleType: RuleTypeEnum;
   @Output() EditedRule: EventEmitter<any> = new EventEmitter();
   saving = false;
@@ -50,7 +44,7 @@ export class ToolGroupRuleComponent implements OnInit {
   }
 
   updateSelected(
-    selectedItems: (countriesType | LanguageBCP47 | Praxis)[],
+    selectedItems: (CountriesType | LanguageBCP47 | Praxis)[],
     praxisType: PraxisTypeEnum,
   ): void {
     const codes = selectedItems.map((item) => item.code);
@@ -108,7 +102,7 @@ export class ToolGroupRuleComponent implements OnInit {
       .catch(this.handleError.bind(this));
   }
 
-  protected getCodes(items: (countriesType | LanguageBCP47)[]): string[] {
+  protected getCodes(items: (CountriesType | LanguageBCP47)[]): string[] {
     return items.map((item) => item.code);
   }
 
