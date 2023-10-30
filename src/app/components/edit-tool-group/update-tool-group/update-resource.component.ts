@@ -8,9 +8,16 @@ import {
   ToolGroupRule,
   RuleTypeEnum,
   Praxis,
+  PraxisTypeEnum,
 } from '../../../models/tool-group';
 import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
+import * as _ from 'lodash'
 
+interface PromisePayload {
+  success: boolean;
+  value?: any;
+  error: string;
+}
 @Component({
   selector: 'admin-edit-tool-group',
   templateUrl: '../edit-tool-group.component.html',
@@ -34,7 +41,7 @@ export class UpdateToolGroupComponent
 
   ngOnInit(): void {
     this.toolGroup.suggestedWeight = this.toolGroup['suggestions-weight'];
-    this.initialToolGroup = { ...this.toolGroup };
+    this.initialToolGroup = _.cloneDeep(this.toolGroup);
     super.init();
   }
 
@@ -45,38 +52,75 @@ export class UpdateToolGroupComponent
       array1
         .slice()
         .sort()
-        .every((value, index) => value === array2Sorted[index])
+        .every((value, index) => value.toString().toLowerCase() === array2Sorted[index].toString().toLowerCase())
     );
   };
 
+  getValues(type: RuleTypeEnum, praxisType?: PraxisTypeEnum)  {
+    switch(type) {
+      case RuleTypeEnum.COUNTRY:
+        const initialcountry = this.initialToolGroup['rules-country'][0] || undefined;
+        return {
+          initialRule: initialcountry,
+          initialCodes: initialcountry.countries || [],
+          initialNegativeRule: initialcountry['negative-rule'],
+          negativeRule: this.countryRule['negative-rule'],
+        }
+      case RuleTypeEnum.LANGUAGE:
+        const initialLanguage = this.initialToolGroup['rules-language'][0] || undefined;
+        return {
+          initialRule: initialLanguage,
+          initialCodes: initialLanguage.languages || [],
+          initialNegativeRule: initialLanguage['negative-rule'],
+          negativeRule: this.languageRule['negative-rule'],
+        }
+      case RuleTypeEnum.PRAXIS:
+        const initialPraxis = this.initialToolGroup['rules-praxis'][0] || undefined;
+        if (praxisType === PraxisTypeEnum.CONFIDENCE) {
+          return {
+            initialRule: initialPraxis,
+            initialCodes: initialPraxis.confidence,
+            initialNegativeRule: initialPraxis['negative-rule'],
+            negativeRule: this.praxisRule['negative-rule'],
+          }
+        } else {
+          return {
+            initialRule: initialPraxis,
+            initialCodes: initialPraxis.openness,
+            initialNegativeRule: initialPraxis['negative-rule'],
+            negativeRule: this.praxisRule['negative-rule'],
+          }
+        }
+    }
+  }
+
+  hasMadeChanges(codes, type): boolean {
+    const values = this.getValues(type);
+
+    if (!values.initialRule && (codes || values.negativeRule)) {
+      return true;
+    } else if (values.initialRule) {
+      const codeChanges = !this.isEqual(values.initialCodes, codes);
+      const negativeChanges = values.initialNegativeRule !== values.negativeRule;
+      if (codeChanges || negativeChanges) {
+        return true
+      }
+      if (type === RuleTypeEnum.PRAXIS) {
+        // Test confidence
+        const values = this.getValues(type, PraxisTypeEnum.CONFIDENCE);
+        const codeChanges = !this.isEqual(values.initialCodes, super.getCodes(this.selectedPraxisConfidence));
+        if (codeChanges) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   async saveToolGroup(): Promise<void> {
     this.saving = true;
+    const promises = [];
     try {
-      const countryCodes = super.getCodes(this.selectedCountries);
-      const hasCountriesChanges = !this.isEqual(
-        this.countryRule.countries || [],
-        countryCodes,
-      );
-      const languageCodes = super.getCodes(this.selectedLanguages);
-      const hasLanguagesChanges = !this.isEqual(
-        this.languageRule.languages || [],
-        languageCodes,
-      );
-      const praxisConfidenceCodes = super.getCodes(
-        this.selectedPraxisConfidence,
-      );
-      const hasPraxisConfidenceChanges = !this.isEqual(
-        this.praxisRule.confidence || [],
-        praxisConfidenceCodes,
-      );
-      const praxisOpennessCodes = super.getCodes(this.selectedPraxisOpenness);
-      const hasPraxisOpennessChanges = !this.isEqual(
-        this.praxisRule.openness || [],
-        praxisOpennessCodes,
-      );
-
-      const promises = [];
-
       if (
         this.initialToolGroup.name !== this.toolGroup.name
         || this.initialToolGroup.suggestedWeight !== this.toolGroup.suggestedWeight
@@ -87,7 +131,8 @@ export class UpdateToolGroupComponent
         ));
       }
 
-      if (hasCountriesChanges) {
+      const countryCodes = super.getCodes(this.selectedCountries);
+      if (this.hasMadeChanges(countryCodes, RuleTypeEnum.COUNTRY)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -98,7 +143,9 @@ export class UpdateToolGroupComponent
           ),
         );
       }
-      if (hasLanguagesChanges) {
+
+      const languageCodes = super.getCodes(this.selectedLanguages);
+      if (this.hasMadeChanges(languageCodes, RuleTypeEnum.LANGUAGE)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -109,7 +156,14 @@ export class UpdateToolGroupComponent
           ),
         );
       }
-      if (hasPraxisConfidenceChanges || hasPraxisOpennessChanges) {
+
+      const praxisConfidenceCodes = super.getCodes(
+        this.selectedPraxisConfidence,
+      );
+      const praxisOpennessCodes = super.getCodes(this.selectedPraxisOpenness);
+      // hasMadeChanges take the openness codes and then knows to grab the confidence codes
+      // As it is of the RuleTypeEnum "PRAXIS"
+      if (this.hasMadeChanges(praxisOpennessCodes, RuleTypeEnum.PRAXIS)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -124,11 +178,25 @@ export class UpdateToolGroupComponent
         );
       }
 
-      Promise.all([promises])
-        .then(() => {
-          super.saveToolGroup();
-        })
-        .catch((error) => super.handleError(error));
+      const results: PromisePayload[] = await Promise.all(
+        promises.map((p) =>
+          p
+            .then((value) => ({
+              success: true,
+              value,
+            }))
+            .catch((error) => ({
+              success: false,
+              error,
+            })),
+        ),
+      );
+      const invalidResults = results.filter((result) => !result.success);
+      if (invalidResults.length) {
+        throw new Error(invalidResults.join('. '))
+      } else {
+        super.saveToolGroup();
+      }
     } catch (error) {
       super.handleError(error);
     }
