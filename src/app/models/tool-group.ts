@@ -87,3 +87,8 @@ export interface Tools {
   _relationships?: string[];
   _type?: string;
 }
+
+export type RulesType =
+| (CountryRule & LanguageRule & PraxisRule)
+| (LanguageRule & PraxisRule & CountryRule)
+| (PraxisRule & CountryRule & LanguageRule)
