@@ -37,7 +37,7 @@
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
             >
-              Rule #{{ rule.id }}
+              Rule
               <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'language')"
@@ -81,7 +81,7 @@
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
             >
-              Rule #{{ rule.id }}
+              Rule
               <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'country')"
@@ -126,7 +126,7 @@
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
             >
-              Rule #{{ rule.id }}
+              Rule
               <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'praxis')"

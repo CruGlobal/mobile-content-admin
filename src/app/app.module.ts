@@ -58,7 +58,6 @@ import { ToolGroupsComponent } from './components/tool-groups/tool-groups.compon
 import { ToolGroupService } from './service/tool-group/tool-group.service';
 import { CreateToolGroupComponent } from './components/edit-tool-group/create-tool-group/create-tool-group.component';
 import { ToolGroupComponent } from './components/tool-group/tool-group.component';
-import { LanguageBCP47Service } from './service/languages-bcp47-tag.service';
 import { UpdateToolGroupComponent } from './components/edit-tool-group/update-tool-group/update-tool-group.component';
 import { ToolGroupRuleComponent } from './components/edit-tool-group-rule/tool-group-rule.component';
 import { ToolGroupRuleReuseableComponent } from './components/edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
@@ -132,7 +131,6 @@ import { ToolGroupResourceComponent } from './components/edit-tool-group-resourc
     UserAuthSessionService,
     AttributeTranslationService,
     ToolGroupService,
-    LanguageBCP47Service,
   ],
   entryComponents: [
     UpdateResourceComponent,

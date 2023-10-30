@@ -1,5 +1,7 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Input, Output, EventEmitter } from '@angular/core';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { Language } from '../../models/language';
 import {
   CountriesType,
   ToolGroup,
@@ -10,13 +12,11 @@ import {
   RuleType,
   PraxisType,
 } from '../../models/tool-group';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
 export abstract class AbstractEditToolGroupComponent {
   @Input() toolGroup: ToolGroup = new ToolGroup();
   @Input() selectedCountries: CountriesType[] = [];
-  @Input() selectedLanguages: LanguageBCP47[] = [];
+  @Input() selectedLanguages: Language[] = [];
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
   @Output() EditedToolGroup: EventEmitter<any> = new EventEmitter();
@@ -58,7 +58,7 @@ export abstract class AbstractEditToolGroupComponent {
   }
 
   updateSelected(
-    selectedItems: (CountriesType | LanguageBCP47 | Praxis)[],
+    selectedItems: (CountriesType | Language | Praxis)[],
     type: RuleType,
     subType: PraxisType,
   ): void {
@@ -67,7 +67,7 @@ export abstract class AbstractEditToolGroupComponent {
         this.selectedCountries = selectedItems as CountriesType[];
         break;
       case RuleTypeEnum.LANGUAGE:
-        this.selectedLanguages = selectedItems as LanguageBCP47[];
+        this.selectedLanguages = selectedItems as Language[];
         break;
       case RuleTypeEnum.PRAXIS:
         switch (subType) {
@@ -90,7 +90,9 @@ export abstract class AbstractEditToolGroupComponent {
       case RuleTypeEnum.LANGUAGE:
         this.languageRule['negative-rule'] = negativeRule;
         break;
-      // Praxis does not have negative rule.
+      case RuleTypeEnum.PRAXIS:
+        this.praxisRule['negative-rule'] = negativeRule;
+        break;
     }
   }
 
@@ -111,9 +113,7 @@ export abstract class AbstractEditToolGroupComponent {
     this.errorMessage = message;
   }
 
-  protected getCodes(
-    items: (CountriesType | LanguageBCP47 | Praxis)[],
-  ): string[] {
+  protected getCodes(items: (CountriesType | Language | Praxis)[]): string[] {
     return items.map((item) => item.code);
   }
 
