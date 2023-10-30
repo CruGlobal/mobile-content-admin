@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
-import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
+import { Language } from '../../../models/language';
 import {
   CountriesType,
   ToolGroup,
@@ -27,7 +27,7 @@ export class UpdateToolGroupComponent
   implements OnInit {
   @Input() toolGroup: ToolGroup;
   @Input() selectedCountries: CountriesType[] = [];
-  @Input() selectedLanguages: LanguageBCP47[] = [];
+  @Input() selectedLanguages: Language[] = [];
   @Input() selectedPraxisConfidence: Praxis[] = [];
   @Input() selectedPraxisOpenness: Praxis[] = [];
   initialToolGroup: ToolGroup;
@@ -52,69 +52,83 @@ export class UpdateToolGroupComponent
       array1
         .slice()
         .sort()
-        .every((value, index) => value.toString().toLowerCase() === array2Sorted[index].toString().toLowerCase())
+        .every(
+          (value, index) =>
+            value.toString().toLowerCase() ===
+            array2Sorted[index].toString().toLowerCase(),
+        )
     );
   };
 
-  getValues(type: RuleTypeEnum, praxisType?: PraxisTypeEnum)  {
-    switch(type) {
+  getValues(type: RuleTypeEnum, praxisType?: PraxisTypeEnum) {
+    switch (type) {
       case RuleTypeEnum.COUNTRY:
-        const initialcountry = this.initialToolGroup['rules-country'][0] || undefined;
+        const initialcountry =
+          this.initialToolGroup['rules-country'][0] || undefined;
         return {
           initialRule: initialcountry,
           initialCodes: initialcountry.countries || [],
           initialNegativeRule: initialcountry['negative-rule'],
           negativeRule: this.countryRule['negative-rule'],
-        }
+        };
       case RuleTypeEnum.LANGUAGE:
-        const initialLanguage = this.initialToolGroup['rules-language'][0] || undefined;
+        const initialLanguage =
+          this.initialToolGroup['rules-language'][0] || undefined;
         return {
           initialRule: initialLanguage,
           initialCodes: initialLanguage.languages || [],
           initialNegativeRule: initialLanguage['negative-rule'],
           negativeRule: this.languageRule['negative-rule'],
-        }
+        };
       case RuleTypeEnum.PRAXIS:
-        const initialPraxis = this.initialToolGroup['rules-praxis'][0] || undefined;
+        const initialPraxis =
+          this.initialToolGroup['rules-praxis'][0] || undefined;
         if (praxisType === PraxisTypeEnum.CONFIDENCE) {
           return {
             initialRule: initialPraxis,
             initialCodes: initialPraxis.confidence,
             initialNegativeRule: initialPraxis['negative-rule'],
             negativeRule: this.praxisRule['negative-rule'],
-          }
+          };
         } else {
           return {
             initialRule: initialPraxis,
             initialCodes: initialPraxis.openness,
             initialNegativeRule: initialPraxis['negative-rule'],
             negativeRule: this.praxisRule['negative-rule'],
-          }
+          };
         }
     }
   }
 
-  hasMadeChanges(codes, type): boolean {
+  hasMadeChanges(codes: string[], type: RuleTypeEnum): boolean {
     const values = this.getValues(type);
 
     if (!values.initialRule && (codes || values.negativeRule)) {
       return true;
     } else if (values.initialRule) {
       const codeChanges = !this.isEqual(values.initialCodes, codes);
-      const negativeChanges = values.initialNegativeRule !== values.negativeRule;
+      const negativeChanges =
+        values.initialNegativeRule !== values.negativeRule;
       if (codeChanges || negativeChanges) {
-        return true
+        return true;
       }
       if (type === RuleTypeEnum.PRAXIS) {
         // Test confidence
-        const values = this.getValues(type, PraxisTypeEnum.CONFIDENCE);
-        const codeChanges = !this.isEqual(values.initialCodes, super.getCodes(this.selectedPraxisConfidence));
-        if (codeChanges) {
-          return true
+        const confidenceValues = this.getValues(
+          type,
+          PraxisTypeEnum.CONFIDENCE,
+        );
+        const confidenceCodeChanges = !this.isEqual(
+          confidenceValues.initialCodes,
+          super.getCodes(this.selectedPraxisConfidence),
+        );
+        if (confidenceCodeChanges) {
+          return true;
         }
       }
     }
-    return false
+    return false;
   }
 
   async saveToolGroup(): Promise<void> {
@@ -122,13 +136,12 @@ export class UpdateToolGroupComponent
     const promises = [];
     try {
       if (
-        this.initialToolGroup.name !== this.toolGroup.name
-        || this.initialToolGroup.suggestedWeight !== this.toolGroup.suggestedWeight
+        this.initialToolGroup.name !== this.toolGroup.name ||
+        this.initialToolGroup.suggestedWeight !== this.toolGroup.suggestedWeight
       ) {
-        promises.push(this.toolGroupService.createOrUpdateToolGroup(
-          this.toolGroup,
-          true,
-        ));
+        promises.push(
+          this.toolGroupService.createOrUpdateToolGroup(this.toolGroup, true),
+        );
       }
 
       const countryCodes = super.getCodes(this.selectedCountries);
@@ -193,7 +206,7 @@ export class UpdateToolGroupComponent
       );
       const invalidResults = results.filter((result) => !result.success);
       if (invalidResults.length) {
-        throw new Error(invalidResults.join('. '))
+        throw new Error(invalidResults.join('. '));
       } else {
         super.saveToolGroup();
       }

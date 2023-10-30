@@ -8,8 +8,7 @@ import {
   PraxisTypeEnum,
 } from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
-
+import { Language } from '../../models/language';
 
 @Component({
   selector: 'admin-tool-group-rule',
@@ -44,7 +43,7 @@ export class ToolGroupRuleComponent implements OnInit {
   }
 
   updateSelected(
-    selectedItems: (CountriesType | LanguageBCP47 | Praxis)[],
+    selectedItems: (CountriesType | Language | Praxis)[],
     praxisType: PraxisTypeEnum,
   ): void {
     const codes = selectedItems.map((item) => item.code);
@@ -102,7 +101,7 @@ export class ToolGroupRuleComponent implements OnInit {
       .catch(this.handleError.bind(this));
   }
 
-  protected getCodes(items: (CountriesType | LanguageBCP47)[]): string[] {
+  protected getCodes(items: (CountriesType | Language)[]): string[] {
     return items.map((item) => item.code);
   }
 

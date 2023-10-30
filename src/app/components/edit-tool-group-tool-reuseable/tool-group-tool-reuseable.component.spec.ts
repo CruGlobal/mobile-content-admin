@@ -3,9 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Resource } from '../../models/resource';
-import { toolGroupFullDetails } from '../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
 import { ToolGroupToolReuseableComponent } from './tool-group-tool-reuseable.component';
-
 
 describe('ToolGroupToolReuseableComponent', () => {
   let comp: ToolGroupToolReuseableComponent;
@@ -21,18 +20,16 @@ describe('ToolGroupToolReuseableComponent', () => {
       ...new Resource(),
       id: 13,
       name: 'Test Resource',
-    }
-  ]
+    },
+  ];
+  const mocks = new ToolGroupMocks();
+  const toolGroupFullDetails = mocks.toolGroupFullDetails();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ToolGroupToolReuseableComponent,
-      ],
+      declarations: [ToolGroupToolReuseableComponent],
       imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
-      providers: [
-        { provide: NgbActiveModal },
-      ],
+      providers: [{ provide: NgbActiveModal }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ToolGroupToolReuseableComponent);
@@ -44,15 +41,15 @@ describe('ToolGroupToolReuseableComponent', () => {
       comp.tool = toolGroupFullDetails.tools[0];
       comp.resources = resources;
 
-      comp.updatedToolEmit.subscribe(value => ({
+      comp.updatedToolEmit.subscribe((value) => ({
         ...value,
         tool: {
           ...value.tool,
-          name: 'New Name'
+          name: 'New Name',
         },
-      }))
-      comp.ngOnInit()
-      expect(comp.suggestionsWeight).toEqual('12')
+      }));
+      comp.ngOnInit();
+      expect(comp.suggestionsWeight).toEqual('12');
     });
   });
 });

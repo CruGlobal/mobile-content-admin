@@ -7,7 +7,6 @@ import {
 import { Subject } from 'rxjs';
 import { countries } from 'countries-list';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47Service } from '../../service/languages-bcp47-tag.service';
 import {
   ToolGroup,
   ToolGroupRule,
@@ -39,14 +38,12 @@ export class ToolGroupComponent implements OnDestroy {
   showDetails = false;
   hasLoadedInitialDetails = false;
   errorMessage: string;
-  languages: string[][] = [];
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();
 
   constructor(
     private modalService: NgbModal,
-    private languageBCP47Service: LanguageBCP47Service,
     protected toolGroupService: ToolGroupService,
   ) {}
 
@@ -120,7 +117,9 @@ export class ToolGroupComponent implements OnDestroy {
     let value;
     switch (type) {
       case RuleTypeEnum.LANGUAGE:
-        value = this.languageBCP47Service.getLanguage(code);
+        value = this.toolGroupsComponent.languages.find(
+          (language) => language.code === code,
+        ) || { name: code };
         break;
       case RuleTypeEnum.COUNTRY:
         value = countries[code];

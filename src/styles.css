@@ -7,7 +7,6 @@
   overflow-y: auto;
 }
 
-
 /* .card with scroll */
 .card.autoScroll {
   max-height: 500px;
@@ -63,4 +62,3 @@
   background-color:#009cdc;
   box-shadow:0 1px 8px rgba(0,0,0,0.5);
 }
-
