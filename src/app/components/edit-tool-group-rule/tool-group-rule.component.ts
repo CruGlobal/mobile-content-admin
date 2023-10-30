@@ -2,9 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   CountriesType,
-  CountryRule,
-  LanguageRule,
-  PraxisRule,
+  RulesType,
   Praxis,
   RuleTypeEnum,
   PraxisTypeEnum,
@@ -18,10 +16,7 @@ import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
   templateUrl: './tool-group-rule.component.html',
 })
 export class ToolGroupRuleComponent implements OnInit {
-  @Input() rule:
-    | (CountryRule & LanguageRule & PraxisRule)
-    | (LanguageRule & PraxisRule & CountryRule)
-    | (PraxisRule & CountryRule & LanguageRule);
+  @Input() rule: RulesType;
   @Input() ruleType: RuleTypeEnum;
   @Output() EditedRule: EventEmitter<any> = new EventEmitter();
   saving = false;

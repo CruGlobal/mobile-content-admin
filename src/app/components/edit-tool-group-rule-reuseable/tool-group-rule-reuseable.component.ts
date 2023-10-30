@@ -50,11 +50,12 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.negativeInputId = Math.floor(Math.random() * 50);
+    this.negativeInputId = Math.floor(Math.random() * 1000);
     this.negativeRule = this.rule['negative-rule'];
 
     switch (this.ruleType) {
       case RuleTypeEnum.COUNTRY:
+        this.name = 'Countries';
         this.items = Object.entries(countries).map((country) => {
           return {
             code: country[0],
@@ -66,20 +67,20 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
             return this.items.find((country) => country.code === countryCode);
           }) as unknown) as CountriesType[];
         }
-        this.name = 'Countries';
         break;
       case RuleTypeEnum.LANGUAGE:
+        this.name = 'Languages';
         this.items = this.languageBCP47Service.getLanguages();
         if (this.rule.languages) {
           this.selectedItems = this.rule.languages.map((langCode) => {
             return this.languageBCP47Service.getLanguage(langCode);
           });
         }
-        this.name = 'Languages';
         break;
       case RuleTypeEnum.PRAXIS:
         switch (this.praxisType) {
           case PraxisTypeEnum.CONFIDENCE:
+            this.name = 'Confidence';
             this.items = Object.entries(
               this.toolGroupService.praxisConfidentData,
             ).map((praxis) => {
@@ -95,11 +96,11 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
                 );
               });
             }
-            this.name = 'Confidence';
             break;
           case PraxisTypeEnum.OPENNESS:
+            this.name = 'Openness';
             this.items = Object.entries(
-              this.toolGroupService.praxisConfidentData,
+              this.toolGroupService.praxisOpennessData,
             ).map((praxis) => {
               return {
                 code: praxis[0],
@@ -113,7 +114,6 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
                 );
               });
             }
-            this.name = 'Openness';
             break;
         }
         break;
