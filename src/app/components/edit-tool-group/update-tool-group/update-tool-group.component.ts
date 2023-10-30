@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash'
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
-import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
+import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
 import {
   CountriesType,
   ToolGroup,
@@ -10,8 +11,7 @@ import {
   Praxis,
   PraxisTypeEnum,
 } from '../../../models/tool-group';
-import { LanguageBCP47 } from '../../../service/languages-bcp47-tag.service';
-import * as _ from 'lodash'
+import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
 
 interface PromisePayload {
   success: boolean;

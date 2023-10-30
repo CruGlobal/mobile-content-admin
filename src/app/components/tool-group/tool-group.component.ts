@@ -19,7 +19,7 @@ import {
   PraxisType,
 } from '../../models/tool-group';
 import { Resource } from '../../models/resource';
-import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-resource.component';
+import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-tool-group.component';
 import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 import { ToolGroupRuleComponent } from '../edit-tool-group-rule/tool-group-rule.component';
 import { ToolGroupResourceComponent } from '../edit-tool-group-resource/tool-group-resource.component';
