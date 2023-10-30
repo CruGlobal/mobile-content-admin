@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractService } from './abstract.service';
-
+// This file is tested in src/app/service/tool-group/tool-group.service.spec.ts
 export interface LanguageBCP47 {
   code: string;
   language: string;
