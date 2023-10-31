@@ -115,7 +115,10 @@ export class UpdateToolGroupComponent
       }
       if (type === RuleTypeEnum.PRAXIS) {
         // Test confidence
-        const confidenceValues = this.getValues(type, PraxisTypeEnum.CONFIDENCE);
+        const confidenceValues = this.getValues(
+          type,
+          PraxisTypeEnum.CONFIDENCE,
+        );
         const confidenceCodeChanges = !this.isEqual(
           confidenceValues.initialCodes,
           super.getCodes(this.selectedPraxisConfidence),
