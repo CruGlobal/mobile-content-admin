@@ -114,7 +114,6 @@ describe('ToolGroupResourceComponent', () => {
       tool.suggestionsWeight = '50';
       comp.updateTool(tool);
       setTimeout(() => {
-        console.log('comp.tools', comp.tools);
         expect(comp.tools[0].suggestionsWeight).toEqual('50');
         done();
       });
