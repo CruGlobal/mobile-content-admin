@@ -1,22 +1,23 @@
-import { LanguageBCP47 } from "../service/languages-bcp47-tag.service";
-import { Resource } from "../models/resource";
-import { CountriesType, ToolGroup } from "../models/tool-group";
+import { Language } from '../models/language';
+import { Resource } from '../models/resource';
+import { CountriesType, ToolGroup } from '../models/tool-group';
 
 export class ToolGroupMocks {
-
   languageUKMock = {
     code: 'en-GB',
-    language: 'English',
-    region: 'United Kingdom',
     name: 'English (British)',
-  } as LanguageBCP47;
+    id: 5,
+    customPages: null,
+    canConfirmDelete: null,
+  } as Language;
 
   languageUSMock = {
     code: 'en-US',
-    language: 'English',
-    region: 'United States of America',
     name: 'English (American)',
-  } as LanguageBCP47;
+    id: 2,
+    customPages: null,
+    canConfirmDelete: null,
+  } as Language;
 
   countryUKMock = {
     code: 'GB',
@@ -26,7 +27,7 @@ export class ToolGroupMocks {
     continent: 'EU',
     capital: 'London',
     currency: ['GBP'],
-    languages: ['en']
+    languages: ['en'],
   } as CountriesType;
 
   countryUSMock = {
@@ -37,16 +38,27 @@ export class ToolGroupMocks {
     continent: 'NA',
     capital: 'Washington D.C.',
     currency: ['USD', 'USN', 'USS'],
-    languages: ['en']
+    languages: ['en'],
   } as CountriesType;
 
+  getLanguagesResponse = [
+    {
+      code: 'ar-SA',
+      name: 'Arabic (Saudi Arabia)',
+      id: 9,
+      customPages: null,
+      canConfirmDelete: null,
+    },
+    this.languageUKMock,
+    this.languageUSMock,
+  ] as Language[];
 
   toolGroupFullDetails = () => {
     const resource = new Resource();
     resource.id = 13;
     resource.name = 'Test Resource';
 
-    return {
+    return ({
       id: 8,
       'suggestions-weight': '3.0',
       name: 'Test Tool Group',
@@ -58,7 +70,7 @@ export class ToolGroupMocks {
             id: 8,
           },
           countries: [this.countryUKMock.code, this.countryUSMock.code],
-        }
+        },
       ],
       'rules-language': [
         {
@@ -68,7 +80,7 @@ export class ToolGroupMocks {
             id: 8,
           },
           languages: [this.languageUKMock.code, this.languageUSMock.code],
-        }
+        },
       ],
       'rules-praxis': [
         {
@@ -77,9 +89,9 @@ export class ToolGroupMocks {
           'tool-group': {
             id: 8,
           },
-          confidence: ['1','2'],
+          confidence: ['1', '2'],
           openness: ['3'],
-        }
+        },
       ],
       tools: [
         {
@@ -89,13 +101,13 @@ export class ToolGroupMocks {
           tool: {
             ...resource,
             id: 15,
-            name: 'Resource Name'
+            name: 'Resource Name',
           },
           'tool-group': {
             id: 8,
           },
-        }
+        },
       ],
-    } as unknown as ToolGroup;
-  }
+    } as unknown) as ToolGroup;
+  };
 }

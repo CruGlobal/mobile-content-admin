@@ -10,15 +10,13 @@ import {
 } from '../../models/tool-group';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { countries } from 'countries-list';
-import {
-  LanguageBCP47Service,
-  LanguageBCP47,
-} from '../../service/languages-bcp47-tag.service';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { LanguageService } from '../../service/language.service';
+import { Language } from '../../models/language';
 
 type Item =
-  | (LanguageBCP47 & CountriesType & Praxis)
-  | (CountriesType & Praxis & LanguageBCP47);
+  | (Language & CountriesType & Praxis)
+  | (CountriesType & Praxis & Language);
 
 @Component({
   selector: 'admin-tool-group-rule-reuseable',
@@ -32,20 +30,20 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   @Input() ruleType: RuleTypeEnum;
   @Input() praxisType: PraxisTypeEnum;
   @Output() selectedItemsEmit = new EventEmitter<
-    (LanguageBCP47 | CountriesType | Praxis)[]
+    (Language | CountriesType | Praxis)[]
   >();
   @Output() negativeRuleOutput = new EventEmitter<boolean>();
-  selectedItems: (LanguageBCP47 | CountriesType | Praxis)[] = [];
+  selectedItems: (Language | CountriesType | Praxis)[] = [];
   negativeRule = false;
   negativeInputId: number;
-  items: (LanguageBCP47 | CountriesType | Praxis)[];
-  selectedItem: LanguageBCP47 | CountriesType | Praxis;
+  items: (Language | CountriesType | Praxis)[];
+  selectedItem: Language | CountriesType | Praxis;
   name: string;
   errorMessage: string;
 
   constructor(
     protected activeModal: NgbActiveModal,
-    protected languageBCP47Service: LanguageBCP47Service,
+    protected languageService: LanguageService,
     protected toolGroupService: ToolGroupService,
   ) {}
 
@@ -67,15 +65,22 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
             return this.items.find((country) => country.code === countryCode);
           }) as unknown) as CountriesType[];
         }
+        this.selectedItemsEmit.emit(this.selectedItems);
         break;
       case RuleTypeEnum.LANGUAGE:
         this.name = 'Languages';
-        this.items = this.languageBCP47Service.getLanguages();
-        if (this.rule.languages) {
-          this.selectedItems = this.rule.languages.map((langCode) => {
-            return this.languageBCP47Service.getLanguage(langCode);
-          });
-        }
+        this.languageService.getLanguages().then((items) => {
+          this.items = items;
+          if (this.rule.languages) {
+            this.selectedItems = this.rule.languages.map((langCode) => {
+              return (
+                this.items.find((item) => item.code === langCode) ||
+                ((langCode as unknown) as Language)
+              );
+            });
+          }
+          this.selectedItemsEmit.emit(this.selectedItems);
+        });
         break;
       case RuleTypeEnum.PRAXIS:
         switch (this.praxisType) {
@@ -116,9 +121,9 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
             }
             break;
         }
+        this.selectedItemsEmit.emit(this.selectedItems);
         break;
     }
-    this.selectedItemsEmit.emit(this.selectedItems);
   }
 
   handleSelectedItem(event) {
@@ -133,7 +138,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   handleDeleteSelectedItem(selecteditem: Item): void {
     this.selectedItems = (this.selectedItems.filter(
       (item) => item.code !== selecteditem.code,
-    ) as unknown) as LanguageBCP47[] | CountriesType[];
+    ) as unknown) as Language[] | CountriesType[];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 
