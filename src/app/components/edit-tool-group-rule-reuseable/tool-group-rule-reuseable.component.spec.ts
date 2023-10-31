@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash'
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { LanguageBCP47Service } from '../../service/languages-bcp47-tag.service';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { RuleTypeEnum, ToolGroup, ToolGroupRule, RulesType, PraxisTypeEnum } from '../../models/tool-group';
 import { ToolGroupRuleReuseableComponent } from './tool-group-rule-reuseable.component';
-import {languageUKMock, countryUKMock, countryUSMock, languageUSMock } from '../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks'
 
 describe('ToolGroupRuleReuseableComponent', () => {
   let comp: ToolGroupRuleReuseableComponent;
@@ -65,11 +64,12 @@ describe('ToolGroupRuleReuseableComponent', () => {
 
   const toolGroup = new ToolGroup()
   toolGroup.id = 4;
+  const mocks = new ToolGroupMocks();
 
   beforeEach(() => {
     spyOn(languageBCP47ServiceStub, 'getLanguage').and.callFake((code) => {
-      if (code === 'en-GB') return languageUKMock;
-      if (code === 'en-US') return languageUSMock;
+      if (code === 'en-GB') return mocks.languageUKMock;
+      if (code === 'en-US') return mocks.languageUSMock;
     })
 
     TestBed.configureTestingModule({
@@ -115,8 +115,8 @@ describe('ToolGroupRuleReuseableComponent', () => {
         languages: [ 'ca' ],
       })
       expect(comp.selectedItems).toEqual([
-        countryUKMock,
-        countryUSMock
+        mocks.countryUKMock,
+        mocks.countryUSMock
       ])
       expect(comp.name).toEqual('Countries')
     });
@@ -135,8 +135,8 @@ describe('ToolGroupRuleReuseableComponent', () => {
         name: 'Arabic (Saudi Arabia)',
       })
       expect(comp.selectedItems).toEqual([
-        languageUKMock,
-        languageUSMock
+        mocks.languageUKMock,
+        mocks.languageUSMock
       ])
       expect(comp.name).toEqual('Languages')
     });

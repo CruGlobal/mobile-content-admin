@@ -6,7 +6,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { LanguageBCP47Service } from '../../../service/languages-bcp47-tag.service';
 import { RuleTypeEnum, ToolGroup, ToolGroupRule } from '../../../models/tool-group';
-import {languageUKMock, countryUKMock } from '../../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks'
 import { ToolGroupRuleReuseableComponent } from '../../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { CreateToolGroupComponent } from './create-tool-group.component';
 
@@ -26,6 +26,7 @@ describe('CreateToolGroupComponent', () => {
   const toolGroup = new ToolGroup()
   const toolGroupRule = new ToolGroupRule()
   const createdToolGroupID = 16;
+  const mocks = new ToolGroupMocks()
 
   beforeEach(() => {
     spyOn(toolGroupServiceStub, 'createOrUpdateToolGroup').and.returnValue(
@@ -38,7 +39,7 @@ describe('CreateToolGroupComponent', () => {
       Promise.resolve<ToolGroupRule>(toolGroupRule),
     );
     spyOn(languageBCP47ServiceStub, 'getLanguage').and.returnValue(
-      languageUKMock,
+      mocks.languageUKMock,
     );
 
     TestBed.configureTestingModule({
@@ -68,7 +69,7 @@ describe('CreateToolGroupComponent', () => {
   });
 
   it('creates Country Rule', (done) => {
-    comp.selectedCountries = [countryUKMock]
+    comp.selectedCountries = [mocks.countryUKMock]
     comp.countryRule['negative-rule'] = true
     fixture.debugElement
       .query(By.css('.btn.btn-success'))
@@ -83,7 +84,7 @@ describe('CreateToolGroupComponent', () => {
   });
 
   it('creates Language Rule', (done) => {
-    comp.selectedLanguages = [languageUKMock]
+    comp.selectedLanguages = [mocks.languageUKMock]
     comp.languageRule['negative-rule'] = false
     fixture.debugElement
       .query(By.css('.btn.btn-success'))

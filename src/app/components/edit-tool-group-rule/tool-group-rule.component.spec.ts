@@ -5,7 +5,7 @@ import * as _ from 'lodash'
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { RuleTypeEnum, ToolGroupRule, RulesType, CountriesType, PraxisTypeEnum, Praxis } from '../../models/tool-group';
-import { countryUKMock, toolGroupFullDetails, countryUSMock } from '../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks'
 import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { ToolGroupRuleComponent } from './tool-group-rule.component';
 
@@ -18,7 +18,9 @@ describe('ToolGroupRuleComponent', () => {
     createOrUpdateRule() {},
   } as unknown) as ToolGroupService;
 
+  const mocks = new ToolGroupMocks()
   const toolGroupRule = new ToolGroupRule()
+  const toolGroupFullDetails = mocks.toolGroupFullDetails();
 
   beforeEach(() => {
     spyOn(toolGroupServiceStub, 'deleteRule').and.returnValue(
@@ -76,7 +78,7 @@ describe('ToolGroupRuleComponent', () => {
           'tool-group': {
             id: 5,
           },
-          countries: [countryUKMock.code],
+          countries: [mocks.countryUKMock.code],
         },
         {
           code: '9',
@@ -84,7 +86,7 @@ describe('ToolGroupRuleComponent', () => {
           'tool-group': {
             id: 5,
           },
-          countries: [countryUSMock.code],
+          countries: [mocks.countryUSMock.code],
         }
       ] as unknown as CountriesType[]
       comp.updateSelected(selectedItems, null)

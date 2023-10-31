@@ -3,11 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import * as _ from 'lodash'
 import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { LanguageBCP47Service } from '../../../service/languages-bcp47-tag.service';
 import { RuleTypeEnum, ToolGroup, ToolGroupRule } from '../../../models/tool-group';
-import {languageUKMock, countryUKMock, toolGroupFullDetails, countryUSMock, languageUSMock } from '../../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks'
 import { ToolGroupRuleReuseableComponent } from '../../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { UpdateToolGroupComponent } from './update-tool-group.component';
 
@@ -22,6 +21,8 @@ describe('UpdateToolGroupComponent', () => {
   const languageBCP47ServiceStub = ({
     getLanguage() {},
   } as unknown) as LanguageBCP47Service;
+
+  const mocks = new ToolGroupMocks()
 
   const toolGroup = new ToolGroup()
   const toolGroupRule = new ToolGroupRule()
@@ -38,7 +39,7 @@ describe('UpdateToolGroupComponent', () => {
       Promise.resolve<ToolGroupRule>(toolGroupRule),
     );
     spyOn(languageBCP47ServiceStub, 'getLanguage').and.returnValue(
-      languageUKMock,
+      mocks.languageUKMock,
     );
 
     TestBed.configureTestingModule({
@@ -56,7 +57,7 @@ describe('UpdateToolGroupComponent', () => {
 
     fixture = TestBed.createComponent(UpdateToolGroupComponent);
     comp = fixture.componentInstance;
-    comp.toolGroup = toolGroupFullDetails
+    comp.toolGroup = mocks.toolGroupFullDetails();
   });
 
   it('should not update as no changes were made', () => {
@@ -75,12 +76,12 @@ describe('UpdateToolGroupComponent', () => {
       comp.ngOnInit()
       comp.toolGroup.name = 'New Name';
       comp.selectedCountries = [
-        countryUKMock,
-        countryUSMock
+        mocks.countryUKMock,
+        mocks.countryUSMock
       ]
       comp.selectedLanguages = [
-        languageUKMock,
-        languageUSMock
+        mocks.languageUKMock,
+        mocks.languageUSMock
       ]
       comp.selectedPraxisConfidence = [
         {
@@ -112,7 +113,7 @@ describe('UpdateToolGroupComponent', () => {
 
     it('should update Country rule', () => {
       comp.selectedCountries = [
-        countryUKMock,
+        mocks.countryUKMock,
       ]
       fixture.debugElement
         .query(By.css('.btn.btn-success'))
@@ -122,7 +123,7 @@ describe('UpdateToolGroupComponent', () => {
         comp.toolGroup.id,
         comp.countryRule.id,
         comp.countryRule['negative-rule'],
-        [countryUKMock.code],
+        [mocks.countryUKMock.code],
         RuleTypeEnum.COUNTRY,
       );
     });
@@ -137,14 +138,14 @@ describe('UpdateToolGroupComponent', () => {
         comp.toolGroup.id,
         comp.countryRule.id,
         comp.countryRule['negative-rule'],
-        [countryUKMock.code, countryUSMock.code],
+        [mocks.countryUKMock.code, mocks.countryUSMock.code],
         RuleTypeEnum.COUNTRY,
       );
     });
 
     it('should update Langauge rule', () => {
       comp.selectedLanguages = [
-        languageUSMock
+        mocks.languageUSMock
       ]
       fixture.debugElement
         .query(By.css('.btn.btn-success'))
@@ -154,7 +155,7 @@ describe('UpdateToolGroupComponent', () => {
         comp.toolGroup.id,
         comp.languageRule.id,
         comp.languageRule['negative-rule'],
-        [languageUSMock.code],
+        [mocks.languageUSMock.code],
         RuleTypeEnum.LANGUAGE,
       );
     });
@@ -169,7 +170,7 @@ describe('UpdateToolGroupComponent', () => {
         comp.toolGroup.id,
         comp.languageRule.id,
         comp.languageRule['negative-rule'],
-        [languageUKMock.code, languageUSMock.code],
+        [mocks.languageUKMock.code, mocks.languageUSMock.code],
         RuleTypeEnum.LANGUAGE,
       );
     });
