@@ -1,5 +1,7 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Input, Output, EventEmitter } from '@angular/core';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 import {
   CountriesType,
   ToolGroup,
@@ -10,8 +12,6 @@ import {
   RuleType,
   PraxisType,
 } from '../../models/tool-group';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { LanguageBCP47 } from '../../service/languages-bcp47-tag.service';
 
 export abstract class AbstractEditToolGroupComponent {
   @Input() toolGroup: ToolGroup = new ToolGroup();
@@ -90,7 +90,9 @@ export abstract class AbstractEditToolGroupComponent {
       case RuleTypeEnum.LANGUAGE:
         this.languageRule['negative-rule'] = negativeRule;
         break;
-      // Praxis does not have negative rule.
+        case RuleTypeEnum.PRAXIS:
+          this.praxisRule['negative-rule'] = negativeRule
+        break;
     }
   }
 

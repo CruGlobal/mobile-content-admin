@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Resource } from '../../models/resource';
-import { toolGroupFullDetails } from '../../_tests/toolGroupMocks'
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks'
 import { ToolGroupToolReuseableComponent } from './tool-group-tool-reuseable.component';
 
 
@@ -23,6 +23,8 @@ describe('ToolGroupToolReuseableComponent', () => {
       name: 'Test Resource',
     }
   ]
+  const mocks = new ToolGroupMocks();
+  const toolGroupFullDetails = mocks.toolGroupFullDetails();
 
   beforeEach(() => {
     TestBed.configureTestingModule({

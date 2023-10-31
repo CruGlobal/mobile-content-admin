@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageBCP47Service } from '../../service/languages-bcp47-tag.service';
 import { CountryRule, LanguageRule, ToolGroup, ToolGroupRule } from '../..//models/tool-group';
-import { languageUKMock, toolGroupFullDetails } from '../../_tests/toolGroupMocks';
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
 import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 import { ToolGroupComponent } from './tool-group.component';
 
@@ -32,6 +32,7 @@ describe('ResourceComponent', () => {
     open() {},
   } as unknown) as NgbModal;
 
+  const mocks = new ToolGroupMocks();
   const toolGroup: ToolGroup = new ToolGroup();
   toolGroup.id = 8
   const rule: ToolGroupRule = new ToolGroupRule();
@@ -43,7 +44,7 @@ describe('ResourceComponent', () => {
   rule['tool-group'] = {
     ...toolGroup,
   }
-
+  const toolGroupFullDetails = mocks.toolGroupFullDetails();
   const modalRef = ({
     componentInstance: {
       source: null,
@@ -54,7 +55,7 @@ describe('ResourceComponent', () => {
 
   beforeEach(async(() => {
     spyOn(languageBCP47ServiceStub, 'getLanguage').and.returnValue(
-      languageUKMock,
+      mocks.languageUKMock,
     );
     spyOn(toolGroupServiceStub, 'getToolGroup').and.returnValue(
       Promise.resolve(toolGroupFullDetails),
@@ -101,7 +102,9 @@ describe('ResourceComponent', () => {
 
   describe('openUpdateModal', () => {
     it('should call loadAllDetails()', (done) => {
-      spyOn(comp, 'loadAllDetails')
+      spyOn(comp, 'loadAllDetails').and.returnValue(
+        Promise.resolve(toolGroupFullDetails),
+      )
       comp.openUpdateModal()
 
       setTimeout(() => {
@@ -154,7 +157,7 @@ describe('ResourceComponent', () => {
   describe('getReadableValue Languages', () => {
     it('should return UK language', () => {
       const value = comp.getReadableValue('en-GB', 'language', null)
-      expect(value).toEqual(languageUKMock);
+      expect(value).toEqual(mocks.languageUKMock);
     });
   });
 
