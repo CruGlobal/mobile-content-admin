@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { AuthService } from '../auth/auth.service';
 import { AbstractService } from '../abstract.service';
+import { Resource } from '../../models/resource';
 import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
 
@@ -276,6 +277,40 @@ export class ToolGroupService extends AbstractService {
           status: 'success',
         };
       })
+      .catch(this.handleError);
+  }
+
+  getToolGroupSuggestions(
+    countries: string[],
+    languages: string[],
+    confidence: string[],
+    openness: string[],
+  ): Promise<Resource[]> {
+    let filter = '';
+
+    const createFilters = (items: string[], filterString) => {
+      const filters = items.reduce(
+        (result: string, currentItem: string) =>
+          result + `${filterString}=${currentItem}&`,
+        '',
+      );
+      filter += filters;
+    };
+
+    createFilters(countries, 'filter[country]');
+    createFilters(languages, 'filter[language][]');
+    createFilters(openness, 'filter[openness]');
+    createFilters(confidence, 'filter[confidence]');
+
+    // Remove last "&" from string.
+    filter = filter.slice(0, -1);
+    return this.http
+      .get(
+        `${environment.base_url}resources/suggestions?${filter}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
+      .toPromise()
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }

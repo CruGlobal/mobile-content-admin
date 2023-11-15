@@ -8,7 +8,6 @@ import {
   Praxis,
   PraxisTypeEnum,
 } from '../../models/tool-group';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { countries } from 'countries-list';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageService } from '../../service/language.service';
