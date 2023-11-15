@@ -15,7 +15,7 @@ import {
 } from '../../models/tool-group';
 import { ToolGroupRuleReuseableComponent } from './tool-group-rule-reuseable.component';
 
-describe('ToolGroupRuleReuseableComponent', () => {
+fdescribe('ToolGroupRuleReuseableComponent', () => {
   let comp: ToolGroupRuleReuseableComponent;
   let fixture: ComponentFixture<ToolGroupRuleReuseableComponent>;
 
@@ -89,16 +89,7 @@ describe('ToolGroupRuleReuseableComponent', () => {
       comp.praxisType = undefined;
       comp.ngOnInit();
 
-      expect(comp.items[0]).toEqual({
-        code: 'AD',
-        name: 'Andorra',
-        native: 'Andorra',
-        phone: [376],
-        continent: 'EU',
-        capital: 'Andorra la Vella',
-        currency: ['EUR'],
-        languages: ['ca'],
-      });
+      expect(comp.items[0]).toEqual(mocks.countryADMock);
       expect(comp.selectedItems).toEqual([
         mocks.countryUKMock,
         mocks.countryUSMock,
@@ -172,6 +163,33 @@ describe('ToolGroupRuleReuseableComponent', () => {
         },
       ]);
       expect(comp.name).toEqual('Openness');
+    });
+  });
+  describe('handleSelectedItem()', () => {
+    let toolGroupRule;
+
+    beforeEach(() => {
+      toolGroupRule = new ToolGroupRule();
+      toolGroupRule.id = 5;
+      toolGroupRule['tool-group'] = toolGroup;
+    });
+
+    it('should only allow one item to be selected the country data', () => {
+      toolGroupRule.countries = ['GB', 'US'];
+      comp.rule = toolGroupRule as RulesType;
+      comp.ruleType = RuleTypeEnum.COUNTRY;
+      comp.praxisType = undefined;
+      comp.limitOneAnswer = true;
+      comp.ngOnInit();
+
+      expect(comp.selectedItems).toEqual([
+        mocks.countryUKMock,
+        mocks.countryUSMock,
+      ]);
+
+      comp.handleSelectedItem(mocks.countryADMock)
+
+      expect(comp.selectedItems).toEqual([mocks.countryADMock]);
     });
   });
 });
