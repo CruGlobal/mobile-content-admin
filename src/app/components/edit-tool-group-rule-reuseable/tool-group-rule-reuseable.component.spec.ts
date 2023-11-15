@@ -15,7 +15,7 @@ import {
 } from '../../models/tool-group';
 import { ToolGroupRuleReuseableComponent } from './tool-group-rule-reuseable.component';
 
-fdescribe('ToolGroupRuleReuseableComponent', () => {
+describe('ToolGroupRuleReuseableComponent', () => {
   let comp: ToolGroupRuleReuseableComponent;
   let fixture: ComponentFixture<ToolGroupRuleReuseableComponent>;
 
