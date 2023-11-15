@@ -15,8 +15,9 @@ import { Resource } from '../../models/resource';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
 import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 import { ToolGroupComponent } from './tool-group.component';
+import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 
-describe('ResourceComponent', () => {
+describe('ToolGroupComponent', () => {
   let comp: ToolGroupComponent;
   let fixture: ComponentFixture<ToolGroupComponent>;
   const mocks = new ToolGroupMocks();
@@ -82,7 +83,7 @@ describe('ResourceComponent', () => {
       Promise.resolve([resource]),
     );
     TestBed.configureTestingModule({
-      declarations: [ToolGroupsComponent, ToolGroupComponent],
+      declarations: [ToolGroupsComponent, ToolGroupComponent, ToolGroupRuleReuseableComponent],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
         { provide: ToolGroupService, useValue: toolGroupServiceStub },

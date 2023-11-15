@@ -41,6 +41,7 @@
         (selectedItemsEmit)="updateSelected($event, 'country', null)"
         (negativeRuleOutput)="updateNegativeRule($event, 'country')"
         [hideExclude]="true"
+        [limitOneAnswer]="true"
       >
       </admin-tool-group-rule-reuseable>
       <admin-tool-group-rule-reuseable
@@ -49,6 +50,7 @@
         [praxisType]="'confidence'"
         (selectedItemsEmit)="updateSelected($event, 'praxis', 'confidence')"
         (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
+        [limitOneAnswer]="true"
       >
       </admin-tool-group-rule-reuseable>
       <admin-tool-group-rule-reuseable
@@ -57,6 +59,7 @@
         [praxisType]="'openness'"
         (selectedItemsEmit)="updateSelected($event, 'praxis', 'openness')"
         (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
+        [limitOneAnswer]="true"
       >
       </admin-tool-group-rule-reuseable>
       <div
