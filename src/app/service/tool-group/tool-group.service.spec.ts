@@ -466,14 +466,12 @@ describe('ToolGroupService', () => {
     });
 
     it('should fetch all toolGroups', () => {
-      service.getToolGroupSuggestions(
-        'en',
-        ['UK', 'US'],
-        '2',
-        '1'
-      );
+      service.getToolGroupSuggestions('en', ['UK', 'US'], '2', '1');
 
-      expect(mockHttp.get).toHaveBeenCalledWith(`${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`, headers);
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`,
+        headers,
+      );
     });
   });
 });
