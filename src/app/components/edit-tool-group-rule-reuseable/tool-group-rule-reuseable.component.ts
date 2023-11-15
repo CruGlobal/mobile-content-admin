@@ -29,6 +29,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
     | (PraxisRule & CountryRule & LanguageRule);
   @Input() ruleType: RuleTypeEnum;
   @Input() praxisType: PraxisTypeEnum;
+  @Input() hideExclude: boolean;
   @Output() selectedItemsEmit = new EventEmitter<
     (Language | CountriesType | Praxis)[]
   >();
@@ -42,7 +43,6 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   errorMessage: string;
 
   constructor(
-    protected activeModal: NgbActiveModal,
     protected languageService: LanguageService,
     protected toolGroupService: ToolGroupService,
   ) {}
