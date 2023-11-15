@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h5 *ngIf="!isNewRule">{{ ruleType }} rule</h5>
+  <h5 *ngIf="isNewRule">New {{ ruleType }} rule</h5>
+</div>
+<div class="modal-body">
+  <div *ngIf="ruleType !== 'praxis'">
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      (selectedItemsEmit)="updateSelected($event)"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+  </div>
+
+  <div *ngIf="ruleType === 'praxis'">
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      [praxisType]="'confidence'"
+      (selectedItemsEmit)="updateSelected($event, 'confidence')"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+
+    <admin-tool-group-rule-reuseable
+      [rule]="rule"
+      [ruleType]="ruleType"
+      [praxisType]="'openness'"
+      (selectedItemsEmit)="updateSelected($event, 'openness')"
+      (negativeRuleOutput)="updateNegativeRule($event, ruleType)"
+    >
+    </admin-tool-group-rule-reuseable>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+        Saving...
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </ngb-alert>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer" style="justify-content: space-between">
+  <span *ngIf="isNewRule"></span>
+  <button
+    *ngIf="!isNewRule"
+    (click)="deleteRule()"
+    class="btn btn-outline-danger"
+  >
+    Delete Rule
+  </button>
+  <div class="btn-group" role="group">
+    <button (click)="cancel()" class="btn btn-danger">Cancel</button>
+    <button (click)="createOrUpdateRule()" class="btn btn-success">Save</button>
+  </div>
+</div>
