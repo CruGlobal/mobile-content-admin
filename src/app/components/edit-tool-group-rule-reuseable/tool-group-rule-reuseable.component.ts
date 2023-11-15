@@ -29,6 +29,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   @Input() ruleType: RuleTypeEnum;
   @Input() praxisType: PraxisTypeEnum;
   @Input() hideExclude: boolean;
+  @Input() limitOneAnswer: boolean;
   @Output() selectedItemsEmit = new EventEmitter<
     (Language | CountriesType | Praxis)[]
   >();
@@ -130,7 +131,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
       this.handleError(`Already selected ${this.ruleType}`);
       return;
     }
-    this.selectedItems = [...this.selectedItems, event];
+    this.selectedItems = this.limitOneAnswer ? [event] : [...this.selectedItems, event];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 

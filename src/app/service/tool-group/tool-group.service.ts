@@ -281,26 +281,30 @@ export class ToolGroupService extends AbstractService {
   }
 
   getToolGroupSuggestions(
-    countries: string[],
+    countries: string,
     languages: string[],
-    confidence: string[],
-    openness: string[],
+    confidence: string,
+    openness: string,
   ): Promise<Resource[]> {
     let filter = '';
 
-    const createFilters = (items: string[], filterString) => {
-      const filters = items.reduce(
-        (result: string, currentItem: string) =>
-          result + `${filterString}=${currentItem}&`,
-        '',
-      );
-      filter += filters;
+    const createFilters = (items: string | string[], filterString) => {
+      if (Array.isArray(items)) {
+        const filters = items.reduce(
+          (result: string, currentItem: string) =>
+            result + `${filterString}=${currentItem}&`,
+          '',
+        );
+        filter += filters;
+      } else {
+        filter += `${filterString}=${items}&`;
+      }
     };
 
     createFilters(countries, 'filter[country]');
     createFilters(languages, 'filter[language][]');
-    createFilters(openness, 'filter[openness]');
     createFilters(confidence, 'filter[confidence]');
+    createFilters(openness, 'filter[openness]');
 
     // Remove last "&" from string.
     filter = filter.slice(0, -1);

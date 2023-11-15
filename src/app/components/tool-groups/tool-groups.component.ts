@@ -33,10 +33,10 @@ export class ToolGroupsComponent implements OnInit {
   testerCountryRule: ToolGroupRule;
   testerLanguageRule: ToolGroupRule;
   testerPraxisRule: ToolGroupRule;
-  testerSelectedCountries: string[] = [];
+  testerSelectedCountries: string = '';
   testerSelectedLanguages: string[] = [];
-  testerSelectedPraxisConfidence: string[] = [];
-  testerSelectedPraxisOpenness: string[] = [];
+  testerSelectedPraxisConfidence: string = '';
+  testerSelectedPraxisOpenness: string = '';
   suggestedTools: Resource[] = [];
   loadingSuggestions = false;
   hasAlreadyRunTester = false;
@@ -113,7 +113,8 @@ export class ToolGroupsComponent implements OnInit {
     const codes = selectedItems.map((item) => item.code);
     switch (type) {
       case RuleTypeEnum.COUNTRY:
-        this.testerSelectedCountries = codes;
+        this.testerSelectedCountries = codes[0];
+        this.testerCountryRule.countries = [codes[0]];
         break;
       case RuleTypeEnum.LANGUAGE:
         this.testerSelectedLanguages = codes;
@@ -121,10 +122,12 @@ export class ToolGroupsComponent implements OnInit {
       case RuleTypeEnum.PRAXIS:
         switch (subType) {
           case PraxisTypeEnum.CONFIDENCE:
-            this.testerSelectedPraxisConfidence = codes;
+            this.testerSelectedPraxisConfidence = codes[0];
+            this.testerPraxisRule.confidence = [codes[0]];
             break;
           case PraxisTypeEnum.OPENNESS:
-            this.testerSelectedPraxisOpenness = codes;
+            this.testerSelectedPraxisOpenness = codes[0];
+            this.testerPraxisRule.openness = [codes[0]];
             break;
         }
         break;
