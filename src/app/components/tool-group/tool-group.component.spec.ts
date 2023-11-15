@@ -83,7 +83,11 @@ describe('ToolGroupComponent', () => {
       Promise.resolve([resource]),
     );
     TestBed.configureTestingModule({
-      declarations: [ToolGroupsComponent, ToolGroupComponent, ToolGroupRuleReuseableComponent],
+      declarations: [
+        ToolGroupsComponent,
+        ToolGroupComponent,
+        ToolGroupRuleReuseableComponent,
+      ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
         { provide: ToolGroupService, useValue: toolGroupServiceStub },

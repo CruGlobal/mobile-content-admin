@@ -187,7 +187,7 @@ describe('ToolGroupRuleReuseableComponent', () => {
         mocks.countryUSMock,
       ]);
 
-      comp.handleSelectedItem(mocks.countryADMock)
+      comp.handleSelectedItem(mocks.countryADMock);
 
       expect(comp.selectedItems).toEqual([mocks.countryADMock]);
     });

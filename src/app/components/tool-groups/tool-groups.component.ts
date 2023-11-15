@@ -33,10 +33,10 @@ export class ToolGroupsComponent implements OnInit {
   testerCountryRule: ToolGroupRule;
   testerLanguageRule: ToolGroupRule;
   testerPraxisRule: ToolGroupRule;
-  testerSelectedCountries: string = '';
+  testerSelectedCountries = '';
   testerSelectedLanguages: string[] = [];
-  testerSelectedPraxisConfidence: string = '';
-  testerSelectedPraxisOpenness: string = '';
+  testerSelectedPraxisConfidence = '';
+  testerSelectedPraxisOpenness = '';
   suggestedTools: Resource[] = [];
   loadingSuggestions = false;
   hasAlreadyRunTester = false;

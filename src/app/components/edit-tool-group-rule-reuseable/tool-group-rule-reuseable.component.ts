@@ -131,7 +131,9 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
       this.handleError(`Already selected ${this.ruleType}`);
       return;
     }
-    this.selectedItems = this.limitOneAnswer ? [event] : [...this.selectedItems, event];
+    this.selectedItems = this.limitOneAnswer
+      ? [event]
+      : [...this.selectedItems, event];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 
