@@ -61,7 +61,9 @@ export class ToolGroupResourceComponent implements OnInit {
           (item) => item.id === tool.id,
         );
         if (!tool.suggestionsWeight || tool.suggestionsWeight === '0') {
-          dataErrors.push(`${tool.tool.name} needs to have a Suggestions Weight larger than 0.`)
+          dataErrors.push(
+            `${tool.tool.name} needs to have a Suggestions Weight larger than 0.`,
+          );
         }
         promises.push(
           this.toolGroupService.addOrUpdateTool(
