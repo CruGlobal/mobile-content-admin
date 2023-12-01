@@ -10,7 +10,7 @@ import { ToolGroupResourceComponent } from './tool-group-resource.component';
 import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
 import { Tools } from '../../models/tool-group';
 
-describe('ToolGroupResourceComponent', () => {
+fdescribe('ToolGroupResourceComponent', () => {
   let comp: ToolGroupResourceComponent;
   let fixture: ComponentFixture<ToolGroupResourceComponent>;
 
@@ -132,6 +132,29 @@ describe('ToolGroupResourceComponent', () => {
       comp.ngOnInit();
     });
 
+    it('should return and error as suggestionsWeight is empty', () => {
+      comp.tools = [
+        {
+          ...tool,
+          suggestionsWeight: '',
+        },
+        {
+          ...tool,
+          suggestionsWeight: '0',
+          tool: {
+            ...tool.tool,
+            name: 'secondToolName'
+          }
+        },
+      ];
+      expect(comp.errorMessage.length).toEqual(0);
+      comp.createOrUpdate();
+      expect(activeModalStub.close).not.toHaveBeenCalled();
+      expect(comp.errorMessage.length).toEqual(2);
+      expect(comp.errorMessage[0]).toEqual(`${tool.tool.name} needs to have a Suggestions Weight larger than 0.`);
+      expect(comp.errorMessage[1]).toEqual(`secondToolName needs to have a Suggestions Weight larger than 0.`);
+    });
+
     it('should create one tool and update another', (done) => {
       comp.tools = [
         {
@@ -153,6 +176,7 @@ describe('ToolGroupResourceComponent', () => {
           comp.tools[1].suggestionsWeight,
           false,
         );
+        expect(comp.errorMessage.length).toEqual(0);
         expect(activeModalStub.close).toHaveBeenCalled();
         done();
       });
@@ -171,6 +195,7 @@ describe('ToolGroupResourceComponent', () => {
           comp.tools[0].suggestionsWeight,
           true,
         );
+        expect(comp.errorMessage.length).toEqual(0);
         expect(activeModalStub.close).toHaveBeenCalled();
         done();
       });
