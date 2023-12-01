@@ -228,7 +228,7 @@ export class ToolGroupService extends AbstractService {
       data: {
         type: 'tool-group-tool',
         attributes: {
-          'suggestions-weight': suggestionsWeight,
+          'suggestions-weight': suggestionsWeight || '1.0',
         },
         relationships: {
           tool: {
