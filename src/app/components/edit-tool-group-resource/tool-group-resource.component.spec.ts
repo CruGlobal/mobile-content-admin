@@ -10,7 +10,7 @@ import { ToolGroupResourceComponent } from './tool-group-resource.component';
 import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
 import { Tools } from '../../models/tool-group';
 
-fdescribe('ToolGroupResourceComponent', () => {
+describe('ToolGroupResourceComponent', () => {
   let comp: ToolGroupResourceComponent;
   let fixture: ComponentFixture<ToolGroupResourceComponent>;
 
