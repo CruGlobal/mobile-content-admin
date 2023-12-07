@@ -25,9 +25,23 @@
             class="card-header d-flex justify-content-between align-items-center"
           >
             <span class="h5 mb-0">Languages</span>
-            <button class="btn btn-secondary" (click)="createRule('language')">
+            <button
+              *ngIf="toolGroup['rules-language'].length > 1"
+              (click)="createRule('language')"
+              class="btn btn-secondary"
+            >
               <i class="fa fa-file"></i> Add language rule
             </button>
+            <button
+              *ngIf="toolGroup['rules-language'].length === 1"
+              (click)="openRuleModal(toolGroup['rules-language'][0], 'language')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit language rule
+            </button>
+          </div>
+          <div *ngIf="toolGroup['rules-language'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+            <small>Multiple Rules</small>
           </div>
 
           <ul
@@ -36,15 +50,19 @@
           >
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
+              *ngIf="toolGroup['rules-language'].length > 1"
             >
               Rule
-              <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'language')"
                 class="btn btn-outline-dark float-right"
               >
                 <i class="fa fa-pencil"></i> Edit
               </button>
+            </li>
+
+            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+              <small class="text-white">Exclude these languages</small>
             </li>
 
             <li
@@ -69,9 +87,23 @@
             class="card-header d-flex justify-content-between align-items-center"
           >
             <span class="h5 mb-0">Countries</span>
-            <button class="btn btn-secondary" (click)="createRule('country')">
+            <button
+              *ngIf="toolGroup['rules-country'].length > 1"
+              (click)="createRule('country')"
+              class="btn btn-secondary"
+            >
               <i class="fa fa-file"></i> Add country rule
             </button>
+            <button
+              *ngIf="toolGroup['rules-country'].length === 1"
+              (click)="openRuleModal(toolGroup['rules-country'][0], 'country')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit country rule
+            </button>
+          </div>
+          <div *ngIf="toolGroup['rules-country'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+            <small>Multiple Rules</small>
           </div>
 
           <ul
@@ -79,16 +111,19 @@
             *ngFor="let rule of toolGroup['rules-country']"
           >
             <li
+              *ngIf="toolGroup['rules-country'].length > 1"
               class="list-group-item d-flex justify-content-between align-items-center"
             >
               Rule
-              <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'country')"
                 class="btn btn-outline-dark float-right"
               >
                 <i class="fa fa-pencil"></i> Edit
               </button>
+            </li>
+            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+              <small class="text-white">Exclude these countries</small>
             </li>
 
             <li
@@ -114,9 +149,23 @@
             class="card-header d-flex justify-content-between align-items-center"
           >
             <span class="h5 mb-0">Praxis</span>
-            <button class="btn btn-secondary" (click)="createRule('praxis')">
+            <button
+              *ngIf="toolGroup['rules-praxis'].length > 1"
+              (click)="createRule('praxis')"
+              class="btn btn-secondary"
+            >
               <i class="fa fa-file"></i> Add praxis rule
             </button>
+            <button
+              *ngIf="toolGroup['rules-praxis'].length === 1"
+              (click)="openRuleModal(toolGroup['rules-praxis'][0], 'praxis')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit praxis rule
+            </button>
+          </div>
+          <div *ngIf="toolGroup['rules-praxis'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+            <small>Multiple Rules</small>
           </div>
 
           <ul
@@ -124,16 +173,20 @@
             *ngFor="let rule of toolGroup['rules-praxis']"
           >
             <li
+              *ngIf="toolGroup['rules-country'].length > 1"
               class="list-group-item d-flex justify-content-between align-items-center"
             >
               Rule
-              <span *ngIf="rule['negative-rule']">(Reverse)</span>
               <button
                 (click)="openRuleModal(rule, 'praxis')"
                 class="btn btn-outline-dark float-right"
               >
                 <i class="fa fa-pencil"></i> Edit
               </button>
+            </li>
+
+            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+              <small class="text-white">Exclude these praxis</small>
             </li>
 
             <li

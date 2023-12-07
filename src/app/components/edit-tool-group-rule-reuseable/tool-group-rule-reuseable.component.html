@@ -31,19 +31,24 @@
   </div>
 </div>
 
-<div class="row mb-3" *ngIf="ruleType !== 'praxis'">
+<div class="row mb-3" *ngIf="praxisType !== 'confidence' && !hideExclude">
   <div class="col-12">
     <div class="pl-4" style="position: relative">
       <input
         id="{{ negativeInputId }}"
         type="checkbox"
-        class="custom-control-input"
+        class="form-check-input"
         [(ngModel)]="negativeRule"
         (ngModelChange)="handleNegativeRuleChange($event)"
       />
-      <label class="custom-control-label" for="{{ negativeInputId }}"
-        >Exclude {{ name }} Selected</label
-      >
+      <label
+        *ngIf="praxisType !== 'openness'"
+        class="form-check-label" for="{{ negativeInputId }}"
+      >Exclude {{ name }} Selected</label>
+      <label
+        *ngIf="praxisType === 'openness'"
+        class="form-check-label" for="{{ negativeInputId }}"
+      >Exclude Praxis Selected</label>
     </div>
   </div>
 </div>
