@@ -85,7 +85,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
       case RuleTypeEnum.PRAXIS:
         switch (this.praxisType) {
           case PraxisTypeEnum.CONFIDENCE:
-            this.name = 'Confidence';
+            this.name = 'Confidence - Praxis';
             this.items = Object.entries(
               this.toolGroupService.praxisConfidentData,
             ).map((praxis) => {
@@ -103,7 +103,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
             }
             break;
           case PraxisTypeEnum.OPENNESS:
-            this.name = 'Openness';
+            this.name = 'Openness - Praxis';
             this.items = Object.entries(
               this.toolGroupService.praxisOpennessData,
             ).map((praxis) => {
