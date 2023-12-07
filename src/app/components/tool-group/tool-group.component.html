@@ -34,13 +34,19 @@
             </button>
             <button
               *ngIf="toolGroup['rules-language'].length === 1"
-              (click)="openRuleModal(toolGroup['rules-language'][0], 'language')"
+              (click)="
+                openRuleModal(toolGroup['rules-language'][0], 'language')
+              "
               class="btn btn-secondary"
             >
               <i class="fa fa-file"></i> Edit language rule
             </button>
           </div>
-          <div *ngIf="toolGroup['rules-language'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+          <div
+            *ngIf="toolGroup['rules-language'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
             <small>Multiple Rules</small>
           </div>
 
@@ -61,7 +67,11 @@
               </button>
             </li>
 
-            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
               <small class="text-white">Exclude these languages</small>
             </li>
 
@@ -102,7 +112,11 @@
               <i class="fa fa-file"></i> Edit country rule
             </button>
           </div>
-          <div *ngIf="toolGroup['rules-country'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+          <div
+            *ngIf="toolGroup['rules-country'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
             <small>Multiple Rules</small>
           </div>
 
@@ -122,7 +136,11 @@
                 <i class="fa fa-pencil"></i> Edit
               </button>
             </li>
-            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
               <small class="text-white">Exclude these countries</small>
             </li>
 
@@ -164,7 +182,11 @@
               <i class="fa fa-file"></i> Edit praxis rule
             </button>
           </div>
-          <div *ngIf="toolGroup['rules-praxis'].length > 1" class="list-group-item pt-1 pb-1 bg-warning" style="line-height: 1">
+          <div
+            *ngIf="toolGroup['rules-praxis'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
             <small>Multiple Rules</small>
           </div>
 
@@ -185,7 +207,11 @@
               </button>
             </li>
 
-            <li *ngIf="rule['negative-rule']" class="list-group-item pt-1 pb-1 bg-danger" style="line-height: 1">
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
               <small class="text-white">Exclude these praxis</small>
             </li>
 
