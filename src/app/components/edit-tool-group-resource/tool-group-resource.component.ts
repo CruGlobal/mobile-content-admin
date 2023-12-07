@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UUID } from 'angular2-uuid';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ResourceService } from '../../service/resource/resource.service';
 import { Resource } from '../../models/resource';
@@ -51,12 +52,19 @@ export class ToolGroupResourceComponent implements OnInit {
 
   async createOrUpdate(): Promise<void> {
     this.saving = true;
+    this.errorMessage = [];
+    const dataErrors = [];
     const promises = [];
     if (this.tools.length) {
       this.tools.forEach((tool) => {
         const isUpdate = !!this.initialTools.find(
           (item) => item.id === tool.id,
         );
+        if (!tool.suggestionsWeight || tool.suggestionsWeight === '0') {
+          dataErrors.push(
+            `${tool.tool.name} needs to have a Suggestions Weight larger than 0.`,
+          );
+        }
         promises.push(
           this.toolGroupService.addOrUpdateTool(
             this.toolGroup.id,
@@ -67,6 +75,12 @@ export class ToolGroupResourceComponent implements OnInit {
           ),
         );
       });
+    }
+
+    if (dataErrors.length) {
+      this.saving = false;
+      this.errorMessage = dataErrors;
+      return;
     }
 
     const results: PromisePayload[] = await Promise.all(
@@ -125,7 +139,7 @@ export class ToolGroupResourceComponent implements OnInit {
   }
 
   generateId(): string {
-    return Math.floor(Math.random() * 1000).toString();
+    return UUID.UUID();
   }
 
   cancel() {
