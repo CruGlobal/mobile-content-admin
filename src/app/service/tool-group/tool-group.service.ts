@@ -289,6 +289,7 @@ export class ToolGroupService extends AbstractService {
     let filter = '';
 
     const createFilters = (items: string | string[], filterString) => {
+      if (!items) { return; }
       if (Array.isArray(items)) {
         const filters = items.reduce(
           (result: string, currentItem: string) =>
