@@ -31,7 +31,6 @@
         [rule]="testerLanguageRule"
         [ruleType]="'language'"
         (selectedItemsEmit)="updateSelected($event, 'language', null)"
-        (negativeRuleOutput)="updateNegativeRule($event, 'language')"
         [hideExclude]="true"
       >
       </admin-tool-group-rule-reuseable>
@@ -39,7 +38,6 @@
         [rule]="testerCountryRule"
         [ruleType]="'country'"
         (selectedItemsEmit)="updateSelected($event, 'country', null)"
-        (negativeRuleOutput)="updateNegativeRule($event, 'country')"
         [hideExclude]="true"
         [limitOneAnswer]="true"
       >
@@ -48,6 +46,7 @@
         [rule]="testerPraxisRule"
         [ruleType]="'praxis'"
         [praxisType]="'confidence'"
+        [hideExclude]="true"
         (selectedItemsEmit)="updateSelected($event, 'praxis', 'confidence')"
         [limitOneAnswer]="true"
       >
@@ -56,8 +55,8 @@
         [rule]="testerPraxisRule"
         [ruleType]="'praxis'"
         [praxisType]="'openness'"
+        [hideExclude]="true"
         (selectedItemsEmit)="updateSelected($event, 'praxis', 'openness')"
-        (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
         [limitOneAnswer]="true"
       >
       </admin-tool-group-rule-reuseable>
