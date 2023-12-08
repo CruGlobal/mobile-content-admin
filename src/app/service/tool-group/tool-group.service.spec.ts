@@ -466,7 +466,15 @@ describe('ToolGroupService', () => {
     });
 
     it('should fetch all toolGroups', () => {
-      service.getToolGroupSuggestions('en', ['UK', 'US'], '2', '1');
+      const languageRule = new ToolGroupRule();
+      languageRule.languages = ['UK', 'US'];
+      const countryRule = new ToolGroupRule();
+      countryRule.countries = ['en'];
+      const praxisRule = new ToolGroupRule();
+      praxisRule.openness = ['1'];
+      praxisRule.confidence = ['2'];
+
+      service.getToolGroupSuggestions(countryRule, languageRule, praxisRule);
 
       expect(mockHttp.get).toHaveBeenCalledWith(
         `${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`,

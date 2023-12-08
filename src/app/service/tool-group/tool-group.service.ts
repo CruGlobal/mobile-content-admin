@@ -291,12 +291,9 @@ export class ToolGroupService extends AbstractService {
   ): Promise<Resource[]> {
     let filter = '';
     const languages = languageRule.languages;
-    const excludeLanguages = languageRule['negative-rule'] || '';
     const countries = countryRule.countries;
-    const excludeCountries = countryRule['negative-rule'] || '';
     const confidence = praxisRule.confidence;
     const openness = praxisRule.openness;
-    const excludePraxis = praxisRule['negative-rule'] || '';
 
     const createFilters = (items: string | string[], filterString) => {
       if (!items) {
@@ -318,12 +315,6 @@ export class ToolGroupService extends AbstractService {
     createFilters(languages, 'filter[language][]');
     createFilters(confidence, 'filter[confidence]');
     createFilters(openness, 'filter[openness]');
-    createFilters(
-      excludeLanguages.toString(),
-      'filter[language_negative_rule]',
-    );
-    createFilters(excludeCountries.toString(), 'filter[country_negative_rule]');
-    createFilters(excludePraxis.toString(), 'filter[praxis_negative_rule]');
 
     // Remove last "&" from string.
     filter = filter.slice(0, -1);

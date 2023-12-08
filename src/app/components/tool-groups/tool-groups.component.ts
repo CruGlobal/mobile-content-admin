@@ -134,20 +134,6 @@ export class ToolGroupsComponent implements OnInit {
     }
   }
 
-  updateNegativeRule(negativeRule: boolean, type: RuleType): void {
-    switch (type) {
-      case RuleTypeEnum.COUNTRY:
-        this.testerCountryRule['negative-rule'] = negativeRule;
-        break;
-      case RuleTypeEnum.LANGUAGE:
-        this.testerLanguageRule['negative-rule'] = negativeRule;
-        break;
-      case RuleTypeEnum.PRAXIS:
-        this.testerPraxisRule['negative-rule'] = negativeRule;
-        break;
-    }
-  }
-
   protected handleError(message): void {
     this.errorMessage = message;
   }
