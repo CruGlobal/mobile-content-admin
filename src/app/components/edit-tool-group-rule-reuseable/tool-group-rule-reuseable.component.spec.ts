@@ -142,7 +142,7 @@ describe('ToolGroupRuleReuseableComponent', () => {
           name: 'Confidence 3',
         },
       ]);
-      expect(comp.name).toEqual('Confidence');
+      expect(comp.name).toEqual('Confidence - Praxis');
     });
 
     it('should assign the praxis openness data', () => {
@@ -162,7 +162,7 @@ describe('ToolGroupRuleReuseableComponent', () => {
           name: 'Openness 2',
         },
       ]);
-      expect(comp.name).toEqual('Openness');
+      expect(comp.name).toEqual('Openness - Praxis');
     });
   });
   describe('handleSelectedItem()', () => {
