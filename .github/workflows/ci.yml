@@ -39,7 +39,7 @@ jobs:
       - name: Run Test with CodeCov
         run: yarn test:codecov
       - name: Code coverage test
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v3.1.4
 
   deploy:
     name: Deployment
@@ -58,7 +58,7 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build:${{vars.ENVIRONMENT}}
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: '${{ secrets.AWS_IAM_ROLE_ARN }}'
           aws-region: us-east-1

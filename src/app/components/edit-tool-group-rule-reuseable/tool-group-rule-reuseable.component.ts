@@ -8,7 +8,6 @@ import {
   Praxis,
   PraxisTypeEnum,
 } from '../../models/tool-group';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { countries } from 'countries-list';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageService } from '../../service/language.service';
@@ -29,6 +28,8 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
     | (PraxisRule & CountryRule & LanguageRule);
   @Input() ruleType: RuleTypeEnum;
   @Input() praxisType: PraxisTypeEnum;
+  @Input() hideExclude: boolean;
+  @Input() limitOneAnswer: boolean;
   @Output() selectedItemsEmit = new EventEmitter<
     (Language | CountriesType | Praxis)[]
   >();
@@ -42,7 +43,6 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   errorMessage: string;
 
   constructor(
-    protected activeModal: NgbActiveModal,
     protected languageService: LanguageService,
     protected toolGroupService: ToolGroupService,
   ) {}
@@ -131,7 +131,9 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
       this.handleError(`Already selected ${this.ruleType}`);
       return;
     }
-    this.selectedItems = [...this.selectedItems, event];
+    this.selectedItems = this.limitOneAnswer
+      ? [event]
+      : [...this.selectedItems, event];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 
