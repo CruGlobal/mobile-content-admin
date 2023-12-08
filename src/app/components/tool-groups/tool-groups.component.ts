@@ -94,10 +94,9 @@ export class ToolGroupsComponent implements OnInit {
 
     this.toolGroupService
       .getToolGroupSuggestions(
-        this.testerSelectedCountries,
-        this.testerSelectedLanguages,
-        this.testerSelectedPraxisConfidence,
-        this.testerSelectedPraxisOpenness,
+        this.testerCountryRule,
+        this.testerLanguageRule,
+        this.testerPraxisRule,
       )
       .then((data) => {
         this.suggestedTools = data;
@@ -116,12 +115,13 @@ export class ToolGroupsComponent implements OnInit {
         this.testerSelectedCountries = codes[0];
         this.testerCountryRule.countries = [codes[0]];
         break;
-      case RuleTypeEnum.LANGUAGE:
-        this.testerSelectedLanguages = codes;
-        break;
-      case RuleTypeEnum.PRAXIS:
-        switch (subType) {
-          case PraxisTypeEnum.CONFIDENCE:
+        case RuleTypeEnum.LANGUAGE:
+          this.testerSelectedLanguages = codes;
+          this.testerLanguageRule.languages = codes;
+          break;
+        case RuleTypeEnum.PRAXIS:
+          switch (subType) {
+            case PraxisTypeEnum.CONFIDENCE:
             this.testerSelectedPraxisConfidence = codes[0];
             this.testerPraxisRule.confidence = [codes[0]];
             break;
@@ -130,6 +130,20 @@ export class ToolGroupsComponent implements OnInit {
             this.testerPraxisRule.openness = [codes[0]];
             break;
         }
+        break;
+    }
+  }
+
+  updateNegativeRule(negativeRule: boolean, type: RuleType): void {
+    switch (type) {
+      case RuleTypeEnum.COUNTRY:
+        this.testerCountryRule['negative-rule'] = negativeRule;
+        break;
+      case RuleTypeEnum.LANGUAGE:
+        this.testerLanguageRule['negative-rule'] = negativeRule;
+        break;
+      case RuleTypeEnum.PRAXIS:
+        this.testerPraxisRule['negative-rule'] = negativeRule;
         break;
     }
   }
