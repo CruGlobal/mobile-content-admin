@@ -115,13 +115,13 @@ export class ToolGroupsComponent implements OnInit {
         this.testerSelectedCountries = codes[0];
         this.testerCountryRule.countries = [codes[0]];
         break;
-        case RuleTypeEnum.LANGUAGE:
-          this.testerSelectedLanguages = codes;
-          this.testerLanguageRule.languages = codes;
-          break;
-        case RuleTypeEnum.PRAXIS:
-          switch (subType) {
-            case PraxisTypeEnum.CONFIDENCE:
+      case RuleTypeEnum.LANGUAGE:
+        this.testerSelectedLanguages = codes;
+        this.testerLanguageRule.languages = codes;
+        break;
+      case RuleTypeEnum.PRAXIS:
+        switch (subType) {
+          case PraxisTypeEnum.CONFIDENCE:
             this.testerSelectedPraxisConfidence = codes[0];
             this.testerPraxisRule.confidence = [codes[0]];
             break;
