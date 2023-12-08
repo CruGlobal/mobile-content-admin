@@ -4,7 +4,7 @@ import { JsonApiDataStore } from 'jsonapi-datastore';
 import { AuthService } from '../auth/auth.service';
 import { AbstractService } from '../abstract.service';
 import { Resource } from '../../models/resource';
-import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
+import { ToolGroup, RuleTypeEnum, ToolGroupRule } from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
 
 interface PraxisData {
@@ -281,12 +281,18 @@ export class ToolGroupService extends AbstractService {
   }
 
   getToolGroupSuggestions(
-    countries: string,
-    languages: string[],
-    confidence: string,
-    openness: string,
+    countryRule: ToolGroupRule,
+    languageRule: ToolGroupRule,
+    praxisRule: ToolGroupRule,
   ): Promise<Resource[]> {
     let filter = '';
+    const languages = languageRule.languages;
+    const excludeLanguages = languageRule['negative-rule'] || '';
+    const countries = countryRule.countries;
+    const excludeCountries = countryRule['negative-rule'] || '';
+    const confidence = praxisRule.confidence;
+    const openness = praxisRule.openness;
+    const excludePraxis = praxisRule['negative-rule'] || '';
 
     const createFilters = (items: string | string[], filterString) => {
       if (!items) { return; }
@@ -306,6 +312,9 @@ export class ToolGroupService extends AbstractService {
     createFilters(languages, 'filter[language][]');
     createFilters(confidence, 'filter[confidence]');
     createFilters(openness, 'filter[openness]');
+    createFilters(excludeLanguages.toString(), 'filter[language_negative_rule]');
+    createFilters(excludeCountries.toString(), 'filter[country_negative_rule]');
+    createFilters(excludePraxis.toString(), 'filter[praxis_negative_rule]');
 
     // Remove last "&" from string.
     filter = filter.slice(0, -1);
