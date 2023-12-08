@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { UUID } from 'angular2-uuid';
 import { Resource } from '../../models/resource';
 import { ResourceType } from '../../models/resource-type';
 import { System } from '../../models/system';
@@ -28,8 +29,8 @@ export class TranslateAttributesComponent implements OnInit {
     text: String;
     type: String;
   }[] = [];
-  multipleActionsLocalAttributes = new Map<Number, any>();
-  multipleActionsRemoteAttributes = new Map<Number, any>();
+  multipleActionsLocalAttributes = new Map<String, any>();
+  multipleActionsRemoteAttributes = new Map<String, any>();
 
   constructor(
     protected attributeTranslationService: AttributeTranslationService,
@@ -61,18 +62,10 @@ export class TranslateAttributesComponent implements OnInit {
       this.resource['translated-attributes'].forEach((attr) => {
         this.multipleActionsLocalAttributes.set(attr.id, attr);
       });
-
-      console.log('this.resource', this.resource['translated-attributes']);
-      console.log(
-        'res[translated-attributes]',
-        remoteResource['translated-attributes'],
-      );
-
       remoteResource['translated-attributes'].forEach((attr) => {
         this.multipleActionsRemoteAttributes.set(attr.id, attr);
       });
 
-      console.log('Delete checks - start');
       // Check for local deleted items
       this.multipleActionsRemoteAttributes.forEach((attr) => {
         const localVersion = this.multipleActionsLocalAttributes.get(attr.id);
@@ -85,9 +78,6 @@ export class TranslateAttributesComponent implements OnInit {
         }
       });
 
-      console.log('Delete checks - complete');
-
-      console.log('Update & Create checks - start');
       this.multipleActionsLocalAttributes.forEach((attr) => {
         const remoteVersion = this.multipleActionsRemoteAttributes.get(attr.id);
 
@@ -114,7 +104,6 @@ export class TranslateAttributesComponent implements OnInit {
             });
           }
         } else {
-          console.log('attr.key', attr.key);
           // New Items
           if (!attr.key) {
             throw new Error('Please ensure all Keys have a value.');
@@ -142,15 +131,11 @@ export class TranslateAttributesComponent implements OnInit {
           }
         });
       });
-      console.log('Update & Create checks - complete');
-
-      console.log('promises', this.multipleActionsPromises);
       return {
         successful: true,
         message: 'Successful',
       };
     } catch (err) {
-      console.log('ERR', err);
       return {
         successful: false,
         message: err.message,
@@ -161,7 +146,6 @@ export class TranslateAttributesComponent implements OnInit {
   multipleActions(): void {
     this.multipleActionsLocalAttributes.clear();
     this.multipleActionsRemoteAttributes.clear();
-    console.log('multipleActionsFunc');
 
     this.attributeTranslationService
       .getAttributes(this.resource.id)
@@ -185,9 +169,7 @@ export class TranslateAttributesComponent implements OnInit {
 
           // Need to await for this
           const sendPromises = new Promise(async (resolve, reject) => {
-            console.log('Start Promises');
             for (const promise of this.multipleActionsPromises) {
-              console.log('promise.data', promise.data);
               if (promise.type === 'delete') {
                 await this.mulitipleActionDelete(promise);
               } else if (promise.type === 'update') {
@@ -196,7 +178,6 @@ export class TranslateAttributesComponent implements OnInit {
                 await this.mulitipleActionCreate(promise);
               }
             }
-            console.log('Had Error?', this.multipleActionsError);
 
             if (this.multipleActionsError) {
               reject('Error');
@@ -242,7 +223,6 @@ export class TranslateAttributesComponent implements OnInit {
   async mulitipleActionDelete(
     promise: IAttributeTranslationPromises,
   ): Promise<Boolean> {
-    console.log('mulitipleActionDelete', 'Start');
     await this.attributeTranslationService
       .delete(promise.data)
       .then(() => {
@@ -259,14 +239,12 @@ export class TranslateAttributesComponent implements OnInit {
           text: `Error while deleting attribute ${promise.id}`,
         });
       });
-    console.log('mulitipleActionDelete', 'End');
     return true;
   }
 
   async mulitipleActionUpdate(
     promise: IAttributeTranslationPromises,
   ): Promise<Boolean> {
-    console.log('mulitipleActionUpdate', 'Start');
     await this.attributeTranslationService
       .update(promise.data)
       .then(() => {
@@ -283,14 +261,12 @@ export class TranslateAttributesComponent implements OnInit {
           text: `Error while updating attribute ${promise.id}`,
         });
       });
-    console.log('mulitipleActionUpdate', 'End');
     return true;
   }
 
   async mulitipleActionCreate(
     promise: IAttributeTranslationPromises,
   ): Promise<Boolean> {
-    console.log('mulitipleActionCreate', 'Start');
     await this.attributeTranslationService
       .create(this.resource.id, promise.data)
       .then(() => {
@@ -307,14 +283,11 @@ export class TranslateAttributesComponent implements OnInit {
           text: `Error while creating attribute ${promise.id}`,
         });
       });
-    console.log('mulitipleActionCreate', 'End');
     return true;
   }
 
   createAttribute(): void {
-    // CHECK 1: Ensure Keys aren't the same
-    const generateId = Math.floor(Math.random() * 999999);
-    console.log('generateId', generateId);
+    const generateId = UUID.UUID();
     this.changeMade();
 
     const attribute: AttributeTranslation = {
@@ -328,7 +301,6 @@ export class TranslateAttributesComponent implements OnInit {
   }
 
   removeAttribute(attribute: AttributeTranslation): void {
-    console.log('Attribute to be removed', attribute);
     this.changeMade();
 
     this.resource['translated-attributes'] = this.resource[
@@ -347,7 +319,6 @@ export class TranslateAttributesComponent implements OnInit {
   }
 
   protected handleError(message): void {
-    console.log('handleError', message);
     this.saving = false;
     this.errorMessage = message;
   }
