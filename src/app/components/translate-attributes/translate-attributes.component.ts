@@ -244,7 +244,7 @@ export class TranslateAttributesComponent implements OnInit {
 
   async mulitipleActionUpdate(
     promise: IAttributeTranslationPromises,
-  ): Promise<Boolean> {;
+  ): Promise<Boolean> {
     await this.attributeTranslationService
       .update(promise.data)
       .then(() => {
@@ -287,7 +287,7 @@ export class TranslateAttributesComponent implements OnInit {
   }
 
   createAttribute(): void {
-    const generateId = UUID.UUID();;
+    const generateId = UUID.UUID();
     this.changeMade();
 
     const attribute: AttributeTranslation = {
