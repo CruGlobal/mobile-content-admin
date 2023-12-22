@@ -1,10 +1,44 @@
 <div class="modal-body">
-  <h5>Languages without a Draft</h5>
+  <div class="btn-group btn-group-toggle toggle-drafts" data-toggle="buttons">
+    <label
+      class="btn {{
+        languageType === 'published' ? 'btn-success' : 'btn-secondary'
+      }}"
+    >
+      <input
+        type="radio"
+        name="languageType"
+        value="published"
+        [(ngModel)]="languageType"
+        autocomplete="off"
+        checked
+      />
+      Pubblished Languages
+    </label>
+    <label
+      class="btn {{
+        languageType === 'drafts' ? 'btn-success' : 'btn-secondary'
+      }}"
+    >
+      <input
+        type="radio"
+        name="languageType"
+        value="drafts"
+        [(ngModel)]="languageType"
+        autocomplete="off"
+      />
+      Languages with a Draft
+    </label>
+  </div>
+
   <div *ngFor="let translation of resource['latest-drafts-translations']">
     <label
       class="btn-secondary btn-block"
       ngbButtonLabel
-      *ngIf="translation.is_published"
+      *ngIf="
+        (languageType === 'published' && translation['is-published']) ||
+        (languageType === 'drafts' && !translation['is_published'])
+      "
     >
       <input
         type="checkbox"
@@ -15,21 +49,37 @@
     </label>
   </div>
   <br />
-  <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
-    Saving...
+
+  <ngb-alert type="success" [dismissible]="false" *ngIf="sucessfulMessage">
+    {{ sucessfulMessage }}
   </ngb-alert>
-  <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
-    {{ errorMessage }}
+  <ngb-alert type="info" [dismissible]="false" *ngIf="alertMessage">
+    {{ alertMessage }}
   </ngb-alert>
-  <button class="btn btn-danger" (click)="cancel()">Cancel</button>
-  <button class="btn btn-success" (click)="showConfirmAlert()">
-    Generate drafts
-  </button>
-  <ngb-alert type="danger" [dismissible]="false" *ngIf="confirmMessage">
-    {{ confirmMessage }}
-    <button (click)="generateDrafts()" class="btn btn-dark">Confirm</button>
-    <button (click)="confirmMessage = null" class="btn btn-secondary">
-      Cancel
+  <ngb-alert
+    type="danger"
+    [dismissible]="false"
+    *ngFor="let error of errorMessage"
+  >
+    {{ error }}
+  </ngb-alert>
+
+  <ngb-alert type="info" [dismissible]="false" *ngIf="confirmMessage">
+    <p>{{ confirmMessage }}</p>
+    <div class="btn-toolbar justify-content-between">
+      <button (click)="confirmMessage = null" class="btn btn-danger">
+        Cancel
+      </button>
+      <button (click)="publishOrCreateDrafts()" class="btn btn-success">
+        Confirm
+      </button>
+    </div>
+  </ngb-alert>
+
+  <div class="modal-footer justify-content-between">
+    <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    <button class="btn btn-success" (click)="showConfirmAlert()">
+      {{ languageType === 'published' ? 'Generate drafts' : 'Publish drafts' }}
     </button>
-  </ngb-alert>
+  </div>
 </div>

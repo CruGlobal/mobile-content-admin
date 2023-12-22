@@ -1,0 +1,9 @@
+.toggle-drafts {
+  width: 100%;
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.toggle-drafts label.btn {
+  flex: 0 1 50%;
+}
