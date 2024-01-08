@@ -77,8 +77,18 @@
   </ngb-alert>
 
   <div class="modal-footer justify-content-between">
-    <button class="btn btn-secondary" (click)="cancel()">Cancel</button>
-    <button class="btn btn-success" (click)="showConfirmAlert()">
+    <button
+      class="btn btn-secondary"
+      (click)="cancel()"
+      [disabled]="disableButtons"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-success"
+      (click)="showConfirmAlert()"
+      [disabled]="disableButtons"
+    >
       {{ languageType === 'published' ? 'Generate drafts' : 'Publish drafts' }}
     </button>
   </div>

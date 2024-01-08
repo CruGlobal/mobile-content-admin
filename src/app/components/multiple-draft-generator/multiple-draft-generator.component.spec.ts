@@ -7,6 +7,8 @@ import {
 import { MultipleDraftGeneratorComponent } from './multiple-draft-generator.component';
 import { FormsModule } from '@angular/forms';
 import { DraftService } from '../../service/draft.service';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
 import { Resource } from '../../models/resource';
 import { Translation } from '../../models/translation';
 import { By } from '@angular/platform-browser';
@@ -29,6 +31,7 @@ describe('MultipleDraftGeneratorComponent', () => {
     const t = new Translation();
     t.language = l;
     t.is_published = isPublished;
+    t['is-published'] = isPublished;
     t.generateDraft = generateDraft;
     return t;
   };
@@ -37,7 +40,12 @@ describe('MultipleDraftGeneratorComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MultipleDraftGeneratorComponent],
       imports: [NgbModule.forRoot(), FormsModule],
-      providers: [{ provide: DraftService }, { provide: NgbActiveModal }],
+      providers: [
+        { provide: DraftService },
+        { provide: NgbActiveModal },
+        { provide: ResourceService },
+        { provide: LanguageService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MultipleDraftGeneratorComponent);
@@ -53,6 +61,7 @@ describe('MultipleDraftGeneratorComponent', () => {
     const r = new Resource();
     r['latest-drafts-translations'] = translations;
     comp.resource = r;
+    comp.languageType = 'published';
 
     fixture.detectChanges();
   });

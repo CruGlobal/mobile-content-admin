@@ -14,9 +14,9 @@ enum LanguageTypeEnum {
 
 interface PromisePayload {
   success: boolean;
-  value?: any;
-  error?: string;
   type: LanguageTypeEnum;
+  value?: Translation;
+  error?: string;
 }
 interface APICall {
   type: LanguageTypeEnum;
@@ -39,6 +39,7 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
   alertMessage: string;
   sucessfulMessage: string;
   checkToEnsureDraftIsPublished: number;
+  disableButtons: boolean;
 
   readonly baseConfirmMessage =
     'Are you sure you want to generate a draft for these languages:';
@@ -86,6 +87,7 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
     this.confirmMessage = null;
     this.errorMessage = [];
     const promises: APICall[] = [];
+    this.disableButtons = true;
 
     // Define what promises we will call
     this.translations.forEach((translation) => {
@@ -118,29 +120,40 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
           if (type === LanguageTypeEnum.draft) {
             return this.draftService
               .createDraft(translation)
-              .then((value) => ({
-                success: true,
-                type,
-                value,
-              }))
-              .catch((error) => ({
-                success: false,
-                type,
-                error,
-              }));
+              .then(
+                () =>
+                  ({
+                    success: true,
+                    type,
+                  } as PromisePayload),
+              )
+              .catch(
+                (error) =>
+                  ({
+                    success: false,
+                    type,
+                    error,
+                  } as PromisePayload),
+              );
           } else {
             return this.draftService
               .publishDraft(this.resource, translation)
-              .then((value) => ({
-                success: true,
-                type,
-                value,
-              }))
-              .catch((error) => ({
-                success: false,
-                type,
-                error,
-              }));
+              .then(
+                (value) =>
+                  ({
+                    success: true,
+                    type,
+                    value,
+                  } as PromisePayload),
+              )
+              .catch(
+                (error) =>
+                  ({
+                    success: false,
+                    type,
+                    error,
+                  } as PromisePayload),
+              );
           }
         }),
       );
@@ -151,6 +164,7 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
         invalidResults.forEach((invalidResult) => {
           this.errorMessage = [...this.errorMessage, invalidResult.error];
         });
+        this.disableButtons = false;
       } else {
         if (this.languageType === 'published') {
           this.renderMessage(MessageType.alert, '');
@@ -158,6 +172,7 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
             MessageType.success,
             'Drafts created. Ready for you to publish.',
           );
+          this.disableButtons = false;
           // Update languages
           this.resourceService
             .getResources('latest-drafts-translations')
@@ -206,6 +221,7 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
             MessageType.success,
             'Drafts are successfully published.',
           );
+          this.disableButtons = false;
           this.setResourceAndLoadTranslations(resource);
         }
       })
