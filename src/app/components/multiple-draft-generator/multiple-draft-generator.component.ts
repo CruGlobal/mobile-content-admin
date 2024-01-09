@@ -23,7 +23,7 @@ interface APICall {
   translation: Translation;
 }
 
-type LanguagesType = 'published' | 'drafts';
+type ActionType = 'publish' | 'createDrafts';
 
 @Component({
   selector: 'admin-multiple-draft-generator',
@@ -33,16 +33,14 @@ type LanguagesType = 'published' | 'drafts';
 export class MultipleDraftGeneratorComponent implements OnDestroy {
   resource: Resource;
   translations: Translation[];
-  languageType: LanguagesType = 'published';
+  actionType: ActionType = 'publish';
   confirmMessage: string;
   errorMessage: string[];
+  sucessfulMessages: string[];
   alertMessage: string;
   sucessfulMessage: string;
-  checkToEnsureDraftIsPublished: number;
+  checkToEnsureTranslationIsPublished: number;
   disableButtons: boolean;
-
-  readonly baseConfirmMessage =
-    'Are you sure you want to generate a draft for these languages:';
 
   constructor(
     private ngbActiveModal: NgbActiveModal,
@@ -52,35 +50,54 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    clearInterval(this.checkToEnsureDraftIsPublished);
+    clearInterval(this.checkToEnsureTranslationIsPublished);
   }
 
   renderMessage(type: MessageType, text: string, time?: number) {
     if (type === MessageType.error) {
       this.errorMessage = [text];
       return;
+    } else if (type === MessageType.success) {
+      this.sucessfulMessages = [text];
+    } else {
+      this[`${type}Message`] = text;
+      if (time) {
+        setTimeout(() => {
+          this[`${type}Message`] = '';
+        }, time);
+      }
     }
-    this[`${type}Message`] = text;
-    if (time) {
-      setTimeout(() => {
-        this[`${type}Message`] = '';
-      }, time);
-    }
+  }
+
+  switchActionType(type: ActionType) {
+    this.actionType = type;
+    this.translations = [];
+    this.confirmMessage = '';
+    this.sucessfulMessages = [];
+    this.alertMessage = '';
+    this.disableButtons = false;
+    this.resource['latest-drafts-translations'].forEach((translation) => {
+      delete translation.selectedForAction;
+    });
   }
 
   showConfirmAlert(): void {
     this.translations = this.resource['latest-drafts-translations'].filter(
-      (translation) => translation.generateDraft,
+      (translation) => translation.selectedForAction,
     );
     if (this.translations.length === 0) {
       return;
     }
 
-    const message = this.translations
+    const selectedTranslations = this.translations
       .map((translation) => translation.language.name)
       .join(', ');
 
-    this.confirmMessage = `${this.baseConfirmMessage} ${message}?`;
+    if (this.actionType === 'publish') {
+      this.confirmMessage = `Are you sure you want to publish these languages: ${selectedTranslations}?`;
+    } else {
+      this.confirmMessage = `Are you sure you want to generate a draft for these languages: ${selectedTranslations}?`;
+    }
   }
 
   async publishOrCreateDrafts(): Promise<void> {
@@ -91,17 +108,14 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
 
     // Define what promises we will call
     this.translations.forEach((translation) => {
-      if (translation['is-published'] && this.languageType === 'published') {
-        promises.push({
-          type: LanguageTypeEnum.draft,
-          translation,
-        });
-      } else if (
-        !translation['is-published'] &&
-        this.languageType === 'drafts'
-      ) {
+      if (this.actionType === 'publish') {
         promises.push({
           type: LanguageTypeEnum.publish,
+          translation,
+        });
+      } else {
+        promises.push({
+          type: LanguageTypeEnum.draft,
           translation,
         });
       }
@@ -109,10 +123,10 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
 
     // Call promises
     if (promises.length) {
-      if (this.languageType === 'published') {
-        this.renderMessage(MessageType.alert, 'Creating drafts...');
+      if (this.actionType === 'publish') {
+        this.renderMessage(MessageType.success, 'Publishing translations...');
       } else {
-        this.renderMessage(MessageType.success, 'Publishing drafts...');
+        this.renderMessage(MessageType.alert, 'Creating drafts...');
       }
 
       const results: PromisePayload[] = await Promise.all(
@@ -166,7 +180,19 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
         });
         this.disableButtons = false;
       } else {
-        if (this.languageType === 'published') {
+        if (this.actionType === 'publish') {
+          const publishingErrors = results.filter(
+            (result) => result.value[0]['publishing-errors'],
+          );
+          if (publishingErrors.length) {
+            publishingErrors.forEach((publishingError) => {
+              this.errorMessage = [...this.errorMessage, publishingError.error];
+            });
+          }
+          this.checkToEnsureTranslationIsPublished = window.setInterval(() => {
+            this.isPublished();
+          }, 5000);
+        } else {
           this.renderMessage(MessageType.alert, '');
           this.renderMessage(
             MessageType.success,
@@ -183,43 +209,46 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
           setTimeout(() => {
             this.renderMessage(MessageType.success, '');
           }, 5000);
-        } else {
-          const publishingErrors = results.filter(
-            (result) => result.value[0]['publishing-errors'],
-          );
-          if (publishingErrors.length) {
-            publishingErrors.forEach((publishingError) => {
-              this.errorMessage = [...this.errorMessage, publishingError.error];
-            });
-          }
-          this.checkToEnsureDraftIsPublished = window.setInterval(() => {
-            this.isDraftPublished();
-          }, 5000);
         }
       }
     }
   }
 
-  isDraftPublished() {
+  isPublished() {
+    this.renderMessage(MessageType.success, 'Publishing translations...');
     this.resourceService
-      .getResources('latest-drafts-translations')
-      .then((resources) => {
-        const resource = resources.find((r) => r.id === this.resource.id);
-        let numberPubblished = 0;
+      .getResource(this.resource.id, 'latest-drafts-translations')
+      .then((resource) => {
+        let numberpublished = 0;
         this.translations.forEach((translation) => {
           const updatedTranslation = resource[
             'latest-drafts-translations'
-          ].find((t) => t.id === translation.id);
-          if (updatedTranslation) {
-            numberPubblished++;
+          ].find(
+            (draftTranslation) =>
+              draftTranslation.language.id === translation.language.id,
+          );
+          if (updatedTranslation['is-published']) {
+            numberpublished++;
+            this.sucessfulMessages = [
+              ...this.sucessfulMessages,
+              `${translation.language.name} version ${updatedTranslation.version} has been published`,
+            ];
+          }
+          if (updatedTranslation['publishing-errors']) {
+            clearInterval(this.checkToEnsureTranslationIsPublished);
+            this.errorMessage = [
+              ...this.errorMessage,
+              updatedTranslation['publishing-errors'],
+            ];
+            this.disableButtons = false;
           }
         });
 
-        if (numberPubblished === this.translations.length) {
-          clearInterval(this.checkToEnsureDraftIsPublished);
+        if (numberpublished === this.translations.length) {
+          clearInterval(this.checkToEnsureTranslationIsPublished);
           this.renderMessage(
             MessageType.success,
-            'Drafts are successfully published.',
+            'All Languages are successfully published.',
           );
           this.disableButtons = false;
           this.setResourceAndLoadTranslations(resource);
@@ -227,6 +256,9 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
       })
       .catch((err) => {
         console.log('ERROR', err);
+        clearInterval(this.checkToEnsureTranslationIsPublished);
+        this.errorMessage = [...this.errorMessage, err];
+        this.disableButtons = false;
       });
   }
 
