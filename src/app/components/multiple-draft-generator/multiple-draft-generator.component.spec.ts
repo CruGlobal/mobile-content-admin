@@ -22,7 +22,7 @@ describe('MultipleDraftGeneratorComponent', () => {
 
   const buildTranslation = (
     isPublished: boolean,
-    generateDraft: boolean,
+    selectedForAction: boolean,
     language: string,
   ) => {
     const l = new Language();
@@ -32,7 +32,7 @@ describe('MultipleDraftGeneratorComponent', () => {
     t.language = l;
     t.is_published = isPublished;
     t['is-published'] = isPublished;
-    t.generateDraft = generateDraft;
+    t.selectedForAction = selectedForAction;
     return t;
   };
 
@@ -61,7 +61,7 @@ describe('MultipleDraftGeneratorComponent', () => {
     const r = new Resource();
     r['latest-drafts-translations'] = translations;
     comp.resource = r;
-    comp.languageType = 'published';
+    comp.actionType = 'publish';
 
     fixture.detectChanges();
   });
@@ -80,7 +80,7 @@ describe('MultipleDraftGeneratorComponent', () => {
       By.directive(NgbAlert),
     );
     expect(alert.nativeElement.textContent).toContain(
-      `${comp.baseConfirmMessage} Chinese, French?`,
+      `Are you sure you want to generate a draft for these languages Chinese, French?`,
     );
   });
 });

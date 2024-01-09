@@ -1,57 +1,54 @@
 <div class="modal-body">
   <div class="btn-group btn-group-toggle toggle-drafts" data-toggle="buttons">
     <label
-      class="btn {{
-        languageType === 'published' ? 'btn-success' : 'btn-secondary'
+      class="btn btn-success {{
+        actionType === 'publish' ? 'btn-success' : 'btn-outline-success'
       }}"
+      (click)="switchActionType('publish')"
     >
-      <input
-        type="radio"
-        name="languageType"
-        value="published"
-        [(ngModel)]="languageType"
-        autocomplete="off"
-        checked
-      />
-      Pubblished Languages
+      Publish Languages
     </label>
     <label
       class="btn {{
-        languageType === 'drafts' ? 'btn-success' : 'btn-secondary'
+        actionType === 'createDrafts'
+          ? 'btn-secondary'
+          : 'btn-outline-secondary'
       }}"
+      (click)="switchActionType('createDrafts')"
     >
-      <input
-        type="radio"
-        name="languageType"
-        value="drafts"
-        [(ngModel)]="languageType"
-        autocomplete="off"
-      />
-      Languages with a Draft
+      Generate Drafts
     </label>
   </div>
 
   <div *ngFor="let translation of resource['latest-drafts-translations']">
     <label
-      class="btn-secondary btn-block"
+      class="btn-outline-secondary btn-block translation-btn"
       ngbButtonLabel
       *ngIf="
-        (languageType === 'published' && translation['is-published']) ||
-        (languageType === 'drafts' && !translation['is_published'])
+        actionType === 'publish' ||
+        (actionType === 'createDrafts' && translation['is-published'])
       "
     >
-      <input
-        type="checkbox"
-        ngbButton
-        [(ngModel)]="translation.generateDraft"
-      />
-      {{ translation.language.name }}
+      <div class="translation-btn-text">
+        <input
+          type="checkbox"
+          ngbButton
+          [(ngModel)]="translation.selectedForAction"
+        />
+        {{ translation.language.name }}
+      </div>
+      <admin-translation-version-badge [translation]="translation">
+      </admin-translation-version-badge>
     </label>
   </div>
   <br />
 
-  <ngb-alert type="success" [dismissible]="false" *ngIf="sucessfulMessage">
-    {{ sucessfulMessage }}
+  <ngb-alert
+    type="success"
+    [dismissible]="true"
+    *ngFor="let successMessage of sucessfulMessages"
+  >
+    {{ successMessage }}
   </ngb-alert>
   <ngb-alert type="info" [dismissible]="false" *ngIf="alertMessage">
     {{ alertMessage }}
@@ -89,7 +86,7 @@
       (click)="showConfirmAlert()"
       [disabled]="disableButtons"
     >
-      {{ languageType === 'published' ? 'Generate drafts' : 'Publish drafts' }}
+      {{ actionType === 'publish' ? 'Publish' : 'Generate drafts' }}
     </button>
   </div>
 </div>

@@ -31,6 +31,7 @@ import { Observable } from 'rxjs';
 import { getLatestTranslation } from './utilities';
 import { environment } from '../../../environments/environment';
 import { MessageType } from '../../models/message';
+import { ResourceService } from '../../service/resource/resource.service';
 
 @Component({
   selector: 'admin-translation',
@@ -56,6 +57,7 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
     private draftService: DraftService,
     private customManifestService: CustomManifestService,
     private modalService: NgbModal,
+    private resourceService: ResourceService,
   ) {}
 
   ngOnInit(): void {
@@ -144,21 +146,6 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
     return tip as Tip;
   }
 
-  isDraftPublished() {
-    try {
-      this.loadAllResources();
-      if (this.translation.is_published) {
-        clearInterval(this.checkToEnsureDraftIsPublished);
-        this.renderMessage(
-          MessageType.success,
-          'Draft is successfully published.',
-        );
-      }
-    } catch (err) {
-      console.log('ERROR', err);
-    }
-  }
-
   renderMessage(type: MessageType, text: string, time?: number) {
     this[`${type}Message`] = text;
     if (time) {
@@ -168,42 +155,54 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  async publishOrCreateDraft(): Promise<void> {
+  async publish(): Promise<void> {
     this.renderMessage(MessageType.error, '');
-    // Create Draft
-    if (this.translation['is-published'] || this.translation.none) {
-      this.renderMessage(MessageType.alert, 'Saving...');
-      this.draftService
-        .createDraft(this.translation)
-        .then(() => {
-          this.loadAllResources();
-          this.renderMessage(MessageType.alert, '');
-          this.renderMessage(
-            MessageType.success,
-            'Draft created. Ready for you to publish.',
-            5000,
+    this.renderMessage(MessageType.success, 'Publishing...');
+    this.draftService
+      .publishDraft(this.resource, this.translation)
+      .then((data) => {
+        const publishingError = data[0]['publishing-errors'];
+        if (publishingError) {
+          this.renderMessage(MessageType.success, publishingError);
+        }
+        this.checkToEnsureDraftIsPublished = window.setInterval(() => {
+          this.isPublished();
+        }, 5000);
+      })
+      .catch(this.handleError.bind(this));
+  }
+
+  isPublished() {
+    try {
+      this.resourceService
+        .getResource(this.resource.id, 'latest-drafts-translations')
+        .then((resource) => {
+          const translation = resource['latest-drafts-translations'].find(
+            (draftTranslation) =>
+              draftTranslation.language.id === this.translation.language.id,
           );
-        })
-        .catch(this.handleError.bind(this));
-    } else {
-      // Publish Draft
-      this.renderMessage(MessageType.success, 'Publishing...');
-      this.draftService
-        .publishDraft(this.resource, this.translation)
-        .then((data) => {
-          console.log('publishDraft.data', data);
-          this.renderMessage(MessageType.success, 'Draft is publishing.');
-          if (data[0]['publishing-errors']) {
+          if (translation['publishing-errors']) {
+            clearInterval(this.checkToEnsureDraftIsPublished);
+            this.renderMessage(MessageType.success, null);
             this.renderMessage(
-              MessageType.success,
-              data[0]['publishing-errors'],
+              MessageType.error,
+              translation['publishing-errors'],
             );
           }
-          this.checkToEnsureDraftIsPublished = window.setInterval(() => {
-            this.isDraftPublished();
-          }, 5000);
-        })
-        .catch(this.handleError.bind(this));
+          if (translation['is-published']) {
+            clearInterval(this.checkToEnsureDraftIsPublished);
+            this.renderMessage(MessageType.error, null);
+            this.renderMessage(
+              MessageType.success,
+              'Language has been successfully published.',
+            );
+            this.loadAllResources();
+          }
+        });
+    } catch (err) {
+      clearInterval(this.checkToEnsureDraftIsPublished);
+      this.renderMessage(MessageType.success, null);
+      this.renderMessage(MessageType.error, err.message);
     }
   }
 

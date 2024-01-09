@@ -30,7 +30,9 @@ export class ResourceService extends AbstractService {
   getResource(resourceId: number, include?: string): Promise<Resource> {
     return this.http
       .get(
-        include ? `${this.resourcesUrl}/${resourceId}?include=${include}` : `${this.resourcesUrl}/${resourceId}`,
+        include
+          ? `${this.resourcesUrl}/${resourceId}?include=${include}`
+          : `${this.resourcesUrl}/${resourceId}`,
       )
       .toPromise()
       .then((response) => {

@@ -18,7 +18,7 @@ class MockAuthService extends AuthService {
   }
 }
 
-fdescribe('ResourceService', () => {
+describe('ResourceService', () => {
   const mockHttp = new MockHttp(null, null);
   const mockAuthService = new MockAuthService(null, null);
   const service = new ResourceService(mockHttp, mockAuthService);
@@ -61,11 +61,15 @@ fdescribe('ResourceService', () => {
 
   it('should not include "include"', () => {
     service.getResource(resource.id);
-    expect(mockHttp.get).toHaveBeenCalledWith(`${environment.base_url}resources/${resource.id}`);
+    expect(mockHttp.get).toHaveBeenCalledWith(
+      `${environment.base_url}resources/${resource.id}`,
+    );
   });
 
   it('should include "include"', () => {
     service.getResource(resource.id, 'test-data');
-    expect(mockHttp.get).toHaveBeenCalledWith(`${environment.base_url}resources/${resource.id}?include=test-data`);
+    expect(mockHttp.get).toHaveBeenCalledWith(
+      `${environment.base_url}resources/${resource.id}?include=test-data`,
+    );
   });
 });
