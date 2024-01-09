@@ -4,6 +4,8 @@ import { Http, RequestOptionsArgs } from '@angular/http';
 import { AuthService } from '../auth/auth.service';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
+
 import anything = jasmine.anything;
 
 const headers: RequestOptionsArgs = {};
@@ -16,12 +18,13 @@ class MockAuthService extends AuthService {
   }
 }
 
-describe('ResourceService', () => {
+fdescribe('ResourceService', () => {
   const mockHttp = new MockHttp(null, null);
   const mockAuthService = new MockAuthService(null, null);
   const service = new ResourceService(mockHttp, mockAuthService);
 
   const resource = new Resource();
+  resource.id = 13;
 
   beforeEach(() => {
     spyOn(mockHttp, 'post').and.returnValue(
@@ -38,6 +41,10 @@ describe('ResourceService', () => {
     spyOn(mockHttp, 'put').and.returnValue(
       new Observable((observer) => observer.complete()),
     );
+
+    spyOn(mockHttp, 'get').and.returnValue(
+      new Observable((observer) => observer.complete()),
+    );
   });
 
   it('creating uses authorization code', () => {
@@ -50,5 +57,15 @@ describe('ResourceService', () => {
     service.update(resource);
 
     expect(mockHttp.put).toHaveBeenCalledWith(anything(), anything(), headers);
+  });
+
+  it('should not include "include"', () => {
+    service.getResource(resource.id);
+    expect(mockHttp.get).toHaveBeenCalledWith(`${environment.base_url}resources/${resource.id}`);
+  });
+
+  it('should include "include"', () => {
+    service.getResource(resource.id, 'test-data');
+    expect(mockHttp.get).toHaveBeenCalledWith(`${environment.base_url}resources/${resource.id}?include=test-data`);
   });
 });
