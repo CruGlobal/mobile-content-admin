@@ -1,4 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { TranslationComponent } from './translation.component';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DraftService } from '../../service/draft.service';
@@ -12,10 +19,12 @@ import { Page } from '../../models/page';
 import { CustomPage } from '../../models/custom-page';
 import { ResourceComponent } from '../resource/resource.component';
 import anything = jasmine.anything;
+import { ResourceService } from '../../service/resource/resource.service';
 import { CustomPageService } from '../../service/custom-page.service';
 import { CustomManifestService } from '../../service/custom-manifest.service';
-import { CustomManifest } from '../../models/custom-manifest';
 import { CustomTipService } from '../../service/custom-tip.service';
+import { CustomManifest } from '../../models/custom-manifest';
+import { MessageType } from '../../models/message';
 import { TranslationVersionBadgeComponent } from './translation-version-badge/translation-version-badge.component';
 
 describe('TranslationComponent', () => {
@@ -26,6 +35,8 @@ describe('TranslationComponent', () => {
   let customTipsServiceStub;
   let modalServiceStub;
   let customManifestServiceStub;
+  let customDraftServiceStub;
+  let customResourceServiceStub;
 
   let resourceComponent: ResourceComponent;
   let language: Language;
@@ -73,6 +84,12 @@ describe('TranslationComponent', () => {
     modalServiceStub = {
       open() {},
     };
+    customDraftServiceStub = {
+      publishDraft() {},
+    };
+    customResourceServiceStub = {
+      getResource() {},
+    };
     const modalRef = {
       componentInstance: {},
       result: Promise.resolve(),
@@ -87,20 +104,33 @@ describe('TranslationComponent', () => {
     spyOn(customManifestServiceStub, 'delete').and.returnValue(
       Promise.resolve(),
     );
+    spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
+      Promise.resolve([
+        {
+          'publishing-errors': null,
+        },
+      ]),
+    );
+    spyOn(customResourceServiceStub, 'getResource').and.returnValue(
+      Promise.resolve(),
+    );
 
     customPageServiceStub.delete();
     modalServiceStub.open();
     customManifestServiceStub.delete();
+    customDraftServiceStub.publishDraft();
+    customResourceServiceStub.getResource();
 
     TestBed.configureTestingModule({
       declarations: [TranslationComponent, TranslationVersionBadgeComponent],
       imports: [NgbModule.forRoot()],
       providers: [
-        { provide: DraftService },
+        { provide: DraftService, useValue: customDraftServiceStub },
         { provide: CustomPageService, useValue: customPageServiceStub },
         { provide: CustomTipService, useValue: customTipsServiceStub },
         { provide: CustomManifestService, useValue: customManifestServiceStub },
         { provide: NgbModal, useValue: modalServiceStub },
+        { provide: ResourceService, useValue: customResourceServiceStub },
       ],
     }).compileComponents();
   }));
@@ -111,6 +141,9 @@ describe('TranslationComponent', () => {
 
     resourceComponent = new ResourceComponent(null, null);
     comp.translationLoaded = resourceComponent.translationLoaded$;
+    comp.errorMessage = '';
+    comp.alertMessage = '';
+    comp.sucessfulMessage = '';
 
     const pageWithCustomPage = buildPage(2);
 
@@ -139,11 +172,11 @@ describe('TranslationComponent', () => {
       fixture.detectChanges();
     });
 
-    it(`should show action button with 'New Draft'`, () => {
+    it(`should show action button with 'Publish'`, () => {
       const element: DebugElement = fixture.debugElement
-        .queryAll(By.css('.btn.btn-secondary'))
+        .queryAll(By.css('.btn.btn-success'))
         .pop();
-      expect(element.nativeElement.textContent.trim()).toBe('New Draft');
+      expect(element.nativeElement.textContent.trim()).toBe('Publish');
     });
 
     it(`should show status badge with 'None'`, () => {
@@ -151,6 +184,41 @@ describe('TranslationComponent', () => {
         By.css('.badge.badge-warning'),
       );
       expect(element.nativeElement.textContent).toBe('None');
+    });
+
+    describe('publish a new translation (Server creates draft)', () => {
+      let translation: Translation;
+
+      beforeEach(() => {
+        translation = new Translation();
+        translation.none = true;
+        translation.language = language;
+        translation.resource = comp.resource;
+
+        comp.resource['latest-drafts-translations'] = [translation];
+        comp.reloadTranslation();
+        fixture.detectChanges();
+      });
+
+      it('should git resource endpoint', fakeAsync(() => {
+        spyOn(comp, 'renderMessage');
+        spyOn(comp, 'isPublished');
+        comp.publish();
+
+        expect(comp.renderMessage).toHaveBeenCalledWith(MessageType.error, '');
+        expect(comp.renderMessage).toHaveBeenCalledWith(
+          MessageType.success,
+          'Publishing...',
+        );
+
+        tick(5500);
+        fixture.detectChanges();
+
+        discardPeriodicTasks();
+        fixture.whenStable().then(() => {
+          expect(comp.isPublished).toHaveBeenCalled();
+        });
+      }));
     });
   });
 
@@ -286,15 +354,15 @@ describe('TranslationComponent', () => {
     });
 
     describe('action button', () => {
-      it(`should say 'New Draft' for published translations`, () => {
+      it(`should say 'Publish' for published translations`, () => {
         translation.is_published = true;
 
         fixture.detectChanges();
 
         const element: DebugElement = fixture.debugElement
-          .queryAll(By.css('.btn.btn-secondary'))
+          .queryAll(By.css('.btn.btn-success'))
           .pop();
-        expect(element.nativeElement.textContent.trim()).toBe('New Draft');
+        expect(element.nativeElement.textContent.trim()).toBe('Publish');
       });
 
       it(`should say 'Publish' for drafts`, () => {

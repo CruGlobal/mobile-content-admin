@@ -15,6 +15,8 @@ import { By } from '@angular/platform-browser';
 import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap';
 import { Language } from '../../models/language';
 import { DebugElement } from '@angular/core';
+import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
+import { MessageType } from '../../models/message';
 
 describe('MultipleDraftGeneratorComponent', () => {
   let comp: MultipleDraftGeneratorComponent;
@@ -38,7 +40,10 @@ describe('MultipleDraftGeneratorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MultipleDraftGeneratorComponent],
+      declarations: [
+        MultipleDraftGeneratorComponent,
+        TranslationVersionBadgeComponent,
+      ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
         { provide: DraftService },
@@ -66,13 +71,13 @@ describe('MultipleDraftGeneratorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('only shows languages without drafts', () => {
+  it('shows languages with and without drafts', () => {
     expect(
       fixture.debugElement.queryAll(By.directive(NgbButtonLabel)).length,
-    ).toBe(3);
+    ).toBe(4);
   });
 
-  it('confirm message lists all languages', () => {
+  it('shows confirm message to publish selected languages', () => {
     comp.showConfirmAlert();
     fixture.detectChanges();
 
@@ -80,7 +85,33 @@ describe('MultipleDraftGeneratorComponent', () => {
       By.directive(NgbAlert),
     );
     expect(alert.nativeElement.textContent).toContain(
-      `Are you sure you want to generate a draft for these languages Chinese, French?`,
+      `Are you sure you want to publish these languages: Chinese, French?`,
     );
+  });
+
+  it('shows confirm message to create a draft for selected languages', () => {
+    comp.actionType = 'createDrafts';
+    comp.showConfirmAlert();
+    fixture.detectChanges();
+
+    const alert: DebugElement = fixture.debugElement.query(
+      By.directive(NgbAlert),
+    );
+    expect(alert.nativeElement.textContent).toContain(
+      `Are you sure you want to generate a draft for these languages: Chinese, French?`,
+    );
+  });
+
+  describe('Publish languages', () => {
+    it('shows confirm message to publish selected languages', () => {
+      comp.showConfirmAlert();
+      fixture.detectChanges();
+      spyOn(comp, 'renderMessage');
+      comp.publishOrCreateDrafts();
+      expect(comp.renderMessage).toHaveBeenCalledWith(
+        MessageType.success,
+        'Publishing translations...',
+      );
+    });
   });
 });
