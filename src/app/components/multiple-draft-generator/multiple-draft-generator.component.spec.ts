@@ -1,4 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  discardPeriodicTasks,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import {
   NgbActiveModal,
   NgbAlert,
@@ -21,6 +27,8 @@ import { MessageType } from '../../models/message';
 describe('MultipleDraftGeneratorComponent', () => {
   let comp: MultipleDraftGeneratorComponent;
   let fixture: ComponentFixture<MultipleDraftGeneratorComponent>;
+  let customResourceServiceStub;
+  let customDraftServiceStub;
 
   const buildTranslation = (
     isPublished: boolean,
@@ -39,6 +47,39 @@ describe('MultipleDraftGeneratorComponent', () => {
   };
 
   beforeEach(() => {
+    customResourceServiceStub = {
+      getResource() {},
+    };
+    customDraftServiceStub = {
+      createDraft() {},
+      publishDraft() {},
+    };
+
+    spyOn(customResourceServiceStub, 'getResource').and.returnValue(
+      Promise.resolve({
+        'latest-drafts-translations': [
+          {
+            language: { id: 1 },
+            'publishing-errors': null,
+            'is-published': false,
+          },
+        ],
+      }),
+    );
+    spyOn(customDraftServiceStub, 'createDraft').and.returnValue(
+      Promise.resolve(),
+    );
+    spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
+      Promise.resolve([
+        {
+          'publishing-errors': null,
+          'is-published': false,
+        },
+      ]),
+    );
+
+    customResourceServiceStub.getResource();
+
     TestBed.configureTestingModule({
       declarations: [
         MultipleDraftGeneratorComponent,
@@ -46,9 +87,9 @@ describe('MultipleDraftGeneratorComponent', () => {
       ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
-        { provide: DraftService },
+        { provide: DraftService, useValue: customDraftServiceStub },
         { provide: NgbActiveModal },
-        { provide: ResourceService },
+        { provide: ResourceService, useValue: customResourceServiceStub },
         { provide: LanguageService },
       ],
     }).compileComponents();
@@ -102,16 +143,61 @@ describe('MultipleDraftGeneratorComponent', () => {
     );
   });
 
-  describe('Publish languages', () => {
-    it('shows confirm message to publish selected languages', () => {
+  describe('publishOrCreateDrafts() Publish', () => {
+    it('should send publish 2 languages, and call isPublished() every 5 seconds ', fakeAsync(() => {
       comp.showConfirmAlert();
       fixture.detectChanges();
       spyOn(comp, 'renderMessage');
+      spyOn(comp, 'isPublished');
       comp.publishOrCreateDrafts();
       expect(comp.renderMessage).toHaveBeenCalledWith(
         MessageType.success,
         'Publishing translations...',
       );
-    });
+
+      tick(5500);
+      fixture.detectChanges();
+      discardPeriodicTasks();
+
+      fixture.whenStable().then(() => {
+        expect(customDraftServiceStub.publishDraft).toHaveBeenCalledTimes(2);
+        expect(comp.errorMessage).toEqual([]);
+        expect(comp.isPublished).toHaveBeenCalledTimes(1);
+
+        tick(5500);
+        fixture.detectChanges();
+        discardPeriodicTasks();
+
+        expect(comp.isPublished).toHaveBeenCalledTimes(2);
+      });
+    }));
+
+    it('should return publishing errors and warn the user.', fakeAsync(() => {
+      customDraftServiceStub.publishDraft.and.returnValue(
+        Promise.resolve([
+          {
+            'publishing-errors': 'Error publishing...',
+            'is-published': false,
+          },
+        ]),
+      );
+      spyOn(comp, 'renderMessage');
+      spyOn(comp, 'isPublished');
+
+      comp.showConfirmAlert();
+      fixture.detectChanges();
+      comp.publishOrCreateDrafts();
+
+      tick(5500);
+      fixture.detectChanges();
+      discardPeriodicTasks();
+
+      fixture.whenStable().then(() => {
+        expect(comp.errorMessage).toEqual([
+          'Error publishing...',
+          'Error publishing...',
+        ]);
+      });
+    }));
   });
 });

@@ -59,17 +59,35 @@ describe('ResourceService', () => {
     expect(mockHttp.put).toHaveBeenCalledWith(anything(), anything(), headers);
   });
 
-  it('should not include "include"', () => {
-    service.getResource(resource.id);
-    expect(mockHttp.get).toHaveBeenCalledWith(
-      `${environment.base_url}resources/${resource.id}`,
-    );
+  describe('GetResources()', () => {
+    it('should include "include"', () => {
+      service.getResources('test-data');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources?include=test-data`,
+      );
+    });
+
+    it('should not include "include"', () => {
+      service.getResource(resource.id);
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources/${resource.id}`,
+      );
+    });
   });
 
-  it('should include "include"', () => {
-    service.getResource(resource.id, 'test-data');
-    expect(mockHttp.get).toHaveBeenCalledWith(
-      `${environment.base_url}resources/${resource.id}?include=test-data`,
-    );
+  describe('GetResource()', () => {
+    it('should include "include"', () => {
+      service.getResource(resource.id, 'test-data');
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources/${resource.id}?include=test-data`,
+      );
+    });
+
+    it('should not include "include"', () => {
+      service.getResource(resource.id);
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources/${resource.id}`,
+      );
+    });
   });
 });
