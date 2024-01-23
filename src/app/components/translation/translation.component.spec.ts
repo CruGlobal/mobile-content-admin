@@ -112,7 +112,15 @@ describe('TranslationComponent', () => {
       ]),
     );
     spyOn(customResourceServiceStub, 'getResource').and.returnValue(
-      Promise.resolve(),
+      Promise.resolve({
+        'latest-drafts-translations': [
+          {
+            language: { id: 1 },
+            'publishing-errors': null,
+            'is-published': false,
+          },
+        ],
+      }),
     );
 
     customPageServiceStub.delete();
@@ -157,6 +165,7 @@ describe('TranslationComponent', () => {
     comp.language = language;
 
     const resource = new Resource();
+    resource.id = 15;
     resource.pages = [buildPage(1), pageWithCustomPage];
     resource.tips = [];
     resource['custom-manifests'] = [
@@ -219,6 +228,105 @@ describe('TranslationComponent', () => {
           expect(comp.isPublished).toHaveBeenCalled();
         });
       }));
+
+      it('should clear the interval on destroy', fakeAsync(() => {
+        spyOn(comp, 'renderMessage');
+        spyOn(comp, 'isPublished');
+        spyOn(global, 'clearInterval');
+        comp.publish();
+        tick(5500);
+        fixture.detectChanges();
+        discardPeriodicTasks();
+
+        comp.ngOnDestroy();
+        fixture.whenStable().then(() => {
+          expect(global.clearInterval).toHaveBeenCalled();
+        });
+      }));
+    });
+  });
+
+  describe('isPublished()', () => {
+    let translation: Translation;
+
+    beforeEach(() => {
+      translation = new Translation();
+      translation.language = language;
+      translation.none = true;
+      translation.resource = comp.resource;
+      comp.translation = translation;
+      comp.resource['latest-drafts-translations'] = [translation];
+      comp.reloadTranslation();
+      fixture.detectChanges();
+    });
+
+    it('should not run clearInterval as it is not published and had no errors', () => {
+      spyOn(global, 'clearInterval');
+      comp.isPublished();
+
+      expect(customResourceServiceStub.getResource).toHaveBeenCalledWith(
+        15,
+        'latest-drafts-translations',
+      );
+      expect(global.clearInterval).not.toHaveBeenCalled();
+    });
+
+    it('should run clearInterval and report pubslishing error to user', () => {
+      customResourceServiceStub.getResource.and.returnValue(
+        Promise.resolve({
+          'latest-drafts-translations': [
+            {
+              language: { id: 1 },
+              'publishing-errors': 'Error while saving',
+              'is-published': false,
+            },
+          ],
+        }),
+      );
+      spyOn(global, 'clearInterval');
+      spyOn(comp, 'renderMessage');
+      comp.isPublished();
+
+      fixture.whenStable().then(() => {
+        expect(global.clearInterval).toHaveBeenCalled();
+        expect(comp.renderMessage).toHaveBeenCalledWith(
+          MessageType.success,
+          null,
+        );
+        expect(comp.renderMessage).toHaveBeenCalledWith(
+          MessageType.error,
+          'Error while saving',
+        );
+      });
+    });
+
+    it('should run clearInterval and report success to user', () => {
+      customResourceServiceStub.getResource.and.returnValue(
+        Promise.resolve({
+          'latest-drafts-translations': [
+            {
+              language: { id: 1 },
+              'publishing-errors': null,
+              'is-published': true,
+            },
+          ],
+        }),
+      );
+      spyOn(global, 'clearInterval');
+      spyOn(comp, 'renderMessage');
+      comp.isPublished();
+
+      fixture.whenStable().then(() => {
+        expect(global.clearInterval).toHaveBeenCalled();
+        expect(comp.renderMessage).toHaveBeenCalledWith(
+          MessageType.error,
+          null,
+        );
+        expect(comp.renderMessage).toHaveBeenCalledWith(
+          MessageType.success,
+          comp.successfullyPublishedMessage,
+        );
+      });
     });
   });
 

@@ -181,12 +181,12 @@ export class MultipleDraftGeneratorComponent implements OnDestroy {
         this.disableButtons = false;
       } else {
         if (this.actionType === 'publish') {
-          const publishingErrors = results.filter(
-            (result) => result.value[0]['publishing-errors'],
-          );
+          const publishingErrors = results
+            .filter((result) => result.value[0]['publishing-errors'])
+            .map((result) => result.value[0]['publishing-errors']);
           if (publishingErrors.length) {
             publishingErrors.forEach((publishingError) => {
-              this.errorMessage = [...this.errorMessage, publishingError.error];
+              this.errorMessage = [...this.errorMessage, publishingError];
             });
           }
           this.checkToEnsureTranslationIsPublished = window.setInterval(() => {

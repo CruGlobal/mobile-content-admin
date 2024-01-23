@@ -50,6 +50,7 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
   alertMessage: string;
   sucessfulMessage: string;
   checkToEnsureDraftIsPublished: number;
+  successfullyPublishedMessage = 'Language has been successfully published.';
 
   constructor(
     private customPageService: CustomPageService,
@@ -194,12 +195,13 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
             this.renderMessage(MessageType.error, null);
             this.renderMessage(
               MessageType.success,
-              'Language has been successfully published.',
+              this.successfullyPublishedMessage,
             );
             this.loadAllResources();
           }
         });
     } catch (err) {
+      console.log('ERROR', err);
       clearInterval(this.checkToEnsureDraftIsPublished);
       this.renderMessage(MessageType.success, null);
       this.renderMessage(MessageType.error, err.message);
