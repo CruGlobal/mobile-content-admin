@@ -58,9 +58,11 @@ export class ToolGroupComponent implements OnDestroy {
         { size: 'lg' },
       );
       modalRef.componentInstance.toolGroup = toolGroup;
-      modalRef.result.then(() => {
+      modalRef.result.then((result) => {
         this.toolGroupsComponent.loadToolGroups().then(() => {
-          this.loadAllDetails(true);
+          if (result !== 'deleted') {
+            this.loadAllDetails(true);
+          }
         });
       }, console.log);
     });
