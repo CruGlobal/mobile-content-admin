@@ -1,9 +1,12 @@
 <span
   class="badge badge-secondary"
-  *ngIf="!translation.is_published && !translation.none"
+  *ngIf="!translation.is_published && !translation.none && !translation['publishing-errors']"
   >{{ translation.version }} | Draft</span
 >
-<span class="badge badge-success" *ngIf="translation.is_published"
+<span class="badge badge-success" *ngIf="translation.is_published && !translation['publishing-errors']"
   >{{ translation.version }} | Live</span
+>
+<span class="badge badge-danger" *ngIf="translation['publishing-errors']"
+  >1 | Error</span
 >
 <span class="badge badge-warning" *ngIf="translation.none">None</span>
