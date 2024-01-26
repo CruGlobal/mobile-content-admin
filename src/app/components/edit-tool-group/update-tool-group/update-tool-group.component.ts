@@ -21,7 +21,7 @@ interface PromisePayload {
 interface HasMadeChangesProps {
   codes: string[];
   type: RuleTypeEnum;
-  praxisType?: PraxisTypeEnum ;
+  praxisType?: PraxisTypeEnum;
 }
 
 @Component({
@@ -71,39 +71,49 @@ export class UpdateToolGroupComponent
       case RuleTypeEnum.COUNTRY:
         const initialCountry =
           this.initialToolGroup['rules-country'][0] || undefined;
-        const initialCountryToolgroup = initialCountry ? initialCountry : new ToolGroupRule();
+        const initialCountryToolgroup = initialCountry
+          ? initialCountry
+          : new ToolGroupRule();
         return {
           initialRule: initialCountry,
           initialCodes: initialCountryToolgroup.countries || [],
-          initialNegativeRule: initialCountryToolgroup['negative-rule'] || false,
+          initialNegativeRule:
+            initialCountryToolgroup['negative-rule'] || false,
           negativeRule: this.countryRule['negative-rule'],
         };
       case RuleTypeEnum.LANGUAGE:
         const initialLanguage =
           this.initialToolGroup['rules-language'][0] || undefined;
-        const initialLanguageToolgroup = initialLanguage ? initialLanguage : new ToolGroupRule();
+        const initialLanguageToolgroup = initialLanguage
+          ? initialLanguage
+          : new ToolGroupRule();
         return {
           initialRule: initialLanguage,
           initialCodes: initialLanguageToolgroup.languages || [],
-          initialNegativeRule: initialLanguageToolgroup['negative-rule'] || false,
+          initialNegativeRule:
+            initialLanguageToolgroup['negative-rule'] || false,
           negativeRule: this.languageRule['negative-rule'],
         };
       case RuleTypeEnum.PRAXIS:
         const initialPraxis =
           this.initialToolGroup['rules-praxis'][0] || undefined;
-        const initialPraxisToolgroup = initialPraxis ? initialPraxis : new ToolGroupRule();
+        const initialPraxisToolgroup = initialPraxis
+          ? initialPraxis
+          : new ToolGroupRule();
         if (praxisType === PraxisTypeEnum.CONFIDENCE) {
           return {
             initialRule: initialPraxis,
             initialCodes: initialPraxisToolgroup.confidence || [],
-            initialNegativeRule: initialPraxisToolgroup['negative-rule'] || false,
+            initialNegativeRule:
+              initialPraxisToolgroup['negative-rule'] || false,
             negativeRule: this.praxisRule['negative-rule'],
           };
         } else {
           return {
             initialRule: initialPraxis,
             initialCodes: initialPraxisToolgroup.openness || [],
-            initialNegativeRule: initialPraxisToolgroup['negative-rule'] || false,
+            initialNegativeRule:
+              initialPraxisToolgroup['negative-rule'] || false,
             negativeRule: this.praxisRule['negative-rule'],
           };
         }
@@ -112,7 +122,7 @@ export class UpdateToolGroupComponent
 
   hasMadeChanges(dataToCheck: HasMadeChangesProps[]): boolean {
     const results = dataToCheck.map((data) => {
-      const {codes, type, praxisType} = data;
+      const { codes, type, praxisType } = data;
       const values = this.getValues(type, praxisType);
 
       if (!values.initialRule && (codes.length || values.negativeRule)) {
@@ -125,9 +135,9 @@ export class UpdateToolGroupComponent
           return true;
         }
       }
-      return false
-    })
-    return !!results.find(result => result)
+      return false;
+    });
+    return !!results.find((result) => result);
   }
 
   async saveToolGroup(): Promise<void> {
@@ -147,9 +157,9 @@ export class UpdateToolGroupComponent
       const countryHasMadeChanges = [
         {
           codes: countryCodes,
-          type: RuleTypeEnum.COUNTRY
-        }
-      ]
+          type: RuleTypeEnum.COUNTRY,
+        },
+      ];
       if (this.hasMadeChanges(countryHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
@@ -166,9 +176,9 @@ export class UpdateToolGroupComponent
       const languageHasMadeChanges = [
         {
           codes: languageCodes,
-          type: RuleTypeEnum.LANGUAGE
-        }
-      ]
+          type: RuleTypeEnum.LANGUAGE,
+        },
+      ];
       if (this.hasMadeChanges(languageHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
@@ -191,14 +201,14 @@ export class UpdateToolGroupComponent
         {
           codes: praxisOpennessCodes,
           type: RuleTypeEnum.PRAXIS,
-          praxisType: PraxisTypeEnum.OPENNESS
+          praxisType: PraxisTypeEnum.OPENNESS,
         },
         {
           codes: praxisConfidenceCodes,
           type: RuleTypeEnum.PRAXIS,
-          praxisType: PraxisTypeEnum.CONFIDENCE
-        }
-      ]
+          praxisType: PraxisTypeEnum.CONFIDENCE,
+        },
+      ];
       if (this.hasMadeChanges(praxisHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
