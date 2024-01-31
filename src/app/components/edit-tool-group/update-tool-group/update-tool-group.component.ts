@@ -241,14 +241,14 @@ export class UpdateToolGroupComponent
       if (invalidResults.length) {
         const errorStrings = invalidResults.map((result) => {
           if (typeof result === 'string') {
-            return result
+            return result;
           } else if (typeof result.error === 'string') {
-            return result.error
+            return result.error;
           } else {
-            console.log('Unknown error occured while updating', result)
-            return 'Unknown error occured. Please see console log'
+            console.log('Unknown error occured while updating', result);
+            return 'Unknown error occured. Please see console log';
           }
-        })
+        });
         throw new Error(errorStrings.join('. '));
       } else {
         super.saveToolGroup();
