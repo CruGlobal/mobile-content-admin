@@ -138,7 +138,7 @@
     </div>
   </div>
 </div>
-<ngb-alert type="danger" [dismissible]="false" *ngFor="let error of errorMessage">
+<ngb-alert type="danger" [dismissible]="false" *ngFor="let error of errorMessages">
   {{ error }}
 </ngb-alert>
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
