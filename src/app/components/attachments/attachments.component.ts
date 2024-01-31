@@ -26,7 +26,7 @@ export class AttachmentsComponent implements OnInit {
   showInstructions = false;
   loading = false;
   success = false;
-  errorMessage: string;
+  errorMessages: string[];
   fileName: String = '';
 
   constructor(
@@ -46,14 +46,12 @@ export class AttachmentsComponent implements OnInit {
     };
 
     this.uploader.onErrorItem = (item, response, status, headers) => {
-      this.errorMessage = JSON.parse(response).errors[0].detail;
+      const errorText = JSON.parse(response).errors[0].detail || 'Unknown error occured'
+      this.errorMessages = [...this.errorMessages, errorText];
       return { item, response, status, headers };
     };
   }
 
-  fileUploaderOnChange(): void {
-    this.fileName = this.uploadElement.nativeElement.files[0].name;
-  }
 
   private loadAttachments(): void {
     this.loading = true;
@@ -71,8 +69,7 @@ export class AttachmentsComponent implements OnInit {
   }
 
   uploadNewFile(): void {
-    this.errorMessage = null;
-    this.uploadElement.nativeElement.value = '';
+    this.errorMessages = [];
 
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
@@ -111,6 +108,6 @@ export class AttachmentsComponent implements OnInit {
   }
 
   private handleError(message: string): void {
-    this.errorMessage = message;
+    this.errorMessages = [message];
   }
 }
