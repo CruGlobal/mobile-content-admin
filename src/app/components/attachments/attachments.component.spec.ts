@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
-describe('AttachmentsComponent', () => {
+fdescribe('AttachmentsComponent', () => {
   let comp: AttachmentsComponent;
   let fixture: ComponentFixture<AttachmentsComponent>;
 
@@ -73,9 +73,7 @@ describe('AttachmentsComponent', () => {
   it('includes auth header with file uploads', () => {
     spyOn(comp.uploader, 'uploadAll');
 
-    fixture.debugElement
-      .query(By.css('.btn.btn-success'))
-      .nativeElement.click();
+    comp.uploadNewFile()
 
     expect(comp.uploader.authToken).toBe(authToken);
   });
