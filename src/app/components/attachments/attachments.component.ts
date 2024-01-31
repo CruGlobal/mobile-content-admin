@@ -46,12 +46,12 @@ export class AttachmentsComponent implements OnInit {
     };
 
     this.uploader.onErrorItem = (item, response, status, headers) => {
-      const errorText = JSON.parse(response).errors[0].detail || 'Unknown error occured'
+      const errorText =
+        JSON.parse(response).errors[0].detail || 'Unknown error occured';
       this.errorMessages = [...this.errorMessages, errorText];
       return { item, response, status, headers };
     };
   }
-
 
   private loadAttachments(): void {
     this.loading = true;
