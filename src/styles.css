@@ -26,3 +26,11 @@
 .dropdown-menu > span {
   padding-left: 1.5rem;
 }
+.card-header span.h4 i.fa {
+  visibility: hidden;
+  font-size: 15px;
+  margin-left: 5px;
+}
+.card-header:hover span.h4 i.fa {
+  visibility: visible;
+}
