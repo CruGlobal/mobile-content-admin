@@ -10,6 +10,8 @@ import { DraftService } from '../../service/draft.service';
 import { ResourceComponent } from '../resource/resource.component';
 import { Language } from '../../models/language';
 import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
+import { ResourceTypeService } from '../../service/resource-type.service';
+import { SystemService } from '../../service/system.service';
 
 describe('ResourcesComponent', () => {
   let comp: ResourcesComponent;
@@ -48,6 +50,8 @@ describe('ResourcesComponent', () => {
         { provide: LanguageService, useValue: languageServiceStub },
         { provide: NgbModal },
         { provide: DraftService },
+        { provide: ResourceTypeService },
+        { provide: SystemService },
       ],
     }).compileComponents();
   }));
