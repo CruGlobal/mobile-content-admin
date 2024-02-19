@@ -108,7 +108,7 @@
           <h6 class="dropdown-header">TYPE</h6>
           <button
             *ngFor="let type of resourceTypes"
-            (click)="toggleTools('type', type.name)"
+            (click)="toggleResources('type', type.name)"
             class="filter-dropdown-button"
           >
             <i
@@ -123,7 +123,7 @@
           <h6 class="dropdown-header">SYSTEM</h6>
           <button
             *ngFor="let system of systems"
-            (click)="toggleTools('system', system.id)"
+            (click)="toggleResources('system', system.id)"
             class="filter-dropdown-button"
           >
             <i
@@ -137,7 +137,7 @@
           </button>
           <h6 class="dropdown-header">OTHER</h6>
           <button
-            (click)="toggleTools('other', 'hidden')"
+            (click)="toggleResources('other', 'hidden')"
             class="filter-dropdown-button"
           >
             <i

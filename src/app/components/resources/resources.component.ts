@@ -93,12 +93,13 @@ export class ResourcesComponent implements OnInit {
               return visible;
             })
           : resources;
-        if (this.sortOrder === 'default')
+        if (this.sortOrder === 'default') {
           this.resources.sort(
             (a, b) =>
               (a['attr-default-order'] || 100) -
               (b['attr-default-order'] || 100),
           );
+        }
       })
       .catch(this.handleError.bind(this))
       .then(() => (this.loadingResources = false));
@@ -119,8 +120,10 @@ export class ResourcesComponent implements OnInit {
     modalRef.result.then(() => this.loadResources(), console.log);
   }
 
-  //toggle (show/hide) resources
-  toggleTools = function (category: string, optionId: string | number): void {
+  toggleResources = function (
+    category: string,
+    optionId: string | number,
+  ): void {
     const updatedFilters =
       this.filters[category] && this.filters[category].includes(optionId)
         ? {
@@ -140,7 +143,6 @@ export class ResourcesComponent implements OnInit {
     this.loadResources();
   };
 
-  //clear all filters
   clearFilters = function (): void {
     localStorage.setItem('filters', JSON.stringify(this.blankFilters()));
     this.loadResources();
