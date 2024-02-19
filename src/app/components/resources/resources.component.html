@@ -1,4 +1,4 @@
-<div class="card mb-3">
+<div class="card mb-2">
   <div class="card-header">
     <span class="h3">Translations</span>
     <div class="float-right">
@@ -12,84 +12,6 @@
       >
         Instructions
       </button>
-      <div class="d-inline-block" ngbDropdown>
-        <button
-          class="btn btn-secondary dropdown-toggle mx-1"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          ngbDropdownToggle
-        >
-          Filter
-          <span
-            class="position-absolute rounded-pill bg-warning p-1 badge start-100 translate-middle text-dark"
-            style="translate: 30% -50%; top: 50%; width: 15px"
-            >{{ totalFilters ? totalFilters : null }}</span
-          >
-        </button>
-        <div
-          class="dropdown-menu"
-          aria-labelledby="dropdownMenuButton"
-          ngbDropdownMenu
-        >
-          <span *ngIf="!totalFilters">Showing All</span>
-          <span *ngIf="totalFilters">
-            <a
-              href="javascript:void(0)"
-              class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              (click)="clearFilters()"
-              >Clear</a
-            ></span
-          >
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">TYPE</h6>
-          <button
-            *ngFor="let type of resourceTypes"
-            (click)="toggleTools('type', type.name)"
-            id="filter-dropdown-button"
-          >
-            <i
-              [ngClass]="
-                !filters?.type?.includes(type.name)
-                  ? 'fa fa-square-o'
-                  : 'fa fa-check-square '
-              "
-            ></i>
-            {{ type.name | titlecase }}
-          </button>
-          <h6 class="dropdown-header">SYSTEM</h6>
-          <button
-            *ngFor="let system of systems"
-            (click)="toggleTools('system', system.id)"
-            id="filter-dropdown-button"
-          >
-            <i
-              [ngClass]="
-                !filters?.system?.includes(system.id)
-                  ? 'fa fa-square-o'
-                  : 'fa fa-check-square '
-              "
-            ></i>
-            {{ system.name | titlecase }}
-          </button>
-          <h6 class="dropdown-header">OTHER</h6>
-          <button
-            (click)="toggleTools('other', 'hidden')"
-            id="filter-dropdown-button"
-          >
-            <i
-              [ngClass]="
-                !filters?.other?.includes('hidden')
-                  ? 'fa fa-square-o'
-                  : 'fa fa-check-square '
-              "
-            ></i>
-            Hidden
-          </button>
-        </div>
-      </div>
     </div>
   </div>
   <div class="card-body" [ngbCollapse]="!showFilters && !showInstructions">
@@ -145,6 +67,125 @@
           </p>
         </li>
       </ul>
+    </div>
+  </div>
+</div>
+<div class="nav mb-2 flex-row-reverse">
+  <div class="float-right" ngbDropdown>
+    <div class="btn-group btn-group-sm" role="group">
+      <div class="btn-group btn-group-sm" ngbDropdown role="group">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          ngbDropdownToggle
+        >
+          Filter
+          <span
+            id="filterBadge"
+            class="position-absolute rounded-pill bg-warning p-1 badge start-100 translate-middle text-dark"
+            >{{ totalFilters ? totalFilters : null }}</span
+          >
+        </button>
+        <div
+          class="dropdown-menu"
+          aria-labelledby="dropdownMenuButton"
+          ngbDropdownMenu
+        >
+          <span *ngIf="!totalFilters">Showing All</span>
+          <span *ngIf="totalFilters">
+            <a
+              href="javascript:void(0)"
+              class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+              (click)="clearFilters()"
+              >Clear</a
+            ></span
+          >
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">TYPE</h6>
+          <button
+            *ngFor="let type of resourceTypes"
+            (click)="toggleTools('type', type.name)"
+            class="filter-dropdown-button"
+          >
+            <i
+              [ngClass]="
+                !filters?.type?.includes(type.name)
+                  ? 'fa fa-square-o'
+                  : 'fa fa-check-square '
+              "
+            ></i>
+            {{ type.name | titlecase }}
+          </button>
+          <h6 class="dropdown-header">SYSTEM</h6>
+          <button
+            *ngFor="let system of systems"
+            (click)="toggleTools('system', system.id)"
+            class="filter-dropdown-button"
+          >
+            <i
+              [ngClass]="
+                !filters?.system?.includes(system.id)
+                  ? 'fa fa-square-o'
+                  : 'fa fa-check-square '
+              "
+            ></i>
+            {{ system.name | titlecase }}
+          </button>
+          <h6 class="dropdown-header">OTHER</h6>
+          <button
+            (click)="toggleTools('other', 'hidden')"
+            class="filter-dropdown-button"
+          >
+            <i
+              [ngClass]="
+                !filters?.other?.includes('hidden')
+                  ? 'fa fa-square-o'
+                  : 'fa fa-check-square '
+              "
+            ></i>
+            Hidden
+          </button>
+        </div>
+      </div>
+      <div class="btn-group btn-group-sm" ngbDropdown role="group">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          ngbDropdownToggle
+        >
+          Sort
+        </button>
+        <div
+          class="dropdown-menu"
+          aria-labelledby="dropdownMenuButton"
+          ngbDropdownMenu
+        >
+          <button
+            (click)="updateSort('alphabetical')"
+            class="filter-dropdown-button btn-sm"
+            [ngClass]="
+              sortOrder == 'alphabetical' ? 'bg-secondary text-light' : ''
+            "
+          >
+            Alphabetical
+          </button>
+          <button
+            (click)="updateSort('default')"
+            class="filter-dropdown-button"
+            [ngClass]="sortOrder == 'default' ? 'bg-secondary text-light' : ''"
+          >
+            Default Order
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

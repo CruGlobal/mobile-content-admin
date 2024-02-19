@@ -28,6 +28,7 @@ export class ResourcesComponent implements OnInit {
   errorMessage: string;
   filters: Filters;
   totalFilters: number;
+  sortOrder: string;
 
   constructor(
     private resourceService: ResourceService,
@@ -58,6 +59,7 @@ export class ResourcesComponent implements OnInit {
       )
       .then((resources) => {
         const localFilters = localStorage.getItem('filters');
+        this.sortOrder = localStorage.getItem('sortOrder');
         this.filters = localFilters
           ? JSON.parse(localFilters)
           : this.blankFilters();
@@ -91,6 +93,12 @@ export class ResourcesComponent implements OnInit {
               return visible;
             })
           : resources;
+        if (this.sortOrder === 'default')
+          this.resources.sort(
+            (a, b) =>
+              (a['attr-default-order'] || 100) -
+              (b['attr-default-order'] || 100),
+          );
       })
       .catch(this.handleError.bind(this))
       .then(() => (this.loadingResources = false));
@@ -135,6 +143,10 @@ export class ResourcesComponent implements OnInit {
   //clear all filters
   clearFilters = function (): void {
     localStorage.setItem('filters', JSON.stringify(this.blankFilters()));
+    this.loadResources();
+  };
+  updateSort = function (order: string): void {
+    localStorage.setItem('sortOrder', order);
     this.loadResources();
   };
 
