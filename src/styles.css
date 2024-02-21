@@ -26,14 +26,41 @@
 .filter-dropdown-button:hover {
   background-color: #f8f9fa;
 }
-.dropdown-menu > span {
-  padding-left: 1rem;
-  font-size: 0.875rem;
+#filterSortBar {
+  padding: 0 0 0 3px;
+}
+#filterSortBar > div > span {
+  padding-right: 0.75rem;
+  font-size: 0.75rem;
+  float: right;
+  vertical-align: middle;
+  margin: auto 0;
+  font-style: italic;
+  color: #6c757d;
+}
+#filterSortBar .dropdown > button {
+  font-size: 0.75rem;
+  border: 0;
+  padding: 0.15rem 0.4rem;
+  background-color: rgba(0, 0, 0, 0);
+  color: #6c757d;
+  margin-right: 5px;
+}
+#filterSortBar .dropdown > button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#filterSortBar .dropdown > button:focus {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#filterSortBar .dropdown > button:active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .card-header span.h4 i.fa {
   visibility: hidden;
   font-size: 15px;
   margin-left: 5px;
+  vertical-align: middle !important;
 }
 .card-header:hover span.h4 i.fa {
   visibility: visible;
