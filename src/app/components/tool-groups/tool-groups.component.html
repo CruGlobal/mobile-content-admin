@@ -1,0 +1,37 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <span class="h3">Tool Groups</span>
+    <div class="float-right">
+      <button
+        type="button"
+        class="btn btn-default"
+        (click)="showInstructions = !showInstructions"
+      >
+        Toggle instructions
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div [ngbCollapse]="!showInstructions">
+      <h5>Instructions - Coming Soon</h5>
+    </div>
+
+    <button (click)="openCreateModal()" class="btn btn-secondary">
+      <i class="fa fa-plus"></i> Add new Tool Group
+    </button>
+  </div>
+</div>
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loadingToolGroups">
+  Loading...
+</ngb-alert>
+<ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+  {{ errorMessage }}
+</ngb-alert>
+<div>
+  <div *ngFor="let toolGroup of toolGroups; trackBy: trackByFunction">
+    <admin-tool-group
+      [toolGroup]="toolGroup"
+      [toolGroupsComponent]="this"
+    ></admin-tool-group>
+  </div>
+</div>

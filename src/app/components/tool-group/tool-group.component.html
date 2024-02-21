@@ -1,0 +1,276 @@
+<div class="card mb-3">
+  <div
+    class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
+    [ngStyle]="{ cursor: 'pointer' }"
+    (click)="handleToggleAccordian()"
+  >
+    <span class="h4 mb-0">
+      {{ toolGroup.name }} ({{ toolGroup['suggestions-weight'] }})
+    </span>
+    <div class="btn-group justify-content-end flex-wrap" role="group">
+      <button
+        (click)="openUpdateModal(); $event.stopPropagation()"
+        class="btn btn-warning mb-2 mb-sm-2 mb-lg-0"
+      >
+        <i class="fa fa-pencil"></i> Details
+      </button>
+    </div>
+  </div>
+  <div class="card-body bg-dark" [ngbCollapse]="!showDetails">
+    <div class="row mt-3">
+      <div class="col">
+        <!-- Languages UI -->
+        <div class="card autoScroll">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Languages</span>
+            <button
+              *ngIf="toolGroup['rules-language'].length > 1"
+              (click)="createRule('language')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Add language rule
+            </button>
+            <button
+              *ngIf="toolGroup['rules-language'].length === 1"
+              (click)="
+                openRuleModal(toolGroup['rules-language'][0], 'language')
+              "
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit language rule
+            </button>
+          </div>
+          <div
+            *ngIf="toolGroup['rules-language'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
+            <small>Multiple Rules</small>
+          </div>
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-language']"
+          >
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngIf="toolGroup['rules-language'].length > 1"
+            >
+              Rule
+              <button
+                (click)="openRuleModal(rule, 'language')"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
+              <small class="text-white">Exclude these languages</small>
+            </li>
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let language of rule.languages"
+            >
+              {{ getReadableValue(language, 'language').name }} ({{ language }})
+            </li>
+
+            <li class="list-group-item" *ngIf="!rule.languages?.length">
+              No languages added
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <!-- Countries UI -->
+
+        <div class="card autoScroll">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Countries</span>
+            <button
+              *ngIf="toolGroup['rules-country'].length > 1"
+              (click)="createRule('country')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Add country rule
+            </button>
+            <button
+              *ngIf="toolGroup['rules-country'].length === 1"
+              (click)="openRuleModal(toolGroup['rules-country'][0], 'country')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit country rule
+            </button>
+          </div>
+          <div
+            *ngIf="toolGroup['rules-country'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
+            <small>Multiple Rules</small>
+          </div>
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-country']"
+          >
+            <li
+              *ngIf="toolGroup['rules-country'].length > 1"
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              Rule
+              <button
+                (click)="openRuleModal(rule, 'country')"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
+              <small class="text-white">Exclude these countries</small>
+            </li>
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let country of rule.countries"
+            >
+              {{ getReadableValue(country, 'country').name }} ({{ country }})
+            </li>
+
+            <li class="list-group-item" *ngIf="!rule.countries?.length">
+              No countries added
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <!-- Praxis UI -->
+        <div class="card autoScroll">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Praxis</span>
+            <button
+              *ngIf="toolGroup['rules-praxis'].length > 1"
+              (click)="createRule('praxis')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Add praxis rule
+            </button>
+            <button
+              *ngIf="toolGroup['rules-praxis'].length === 1"
+              (click)="openRuleModal(toolGroup['rules-praxis'][0], 'praxis')"
+              class="btn btn-secondary"
+            >
+              <i class="fa fa-file"></i> Edit praxis rule
+            </button>
+          </div>
+          <div
+            *ngIf="toolGroup['rules-praxis'].length > 1"
+            class="list-group-item pt-1 pb-1 bg-warning"
+            style="line-height: 1"
+          >
+            <small>Multiple Rules</small>
+          </div>
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let rule of toolGroup['rules-praxis']"
+          >
+            <li
+              *ngIf="toolGroup['rules-country'].length > 1"
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              Rule
+              <button
+                (click)="openRuleModal(rule, 'praxis')"
+                class="btn btn-outline-dark float-right"
+              >
+                <i class="fa fa-pencil"></i> Edit
+              </button>
+            </li>
+
+            <li
+              *ngIf="rule['negative-rule']"
+              class="list-group-item pt-1 pb-1 bg-danger"
+              style="line-height: 1"
+            >
+              <small class="text-white">Exclude these praxis</small>
+            </li>
+
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let confidence of rule.confidence"
+            >
+              Confidence -
+              {{ getReadableValue(confidence, 'praxis', 'confidence').name }}
+            </li>
+            <li class="list-group-item" *ngIf="!rule.confidence?.length">
+              No praxis confidence added
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center pt-2 pb-2"
+              *ngFor="let openness of rule.openness"
+            >
+              Openness -
+              {{ getReadableValue(openness, 'praxis', 'openness').name }}
+            </li>
+
+            <li class="list-group-item" *ngIf="!rule.openness?.length">
+              No praxis openness added
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col">
+        <!-- Resources UI -->
+        <div class="card autoScroll">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <span class="h5 mb-0">Tools</span>
+            <button class="btn btn-secondary" (click)="addResource()">
+              <i class="fa fa-file"></i> Add/Edit Tools
+            </button>
+          </div>
+
+          <ul
+            class="list-group list-group-flush"
+            *ngFor="let tool of toolGroup['tools']"
+          >
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              {{ tool?.tool?.name }} ({{ tool.suggestionsWeight }})
+            </li>
+          </ul>
+          <p class="list-group-item" *ngIf="!toolGroup['tools']?.length">
+            No tools added
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </ngb-alert>
+  </div>
+</div>
