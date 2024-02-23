@@ -163,13 +163,11 @@ describe('ResourcesComponent', () => {
     setTimeout(() => {
       expect(
         comp.resources.find(
-          (resource) => resource.name === 'GodTools Tract Tool - Not Hidden',
+          (r) => r.name === 'GodTools Tract Tool - Not Hidden',
         ),
       ).toEqual(undefined);
       expect(
-        comp.resources.find(
-          (resource) => resource.name === 'GodTools CYOA Tool - Hidden',
-        ),
+        comp.resources.find((r) => r.name === 'GodTools CYOA Tool - Hidden'),
       ).toBeTruthy();
       done();
     });
@@ -183,13 +181,11 @@ describe('ResourcesComponent', () => {
     setTimeout(() => {
       expect(
         comp.resources.find(
-          (resource) => resource.name === 'GodTools Tract Tool - Not Hidden',
+          (r) => r.name === 'GodTools Tract Tool - Not Hidden',
         ),
       ).toBeTruthy();
       expect(
-        comp.resources.find(
-          (resource) => resource.name === 'GodTools CYOA Tool - Hidden',
-        ),
+        comp.resources.find((r) => r.name === 'GodTools CYOA Tool - Hidden'),
       ).toEqual(undefined);
       done();
     });
@@ -203,14 +199,11 @@ describe('ResourcesComponent', () => {
     setTimeout(() => {
       expect(
         comp.resources.find(
-          (resource) =>
-            resource.name === 'Test System Lesson Tool - Not Hidden',
+          (r) => r.name === 'Test System Lesson Tool - Not Hidden',
         ),
       ).toBeTruthy();
       expect(
-        comp.resources.find(
-          (resource) => resource.name === 'GodTools CYOA Tool - Hidden',
-        ),
+        comp.resources.find((r) => r.name === 'GodTools CYOA Tool - Hidden'),
       ).toEqual(undefined);
       done();
     });
