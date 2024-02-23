@@ -24,7 +24,10 @@
   border: 0;
 }
 .filter-dropdown-button:hover {
-  background-color: #f8f9fa;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.filter-dropdown-button:active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 #filterSortBar {
   padding: 0 0 0 3px;
@@ -56,17 +59,35 @@
 #filterSortBar .dropdown > button:active {
   background-color: rgba(0, 0, 0, 0.1);
 }
+#filterSortBar .dropdown-header {
+  padding: 0.3rem 0.5rem;
+  color: #000;
+}
+#filterSortBar .btn-group {
+  vertical-align: inherit;
+}
 .card-header span.h4 i.fa {
   visibility: hidden;
   font-size: 15px;
   margin-left: 5px;
   vertical-align: middle !important;
 }
-.card-header:hover span.h4 i.fa {
-  visibility: visible;
+.card-header.pointer:hover {
+  cursor: pointer;
+}
+.card-header.pointer:hover span.h4 {
+  color: rgba(255, 255, 255, 0.75);
+}
+.card-header.pointer:active span.h4 {
+  color: rgba(255, 255, 255, 0.5);
 }
 #filterBadge {
   translate: 0 -50%;
   top: 50%;
   width: 15px;
+}
+@media (min-width: 576px) {
+  .modal-dialog.modal-lg {
+    max-width: 750px;
+  }
 }

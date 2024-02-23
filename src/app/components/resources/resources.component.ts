@@ -119,6 +119,7 @@ export class ResourcesComponent implements OnInit {
   openCreateModal(): void {
     const modalRef: NgbModalRef = this.modalService.open(
       CreateResourceComponent,
+      { size: 'lg' },
     );
     modalRef.result.then(() => this.loadResources(), console.log);
   }
