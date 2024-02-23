@@ -8,7 +8,7 @@
     "build": "ng build",
     "build:stage": "ng build -c staging",
     "build:prod": "ng build -c production",
-    "test": "ng test",
+    "test": "ng test --browsers=ChromeHeadless",
     "test:codecov": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",
     "lint:type": "ng lint --type-check",
