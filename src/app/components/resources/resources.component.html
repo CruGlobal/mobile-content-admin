@@ -148,6 +148,7 @@
           </button>
         </div>
       </div>
+      <span class="sortLabel">Sort by |</span>
       <div class="btn-group btn-group-sm" ngbDropdown role="group">
         <button
           class="btn dropdown-toggle"
@@ -157,8 +158,9 @@
           aria-haspopup="true"
           aria-expanded="false"
           ngbDropdownToggle
+          style="font-style: italic"
         >
-          Sort
+          {{ sortOrder == 'tool' ? 'Tool Order' : 'Alphabetical' }}
         </button>
         <div
           class="dropdown-menu"
@@ -168,9 +170,7 @@
           <button
             (click)="updateSort('alphabetical')"
             class="filter-dropdown-button btn-sm"
-            [ngClass]="
-              sortOrder == 'alphabetical' ? 'bg-secondary text-light' : ''
-            "
+            [ngClass]="sortOrder != 'tool' ? 'bg-secondary text-light' : ''"
           >
             Alphabetical
           </button>
