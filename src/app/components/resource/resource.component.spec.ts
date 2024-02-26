@@ -61,7 +61,13 @@ describe('ResourceComponent', () => {
     comp = fixture.componentInstance;
     comp.resource = resource;
 
-    comp.resourcesComponent = new ResourcesComponent(null, null, null);
+    comp.resourcesComponent = new ResourcesComponent(
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
   });
 
   describe('loading languages', () => {
