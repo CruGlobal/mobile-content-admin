@@ -1,9 +1,9 @@
 <div class="card mb-2">
   <div class="card-header">
-    <span class="h3">Tools</span>
+    <span class="h3">Content</span>
     <div class="float-right">
       <button (click)="openCreateModal()" class="btn btn-secondary mx-1">
-        <i class="fa fa-plus"></i> Add New Tool
+        <i class="fa fa-plus"></i> Add New Content
       </button>
       <button
         type="button"
@@ -160,7 +160,7 @@
           ngbDropdownToggle
           style="font-style: italic"
         >
-          {{ sortOrder == 'tool' ? 'Tool Order' : 'Alphabetical' }}
+          {{ sortOrder == 'content' ? 'Content Order' : 'Alphabetical' }}
         </button>
         <div
           class="dropdown-menu"
@@ -170,16 +170,16 @@
           <button
             (click)="updateSort('alphabetical')"
             class="filter-dropdown-button btn-sm"
-            [ngClass]="sortOrder != 'tool' ? 'bg-secondary text-light' : ''"
+            [ngClass]="sortOrder != 'content' ? 'bg-secondary text-light' : ''"
           >
             Alphabetical
           </button>
           <button
-            (click)="updateSort('tool')"
+            (click)="updateSort('content')"
             class="filter-dropdown-button"
-            [ngClass]="sortOrder == 'tool' ? 'bg-secondary text-light' : ''"
+            [ngClass]="sortOrder == 'content' ? 'bg-secondary text-light' : ''"
           >
-            Tool Order
+            Content Order
           </button>
         </div>
       </div>
