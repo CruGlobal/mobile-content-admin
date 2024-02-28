@@ -225,9 +225,9 @@ describe('ResourcesComponent', () => {
       done();
     });
   });
-  it('should sort by tool order', (done) => {
+  it('should sort by content order', (done) => {
     comp.unfilteredResources = unfilteredResources;
-    comp.updateSort('tool');
+    comp.updateSort('content');
 
     setTimeout(() => {
       expect(comp.resources[0].name).toEqual(
