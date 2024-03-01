@@ -100,10 +100,10 @@ export class ResourcesComponent implements OnInit {
         })
       : this.unfilteredResources;
 
-    if (this.sortOrder === 'tool') {
+    if (this.sortOrder === 'content') {
       this.resources.sort(
         (a, b) =>
-          (a['attr-default-order'] || 100) - (b['attr-default-order'] || 100),
+          (a['attr-default-order'] || 1000) - (b['attr-default-order'] || 1000),
       );
     }
   }
