@@ -6,6 +6,7 @@ import {
   OnChanges,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
 import { Translation } from '../../models/translation';
 import { DraftService } from '../../service/draft.service';
@@ -29,12 +30,14 @@ import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
 import { getLatestTranslation } from './utilities';
 import { environment } from '../../../environments/environment';
+import { MessageType } from '../../models/message';
+import { ResourceService } from '../../service/resource/resource.service';
 
 @Component({
   selector: 'admin-translation',
   templateUrl: './translation.component.html',
 })
-export class TranslationComponent implements OnInit, OnChanges {
+export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
   @Input() language: Language;
   @Input() resource: Resource;
   @Input() translationLoaded: Observable<number>;
@@ -43,10 +46,11 @@ export class TranslationComponent implements OnInit, OnChanges {
   translation: Translation;
   customManifest: CustomManifest;
   baseDownloadUrl = environment.base_url + 'translations/';
-
-  saving = false;
-  publishing = false;
   errorMessage: string;
+  alertMessage: string;
+  sucessfulMessage: string;
+  checkToEnsureDraftIsPublished: number;
+  successfullyPublishedMessage = 'Language has been successfully published.';
 
   constructor(
     private customPageService: CustomPageService,
@@ -54,6 +58,7 @@ export class TranslationComponent implements OnInit, OnChanges {
     private draftService: DraftService,
     private customManifestService: CustomManifestService,
     private modalService: NgbModal,
+    private resourceService: ResourceService,
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +79,10 @@ export class TranslationComponent implements OnInit, OnChanges {
     ) {
       this.customManifest = this.getCustomManifest();
     }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.checkToEnsureDraftIsPublished);
   }
 
   getPages(): AbstractPage[] {
@@ -138,29 +147,65 @@ export class TranslationComponent implements OnInit, OnChanges {
     return tip as Tip;
   }
 
-  publishDraft(): void {
-    this.publishing = true;
-    this.errorMessage = null;
-
-    const t = Translation.copy(this.translation);
-    t.is_published = true;
-
-    this.draftService
-      .updateDraft(t)
-      .then(() => this.loadAllResources())
-      .catch(this.handleError.bind(this))
-      .then(() => (this.publishing = false));
+  renderMessage(type: MessageType, text: string, time?: number) {
+    this[`${type}Message`] = text;
+    if (time) {
+      setTimeout(() => {
+        this[`${type}Message`] = '';
+      }, time);
+    }
   }
 
-  createDraft(): void {
-    this.saving = true;
-    this.errorMessage = null;
-
+  async publish(): Promise<void> {
+    this.renderMessage(MessageType.error, '');
+    this.renderMessage(MessageType.success, 'Publishing...');
     this.draftService
-      .createDraft(this.translation)
-      .then(() => this.loadAllResources())
-      .catch(this.handleError.bind(this))
-      .then(() => (this.saving = false));
+      .publishDraft(this.resource, this.translation)
+      .then((data) => {
+        const publishingError = data[0]['publishing-errors'];
+        if (publishingError) {
+          this.renderMessage(MessageType.success, publishingError);
+        }
+        this.checkToEnsureDraftIsPublished = window.setInterval(() => {
+          this.isPublished();
+        }, 5000);
+      })
+      .catch(this.handleError.bind(this));
+  }
+
+  isPublished() {
+    try {
+      this.resourceService
+        .getResource(this.resource.id, 'latest-drafts-translations')
+        .then((resource) => {
+          const translation = resource['latest-drafts-translations'].find(
+            (draftTranslation) =>
+              draftTranslation.language.id === this.translation.language.id,
+          );
+          if (translation['publishing-errors']) {
+            clearInterval(this.checkToEnsureDraftIsPublished);
+            this.renderMessage(MessageType.success, null);
+            this.renderMessage(
+              MessageType.error,
+              translation['publishing-errors'],
+            );
+          }
+          if (translation['is-published']) {
+            clearInterval(this.checkToEnsureDraftIsPublished);
+            this.renderMessage(MessageType.error, null);
+            this.renderMessage(
+              MessageType.success,
+              this.successfullyPublishedMessage,
+            );
+            this.loadAllResources();
+          }
+        });
+    } catch (err) {
+      console.log('ERROR', err);
+      clearInterval(this.checkToEnsureDraftIsPublished);
+      this.renderMessage(MessageType.success, null);
+      this.renderMessage(MessageType.error, err.message);
+    }
   }
 
   createCustomPage(page: Page): void {
