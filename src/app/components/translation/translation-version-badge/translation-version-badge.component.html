@@ -11,6 +11,6 @@
   >{{ translation.version }} | Live</span
 >
 <span class="badge badge-danger" *ngIf="translation['publishing-errors']"
-  >1 | Error</span
+  >{{ translation.version }} | Error</span
 >
 <span class="badge badge-warning" *ngIf="translation.none">None</span>
