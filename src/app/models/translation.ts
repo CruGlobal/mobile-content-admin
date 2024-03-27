@@ -9,7 +9,7 @@ export class Translation {
   resource: Resource;
   version: number;
 
-  selectedForAction: boolean;
+  generateDraft: boolean;
   none: boolean;
 
   static copy(translation: Translation): Translation {
