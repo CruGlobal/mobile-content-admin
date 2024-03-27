@@ -7,12 +7,10 @@ import { Page } from '../models/page';
 import { Tip } from '../models/tip';
 import { environment } from '../../environments/environment';
 import { AbstractService } from './abstract.service';
-import { Resource } from '../models/resource';
 
 @Injectable()
 export class DraftService extends AbstractService {
   private readonly draftsUrl = environment.base_url + 'drafts';
-  private readonly resourcesUrl = environment.base_url + 'resources';
 
   constructor(private http: Http, private authService: AuthService) {
     super();
@@ -61,29 +59,19 @@ export class DraftService extends AbstractService {
       .catch(this.handleError);
   }
 
-  publishDraft(
-    resource: Resource,
-    translation: Translation,
-  ): Promise<Translation> {
+  updateDraft(translation: Translation): Promise<Translation> {
     const payload = {
       data: {
-        type: 'publish-translations',
-        relationships: {
-          languages: {
-            data: [
-              {
-                id: translation.language.id,
-                type: 'language',
-              },
-            ],
-          },
+        type: 'translation',
+        attributes: {
+          is_published: translation.is_published,
         },
       },
     };
 
     return this.http
-      .post(
-        `${this.resourcesUrl}/${resource.id}/translations/publish`,
+      .put(
+        `${this.draftsUrl}/${translation.id}`,
         payload,
         this.authService.getAuthorizationAndOptions(),
       )

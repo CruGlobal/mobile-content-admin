@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslationComponent } from './translation.component';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DraftService } from '../../service/draft.service';
@@ -19,12 +12,10 @@ import { Page } from '../../models/page';
 import { CustomPage } from '../../models/custom-page';
 import { ResourceComponent } from '../resource/resource.component';
 import anything = jasmine.anything;
-import { ResourceService } from '../../service/resource/resource.service';
 import { CustomPageService } from '../../service/custom-page.service';
 import { CustomManifestService } from '../../service/custom-manifest.service';
-import { CustomTipService } from '../../service/custom-tip.service';
 import { CustomManifest } from '../../models/custom-manifest';
-import { MessageType } from '../../models/message';
+import { CustomTipService } from '../../service/custom-tip.service';
 import { TranslationVersionBadgeComponent } from './translation-version-badge/translation-version-badge.component';
 
 describe('TranslationComponent', () => {
@@ -35,8 +26,6 @@ describe('TranslationComponent', () => {
   let customTipsServiceStub;
   let modalServiceStub;
   let customManifestServiceStub;
-  let customDraftServiceStub;
-  let customResourceServiceStub;
 
   let resourceComponent: ResourceComponent;
   let language: Language;
@@ -84,12 +73,6 @@ describe('TranslationComponent', () => {
     modalServiceStub = {
       open() {},
     };
-    customDraftServiceStub = {
-      publishDraft() {},
-    };
-    customResourceServiceStub = {
-      getResource() {},
-    };
     const modalRef = {
       componentInstance: {},
       result: Promise.resolve(),
@@ -104,41 +87,20 @@ describe('TranslationComponent', () => {
     spyOn(customManifestServiceStub, 'delete').and.returnValue(
       Promise.resolve(),
     );
-    spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
-      Promise.resolve([
-        {
-          'publishing-errors': null,
-        },
-      ]),
-    );
-    spyOn(customResourceServiceStub, 'getResource').and.returnValue(
-      Promise.resolve({
-        'latest-drafts-translations': [
-          {
-            language: { id: 1 },
-            'publishing-errors': null,
-            'is-published': false,
-          },
-        ],
-      }),
-    );
 
     customPageServiceStub.delete();
     modalServiceStub.open();
     customManifestServiceStub.delete();
-    customDraftServiceStub.publishDraft();
-    customResourceServiceStub.getResource();
 
     TestBed.configureTestingModule({
       declarations: [TranslationComponent, TranslationVersionBadgeComponent],
       imports: [NgbModule.forRoot()],
       providers: [
-        { provide: DraftService, useValue: customDraftServiceStub },
+        { provide: DraftService },
         { provide: CustomPageService, useValue: customPageServiceStub },
         { provide: CustomTipService, useValue: customTipsServiceStub },
         { provide: CustomManifestService, useValue: customManifestServiceStub },
         { provide: NgbModal, useValue: modalServiceStub },
-        { provide: ResourceService, useValue: customResourceServiceStub },
       ],
     }).compileComponents();
   }));
@@ -149,9 +111,6 @@ describe('TranslationComponent', () => {
 
     resourceComponent = new ResourceComponent(null, null);
     comp.translationLoaded = resourceComponent.translationLoaded$;
-    comp.errorMessage = '';
-    comp.alertMessage = '';
-    comp.sucessfulMessage = '';
 
     const pageWithCustomPage = buildPage(2);
 
@@ -165,7 +124,6 @@ describe('TranslationComponent', () => {
     comp.language = language;
 
     const resource = new Resource();
-    resource.id = 15;
     resource.pages = [buildPage(1), pageWithCustomPage];
     resource.tips = [];
     resource['custom-manifests'] = [
@@ -181,11 +139,11 @@ describe('TranslationComponent', () => {
       fixture.detectChanges();
     });
 
-    it(`should show action button with 'Publish'`, () => {
+    it(`should show action button with 'New Draft'`, () => {
       const element: DebugElement = fixture.debugElement
-        .queryAll(By.css('.btn.btn-success'))
+        .queryAll(By.css('.btn.btn-secondary'))
         .pop();
-      expect(element.nativeElement.textContent.trim()).toBe('Publish');
+      expect(element.nativeElement.textContent.trim()).toBe('New Draft');
     });
 
     it(`should show status badge with 'None'`, () => {
@@ -193,140 +151,6 @@ describe('TranslationComponent', () => {
         By.css('.badge.badge-warning'),
       );
       expect(element.nativeElement.textContent).toBe('None');
-    });
-
-    describe('publish a new translation (Server creates draft)', () => {
-      let translation: Translation;
-
-      beforeEach(() => {
-        translation = new Translation();
-        translation.none = true;
-        translation.language = language;
-        translation.resource = comp.resource;
-
-        comp.resource['latest-drafts-translations'] = [translation];
-        comp.reloadTranslation();
-        fixture.detectChanges();
-      });
-
-      it('should git resource endpoint', fakeAsync(() => {
-        spyOn(comp, 'renderMessage');
-        spyOn(comp, 'isPublished');
-        comp.publish();
-
-        expect(comp.renderMessage).toHaveBeenCalledWith(MessageType.error, '');
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.success,
-          'Publishing...',
-        );
-
-        tick(5500);
-        fixture.detectChanges();
-
-        discardPeriodicTasks();
-        fixture.whenStable().then(() => {
-          expect(comp.isPublished).toHaveBeenCalled();
-        });
-      }));
-
-      it('should clear the interval on destroy', fakeAsync(() => {
-        spyOn(comp, 'renderMessage');
-        spyOn(comp, 'isPublished');
-        spyOn(global, 'clearInterval');
-        comp.publish();
-        tick(5500);
-        fixture.detectChanges();
-        discardPeriodicTasks();
-
-        comp.ngOnDestroy();
-        fixture.whenStable().then(() => {
-          expect(global.clearInterval).toHaveBeenCalled();
-        });
-      }));
-    });
-  });
-
-  describe('isPublished()', () => {
-    let translation: Translation;
-
-    beforeEach(() => {
-      translation = new Translation();
-      translation.language = language;
-      translation.none = true;
-      translation.resource = comp.resource;
-      comp.translation = translation;
-      comp.resource['latest-drafts-translations'] = [translation];
-      comp.reloadTranslation();
-      fixture.detectChanges();
-    });
-
-    it('should not run clearInterval as it is not published and had no errors', () => {
-      spyOn(global, 'clearInterval');
-      comp.isPublished();
-
-      expect(customResourceServiceStub.getResource).toHaveBeenCalledWith(
-        15,
-        'latest-drafts-translations',
-      );
-      expect(global.clearInterval).not.toHaveBeenCalled();
-    });
-
-    it('should run clearInterval and report pubslishing error to user', () => {
-      customResourceServiceStub.getResource.and.returnValue(
-        Promise.resolve({
-          'latest-drafts-translations': [
-            {
-              language: { id: 1 },
-              'publishing-errors': 'Error while saving',
-              'is-published': false,
-            },
-          ],
-        }),
-      );
-      spyOn(global, 'clearInterval');
-      spyOn(comp, 'renderMessage');
-      comp.isPublished();
-
-      fixture.whenStable().then(() => {
-        expect(global.clearInterval).toHaveBeenCalled();
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.success,
-          null,
-        );
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.error,
-          'Error while saving',
-        );
-      });
-    });
-
-    it('should run clearInterval and report success to user', () => {
-      customResourceServiceStub.getResource.and.returnValue(
-        Promise.resolve({
-          'latest-drafts-translations': [
-            {
-              language: { id: 1 },
-              'publishing-errors': null,
-              'is-published': true,
-            },
-          ],
-        }),
-      );
-      spyOn(global, 'clearInterval');
-      spyOn(comp, 'renderMessage');
-      comp.isPublished();
-
-      fixture.whenStable().then(() => {
-        expect(global.clearInterval).toHaveBeenCalled();
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.error,
-          null,
-        );
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.success,
-          comp.successfullyPublishedMessage,
-        );
-      });
     });
   });
 
@@ -462,15 +286,15 @@ describe('TranslationComponent', () => {
     });
 
     describe('action button', () => {
-      it(`should say 'Publish' for published translations`, () => {
+      it(`should say 'New Draft' for published translations`, () => {
         translation.is_published = true;
 
         fixture.detectChanges();
 
         const element: DebugElement = fixture.debugElement
-          .queryAll(By.css('.btn.btn-success'))
+          .queryAll(By.css('.btn.btn-secondary'))
           .pop();
-        expect(element.nativeElement.textContent.trim()).toBe('Publish');
+        expect(element.nativeElement.textContent.trim()).toBe('New Draft');
       });
 
       it(`should say 'Publish' for drafts`, () => {
