@@ -1,0 +1,95 @@
+<div class="modal-header">
+  <h5 *ngIf="!isNewToolGroup">Edit Tool Group</h5>
+  <h5 *ngIf="isNewToolGroup">New Tool Group</h5>
+</div>
+<div class="modal-body">
+  <div class="row mb-3">
+    <div class="col-6">
+      <label for="name">Name</label>
+      <input
+        id="name"
+        class="form-control"
+        placeholder="Name"
+        [(ngModel)]="toolGroup.name"
+      />
+    </div>
+    <div class="col-6">
+      <label for="abbrev">Suggestions Weight</label>
+      <input
+        id="abbrev"
+        class="form-control"
+        placeholder="1.0"
+        [(ngModel)]="toolGroup.suggestedWeight"
+      />
+    </div>
+  </div>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="languageRule"
+    [ruleType]="'language'"
+    (selectedItemsEmit)="updateSelected($event, 'language', null)"
+    (negativeRuleOutput)="updateNegativeRule($event, 'language')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="countryRule"
+    [ruleType]="'country'"
+    (selectedItemsEmit)="updateSelected($event, 'country', null)"
+    (negativeRuleOutput)="updateNegativeRule($event, 'country')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="praxisRule"
+    [ruleType]="'praxis'"
+    [praxisType]="'confidence'"
+    (selectedItemsEmit)="updateSelected($event, 'praxis', 'confidence')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <admin-tool-group-rule-reuseable
+    [rule]="praxisRule"
+    [ruleType]="'praxis'"
+    [praxisType]="'openness'"
+    (selectedItemsEmit)="updateSelected($event, 'praxis', 'openness')"
+    (negativeRuleOutput)="updateNegativeRule($event, 'praxis')"
+  >
+  </admin-tool-group-rule-reuseable>
+
+  <div class="row" *ngIf="saving">
+    <div class="col">
+      <ngb-alert type="info" [dismissible]="false">Saving...</ngb-alert>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="errorMessage">
+    <div class="col">
+      <ngb-alert type="danger" [dismissible]="false">
+        {{ errorMessage }}
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div *ngIf="isNewToolGroup">
+    <i style="font-size: 14px"
+      >Once this Tool Group is created, you'll be able to add tools.</i
+    >
+  </div>
+</div>
+
+<div class="modal-footer" style="justify-content: space-between">
+  <span *ngIf="isNewToolGroup"></span>
+  <button
+    *ngIf="!isNewToolGroup"
+    (click)="deleteToolGroup()"
+    class="btn btn-outline-danger"
+  >
+    Delete Tool Group
+  </button>
+  <div class="btn-group" role="group">
+    <button (click)="closeEditModal()" class="btn btn-secondary">Cancel</button>
+    <button (click)="saveToolGroup()" class="btn btn-success">Save</button>
+  </div>
+</div>
