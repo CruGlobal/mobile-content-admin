@@ -23,6 +23,7 @@ export class ResourcesComponent implements OnInit {
   systems: System[];
 
   showInstructions = false;
+  showFilters = false;
   loadingResources = false;
   loadingLanguages = false;
   errorMessage: string;
