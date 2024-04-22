@@ -1,13 +1,17 @@
 <div class="card mb-3">
   <div
-    class="card-header bg-dark text-white d-flex justify-content-between align-items-center"
-    [ngStyle]="{ cursor: isMetaTool() ? 'default' : 'pointer' }"
+    class="card-header bg-dark text-white d-flex justify-content-between align-items-center {{
+      !isMetaTool() && 'pointer'
+    }}"
     (click)="showDetails = !showDetails"
   >
     <span class="h4 mb-0">
       {{ resource.name }}
     </span>
-    <div class="btn-group justify-content-end flex-wrap" role="group">
+    <div
+      class="btn-group btn-group-sm justify-content-end flex-wrap"
+      role="group"
+    >
       <button
         (click)="openUpdateModal(resource); $event.stopPropagation()"
         class="btn btn-warning mb-2 mb-sm-2 mb-lg-0"
