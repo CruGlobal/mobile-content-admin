@@ -73,9 +73,7 @@ describe('AttachmentsComponent', () => {
   it('includes auth header with file uploads', () => {
     spyOn(comp.uploader, 'uploadAll');
 
-    fixture.debugElement
-      .query(By.css('.btn.btn-success'))
-      .nativeElement.click();
+    comp.uploadNewFile();
 
     expect(comp.uploader.authToken).toBe(authToken);
   });

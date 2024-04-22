@@ -1,0 +1,17 @@
+.toggle-drafts {
+  width: 100%;
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.toggle-drafts label.btn {
+  flex: 0 1 50%;
+}
+
+.translation-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 350px;
+  margin: 0 auto 8px;
+}
