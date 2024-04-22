@@ -18,37 +18,37 @@ export class ToolGroupService extends AbstractService {
   private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
 
   praxisConfidentData = {
-    0: {
+    1: {
       name: 'Very confident',
     },
-    1: {
+    2: {
       name: 'Somewhat confident',
     },
-    2: {
+    3: {
       name: 'Neutral',
     },
-    3: {
+    4: {
       name: 'Not very confident',
     },
-    4: {
+    5: {
       name: 'Not confident at all',
     },
   };
 
   praxisOpennessData = {
-    0: {
+    1: {
       name: 'Very Open',
     },
-    1: {
+    2: {
       name: 'Somewhat open',
     },
-    2: {
+    3: {
       name: 'Neutral',
     },
-    3: {
+    4: {
       name: 'Not very open or interested',
     },
-    4: {
+    5: {
       name: 'Not open at all',
     },
   };
