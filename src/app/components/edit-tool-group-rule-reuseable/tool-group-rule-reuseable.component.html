@@ -1,0 +1,66 @@
+<div class="row mb-2">
+  <div class="col-12">
+    <label for="name" class="mb-0">{{ name }}</label>
+    <div class="mb-2" style="display: flex; flex-wrap: wrap">
+      <span
+        *ngFor="let item of selectedItems"
+        class="badge badge-secondary mr-1 mb-1 mt-1 p-0"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <span style="padding: 5px">{{ item.name }} ({{ item.code }})</span>
+        <button
+          type="button"
+          class="btn btn-secondary close"
+          aria-label="Delete"
+          style="padding: 5px"
+          (click)="handleDeleteSelectedItem(item)"
+        >
+          <i class="fa fa-close"></i>
+        </button>
+      </span>
+    </div>
+    <select
+      class="custom-select"
+      [(ngModel)]="selectedItem"
+      (ngModelChange)="handleSelectedItem($event)"
+    >
+      <option *ngFor="let item of items" [ngValue]="item">
+        {{ item.name }} ({{ item.code }})
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="row mb-3" *ngIf="praxisType !== 'confidence'">
+  <div class="col-12">
+    <div class="pl-4" style="position: relative">
+      <input
+        id="{{ negativeInputId }}"
+        type="checkbox"
+        class="form-check-input"
+        [(ngModel)]="negativeRule"
+        (ngModelChange)="handleNegativeRuleChange($event)"
+      />
+      <label
+        *ngIf="praxisType !== 'openness'"
+        class="form-check-label"
+        for="{{ negativeInputId }}"
+        >Exclude {{ name }} Selected</label
+      >
+      <label
+        *ngIf="praxisType === 'openness'"
+        class="form-check-label"
+        for="{{ negativeInputId }}"
+        >Exclude Praxis Selected</label
+      >
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </ngb-alert>
+  </div>
+</div>

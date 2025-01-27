@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <h5>Connect Tools</h5>
+</div>
+<div class="modal-body">
+  <div
+    class="tools"
+    style="
+      max-height: calc(100vh - 350px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    "
+  >
+    <admin-tool-group-tool-reuseable
+      *ngFor="let tool of tools"
+      [tool]="tool"
+      [resources]="resources"
+      (updatedToolEmit)="updateTool($event)"
+      (deleteTool)="deleteTool($event)"
+    ></admin-tool-group-tool-reuseable>
+  </div>
+
+  <button (click)="addResource()" class="btn btn-default">Add Tool</button>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+        Saving...
+      </ngb-alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ngb-alert
+        type="danger"
+        class="mt-2"
+        [dismissible]="false"
+        *ngFor="let error of errorMessage"
+      >
+        {{ error }}
+      </ngb-alert>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer" style="justify-content: space-between">
+  <button (click)="cancel()" class="btn btn-danger">Cancel</button>
+  <button (click)="createOrUpdate()" class="btn btn-success">Save</button>
+</div>
