@@ -450,4 +450,36 @@ describe('ToolGroupService', () => {
       );
     });
   });
+
+  describe('Suggested Tools', () => {
+    beforeEach(() => {
+      spyOn(mockHttp, 'get').and.returnValue(
+        Observable.create((observer) => {
+          observer.next({
+            json() {
+              return [toolGroup, toolGroup];
+            },
+          });
+          observer.complete();
+        }),
+      );
+    });
+
+    it('should fetch all toolGroups', () => {
+      const languageRule = new ToolGroupRule();
+      languageRule.languages = ['UK', 'US'];
+      const countryRule = new ToolGroupRule();
+      countryRule.countries = ['en'];
+      const praxisRule = new ToolGroupRule();
+      praxisRule.openness = ['1'];
+      praxisRule.confidence = ['2'];
+
+      service.getToolGroupSuggestions(countryRule, languageRule, praxisRule);
+
+      expect(mockHttp.get).toHaveBeenCalledWith(
+        `${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`,
+        headers,
+      );
+    });
+  });
 });

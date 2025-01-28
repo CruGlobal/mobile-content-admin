@@ -7,6 +7,15 @@ import { Language } from '../../models/language';
 import { ToolGroup } from '../../models/tool-group';
 import { Resource } from '../../models/resource';
 import { CreateToolGroupComponent } from '../edit-tool-group/create-tool-group/create-tool-group.component';
+import {
+  ToolGroupRule,
+  CountriesType,
+  RuleType,
+  PraxisType,
+  Praxis,
+  RuleTypeEnum,
+  PraxisTypeEnum,
+} from '../../models/tool-group';
 
 @Component({
   selector: 'admin-tool-groups',
@@ -15,10 +24,22 @@ import { CreateToolGroupComponent } from '../edit-tool-group/create-tool-group/c
 export class ToolGroupsComponent implements OnInit {
   toolGroups: ToolGroup[];
   showInstructions = false;
+  showTester = false;
   loadingToolGroups = false;
   errorMessage: string;
   resources: Resource[];
   languages: Language[];
+  // Tester variables
+  testerCountryRule: ToolGroupRule;
+  testerLanguageRule: ToolGroupRule;
+  testerPraxisRule: ToolGroupRule;
+  testerSelectedCountries = '';
+  testerSelectedLanguages: string[] = [];
+  testerSelectedPraxisConfidence = '';
+  testerSelectedPraxisOpenness = '';
+  suggestedTools: Resource[] = [];
+  loadingSuggestions = false;
+  hasAlreadyRunTester = false;
 
   constructor(
     private toolGroupService: ToolGroupService,
@@ -35,6 +56,9 @@ export class ToolGroupsComponent implements OnInit {
     this.languageService.getLanguages().then((languages) => {
       this.languages = languages;
     });
+    this.testerCountryRule = new ToolGroupRule();
+    this.testerLanguageRule = new ToolGroupRule();
+    this.testerPraxisRule = new ToolGroupRule();
   }
 
   loadToolGroups(): Promise<void> {
@@ -62,6 +86,52 @@ export class ToolGroupsComponent implements OnInit {
       CreateToolGroupComponent,
     );
     modalRef.result.then(() => this.loadToolGroups(), console.log);
+  }
+
+  getToolGroupSuggestions(): void {
+    this.hasAlreadyRunTester = true;
+    this.loadingSuggestions = true;
+
+    this.toolGroupService
+      .getToolGroupSuggestions(
+        this.testerCountryRule,
+        this.testerLanguageRule,
+        this.testerPraxisRule,
+      )
+      .then((data) => {
+        this.suggestedTools = data;
+        this.loadingSuggestions = false;
+      });
+  }
+
+  updateSelected(
+    selectedItems: (CountriesType | Language | Praxis)[],
+    type: RuleType,
+    subType: PraxisType,
+  ): void {
+    const codes = selectedItems.map((item) => item.code);
+    switch (type) {
+      case RuleTypeEnum.COUNTRY:
+        this.testerSelectedCountries = codes[0];
+        this.testerCountryRule.countries = [codes[0]];
+        break;
+      case RuleTypeEnum.LANGUAGE:
+        this.testerSelectedLanguages = codes;
+        this.testerLanguageRule.languages = codes;
+        break;
+      case RuleTypeEnum.PRAXIS:
+        switch (subType) {
+          case PraxisTypeEnum.CONFIDENCE:
+            this.testerSelectedPraxisConfidence = codes[0];
+            this.testerPraxisRule.confidence = [codes[0]];
+            break;
+          case PraxisTypeEnum.OPENNESS:
+            this.testerSelectedPraxisOpenness = codes[0];
+            this.testerPraxisRule.openness = [codes[0]];
+            break;
+        }
+        break;
+    }
   }
 
   protected handleError(message): void {

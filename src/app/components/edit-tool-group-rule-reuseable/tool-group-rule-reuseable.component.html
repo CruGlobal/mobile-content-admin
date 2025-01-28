@@ -31,7 +31,7 @@
   </div>
 </div>
 
-<div class="row mb-3" *ngIf="praxisType !== 'confidence'">
+<div class="row mb-3" *ngIf="praxisType !== 'confidence' && !hideExclude">
   <div class="col-12">
     <div class="pl-4" style="position: relative">
       <input
@@ -59,8 +59,8 @@
 
 <div class="row">
   <div class="col">
-    <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
       {{ errorMessage }}
-    </ngb-alert>
+    </div>
   </div>
 </div>

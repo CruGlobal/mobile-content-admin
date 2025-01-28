@@ -3,7 +3,12 @@ import { Http } from '@angular/http';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { AuthService } from '../auth/auth.service';
 import { AbstractService } from '../abstract.service';
-import { ToolGroup, RuleTypeEnum } from '../../models/tool-group';
+import { Resource } from '../../models/resource';
+import {
+  ToolGroup,
+  RuleTypeEnum,
+  ToolGroupRule,
+} from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
 
 interface PraxisData {
@@ -276,6 +281,50 @@ export class ToolGroupService extends AbstractService {
           status: 'success',
         };
       })
+      .catch(this.handleError);
+  }
+
+  getToolGroupSuggestions(
+    countryRule: ToolGroupRule,
+    languageRule: ToolGroupRule,
+    praxisRule: ToolGroupRule,
+  ): Promise<Resource[]> {
+    let filter = '';
+    const languages = languageRule.languages;
+    const countries = countryRule.countries;
+    const confidence = praxisRule.confidence;
+    const openness = praxisRule.openness;
+
+    const createFilters = (items: string | string[], filterString) => {
+      if (!items) {
+        return;
+      }
+      if (Array.isArray(items)) {
+        const filters = items.reduce(
+          (result: string, currentItem: string) =>
+            result + `${filterString}=${currentItem}&`,
+          '',
+        );
+        filter += filters;
+      } else {
+        filter += `${filterString}=${items}&`;
+      }
+    };
+
+    createFilters(countries, 'filter[country]');
+    createFilters(languages, 'filter[language][]');
+    createFilters(confidence, 'filter[confidence]');
+    createFilters(openness, 'filter[openness]');
+
+    // Remove last "&" from string.
+    filter = filter.slice(0, -1);
+    return this.http
+      .get(
+        `${environment.base_url}resources/suggestions?${filter}`,
+        this.authService.getAuthorizationAndOptions(),
+      )
+      .toPromise()
+      .then((response) => new JsonApiDataStore().sync(response.json()))
       .catch(this.handleError);
   }
 }

@@ -41,6 +41,17 @@ export class ToolGroupMocks {
     languages: ['en'],
   } as CountriesType;
 
+  countryADMock = {
+    code: 'AD',
+    name: 'Andorra',
+    native: 'Andorra',
+    phone: [376],
+    continent: 'EU',
+    capital: 'Andorra la Vella',
+    currency: ['EUR'],
+    languages: ['ca'],
+  } as CountriesType;
+
   getLanguagesResponse = [
     {
       code: 'ar-SA',

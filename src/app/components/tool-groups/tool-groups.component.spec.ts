@@ -5,11 +5,16 @@ import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ResourceService } from '../../service/resource/resource.service';
 import { LanguageService } from '../../service/language.service';
 import { Resource } from '../../models/resource';
-import { ToolGroup } from '../../models/tool-group';
+import {
+  CountriesType,
+  PraxisTypeEnum,
+  ToolGroup,
+} from '../../models/tool-group';
 import { Language } from '../../models/language';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
 import { ToolGroupsComponent } from './tool-groups.component';
 import { ToolGroupComponent } from '../tool-group/tool-group.component';
+import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 
 describe('ToolGroupsComponent', () => {
   let comp: ToolGroupsComponent;
@@ -42,7 +47,11 @@ describe('ToolGroupsComponent', () => {
       Promise.resolve<Language[]>(mocks.getLanguagesResponse),
     );
     TestBed.configureTestingModule({
-      declarations: [ToolGroupsComponent, ToolGroupComponent],
+      declarations: [
+        ToolGroupsComponent,
+        ToolGroupComponent,
+        ToolGroupRuleReuseableComponent,
+      ],
       imports: [NgbModule.forRoot(), FormsModule],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
@@ -73,5 +82,44 @@ describe('ToolGroupsComponent', () => {
       expect(comp.toolGroups).toEqual([toolGroup]);
       done();
     });
+  });
+
+  const itemOne = ({
+    code: 'VN',
+  } as unknown) as CountriesType;
+  const itemTwo = ({
+    code: 'UK',
+  } as unknown) as CountriesType;
+
+  it('should update countries', () => {
+    comp.ngOnInit();
+    comp.updateSelected([itemOne], 'country', undefined);
+
+    expect(comp.testerSelectedCountries).toEqual('VN');
+    expect(comp.testerCountryRule.countries).toEqual(['VN']);
+  });
+
+  it('should update countries', () => {
+    comp.ngOnInit();
+    comp.updateSelected([itemOne, itemTwo], 'country', undefined);
+    expect(comp.testerSelectedCountries).toEqual('VN');
+    expect(comp.testerCountryRule.countries).toEqual(['VN']);
+  });
+
+  it('should update languages', () => {
+    comp.ngOnInit();
+    comp.updateSelected([itemOne, itemTwo], 'language', undefined);
+    expect(comp.testerSelectedLanguages).toEqual(['VN', 'UK']);
+  });
+
+  it('should update Praxis', () => {
+    comp.ngOnInit();
+    comp.updateSelected(
+      [itemOne, itemTwo],
+      'praxis',
+      PraxisTypeEnum.CONFIDENCE,
+    );
+    expect(comp.testerSelectedPraxisConfidence).toEqual('VN');
+    expect(comp.testerPraxisRule.confidence).toEqual(['VN']);
   });
 });
