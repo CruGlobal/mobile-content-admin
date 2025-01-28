@@ -1,7 +1,7 @@
 import { Resource } from './resource';
 
 export class AttributeTranslation {
-  id?: number;
+  id?: string;
   key: string;
   'onesky-phrase-id': string;
   required: boolean;

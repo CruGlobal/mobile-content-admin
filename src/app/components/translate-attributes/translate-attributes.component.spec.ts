@@ -115,31 +115,31 @@ describe('TranslateAttributesComponent', () => {
   it('Ensure mulitipleActionSortPromises sorts promises in correct order', () => {
     comp.resource['translated-attributes'] = [
       {
-        id: 111111,
+        id: '111111',
         key: 'test_key_for_testing_one',
         'onesky-phrase-id': 'test_onesky_phrase_id_one',
         required: false,
       },
       {
-        id: 222222,
+        id: '222222',
         key: 'test_key_for_testing_two',
         'onesky-phrase-id': 'test_onesky_phrase_id_two',
         required: false,
       },
       {
-        id: 333333,
+        id: '333333',
         key: 'test_key_for_testing_three',
         'onesky-phrase-id': 'test_onesky_phrase_id_three',
         required: false,
       },
       {
-        id: 444444,
+        id: '444444',
         key: 'test_key_for_testing_four',
         'onesky-phrase-id': 'test_onesky_phrase_id_four',
         required: false,
       },
       {
-        id: 555555,
+        id: '555555',
         key: 'test_key_for_testing_five',
         'onesky-phrase-id': 'test_onesky_phrase_id_five',
         required: false,
@@ -219,19 +219,19 @@ describe('TranslateAttributesComponent', () => {
     it('Ensure compares correctly and create correct multipleActionsPromises', () => {
       comp.resource['translated-attributes'] = [
         {
-          id: 111111,
+          id: '111111',
           key: 'test_key_for_testing_one',
           'onesky-phrase-id': 'test_onesky_phrase_id_one',
           required: false,
         },
         {
-          id: 222222,
+          id: '222222',
           key: 'test_key_for_testing_two',
           'onesky-phrase-id': 'test_onesky_phrase_id_two',
           required: false,
         },
         {
-          id: 444444,
+          id: '444444',
           key: 'test_key_for_testing_four',
           'onesky-phrase-id': 'test_onesky_phrase_id_four',
           required: false,
@@ -240,19 +240,19 @@ describe('TranslateAttributesComponent', () => {
 
       remoteResource['translated-attributes'] = [
         {
-          id: 111111,
+          id: '111111',
           key: 'test_key_for_testing_One_OLD',
           'onesky-phrase-id': 'test_onesky_phrase_id_one',
           required: false,
         },
         {
-          id: 222222,
+          id: '222222',
           key: 'test_key_for_testing_two',
           'onesky-phrase-id': 'test_onesky_phrase_id_two_OLD',
           required: false,
         },
         {
-          id: 333333,
+          id: '333333',
           key: 'test_key_for_testing_three',
           'onesky-phrase-id': 'test_key_for_testing_three',
           required: false,
@@ -290,7 +290,7 @@ describe('TranslateAttributesComponent', () => {
     it('Ensure Errors if Key is empty', async () => {
       comp.resource['translated-attributes'] = [
         {
-          id: 111111,
+          id: '111111',
           key: '',
           'onesky-phrase-id': 'test_onesky_phrase_id_one',
           required: false,
@@ -300,7 +300,6 @@ describe('TranslateAttributesComponent', () => {
       const checkDifferences = await comp.checkRemoteResourceForDifferences(
         remoteResource,
       );
-      console.log('checkDifferences', checkDifferences);
       // Ensure checkRemoteResourceForDifferences Errors
       expect(checkDifferences.successful).toEqual(false);
       expect(checkDifferences.message).toEqual(
@@ -315,7 +314,7 @@ describe('TranslateAttributesComponent', () => {
     it('Ensure Errors if Onesky Phase ID is empty', async () => {
       comp.resource['translated-attributes'] = [
         {
-          id: 111111,
+          id: '111111',
           key: 'test_key_for_testing_One',
           'onesky-phrase-id': '',
           required: false,
@@ -325,7 +324,6 @@ describe('TranslateAttributesComponent', () => {
       const checkDifferences = await comp.checkRemoteResourceForDifferences(
         remoteResource,
       );
-      console.log('checkDifferences', checkDifferences);
 
       // Ensure checkRemoteResourceForDifferences Errors
       expect(checkDifferences.successful).toEqual(false);
@@ -337,13 +335,13 @@ describe('TranslateAttributesComponent', () => {
     it('Ensure Errors if 2 attributes have same key', async () => {
       comp.resource['translated-attributes'] = [
         {
-          id: 111111,
+          id: '111111',
           key: 'test_key_for_testing_One',
           'onesky-phrase-id': 'test_onesky_phrase_id_one',
           required: false,
         },
         {
-          id: 222222,
+          id: '222222',
           key: 'test_key_for_testing_One',
           'onesky-phrase-id': 'test_onesky_phrase_id_one',
           required: false,
@@ -354,7 +352,6 @@ describe('TranslateAttributesComponent', () => {
         remoteResource,
       );
 
-      console.log('checkDifferences', checkDifferences);
       // Ensure checkRemoteResourceForDifferences Errors
       expect(checkDifferences.successful).toEqual(false);
       expect(checkDifferences.message).toEqual(

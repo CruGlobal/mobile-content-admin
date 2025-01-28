@@ -104,7 +104,7 @@ export abstract class AbstractEditToolGroupComponent {
     this.saving = true;
     this.toolGroupService
       .deleteToolGroup(this.toolGroup.id)
-      .then(() => this.activeModal.close())
+      .then(() => this.activeModal.close('deleted'))
       .catch(this.handleError.bind(this));
   }
 

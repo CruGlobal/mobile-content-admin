@@ -18,6 +18,12 @@ interface PromisePayload {
   value?: any;
   error: string;
 }
+interface HasMadeChangesProps {
+  codes: string[];
+  type: RuleTypeEnum;
+  praxisType?: PraxisTypeEnum;
+}
+
 @Component({
   selector: 'admin-edit-tool-group',
   templateUrl: '../edit-tool-group.component.html',
@@ -63,72 +69,75 @@ export class UpdateToolGroupComponent
   getValues(type: RuleTypeEnum, praxisType?: PraxisTypeEnum) {
     switch (type) {
       case RuleTypeEnum.COUNTRY:
-        const initialcountry =
+        const initialCountry =
           this.initialToolGroup['rules-country'][0] || undefined;
+        const initialCountryToolgroup = initialCountry
+          ? initialCountry
+          : new ToolGroupRule();
         return {
-          initialRule: initialcountry,
-          initialCodes: initialcountry.countries || [],
-          initialNegativeRule: initialcountry['negative-rule'],
+          initialRule: initialCountry,
+          initialCodes: initialCountryToolgroup.countries || [],
+          initialNegativeRule:
+            initialCountryToolgroup['negative-rule'] || false,
           negativeRule: this.countryRule['negative-rule'],
         };
       case RuleTypeEnum.LANGUAGE:
         const initialLanguage =
           this.initialToolGroup['rules-language'][0] || undefined;
+        const initialLanguageToolgroup = initialLanguage
+          ? initialLanguage
+          : new ToolGroupRule();
         return {
           initialRule: initialLanguage,
-          initialCodes: initialLanguage.languages || [],
-          initialNegativeRule: initialLanguage['negative-rule'],
+          initialCodes: initialLanguageToolgroup.languages || [],
+          initialNegativeRule:
+            initialLanguageToolgroup['negative-rule'] || false,
           negativeRule: this.languageRule['negative-rule'],
         };
       case RuleTypeEnum.PRAXIS:
         const initialPraxis =
           this.initialToolGroup['rules-praxis'][0] || undefined;
+        const initialPraxisToolgroup = initialPraxis
+          ? initialPraxis
+          : new ToolGroupRule();
         if (praxisType === PraxisTypeEnum.CONFIDENCE) {
           return {
             initialRule: initialPraxis,
-            initialCodes: initialPraxis.confidence,
-            initialNegativeRule: initialPraxis['negative-rule'],
+            initialCodes: initialPraxisToolgroup.confidence || [],
+            initialNegativeRule:
+              initialPraxisToolgroup['negative-rule'] || false,
             negativeRule: this.praxisRule['negative-rule'],
           };
         } else {
           return {
             initialRule: initialPraxis,
-            initialCodes: initialPraxis.openness,
-            initialNegativeRule: initialPraxis['negative-rule'],
+            initialCodes: initialPraxisToolgroup.openness || [],
+            initialNegativeRule:
+              initialPraxisToolgroup['negative-rule'] || false,
             negativeRule: this.praxisRule['negative-rule'],
           };
         }
     }
   }
 
-  hasMadeChanges(codes: string[], type: RuleTypeEnum): boolean {
-    const values = this.getValues(type);
+  hasMadeChanges(dataToCheck: HasMadeChangesProps[]): boolean {
+    const results = dataToCheck.map((data) => {
+      const { codes, type, praxisType } = data;
+      const values = this.getValues(type, praxisType);
 
-    if (!values.initialRule && (codes || values.negativeRule)) {
-      return true;
-    } else if (values.initialRule) {
-      const codeChanges = !this.isEqual(values.initialCodes, codes);
-      const negativeChanges =
-        values.initialNegativeRule !== values.negativeRule;
-      if (codeChanges || negativeChanges) {
+      if (!values.initialRule && (codes.length || values.negativeRule)) {
         return true;
-      }
-      if (type === RuleTypeEnum.PRAXIS) {
-        // Test confidence
-        const confidenceValues = this.getValues(
-          type,
-          PraxisTypeEnum.CONFIDENCE,
-        );
-        const confidenceCodeChanges = !this.isEqual(
-          confidenceValues.initialCodes,
-          super.getCodes(this.selectedPraxisConfidence),
-        );
-        if (confidenceCodeChanges) {
+      } else if (values.initialRule) {
+        const codeChanges = !this.isEqual(values.initialCodes, codes);
+        const negativeChanges =
+          values.initialNegativeRule !== values.negativeRule;
+        if (codeChanges || negativeChanges) {
           return true;
         }
       }
-    }
-    return false;
+      return false;
+    });
+    return !!results.find((result) => result);
   }
 
   async saveToolGroup(): Promise<void> {
@@ -145,7 +154,13 @@ export class UpdateToolGroupComponent
       }
 
       const countryCodes = super.getCodes(this.selectedCountries);
-      if (this.hasMadeChanges(countryCodes, RuleTypeEnum.COUNTRY)) {
+      const countryHasMadeChanges = [
+        {
+          codes: countryCodes,
+          type: RuleTypeEnum.COUNTRY,
+        },
+      ];
+      if (this.hasMadeChanges(countryHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -158,7 +173,13 @@ export class UpdateToolGroupComponent
       }
 
       const languageCodes = super.getCodes(this.selectedLanguages);
-      if (this.hasMadeChanges(languageCodes, RuleTypeEnum.LANGUAGE)) {
+      const languageHasMadeChanges = [
+        {
+          codes: languageCodes,
+          type: RuleTypeEnum.LANGUAGE,
+        },
+      ];
+      if (this.hasMadeChanges(languageHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -176,7 +197,19 @@ export class UpdateToolGroupComponent
       const praxisOpennessCodes = super.getCodes(this.selectedPraxisOpenness);
       // hasMadeChanges take the openness codes and then knows to grab the confidence codes
       // As it is of the RuleTypeEnum "PRAXIS"
-      if (this.hasMadeChanges(praxisOpennessCodes, RuleTypeEnum.PRAXIS)) {
+      const praxisHasMadeChanges = [
+        {
+          codes: praxisOpennessCodes,
+          type: RuleTypeEnum.PRAXIS,
+          praxisType: PraxisTypeEnum.OPENNESS,
+        },
+        {
+          codes: praxisConfidenceCodes,
+          type: RuleTypeEnum.PRAXIS,
+          praxisType: PraxisTypeEnum.CONFIDENCE,
+        },
+      ];
+      if (this.hasMadeChanges(praxisHasMadeChanges)) {
         promises.push(
           this.toolGroupService.createOrUpdateRule(
             this.toolGroup.id,
@@ -206,7 +239,17 @@ export class UpdateToolGroupComponent
       );
       const invalidResults = results.filter((result) => !result.success);
       if (invalidResults.length) {
-        throw new Error(invalidResults.join('. '));
+        const errorStrings = invalidResults.map((result) => {
+          if (typeof result === 'string') {
+            return result;
+          } else if (typeof result.error === 'string') {
+            return result.error;
+          } else {
+            console.log('Unknown error occured while updating', result);
+            return 'Unknown error occured. Please see console log';
+          }
+        });
+        throw new Error(errorStrings.join('. '));
       } else {
         super.saveToolGroup();
       }
