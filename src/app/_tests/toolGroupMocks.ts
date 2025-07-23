@@ -23,33 +23,39 @@ export class ToolGroupMocks {
     code: 'GB',
     name: 'United Kingdom',
     native: 'United Kingdom',
-    phone: [44],
+    phone: '44',
     continent: 'EU',
     capital: 'London',
-    currency: ['GBP'],
+    currency: 'GBP',
     languages: ['en'],
+    emoji: '🇬🇧',
+    emojiU: 'U+1F1EC U+1F1E7',
   } as CountriesType;
 
   countryUSMock = {
     code: 'US',
     name: 'United States',
     native: 'United States',
-    phone: [1],
+    phone: '1',
     continent: 'NA',
     capital: 'Washington D.C.',
-    currency: ['USD', 'USN', 'USS'],
+    currency: 'USD,USN,USS',
     languages: ['en'],
+    emoji: '🇺🇸',
+    emojiU: 'U+1F1FA U+1F1F8',
   } as CountriesType;
 
   countryADMock = {
     code: 'AD',
     name: 'Andorra',
     native: 'Andorra',
-    phone: [376],
+    phone: '376',
     continent: 'EU',
     capital: 'Andorra la Vella',
-    currency: ['EUR'],
+    currency: 'EUR',
     languages: ['ca'],
+    emoji: '🇦🇩',
+    emojiU: 'U+1F1E6 U+1F1E9',
   } as CountriesType;
 
   getLanguagesResponse = [
