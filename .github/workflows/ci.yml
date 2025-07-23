@@ -23,10 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 12
-      - name: Install Dependenices
+          node-version-file: .tool-versions
+      - name: Install Dependencies
         run: yarn
       - name: Run Lint & Prettier Tests
         run: |
@@ -51,10 +51,10 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 12
-      - name: Install Dependenices
+          node-version-file: .tool-versions
+      - name: Install Dependencies
         run: yarn
       - name: Build
         run: yarn build:${{vars.ENVIRONMENT}}
