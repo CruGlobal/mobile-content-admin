@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from '../../service/language.service';
 import { FormsModule } from '@angular/forms';
@@ -94,7 +94,7 @@ describe('ResourcesComponent', () => {
     },
   ];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(resourceServiceStub, 'getResources').and.returnValue(
       Promise.resolve([resource]),
     );

@@ -1,11 +1,4 @@
-import {
-  async,
-  ComponentFixture,
-  discardPeriodicTasks,
-  fakeAsync,
-  TestBed,
-  tick,
-} from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { TranslationComponent } from './translation.component';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DraftService } from '../../service/draft.service';
@@ -75,7 +68,7 @@ describe('TranslationComponent', () => {
     return page.queryAll(By.css('button[data-action="delete"]'));
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     customPageServiceStub = {
       delete() {},
     };

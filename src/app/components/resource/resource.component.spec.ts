@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from '../../service/language.service';
 import { FormsModule } from '@angular/forms';
@@ -35,7 +35,7 @@ describe('ResourceComponent', () => {
 
   const resource: Resource = new Resource();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(languageServiceStub, 'getLanguage').and.returnValue(
       Promise.resolve(languageStub),
     );

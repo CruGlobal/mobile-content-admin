@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
@@ -36,7 +36,7 @@ describe('ToolGroupsComponent', () => {
   const resource: Resource = new Resource();
   const toolGroup: ToolGroup = new ToolGroup();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(resourceServiceStub, 'getResources').and.returnValue(
       Promise.resolve([resource]),
     );

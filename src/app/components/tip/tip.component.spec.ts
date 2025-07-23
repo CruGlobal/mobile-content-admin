@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +17,7 @@ describe('TipComponent', () => {
     update() {},
   } as unknown) as TipService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));
 
     TestBed.configureTestingModule({

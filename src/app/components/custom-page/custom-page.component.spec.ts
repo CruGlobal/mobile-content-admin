@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CustomPageComponent } from './custom-page.component';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
@@ -25,7 +25,7 @@ describe('CustomPageComponent', () => {
     },
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(customPageServiceStub, 'upsert').and.returnValue(
       Promise.resolve<CustomPage>(null),
     );
