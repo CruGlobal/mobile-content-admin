@@ -1,4 +1,4 @@
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { ToolGroupService } from './tool-group.service';
@@ -10,9 +10,33 @@ import {
 } from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
 
-const headers: RequestOptionsArgs = {};
+const headers = { headers: new HttpHeaders() };
 const toolGroupsUrl = environment.base_url + 'tool-groups';
-class MockHttp extends Http {}
+
+class MockHttpClient {
+  get() {
+    return Observable.create((observer) => {
+      observer.next(new ToolGroup());
+      observer.complete();
+    });
+  }
+  
+  post() {
+    return Observable.create((observer) => {
+      observer.next(new ToolGroup());
+      observer.complete();
+    });
+  }
+  
+  put() {
+    return Observable.create((observer) => observer.complete());
+  }
+  
+  delete() {
+    return Observable.create((observer) => observer.complete());
+  }
+}
+
 class MockAuthService extends AuthService {
   getAuthorizationAndOptions() {
     return headers;
@@ -20,9 +44,9 @@ class MockAuthService extends AuthService {
 }
 
 describe('ToolGroupService', () => {
-  const mockHttp = new MockHttp(null, null);
+  const mockHttp = new MockHttpClient();
   const mockAuthService = new MockAuthService(null, null);
-  const service = new ToolGroupService(mockHttp, mockAuthService);
+  const service = new ToolGroupService(mockHttp as any, mockAuthService as any);
 
   const toolGroup = new ToolGroup();
 

@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/toPromise';
 import { ResourceService } from './resource.service';
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs/Observable';
@@ -8,9 +8,31 @@ import { environment } from '../../../environments/environment';
 
 import anything = jasmine.anything;
 
-const headers: RequestOptionsArgs = {};
+const headers = { headers: new HttpHeaders() };
 
-class MockHttp extends Http {}
+class MockHttpClient {
+  post() {
+    return Observable.create((observer) => {
+      observer.next(new Resource());
+      observer.complete();
+    });
+  }
+  
+  put() {
+    return Observable.create((observer) => observer.complete());
+  }
+  
+  delete() {
+    return Observable.create((observer) => observer.complete());
+  }
+  
+  get() {
+    return Observable.create((observer) => {
+      observer.next([]);
+      observer.complete();
+    });
+  }
+}
 
 class MockAuthService extends AuthService {
   getAuthorizationAndOptions() {
@@ -19,9 +41,9 @@ class MockAuthService extends AuthService {
 }
 
 describe('ResourceService', () => {
-  const mockHttp = new MockHttp(null, null);
+  const mockHttp = new MockHttpClient();
   const mockAuthService = new MockAuthService(null, null);
-  const service = new ResourceService(mockHttp, mockAuthService);
+  const service = new ResourceService(mockHttp as any, mockAuthService as any);
 
   const resource = new Resource();
   resource.id = 13;
