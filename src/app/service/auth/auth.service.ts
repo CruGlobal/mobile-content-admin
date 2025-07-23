@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthToken } from '../../models/auth-token';
 import { WindowRefService } from '../../models/window-ref-service';
 import { JsonApiDataStore } from 'jsonapi-datastore';
@@ -10,17 +10,16 @@ import { AbstractService } from '../abstract.service';
 export class AuthService extends AbstractService {
   private readonly authUrl = environment.base_url + 'auth';
 
-  constructor(private http: Http, private windowRef: WindowRefService) {
+  constructor(private http: HttpClient, private windowRef: WindowRefService) {
     super();
   }
 
-  getAuthorizationAndOptions(): RequestOptionsArgs {
-    const options: RequestOptionsArgs = this.requestOptions;
-    options.headers.set(
-      'Authorization',
-      this.windowRef.nativeWindow.sessionStorage.getItem('Authorization'),
-    );
-    return options;
+  getAuthorizationAndOptions() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/vnd.api+json',
+      'Authorization': this.windowRef.nativeWindow.sessionStorage.getItem('Authorization'),
+    });
+    return { headers };
   }
 
   createAuthToken(accessCode: string): Promise<AuthToken> {
@@ -32,7 +31,7 @@ export class AuthService extends AbstractService {
       )
       .toPromise()
       .then((response) => {
-        const token: AuthToken = new JsonApiDataStore().sync(response.json());
+        const token: AuthToken = new JsonApiDataStore().sync(response);
         this.windowRef.nativeWindow.sessionStorage.setItem(
           'Authorization',
           token.token,

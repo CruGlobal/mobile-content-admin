@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { AuthService } from './auth/auth.service';
 import { CustomTip } from '../models/custom-tip';
@@ -14,7 +14,7 @@ import { AbstractService } from './abstract.service';
 export class CustomTipService extends AbstractService {
   private readonly customTipsUrl = environment.base_url + 'custom_tips';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super();
   }
 
@@ -41,7 +41,7 @@ export class CustomTipService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 

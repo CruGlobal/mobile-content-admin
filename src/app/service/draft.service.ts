@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Translation } from '../models/translation';
 import { AuthService } from './auth/auth.service';
 import { JsonApiDataStore } from 'jsonapi-datastore';
@@ -14,7 +14,7 @@ export class DraftService extends AbstractService {
   private readonly draftsUrl = environment.base_url + 'drafts';
   private readonly resourcesUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super();
   }
 
@@ -30,11 +30,11 @@ export class DraftService extends AbstractService {
     return this.http
       .get(
         `${this.draftsUrl}/${translation.id}/?page_id=${page.id}`,
-        this.authService.getAuthorizationAndOptions(),
+        { ...this.authService.getAuthorizationAndOptions(), responseType: 'text' },
       )
       .toPromise()
       .then((response) => {
-        return response.text();
+        return response;
       })
       .catch(this.handleError);
   }
@@ -43,11 +43,11 @@ export class DraftService extends AbstractService {
     return this.http
       .get(
         `${this.draftsUrl}/${translation.id}/?tip_id=${tip.id}`,
-        this.authService.getAuthorizationAndOptions(),
+        { ...this.authService.getAuthorizationAndOptions(), responseType: 'text' },
       )
       .toPromise()
       .then((response) => {
-        return response.text();
+        return response;
       })
       .catch(this.handleError);
   }
@@ -88,7 +88,7 @@ export class DraftService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 }
