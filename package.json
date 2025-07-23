@@ -19,22 +19,21 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "7.2.16",
-    "@angular/common": "7.2.16",
-    "@angular/compiler": "7.2.16",
-    "@angular/core": "7.2.16",
-    "@angular/forms": "7.2.16",
-    "@angular/http": "7.2.16",
-    "@angular/platform-browser": "7.2.16",
-    "@angular/platform-browser-dynamic": "7.2.16",
-    "@angular/platform-server": "7.2.16",
-    "@angular/router": "7.2.16",
+    "@angular/animations": "8.2.14",
+    "@angular/common": "8.2.14",
+    "@angular/compiler": "8.2.14",
+    "@angular/core": "8.2.14",
+    "@angular/forms": "8.2.14",
+    "@angular/platform-browser": "8.2.14",
+    "@angular/platform-browser-dynamic": "8.2.14",
+    "@angular/platform-server": "8.2.14",
+    "@angular/router": "8.2.14",
     "@ng-bootstrap/ng-bootstrap": "4.2.2",
     "angular-oauth2-oidc": "12.1.0",
     "angular2-uuid": "1.1.1",
     "components-font-awesome": "4.7.0",
     "core-js": "2.6.12",
-    "countries-list": "^3.0.5",
+    "countries-list": "^2.6.1",
     "jsonapi-datastore": "0.4.0-beta",
     "lodash": "^4.17.21",
     "ng2-ace-editor": "0.3.9",
@@ -43,16 +42,17 @@
     "rxjs": "6.6.7",
     "rxjs-compat": "6.6.7",
     "tslib": "2.3.1",
-    "zone.js": "0.11.4"
+    "zone.js": "0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.13.10",
-    "@angular/cli": "7.3.10",
-    "@angular/compiler-cli": "7.2.16",
-    "@angular/language-service": "7.2.16",
+    "@angular-devkit/build-angular": "0.803.29",
+    "@angular/cli": "8.3.29",
+    "@angular/compiler-cli": "8.2.14",
+    "@angular/language-service": "8.2.14",
+    "sass": "1.32.13",
     "@types/jasmine": "3.10.3",
     "@types/jasminewd2": "2.0.10",
-    "@types/node": "8.10.66",
+    "@types/node": "10.17.60",
     "codelyzer": "6.0.2",
     "husky": "7.0.4",
     "jasmine-core": "2.99.1",
@@ -70,9 +70,10 @@
     "ts-node": "10.4.0",
     "tslint": "5.20.1",
     "tslint-jasmine-rules": "1.6.1",
-    "typescript": "3.2.4"
+    "typescript": "3.4.5"
   },
-  "main": "index.js",
-  "repository": "https://github.com/CruGlobal/mobile-content-admin.git",
-  "author": "dsgoers <daniel.goers@cru.org>"
+  "resolutions": {
+    "node-sass": "npm:sass@1.32.13",
+    "spdy": "4.0.2"
+  }
 }
