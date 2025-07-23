@@ -35,7 +35,7 @@ jobs:
       - name: Build Staging
         run: yarn build:stage
       - name: Build Production
-        run: yarn build:prod
+        run: yarn build
       - name: Run Test with CodeCov
         run: yarn test:codecov
       - name: Code coverage test
