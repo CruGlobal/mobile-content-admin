@@ -1,8 +1,9 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Input } from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import { ResourceLanguage } from '../../models/resource-language';
 import { SystemService } from '../../service/system.service';
 
+@Directive()
 export abstract class AbstractEditResourceLanguageComponent {
   saving = false;
   errorMessage: string;

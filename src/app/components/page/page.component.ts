@@ -10,7 +10,7 @@ import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 })
 export class PageComponent {
   @Input() page: Page;
-  @ViewChild(XmlEditorComponent, { static: false }) private xmlEditor: XmlEditorComponent;
+  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   constructor(
     private pageService: PageService,

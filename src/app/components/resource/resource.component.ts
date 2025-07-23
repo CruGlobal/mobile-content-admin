@@ -49,7 +49,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resource: Resource;
   @Input() resourcesComponent: ResourcesComponent;
 
-  @ViewChild('instance', { static: false }) instance: NgbTypeahead;
+  @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
