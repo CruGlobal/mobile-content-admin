@@ -11,7 +11,7 @@ import { AceEditorDirective } from 'ng2-ace-editor';
 export class CreatePageComponent implements OnDestroy {
   @Input() page: Page = new Page();
 
-  @ViewChild(AceEditorDirective) editor;
+  @ViewChild(AceEditorDirective, { static: false }) editor;
 
   saving = false;
   errorMessage: string;

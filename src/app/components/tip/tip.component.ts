@@ -10,7 +10,7 @@ import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 })
 export class TipComponent {
   @Input() tip: Tip;
-  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
+  @ViewChild(XmlEditorComponent, { static: false }) private xmlEditor: XmlEditorComponent;
 
   constructor(
     private tipService: TipService,

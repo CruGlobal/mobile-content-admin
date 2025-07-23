@@ -12,7 +12,7 @@ export abstract class AbstractEditResourceComponent implements OnDestroy {
   saving = false;
   errorMessage: string;
 
-  @ViewChild(AceEditorDirective) editor;
+  @ViewChild(AceEditorDirective, { static: false }) editor;
 
   @Input() resource: Resource = new Resource();
   metatools: Resource[];
