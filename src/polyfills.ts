@@ -56,6 +56,11 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
  */
 
 /**
+ * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
+ */
+import '@angular/localize/init';
+
+/**
  * Date, currency, decimal and percent pipes.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
  */

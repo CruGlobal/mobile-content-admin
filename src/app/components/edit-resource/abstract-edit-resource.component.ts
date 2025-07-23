@@ -1,5 +1,5 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Input, OnDestroy, ViewChild } from '@angular/core';
+import { Input, OnDestroy, ViewChild, Directive } from '@angular/core';
 import { Resource } from '../../models/resource';
 import { ResourceType } from '../../models/resource-type';
 import { System } from '../../models/system';
@@ -8,11 +8,12 @@ import { ResourceTypeService } from '../../service/resource-type.service';
 import { AceEditorDirective } from 'ng2-ace-editor';
 import { ResourceService } from '../../service/resource/resource.service';
 
+@Directive()
 export abstract class AbstractEditResourceComponent implements OnDestroy {
   saving = false;
   errorMessage: string;
 
-  @ViewChild(AceEditorDirective, { static: false }) editor;
+  @ViewChild(AceEditorDirective) editor;
 
   @Input() resource: Resource = new Resource();
   metatools: Resource[];

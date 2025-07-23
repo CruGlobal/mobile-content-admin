@@ -13,7 +13,7 @@ import { Translation } from '../../models/translation';
 export class CustomTipComponent implements OnInit {
   @Input() customTip: CustomTip;
   @Input() translation: Translation;
-  @ViewChild(XmlEditorComponent, { static: false }) private xmlEditor: XmlEditorComponent;
+  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
 
   loading = true;
   loadingError: string;

@@ -29,7 +29,7 @@ export class XmlEditorComponent implements OnDestroy {
   @Output() onCancel = new EventEmitter();
   @Output() onSave = new EventEmitter();
 
-  @ViewChild(AceEditorDirective, { static: false }) editor;
+  @ViewChild(AceEditorDirective) editor;
 
   saving = false;
   errorMessage: string;
