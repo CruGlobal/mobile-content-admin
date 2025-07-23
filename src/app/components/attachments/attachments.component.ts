@@ -14,7 +14,7 @@ import { AttachmentService } from '../../service/attachment.service';
   templateUrl: './attachments.component.html',
 })
 export class AttachmentsComponent implements OnInit {
-  @ViewChild('uploadElement') uploadElement: ElementRef;
+  @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
 
   @Input() resources: Resource[];
   @Input() selectedFile;

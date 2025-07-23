@@ -13,7 +13,7 @@ import { Translation } from '../../models/translation';
 export class CustomPageComponent implements OnInit {
   @Input() customPage: CustomPage;
   @Input() translation: Translation;
-  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
+  @ViewChild(XmlEditorComponent, { static: false }) private xmlEditor: XmlEditorComponent;
 
   loading = true;
   loadingError: string;

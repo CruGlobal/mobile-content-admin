@@ -31,7 +31,7 @@ export class ToolGroupComponent implements OnDestroy {
   @Input() toolGroup: ToolGroup;
   @Input() toolGroupsComponent: ToolGroupsComponent;
 
-  @ViewChild('instance') instance: NgbTypeahead;
+  @ViewChild('instance', { static: false }) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
   resources: Resource[];

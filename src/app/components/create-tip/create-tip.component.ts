@@ -11,7 +11,7 @@ import { AceEditorDirective } from 'ng2-ace-editor';
 export class CreateTipComponent implements OnDestroy {
   @Input() tip: Tip = new Tip();
 
-  @ViewChild(AceEditorDirective) editor;
+  @ViewChild(AceEditorDirective, { static: false }) editor;
 
   saving = false;
   errorMessage: string;

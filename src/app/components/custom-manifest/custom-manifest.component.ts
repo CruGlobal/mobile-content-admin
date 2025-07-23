@@ -10,7 +10,7 @@ import { CustomManifestService } from '../../service/custom-manifest.service';
 })
 export class CustomManifestComponent {
   @Input() customManifest: CustomManifest;
-  @ViewChild(XmlEditorComponent) private xmlEditor: XmlEditorComponent;
+  @ViewChild(XmlEditorComponent, { static: false }) private xmlEditor: XmlEditorComponent;
 
   loading = false;
 
