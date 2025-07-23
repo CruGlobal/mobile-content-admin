@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
@@ -67,7 +67,7 @@ describe('ToolGroupComponent', () => {
   } as unknown) as NgbModalRef;
   const resource = new Resource();
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(languageServiceStub, 'getLanguages').and.returnValue(
       Promise.resolve<Language[]>(mocks.getLanguagesResponse),
     );

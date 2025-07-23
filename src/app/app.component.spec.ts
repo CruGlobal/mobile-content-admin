@@ -1,4 +1,4 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
     },
   } as unknown) as NgbModalRef;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
     TestBed.configureTestingModule({
       declarations: [AppComponent],
@@ -35,19 +35,19 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', async(() => {
+  it('should create the app', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'Mobile Content Admin'`, async(() => {
+  it(`should have as title 'Mobile Content Admin'`, waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('Mobile Content Admin');
   }));
 
-  it('should render title in a h5 tag', async(() => {
+  it('should render title in a h5 tag', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CustomTipComponent } from './custom-tip.component';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
@@ -25,7 +25,7 @@ describe('CustomTipComponent', () => {
     },
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(customTipServiceStub, 'upsert').and.returnValue(
       Promise.resolve<CustomTip>(null),
     );

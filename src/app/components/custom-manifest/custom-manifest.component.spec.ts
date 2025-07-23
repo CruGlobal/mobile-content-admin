@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CustomManifestComponent } from './custom-manifest.component';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
@@ -19,7 +19,7 @@ describe('CustomManifestComponent', () => {
     delete() {},
   } as unknown) as CustomManifestService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     spyOn(customManifestServiceStub, 'upsert').and.returnValue(
       Promise.resolve<CustomManifest>(null),
     );

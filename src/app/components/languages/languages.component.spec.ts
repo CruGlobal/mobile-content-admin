@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguagesComponent } from './languages.component';
 import { LanguageService } from '../../service/language.service';
@@ -11,7 +11,7 @@ describe('LanguagesComponent', () => {
   let comp: LanguagesComponent;
   let fixture: ComponentFixture<LanguagesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const languageServiceStub = {
       deleteLanguage() {
         return Promise.resolve();
