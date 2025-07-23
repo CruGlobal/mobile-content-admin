@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { AttributeTranslation } from '../models/attribute-translation';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { AuthService } from './auth/auth.service';
@@ -11,7 +11,7 @@ import { Resource } from '../models/resource';
 export class AttributeTranslationService extends AbstractService {
   private readonly resourceUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -20,7 +20,7 @@ export class AttributeTranslationService extends AbstractService {
     return this.http
       .get(url, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -44,7 +44,7 @@ export class AttributeTranslationService extends AbstractService {
     return this.http
       .post(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -66,7 +66,7 @@ export class AttributeTranslationService extends AbstractService {
     return this.http
       .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 

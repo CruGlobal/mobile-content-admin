@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
+import { HttpClient } from '@angular/common/http';
 import { Language } from '../models/language';
 import { AuthService } from './auth/auth.service';
 import { JsonApiDataStore } from 'jsonapi-datastore';
@@ -11,7 +10,7 @@ import { AbstractService } from './abstract.service';
 export class LanguageService extends AbstractService {
   private readonly languagesUrl = environment.base_url + 'languages';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super();
   }
 
@@ -20,7 +19,7 @@ export class LanguageService extends AbstractService {
       .get(this.languagesUrl)
       .toPromise()
       .then((response) => {
-        return new JsonApiDataStore().sync(response.json());
+        return new JsonApiDataStore().sync(response);
       })
       .catch(this.handleError);
   }
@@ -29,7 +28,7 @@ export class LanguageService extends AbstractService {
     return this.http
       .get(`${this.languagesUrl}/${id}?include=${include}`)
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -51,7 +50,7 @@ export class LanguageService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 

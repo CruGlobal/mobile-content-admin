@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { LanguageService } from './service/language.service';
 import { TranslationComponent } from './components/translation/translation.component';
 import { DraftService } from './service/draft.service';
@@ -51,7 +51,6 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 import { OktaLoginComponent } from './components/okta-login/okta-login.component';
 import { UserAuthSessionService } from './service/auth/user-auth-session.service';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { HttpClientModule } from '@angular/common/http';
 import { OktaLoginErrorComponent } from './components/okta-login-error/okta-login-error.component';
 import { MyAccountComponent } from './components/my-account/my-account.component';
 import { ToolGroupsComponent } from './components/tool-groups/tool-groups.component';
@@ -106,10 +105,9 @@ import { ToolGroupResourceComponent } from './components/edit-tool-group-resourc
     FileUploadModule,
     FormsModule,
     AppRoutingModule,
-    HttpModule,
+    HttpClientModule,
     NgArrayPipesModule,
     NgbModule.forRoot(),
-    HttpClientModule,
     OAuthModule.forRoot(),
   ],
   providers: [
