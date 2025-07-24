@@ -1,8 +1,8 @@
-import { Headers, RequestOptionsArgs } from '@angular/http';
+import { HttpHeaders } from '@angular/common/http';
 
 export abstract class AbstractService {
-  protected readonly requestOptions: RequestOptionsArgs = {
-    headers: new Headers({ 'Content-Type': 'application/vnd.api+json' }),
+  protected readonly requestOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }),
   };
 
   protected handleError(error: any): Promise<any> {
