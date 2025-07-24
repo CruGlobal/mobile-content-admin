@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:stage": "ng build -c staging",
+    "build:prod": "ng build -c production",
     "test": "ng test",
     "test:codecov": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",
@@ -41,7 +42,7 @@
     "ng2-file-upload": "1.4.0",
     "ngx-pipes": "2.7.8",
     "rxjs": "6.6.7",
-    "rxjs-compat": "6.6.7",
+    "rxjs-compat": "^6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
