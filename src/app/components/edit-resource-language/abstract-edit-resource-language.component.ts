@@ -1,5 +1,5 @@
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Input, Directive } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ResourceLanguage } from '../../models/resource-language';
 import { SystemService } from '../../service/system.service';
 

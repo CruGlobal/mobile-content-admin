@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { PageService } from '../../service/page.service';
 import { Page } from '../../models/page';
-import { PageComponent } from './page.component';
 import { Resource } from '../../models/resource';
+import { PageService } from '../../service/page.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { PageComponent } from './page.component';
 
 describe('PageComponent', () => {
   let comp: PageComponent;

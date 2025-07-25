@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Resource } from '../../models/resource';
-import { ResourceService } from '../../service/resource/resource.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CreateResourceComponent } from '../edit-resource/create-resource/create-resource.component';
+import { Filters } from '../../models/filters';
 import { Language } from '../../models/language';
+import { Resource } from '../../models/resource';
+import { ResourceType } from '../../models/resource-type';
+import { System } from '../../models/system';
 import { LanguageService } from '../../service/language.service';
-import { ResourceType } from '../../../../src/app/models/resource-type';
-import { System } from '../../../../src/app/models/system';
-import { Filters } from '../../../../src/app/models/filters';
-import { SystemService } from '../../../../src/app/service/system.service';
-import { ResourceTypeService } from '../../../../src/app/service/resource-type.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ResourceTypeService } from '../../service/resource-type.service';
+import { SystemService } from '../../service/system.service';
+import { CreateResourceComponent } from '../edit-resource/create-resource/create-resource.component';
 
 @Component({
   selector: 'admin-resources',

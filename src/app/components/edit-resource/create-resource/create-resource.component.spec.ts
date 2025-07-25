@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResourceService } from '../../../service/resource/resource.service';
-import { SystemService } from '../../../service/system.service';
-import { ResourceTypeService } from '../../../service/resource-type.service';
-import { CreateResourceComponent } from './create-resource.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { AceEditorDirective } from 'ng2-ace-editor';
 import { By } from '@angular/platform-browser';
-import { Resource } from '../../../models/resource';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { Resource } from '../../../models/resource';
+import { ResourceService } from '../../../service/resource/resource.service';
+import { ResourceTypeService } from '../../../service/resource-type.service';
+import { SystemService } from '../../../service/system.service';
+import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
+import { CreateResourceComponent } from './create-resource.component';
 
 describe('CreateResourceComponent', () => {
   let comp: CreateResourceComponent;

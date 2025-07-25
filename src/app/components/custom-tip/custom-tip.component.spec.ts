@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CustomTipComponent } from './custom-tip.component';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { CustomTipService } from '../../service/custom-tip.service';
 import { CustomTip } from '../../models/custom-tip';
 import { Language } from '../../models/language';
-import { Tip } from '../../models/tip';
-import { DraftService } from '../../service/draft.service';
 import { Resource } from '../../models/resource';
+import { Tip } from '../../models/tip';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { DraftService } from '../../service/draft.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { CustomTipComponent } from './custom-tip.component';
 
 describe('CustomTipComponent', () => {
   let comp: CustomTipComponent;

@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
-import { Page } from '../../models/page';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { PageService } from '../../service/page.service';
 import { AceEditorDirective } from 'ng2-ace-editor';
+import { Page } from '../../models/page';
+import { PageService } from '../../service/page.service';
 
 @Component({
   selector: 'admin-create-page',

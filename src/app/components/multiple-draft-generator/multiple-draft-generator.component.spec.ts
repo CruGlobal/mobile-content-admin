@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -5,27 +7,25 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import {
+  NgbButtonLabel,
   NgbActiveModal,
   NgbAlert,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { MultipleDraftGeneratorComponent } from './multiple-draft-generator.component';
-import { FormsModule } from '@angular/forms';
+import { Language } from '../../models/language';
+import { MessageType } from '../../models/message';
+import { Resource } from '../../models/resource';
+import { Translation } from '../../models/translation';
+import { WindowRefService } from '../../models/window-ref-service';
+import { AuthService } from '../../service/auth/auth.service';
 import { DraftService } from '../../service/draft.service';
 import { LanguageService } from '../../service/language.service';
 import { ResourceService } from '../../service/resource/resource.service';
-import { Resource } from '../../models/resource';
-import { Translation } from '../../models/translation';
-import { By } from '@angular/platform-browser';
-import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap';
-import { Language } from '../../models/language';
-import { DebugElement } from '@angular/core';
 import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
-import { MessageType } from '../../models/message';
-import { WindowRefService } from '../../models/window-ref-service';
-import { AuthService } from '../../service/auth/auth.service';
+import { MultipleDraftGeneratorComponent } from './multiple-draft-generator.component';
 
 describe('MultipleDraftGeneratorComponent', () => {
   let comp: MultipleDraftGeneratorComponent;

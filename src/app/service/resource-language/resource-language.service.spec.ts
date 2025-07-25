@@ -1,15 +1,15 @@
-import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { ResourceService } from '../resource/resource.service';
-import { AuthService } from '../auth/auth.service';
+import { TestBed } from '@angular/core/testing';
 import { Resource } from '../../models/resource';
+import { AuthService } from '../auth/auth.service';
 import {
   MockAuthService,
   requestHasAuthenticatedHeaders,
 } from '../auth/mockAuthService';
+import { ResourceService } from '../resource/resource.service';
 
 describe('ResourceService', () => {
   let service: ResourceService;

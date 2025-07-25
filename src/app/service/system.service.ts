@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { System } from '../models/system';
 import { environment } from '../../environments/environment';
+import { System } from '../models/system';
 import { AbstractService } from './abstract.service';
 
 @Injectable()

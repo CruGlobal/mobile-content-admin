@@ -4,9 +4,9 @@ import {
   NgbModalRef,
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
 import { countries } from 'countries-list';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { Subject } from 'rxjs';
+import { Resource } from '../../models/resource';
 import {
   ToolGroup,
   ToolGroupRule,
@@ -17,11 +17,11 @@ import {
   RuleType,
   PraxisType,
 } from '../../models/tool-group';
-import { Resource } from '../../models/resource';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { UpdateToolGroupComponent } from '../edit-tool-group/update-tool-group/update-tool-group.component';
-import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
-import { ToolGroupRuleComponent } from '../edit-tool-group-rule/tool-group-rule.component';
 import { ToolGroupResourceComponent } from '../edit-tool-group-resource/tool-group-resource.component';
+import { ToolGroupRuleComponent } from '../edit-tool-group-rule/tool-group-rule.component';
+import { ToolGroupsComponent } from '../tool-groups/tool-groups.component';
 
 @Component({
   selector: 'admin-tool-group',

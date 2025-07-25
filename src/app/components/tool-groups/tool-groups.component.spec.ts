@@ -1,21 +1,21 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { LanguageService } from '../../service/language.service';
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
+import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
 import {
   CountriesType,
   PraxisTypeEnum,
   ToolGroup,
 } from '../../models/tool-group';
-import { Language } from '../../models/language';
-import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
-import { ToolGroupsComponent } from './tool-groups.component';
-import { ToolGroupComponent } from '../tool-group/tool-group.component';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
+import { ToolGroupComponent } from '../tool-group/tool-group.component';
+import { ToolGroupsComponent } from './tool-groups.component';
 
 describe('ToolGroupsComponent', () => {
   let comp: ToolGroupsComponent;

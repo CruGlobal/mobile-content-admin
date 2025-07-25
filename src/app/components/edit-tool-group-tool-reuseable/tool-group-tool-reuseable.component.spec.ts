@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Resource } from '../../models/resource';
+import { NgArrayPipesModule } from 'ngx-pipes';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
+import { Resource } from '../../models/resource';
 import { ToolGroupToolReuseableComponent } from './tool-group-tool-reuseable.component';
 
 describe('ToolGroupToolReuseableComponent', () => {

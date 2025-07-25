@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { NgArrayPipesModule } from 'ngx-pipes';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
 import {
   RuleTypeEnum,
   ToolGroupRule,
@@ -13,7 +13,7 @@ import {
   PraxisTypeEnum,
   Praxis,
 } from '../../models/tool-group';
-import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { ToolGroupRuleComponent } from './tool-group-rule.component';
 

@@ -1,12 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgArrayPipesModule } from 'ngx-pipes';
-import { LanguageService } from '../../service/language.service';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { Language } from '../../models/language';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
+import { Language } from '../../models/language';
 import {
   RuleTypeEnum,
   ToolGroup,
@@ -14,6 +12,8 @@ import {
   RulesType,
   PraxisTypeEnum,
 } from '../../models/tool-group';
+import { LanguageService } from '../../service/language.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from './tool-group-rule-reuseable.component';
 
 describe('ToolGroupRuleReuseableComponent', () => {

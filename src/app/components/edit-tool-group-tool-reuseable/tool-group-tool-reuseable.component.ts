@@ -8,8 +8,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Tools } from '../../models/tool-group';
 import { Resource } from '../../models/resource';
+import { Tools } from '../../models/tool-group';
 
 @Component({
   selector: 'admin-tool-group-tool-reuseable',

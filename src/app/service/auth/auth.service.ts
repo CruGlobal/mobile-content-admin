@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthToken } from '../../models/auth-token';
-import { WindowRefService } from '../../models/window-ref-service';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { environment } from '../../../environments/environment';
+import { AuthToken } from '../../models/auth-token';
+import { WindowRefService } from '../../models/window-ref-service';
 import { AbstractService } from '../abstract.service';
 
 @Injectable()

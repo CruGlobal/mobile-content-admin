@@ -1,12 +1,12 @@
-import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { AuthService } from './auth.service';
-import { WindowRefService } from '../../models/window-ref-service';
+import { TestBed } from '@angular/core/testing';
 import { UUID } from 'angular2-uuid';
 import { environment } from '../../../environments/environment';
+import { WindowRefService } from '../../models/window-ref-service';
+import { AuthService } from './auth.service';
 
 const token = UUID.UUID();
 const response = {

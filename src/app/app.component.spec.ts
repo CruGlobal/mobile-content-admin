@@ -1,12 +1,12 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppComponent } from './app.component';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { AuthService } from './service/auth/auth.service';
+import { AppComponent } from './app.component';
 import { WindowRefService } from './models/window-ref-service';
+import { AuthService } from './service/auth/auth.service';
 
 describe('AppComponent', () => {
   const modalServiceStub = ({

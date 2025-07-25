@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UpdateResourceLanguageComponent } from './update-resource-language.component';
-import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResourceLanguageService } from '../../../service/resource-language/resource-language.service';
-import { SystemService } from '../../../service/system.service';
-import { ResourceTypeService } from '../../../service/resource-type.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { AceEditorDirective } from 'ng2-ace-editor';
 import { By } from '@angular/platform-browser';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
 import { ResourceLanguage } from '../../../models/resource-language';
+import { ResourceLanguageService } from '../../../service/resource-language/resource-language.service';
+import { ResourceTypeService } from '../../../service/resource-type.service';
+import { SystemService } from '../../../service/system.service';
+import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
+import { UpdateResourceLanguageComponent } from './update-resource-language.component';
 
 describe('UpdateResourceLanguageComponent', () => {
   let comp: UpdateResourceLanguageComponent;

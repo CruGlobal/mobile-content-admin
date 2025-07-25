@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CustomPageComponent } from './custom-page.component';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { CustomPageService } from '../../service/custom-page.service';
 import { CustomPage } from '../../models/custom-page';
 import { Language } from '../../models/language';
 import { Page } from '../../models/page';
-import { DraftService } from '../../service/draft.service';
 import { Resource } from '../../models/resource';
+import { CustomPageService } from '../../service/custom-page.service';
+import { DraftService } from '../../service/draft.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { CustomPageComponent } from './custom-page.component';
 
 describe('CustomPageComponent', () => {
   let comp: CustomPageComponent;

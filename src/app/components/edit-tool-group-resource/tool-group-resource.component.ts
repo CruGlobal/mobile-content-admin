@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
 import { Resource } from '../../models/resource';
 import { Tools, ToolGroup } from '../../models/tool-group';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 
 interface PromisePayload {
   success: boolean;
