@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from '../auth/auth.service';
-import { AbstractService } from '../abstract.service';
+import { environment } from '../../../environments/environment';
 import { Resource } from '../../models/resource';
 import {
   ToolGroup,
   RuleTypeEnum,
   ToolGroupRule,
 } from '../../models/tool-group';
-import { environment } from '../../../environments/environment';
+import { AbstractService } from '../abstract.service';
+import { AuthService } from '../auth/auth.service';
 
 interface PraxisData {
   confidence: string[];

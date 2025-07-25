@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Translation } from '../models/translation';
-import { AuthService } from './auth/auth.service';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { Page } from '../models/page';
-import { Tip } from '../models/tip';
 import { environment } from '../../environments/environment';
-import { AbstractService } from './abstract.service';
+import { Page } from '../models/page';
 import { Resource } from '../models/resource';
+import { Tip } from '../models/tip';
+import { Translation } from '../models/translation';
+import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class DraftService extends AbstractService {

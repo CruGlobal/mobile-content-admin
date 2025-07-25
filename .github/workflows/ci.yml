@@ -18,28 +18,69 @@ permissions:
   contents: write
 
 jobs:
-  test:
-    name: Checks & Build Test
+  lint-and-prettier:
+    name: 🧹 Lint & Prettier Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-      - name: Install Dependencies
+
+      - name: 📦 Install dependencies
         run: yarn
-      - name: Run Lint & Prettier Tests
-        run: |
-          yarn lint:type
-          yarn prettier:check
-      - name: Build Staging
-        run: yarn build:stage
-      - name: Build Production
-        run: yarn build
-      - name: Run Test with CodeCov
+
+      - name: 💅 Prettier check
+        run: yarn prettier:check
+
+      - name: 💨 Lint check
+        run: yarn lint
+
+  test:
+    name: ✅ Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: 📦 Install dependencies
+        run: yarn
+
+      - name: 🧪 Test with CodeCov
         run: yarn test:codecov
-      - name: Code coverage test
+
+      - name: ✅ Code coverage test
         uses: codecov/codecov-action@v3.1.4
+
+  build:
+    name: 🏗️ Build app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: 📦 Install dependencies
+        run: yarn
+
+      - name: 🏗️ Build Staging
+        run: yarn build:stage
+
+      - name: 🏗️ Build Production
+        run: yarn build
 
   deploy:
     name: Deployment
@@ -48,18 +89,27 @@ jobs:
       (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/master')
       && github.event_name == 'push'
     environment: ${{ github.ref == 'refs/heads/master' && 'prod' || 'stage' }}
-    needs: test
+    needs: [lint-and-prettier, test, build]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-      - name: Install Dependencies
+
+      - name: 📦 Install dependencies
         run: yarn
-      - name: Build
-        run: yarn build:${{vars.ENVIRONMENT}}
-      - uses: aws-actions/configure-aws-credentials@v4
+
+      - name: 🏗️ Build for Deployment
+        run: yarn build:${{ vars.ENVIRONMENT }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: '${{ secrets.AWS_IAM_ROLE_ARN }}'
           aws-region: us-east-1
-      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"
+
+      - name: Deploy to s3
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET }} --region us-east-1 --acl public-read --cache-control "max-age=300"

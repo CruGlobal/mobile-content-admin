@@ -1,6 +1,6 @@
-import { Tip } from './tip';
-import { Language } from './language';
 import { AbstractTip } from './abstract-tip';
+import { Language } from './language';
+import { Tip } from './tip';
 
 export class CustomTip extends AbstractTip {
   tip: Tip;

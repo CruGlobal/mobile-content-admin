@@ -1,15 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { Resource } from '../../models/resource';
+import { NgArrayPipesModule } from 'ngx-pipes';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
-import { ToolGroupResourceComponent } from './tool-group-resource.component';
-import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { Resource } from '../../models/resource';
 import { Tools } from '../../models/tool-group';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { ToolGroupResourceComponent } from './tool-group-resource.component';
 
 describe('ToolGroupResourceComponent', () => {
   let comp: ToolGroupResourceComponent;

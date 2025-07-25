@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Language } from '../models/language';
-import { AuthService } from './auth/auth.service';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
 import { environment } from '../../environments/environment';
+import { Language } from '../models/language';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class LanguageService extends AbstractService {

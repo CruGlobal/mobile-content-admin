@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from './auth/auth.service';
-import { CustomTip } from '../models/custom-tip';
 import { environment } from '../../environments/environment';
+import { CustomTip } from '../models/custom-tip';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 // not sure why this is required here but not in custom-page.service.ts
 // without it, there's a StaticInjectorError

@@ -1,18 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
-import { LanguageService } from '../../../service/language.service';
+import { NgArrayPipesModule } from 'ngx-pipes';
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
+import { Language } from '../../../models/language';
 import {
   RuleTypeEnum,
   ToolGroup,
   ToolGroupRule,
 } from '../../../models/tool-group';
-import { Language } from '../../../models/language';
-import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
+import { LanguageService } from '../../../service/language.service';
+import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from '../../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { UpdateToolGroupComponent } from './update-tool-group.component';
 

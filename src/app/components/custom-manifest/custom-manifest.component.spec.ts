@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CustomManifestComponent } from './custom-manifest.component';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { CustomManifestService } from '../../service/custom-manifest.service';
 import { CustomManifest } from '../../models/custom-manifest';
 import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { CustomManifestComponent } from './custom-manifest.component';
 
 describe('CustomManifestComponent', () => {
   let comp: CustomManifestComponent;

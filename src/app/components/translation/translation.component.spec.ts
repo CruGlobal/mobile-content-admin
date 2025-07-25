@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -6,27 +8,25 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslationComponent } from './translation.component';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DraftService } from '../../service/draft.service';
-import { CustomPageComponent } from '../custom-page/custom-page.component';
-import { Translation } from '../../models/translation';
-import { Language } from '../../models/language';
-import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { Resource } from '../../models/resource';
-import { Page } from '../../models/page';
-import { CustomPage } from '../../models/custom-page';
-import { ResourceComponent } from '../resource/resource.component';
-import anything = jasmine.anything;
-import { ResourceService } from '../../service/resource/resource.service';
-import { CustomPageService } from '../../service/custom-page.service';
-import { CustomManifestService } from '../../service/custom-manifest.service';
-import { CustomTipService } from '../../service/custom-tip.service';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomManifest } from '../../models/custom-manifest';
+import { CustomPage } from '../../models/custom-page';
+import { Language } from '../../models/language';
 import { MessageType } from '../../models/message';
+import { Page } from '../../models/page';
+import { Resource } from '../../models/resource';
+import { Translation } from '../../models/translation';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { CustomPageService } from '../../service/custom-page.service';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { DraftService } from '../../service/draft.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { CustomPageComponent } from '../custom-page/custom-page.component';
+import { ResourceComponent } from '../resource/resource.component';
 import { TranslationVersionBadgeComponent } from './translation-version-badge/translation-version-badge.component';
+import { TranslationComponent } from './translation.component';
+import anything = jasmine.anything;
 
 describe('TranslationComponent', () => {
   let comp: TranslationComponent;
@@ -327,10 +327,7 @@ describe('TranslationComponent', () => {
       fixture.detectChanges();
 
       expect(window.clearInterval).toHaveBeenCalled();
-      expect(comp.renderMessage).toHaveBeenCalledWith(
-        MessageType.error,
-        null,
-      );
+      expect(comp.renderMessage).toHaveBeenCalledWith(MessageType.error, null);
       expect(comp.renderMessage).toHaveBeenCalledWith(
         MessageType.success,
         comp.successfullyPublishedMessage,

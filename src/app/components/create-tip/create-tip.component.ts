@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
-import { Tip } from '../../models/tip';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TipService } from '../../service/tip.service';
 import { AceEditorDirective } from 'ng2-ace-editor';
+import { Tip } from '../../models/tip';
+import { TipService } from '../../service/tip.service';
 
 @Component({
   selector: 'admin-create-tip',

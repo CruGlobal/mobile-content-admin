@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from './auth/auth.service';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class AttachmentService extends AbstractService {

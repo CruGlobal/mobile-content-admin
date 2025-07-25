@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Resource } from '../../models/resource';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
+import { Resource } from '../../models/resource';
 import { AbstractService } from '../abstract.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ResourceService extends AbstractService {

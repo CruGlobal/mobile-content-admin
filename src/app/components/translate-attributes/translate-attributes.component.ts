@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
-import { Resource } from '../../models/resource';
-import { ResourceType } from '../../models/resource-type';
-import { System } from '../../models/system';
 import {
   AttributeTranslation,
   IAttributeTranslationPromises,
 } from '../../models/attribute-translation';
+import { Resource } from '../../models/resource';
+import { ResourceType } from '../../models/resource-type';
+import { System } from '../../models/system';
 import { AttributeTranslationService } from '../../service/attribute-translation.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'admin-translate-attributes',

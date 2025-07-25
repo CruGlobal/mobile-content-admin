@@ -1,20 +1,20 @@
-import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { ToolGroupService } from './tool-group.service';
-import { AuthService } from '../auth/auth.service';
+import { TestBed } from '@angular/core/testing';
+import { environment } from '../../../environments/environment';
 import {
   ToolGroup,
   RuleTypeEnum,
   ToolGroupRule,
 } from '../../models/tool-group';
-import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 import {
   MockAuthService,
   requestHasAuthenticatedHeaders,
 } from '../auth/mockAuthService';
+import { ToolGroupService } from './tool-group.service';
 
 const toolGroupsUrl = environment.base_url + 'tool-groups';
 

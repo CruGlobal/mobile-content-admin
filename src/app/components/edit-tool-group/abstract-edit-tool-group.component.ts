@@ -1,6 +1,5 @@
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Input, Output, EventEmitter, Directive } from '@angular/core';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Language } from '../../models/language';
 import {
   CountriesType,
@@ -12,6 +11,7 @@ import {
   RuleType,
   PraxisType,
 } from '../../models/tool-group';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 
 @Directive()
 export abstract class AbstractEditToolGroupComponent {

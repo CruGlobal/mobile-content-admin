@@ -6,9 +6,9 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { AceEditorDirective } from 'ng2-ace-editor';
 import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
-import { AceEditorDirective } from 'ng2-ace-editor';
 
 @Component({
   selector: 'admin-xml-editor',

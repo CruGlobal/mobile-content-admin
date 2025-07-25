@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateAttributesComponent } from './translate-attributes.component';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AttributeTranslationService } from '../../service/attribute-translation.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { AceEditorDirective } from 'ng2-ace-editor';
 import { By } from '@angular/platform-browser';
-import { Resource } from '../../models/resource';
-import { AttributeTranslation } from '../../models/attribute-translation';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { AttributeTranslation } from '../../models/attribute-translation';
+import { Resource } from '../../models/resource';
+import { AttributeTranslationService } from '../../service/attribute-translation.service';
+import { TranslateAttributesComponent } from './translate-attributes.component';
 
 describe('TranslateAttributesComponent', () => {
   let comp: TranslateAttributesComponent;

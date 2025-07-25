@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Tip } from '../models/tip';
+import { Injectable } from '@angular/core';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from './auth/auth.service';
 import { environment } from '../../environments/environment';
+import { Tip } from '../models/tip';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class TipService extends AbstractService {
