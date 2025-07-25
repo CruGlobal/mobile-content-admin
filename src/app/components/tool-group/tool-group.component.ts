@@ -151,7 +151,7 @@ export class ToolGroupComponent implements OnDestroy {
         this.toolGroup.id,
       );
       this.hasLoadedInitialDetails = true;
-      if (this.toolGroup.tools.length) {
+      if (this.toolGroup?.tools?.length) {
         this.toolGroup.tools = this.toolGroup.tools.map((tool) => {
           return {
             ...tool,

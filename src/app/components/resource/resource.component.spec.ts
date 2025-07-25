@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from '../../service/language.service';
 import { FormsModule } from '@angular/forms';
@@ -35,26 +36,28 @@ describe('ResourceComponent', () => {
 
   const resource: Resource = new Resource();
 
-  beforeEach(waitForAsync(() => {
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-      Promise.resolve(languageStub),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+        Promise.resolve(languageStub),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        ResourcesComponent,
-        ResourceComponent,
-        TranslationComponent,
-        TranslationVersionBadgeComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-        { provide: DraftService },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          ResourcesComponent,
+          ResourceComponent,
+          TranslationComponent,
+          TranslationVersionBadgeComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+          { provide: DraftService },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceComponent);

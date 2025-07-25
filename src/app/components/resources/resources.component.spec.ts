@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguageService } from '../../service/language.service';
 import { FormsModule } from '@angular/forms';
@@ -94,32 +95,34 @@ describe('ResourcesComponent', () => {
     },
   ];
 
-  beforeEach(waitForAsync(() => {
-    spyOn(resourceServiceStub, 'getResources').and.returnValue(
-      Promise.resolve([resource]),
-    );
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-      Promise.resolve(languageStub),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(resourceServiceStub, 'getResources').and.returnValue(
+        Promise.resolve([resource]),
+      );
+      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+        Promise.resolve(languageStub),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        ResourcesComponent,
-        ResourceComponent,
-        TranslationComponent,
-        TranslationVersionBadgeComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: ResourceService, useValue: resourceServiceStub },
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-        { provide: DraftService },
-        { provide: ResourceTypeService },
-        { provide: SystemService },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          ResourcesComponent,
+          ResourceComponent,
+          TranslationComponent,
+          TranslationVersionBadgeComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: ResourceService, useValue: resourceServiceStub },
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+          { provide: DraftService },
+          { provide: ResourceTypeService },
+          { provide: SystemService },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   let localStore;
 

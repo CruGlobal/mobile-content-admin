@@ -1,4 +1,12 @@
-import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  discardPeriodicTasks,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslationComponent } from './translation.component';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DraftService } from '../../service/draft.service';
@@ -68,73 +76,78 @@ describe('TranslationComponent', () => {
     return page.queryAll(By.css('button[data-action="delete"]'));
   };
 
-  beforeEach(waitForAsync(() => {
-    customPageServiceStub = {
-      delete() {},
-    };
-    customTipsServiceStub = {};
+  beforeEach(
+    waitForAsync(() => {
+      customPageServiceStub = {
+        delete() {},
+      };
+      customTipsServiceStub = {};
 
-    modalServiceStub = {
-      open() {},
-    };
-    customDraftServiceStub = {
-      publishDraft() {},
-    };
-    customResourceServiceStub = {
-      getResource() {},
-    };
-    const modalRef = {
-      componentInstance: {},
-      result: Promise.resolve(),
-    };
+      modalServiceStub = {
+        open() {},
+      };
+      customDraftServiceStub = {
+        publishDraft() {},
+      };
+      customResourceServiceStub = {
+        getResource() {},
+      };
+      const modalRef = {
+        componentInstance: {},
+        result: Promise.resolve(),
+      };
 
-    customManifestServiceStub = {
-      delete() {},
-    };
+      customManifestServiceStub = {
+        delete() {},
+      };
 
-    spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
-    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
-    spyOn(customManifestServiceStub, 'delete').and.returnValue(
-      Promise.resolve(),
-    );
-    spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
-      Promise.resolve([
-        {
-          'publishing-errors': null,
-        },
-      ]),
-    );
-    spyOn(customResourceServiceStub, 'getResource').and.returnValue(
-      Promise.resolve({
-        'latest-drafts-translations': [
+      spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
+      spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
+      spyOn(customManifestServiceStub, 'delete').and.returnValue(
+        Promise.resolve(),
+      );
+      spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
+        Promise.resolve([
           {
-            language: { id: 1 },
             'publishing-errors': null,
-            'is-published': false,
           },
+        ]),
+      );
+      spyOn(customResourceServiceStub, 'getResource').and.returnValue(
+        Promise.resolve({
+          'latest-drafts-translations': [
+            {
+              language: { id: 1 },
+              'publishing-errors': null,
+              'is-published': false,
+            },
+          ],
+        }),
+      );
+
+      customPageServiceStub.delete();
+      modalServiceStub.open();
+      customManifestServiceStub.delete();
+      customDraftServiceStub.publishDraft();
+      customResourceServiceStub.getResource();
+
+      TestBed.configureTestingModule({
+        declarations: [TranslationComponent, TranslationVersionBadgeComponent],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: DraftService, useValue: customDraftServiceStub },
+          { provide: CustomPageService, useValue: customPageServiceStub },
+          { provide: CustomTipService, useValue: customTipsServiceStub },
+          {
+            provide: CustomManifestService,
+            useValue: customManifestServiceStub,
+          },
+          { provide: NgbModal, useValue: modalServiceStub },
+          { provide: ResourceService, useValue: customResourceServiceStub },
         ],
-      }),
-    );
-
-    customPageServiceStub.delete();
-    modalServiceStub.open();
-    customManifestServiceStub.delete();
-    customDraftServiceStub.publishDraft();
-    customResourceServiceStub.getResource();
-
-    TestBed.configureTestingModule({
-      declarations: [TranslationComponent, TranslationVersionBadgeComponent],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: DraftService, useValue: customDraftServiceStub },
-        { provide: CustomPageService, useValue: customPageServiceStub },
-        { provide: CustomTipService, useValue: customTipsServiceStub },
-        { provide: CustomManifestService, useValue: customManifestServiceStub },
-        { provide: NgbModal, useValue: modalServiceStub },
-        { provide: ResourceService, useValue: customResourceServiceStub },
-      ],
-    }).compileComponents();
-  }));
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslationComponent);
@@ -225,7 +238,7 @@ describe('TranslationComponent', () => {
       it('should clear the interval on destroy', fakeAsync(() => {
         spyOn(comp, 'renderMessage');
         spyOn(comp, 'isPublished');
-        spyOn(global, 'clearInterval');
+        spyOn(window, 'clearInterval');
         comp.publish();
         tick(5500);
         fixture.detectChanges();
@@ -233,7 +246,7 @@ describe('TranslationComponent', () => {
 
         comp.ngOnDestroy();
         fixture.whenStable().then(() => {
-          expect(global.clearInterval).toHaveBeenCalled();
+          expect(window.clearInterval).toHaveBeenCalled();
         });
       }));
     });
@@ -254,17 +267,17 @@ describe('TranslationComponent', () => {
     });
 
     it('should not run clearInterval as it is not published and had no errors', () => {
-      spyOn(global, 'clearInterval');
+      spyOn(window, 'clearInterval');
       comp.isPublished();
 
       expect(customResourceServiceStub.getResource).toHaveBeenCalledWith(
         15,
         'latest-drafts-translations',
       );
-      expect(global.clearInterval).not.toHaveBeenCalled();
+      expect(window.clearInterval).not.toHaveBeenCalled();
     });
 
-    it('should run clearInterval and report pubslishing error to user', () => {
+    it('should run clearInterval and report pubslishing error to user', fakeAsync(() => {
       customResourceServiceStub.getResource.and.returnValue(
         Promise.resolve({
           'latest-drafts-translations': [
@@ -276,24 +289,25 @@ describe('TranslationComponent', () => {
           ],
         }),
       );
-      spyOn(global, 'clearInterval');
+      spyOn(window, 'clearInterval');
       spyOn(comp, 'renderMessage');
       comp.isPublished();
 
-      fixture.whenStable().then(() => {
-        expect(global.clearInterval).toHaveBeenCalled();
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.success,
-          null,
-        );
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.error,
-          'Error while saving',
-        );
-      });
-    });
+      tick();
+      fixture.detectChanges();
 
-    it('should run clearInterval and report success to user', () => {
+      expect(window.clearInterval).toHaveBeenCalled();
+      expect(comp.renderMessage).toHaveBeenCalledWith(
+        MessageType.success,
+        null,
+      );
+      expect(comp.renderMessage).toHaveBeenCalledWith(
+        MessageType.error,
+        'Error while saving',
+      );
+    }));
+
+    it('should run clearInterval and report success to user', fakeAsync(() => {
       customResourceServiceStub.getResource.and.returnValue(
         Promise.resolve({
           'latest-drafts-translations': [
@@ -305,22 +319,23 @@ describe('TranslationComponent', () => {
           ],
         }),
       );
-      spyOn(global, 'clearInterval');
+      spyOn(window, 'clearInterval');
       spyOn(comp, 'renderMessage');
       comp.isPublished();
 
-      fixture.whenStable().then(() => {
-        expect(global.clearInterval).toHaveBeenCalled();
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.error,
-          null,
-        );
-        expect(comp.renderMessage).toHaveBeenCalledWith(
-          MessageType.success,
-          comp.successfullyPublishedMessage,
-        );
-      });
-    });
+      tick();
+      fixture.detectChanges();
+
+      expect(window.clearInterval).toHaveBeenCalled();
+      expect(comp.renderMessage).toHaveBeenCalledWith(
+        MessageType.error,
+        null,
+      );
+      expect(comp.renderMessage).toHaveBeenCalledWith(
+        MessageType.success,
+        comp.successfullyPublishedMessage,
+      );
+    }));
   });
 
   describe('language has existing translation(s)', () => {

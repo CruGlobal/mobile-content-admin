@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LanguagesComponent } from './languages.component';
 import { LanguageService } from '../../service/language.service';
@@ -11,22 +12,26 @@ describe('LanguagesComponent', () => {
   let comp: LanguagesComponent;
   let fixture: ComponentFixture<LanguagesComponent>;
 
-  beforeEach(waitForAsync(() => {
-    const languageServiceStub = {
-      deleteLanguage() {
-        return Promise.resolve();
-      },
-      getLanguages() {
-        return Promise.resolve([new Language()]);
-      },
-    };
+  beforeEach(
+    waitForAsync(() => {
+      const languageServiceStub = {
+        deleteLanguage() {
+          return Promise.resolve();
+        },
+        getLanguages() {
+          return Promise.resolve([new Language()]);
+        },
+      };
 
-    TestBed.configureTestingModule({
-      declarations: [LanguagesComponent],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [{ provide: LanguageService, useValue: languageServiceStub }],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [LanguagesComponent],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: LanguageService, useValue: languageServiceStub },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LanguagesComponent);

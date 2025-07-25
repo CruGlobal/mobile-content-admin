@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AttachmentsComponent } from './attachments.component';
 import { ResourceService } from '../../service/resource/resource.service';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WindowRefService } from '../../models/window-ref-service';
 import { AttachmentService } from '../../service/attachment.service';
+import { AuthService } from '../../service/auth/auth.service';
 import { Resource } from '../../models/resource';
 import { Attachment } from '../../models/attachment';
 import { By } from '@angular/platform-browser';
@@ -48,12 +50,18 @@ describe('AttachmentsComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AttachmentsComponent, FileSelectDirective],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: WindowRefService, useValue: windowRefStub },
         { provide: NgbModal, useValue: modalServiceStub },
-        { provide: AttachmentService },
+        AuthService,
+        AttachmentService,
       ],
     }).compileComponents();
 

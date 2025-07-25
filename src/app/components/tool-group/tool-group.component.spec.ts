@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModalRef, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
@@ -67,35 +68,37 @@ describe('ToolGroupComponent', () => {
   } as unknown) as NgbModalRef;
   const resource = new Resource();
 
-  beforeEach(waitForAsync(() => {
-    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
-      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
-    );
-    spyOn(toolGroupServiceStub, 'getToolGroup').and.returnValue(
-      Promise.resolve(toolGroupFullDetails),
-    );
-    spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
-      Promise.resolve([toolGroupFullDetails]),
-    );
-    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+        Promise.resolve<Language[]>(mocks.getLanguagesResponse),
+      );
+      spyOn(toolGroupServiceStub, 'getToolGroup').and.returnValue(
+        Promise.resolve(toolGroupFullDetails),
+      );
+      spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
+        Promise.resolve([toolGroupFullDetails]),
+      );
+      spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
 
-    spyOn(resourceServiceStub, 'getResources').and.returnValue(
-      Promise.resolve([resource]),
-    );
-    TestBed.configureTestingModule({
-      declarations: [
-        ToolGroupsComponent,
-        ToolGroupComponent,
-        ToolGroupRuleReuseableComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: ToolGroupService, useValue: toolGroupServiceStub },
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal, useValue: modalServiceStub },
-      ],
-    }).compileComponents();
-  }));
+      spyOn(resourceServiceStub, 'getResources').and.returnValue(
+        Promise.resolve([resource]),
+      );
+      TestBed.configureTestingModule({
+        declarations: [
+          ToolGroupsComponent,
+          ToolGroupComponent,
+          ToolGroupRuleReuseableComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: ToolGroupService, useValue: toolGroupServiceStub },
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal, useValue: modalServiceStub },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolGroupComponent);

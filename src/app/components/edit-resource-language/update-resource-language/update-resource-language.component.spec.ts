@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UpdateResourceLanguageComponent } from './update-resource-language.component';
 import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -30,7 +31,7 @@ describe('UpdateResourceLanguageComponent', () => {
         XmlEditorComponent,
         AceEditorDirective,
       ],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
       providers: [
         {
           provide: ResourceLanguageService,

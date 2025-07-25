@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomPageComponent } from './custom-page.component';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
@@ -25,25 +26,27 @@ describe('CustomPageComponent', () => {
     },
   };
 
-  beforeEach(waitForAsync(() => {
-    spyOn(customPageServiceStub, 'upsert').and.returnValue(
-      Promise.resolve<CustomPage>(null),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(customPageServiceStub, 'upsert').and.returnValue(
+        Promise.resolve<CustomPage>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        CustomPageComponent,
-        XmlEditorComponent,
-        AceEditorDirective,
-      ],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: CustomPageService, useValue: customPageServiceStub },
-        { provide: DraftService, useValue: draftServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          CustomPageComponent,
+          XmlEditorComponent,
+          AceEditorDirective,
+        ],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: CustomPageService, useValue: customPageServiceStub },
+          { provide: DraftService, useValue: draftServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomPageComponent);

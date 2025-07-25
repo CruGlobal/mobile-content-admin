@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,20 +18,22 @@ describe('PageComponent', () => {
     update() {},
   } as unknown) as PageService;
 
-  beforeEach(waitForAsync(() => {
-    spyOn(pageServiceStub, 'update').and.returnValue(
-      Promise.resolve<Page>(null),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(pageServiceStub, 'update').and.returnValue(
+        Promise.resolve<Page>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: PageService, useValue: pageServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: PageService, useValue: pageServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageComponent);

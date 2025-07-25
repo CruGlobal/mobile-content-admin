@@ -5,6 +5,7 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   NgbActiveModal,
   NgbAlert,
@@ -23,6 +24,8 @@ import { Language } from '../../models/language';
 import { DebugElement } from '@angular/core';
 import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
 import { MessageType } from '../../models/message';
+import { WindowRefService } from '../../models/window-ref-service';
+import { AuthService } from '../../service/auth/auth.service';
 
 describe('MultipleDraftGeneratorComponent', () => {
   let comp: MultipleDraftGeneratorComponent;
@@ -85,12 +88,14 @@ describe('MultipleDraftGeneratorComponent', () => {
         MultipleDraftGeneratorComponent,
         TranslationVersionBadgeComponent,
       ],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
       providers: [
         { provide: DraftService, useValue: customDraftServiceStub },
         { provide: NgbActiveModal },
         { provide: ResourceService, useValue: customResourceServiceStub },
-        { provide: LanguageService },
+        WindowRefService,
+        AuthService,
+        LanguageService,
       ],
     }).compileComponents();
 
@@ -159,17 +164,15 @@ describe('MultipleDraftGeneratorComponent', () => {
       fixture.detectChanges();
       discardPeriodicTasks();
 
-      fixture.whenStable().then(() => {
-        expect(customDraftServiceStub.publishDraft).toHaveBeenCalledTimes(2);
-        expect(comp.errorMessage).toEqual([]);
-        expect(comp.isPublished).toHaveBeenCalledTimes(1);
+      expect(customDraftServiceStub.publishDraft).toHaveBeenCalledTimes(2);
+      expect(comp.errorMessage).toEqual([]);
+      expect(comp.isPublished).toHaveBeenCalledTimes(1);
 
-        tick(5500);
-        fixture.detectChanges();
-        discardPeriodicTasks();
+      tick(5500);
+      fixture.detectChanges();
+      discardPeriodicTasks();
 
-        expect(comp.isPublished).toHaveBeenCalledTimes(2);
-      });
+      expect(comp.isPublished).toHaveBeenCalledTimes(2);
     }));
 
     it('should return publishing errors and warn the user.', fakeAsync(() => {
@@ -192,12 +195,10 @@ describe('MultipleDraftGeneratorComponent', () => {
       fixture.detectChanges();
       discardPeriodicTasks();
 
-      fixture.whenStable().then(() => {
-        expect(comp.errorMessage).toEqual([
-          'Error publishing...',
-          'Error publishing...',
-        ]);
-      });
+      expect(comp.errorMessage).toEqual([
+        'Error publishing...',
+        'Error publishing...',
+      ]);
     }));
   });
 });

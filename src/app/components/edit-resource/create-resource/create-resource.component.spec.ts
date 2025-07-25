@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResourceService } from '../../../service/resource/resource.service';
@@ -30,7 +31,12 @@ describe('CreateResourceComponent', () => {
         XmlEditorComponent,
         AceEditorDirective,
       ],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: SystemService },

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
@@ -17,18 +18,22 @@ describe('TipComponent', () => {
     update() {},
   } as unknown) as TipService;
 
-  beforeEach(waitForAsync(() => {
-    spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(tipServiceStub, 'update').and.returnValue(
+        Promise.resolve<Tip>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: TipService, useValue: tipServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: TipService, useValue: tipServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TipComponent);

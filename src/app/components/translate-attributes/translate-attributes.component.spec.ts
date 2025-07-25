@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateAttributesComponent } from './translate-attributes.component';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeTranslationService } from '../../service/attribute-translation.service';
@@ -23,7 +24,7 @@ describe('TranslateAttributesComponent', () => {
 
   beforeEach(() => {
     spyOn(attributeTranslationStub, 'getAttributes').and.returnValue(
-      Promise.resolve<Resource>(null),
+      Promise.resolve<Resource>({ 'translated-attributes': [] } as Resource),
     );
     spyOn(attributeTranslationStub, 'create').and.returnValue(
       Promise.resolve<AttributeTranslation>(null),
@@ -37,7 +38,12 @@ describe('TranslateAttributesComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [TranslateAttributesComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         {
           provide: AttributeTranslationService,
@@ -52,6 +58,14 @@ describe('TranslateAttributesComponent', () => {
     comp.resource = resource;
     comp.resource.name = 'Renderer Tests';
     comp.resource.id = 3;
+    comp.resource['translated-attributes'] = [
+      {
+        id: '123',
+        key: 'test_key',
+        'onesky-phrase-id': 'test_onesky_phrase_id',
+        required: false,
+      },
+    ];
   });
 
   it('Ensuring Attributes have been loaded on ngInit', () => {

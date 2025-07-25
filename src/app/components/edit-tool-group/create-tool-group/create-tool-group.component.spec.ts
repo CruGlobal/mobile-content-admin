@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgArrayPipesModule } from 'ngx-pipes';
@@ -48,7 +49,12 @@ describe('CreateToolGroupComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [CreateToolGroupComponent, ToolGroupRuleReuseableComponent],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ToolGroupService, useValue: toolGroupServiceStub },
         { provide: LanguageService, useValue: languageServiceStub },

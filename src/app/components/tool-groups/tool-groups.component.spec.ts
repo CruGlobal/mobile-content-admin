@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
@@ -36,31 +37,33 @@ describe('ToolGroupsComponent', () => {
   const resource: Resource = new Resource();
   const toolGroup: ToolGroup = new ToolGroup();
 
-  beforeEach(waitForAsync(() => {
-    spyOn(resourceServiceStub, 'getResources').and.returnValue(
-      Promise.resolve([resource]),
-    );
-    spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
-      Promise.resolve([toolGroup]),
-    );
-    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
-      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
-    );
-    TestBed.configureTestingModule({
-      declarations: [
-        ToolGroupsComponent,
-        ToolGroupComponent,
-        ToolGroupRuleReuseableComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: ResourceService, useValue: resourceServiceStub },
-        { provide: ToolGroupService, useValue: toolGroupServiceStub },
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(resourceServiceStub, 'getResources').and.returnValue(
+        Promise.resolve([resource]),
+      );
+      spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
+        Promise.resolve([toolGroup]),
+      );
+      spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+        Promise.resolve<Language[]>(mocks.getLanguagesResponse),
+      );
+      TestBed.configureTestingModule({
+        declarations: [
+          ToolGroupsComponent,
+          ToolGroupComponent,
+          ToolGroupRuleReuseableComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: ResourceService, useValue: resourceServiceStub },
+          { provide: ToolGroupService, useValue: toolGroupServiceStub },
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolGroupsComponent);
