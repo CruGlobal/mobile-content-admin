@@ -1,115 +1,100 @@
-import 'rxjs/add/operator/toPromise';
+import { TestBed } from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ResourceService } from './resource.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { Resource } from '../../models/resource';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
-
-import anything = jasmine.anything;
-
-const headers = { headers: new HttpHeaders() };
-
-class MockHttpClient {
-  post() {
-    return Observable.create((observer) => {
-      observer.next(new Resource());
-      observer.complete();
-    });
-  }
-  
-  put() {
-    return Observable.create((observer) => observer.complete());
-  }
-  
-  delete() {
-    return Observable.create((observer) => observer.complete());
-  }
-  
-  get() {
-    return Observable.create((observer) => {
-      observer.next([]);
-      observer.complete();
-    });
-  }
-}
-
-class MockAuthService extends AuthService {
-  getAuthorizationAndOptions() {
-    return headers;
-  }
-}
+import {
+  MockAuthService,
+  requestHasAuthenticatedHeaders,
+} from '../auth/mockAuthService';
 
 describe('ResourceService', () => {
-  const mockHttp = new MockHttpClient();
-  const mockAuthService = new MockAuthService(null, null);
-  const service = new ResourceService(mockHttp as any, mockAuthService as any);
+  let service: ResourceService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        ResourceService,
+        { provide: AuthService, useClass: MockAuthService },
+      ],
+    });
+
+    service = TestBed.inject(ResourceService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify(); // Verify that no unmatched requests are outstanding
+  });
 
   const resource = new Resource();
   resource.id = 13;
 
-  beforeEach(() => {
-    spyOn(mockHttp, 'post').and.returnValue(
-      Observable.create((observer) => {
-        observer.next({
-          json() {
-            return new Resource();
-          },
-        });
-        observer.complete();
-      }),
-    );
-
-    spyOn(mockHttp, 'put').and.returnValue(
-      new Observable((observer) => observer.complete()),
-    );
-
-    spyOn(mockHttp, 'get').and.returnValue(
-      new Observable((observer) => observer.complete()),
-    );
-  });
-
   it('creating uses authorization code', () => {
     service.create(resource);
 
-    expect(mockHttp.post).toHaveBeenCalledWith(anything(), anything(), headers);
+    const req = httpMock.expectOne((request) => {
+      return request.method === 'POST' && request.headers.has('Authorization');
+    });
+
+    expect(req.request.method).toBe('POST');
+    requestHasAuthenticatedHeaders(req);
   });
 
   it('updating uses authorization code', () => {
     service.update(resource);
 
-    expect(mockHttp.put).toHaveBeenCalledWith(anything(), anything(), headers);
+    const req = httpMock.expectOne((request) => {
+      return request.method === 'PUT' && request.headers.has('Authorization');
+    });
+
+    expect(req.request.method).toBe('PUT');
+    requestHasAuthenticatedHeaders(req);
   });
 
   describe('GetResources()', () => {
     it('should include "include"', () => {
+      const expectedUrl = `${environment.base_url}resources?include=test-data`;
+
       service.getResources('test-data');
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${environment.base_url}resources?include=test-data`,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
 
     it('should not include "include"', () => {
+      const expectedUrl = `${environment.base_url}resources/${resource.id}`;
+
       service.getResource(resource.id);
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${environment.base_url}resources/${resource.id}`,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 
   describe('GetResource()', () => {
     it('should include "include"', () => {
+      const expectedUrl = `${environment.base_url}resources/${resource.id}?include=test-data`;
+
       service.getResource(resource.id, 'test-data');
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${environment.base_url}resources/${resource.id}?include=test-data`,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
 
     it('should not include "include"', () => {
+      const expectedUrl = `${environment.base_url}resources/${resource.id}`;
+
       service.getResource(resource.id);
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${environment.base_url}resources/${resource.id}`,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
     });
   });
 });

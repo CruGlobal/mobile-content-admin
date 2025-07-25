@@ -1,6 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Observable';
+import { TestBed } from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ToolGroupService } from './tool-group.service';
 import { AuthService } from '../auth/auth.service';
 import {
@@ -9,156 +11,91 @@ import {
   ToolGroupRule,
 } from '../../models/tool-group';
 import { environment } from '../../../environments/environment';
+import {
+  MockAuthService,
+  requestHasAuthenticatedHeaders,
+} from '../auth/mockAuthService';
 
-const headers = { headers: new HttpHeaders() };
 const toolGroupsUrl = environment.base_url + 'tool-groups';
 
-class MockHttpClient {
-  get() {
-    return Observable.create((observer) => {
-      observer.next(new ToolGroup());
-      observer.complete();
-    });
-  }
-  
-  post() {
-    return Observable.create((observer) => {
-      observer.next(new ToolGroup());
-      observer.complete();
-    });
-  }
-  
-  put() {
-    return Observable.create((observer) => observer.complete());
-  }
-  
-  delete() {
-    return Observable.create((observer) => observer.complete());
-  }
-}
-
-class MockAuthService extends AuthService {
-  getAuthorizationAndOptions() {
-    return headers;
-  }
-}
-
 describe('ToolGroupService', () => {
-  const mockHttp = new MockHttpClient();
-  const mockAuthService = new MockAuthService(null, null);
-  const service = new ToolGroupService(mockHttp as any, mockAuthService as any);
+  let service: ToolGroupService;
+  let httpMock: HttpTestingController;
 
-  const toolGroup = new ToolGroup();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        ToolGroupService,
+        { provide: AuthService, useClass: MockAuthService },
+      ],
+    });
+
+    service = TestBed.inject(ToolGroupService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify(); // Verify that no unmatched requests are outstanding
+  });
 
   describe('Get Single Tool Group', () => {
-    beforeEach(() => {
-      spyOn(mockHttp, 'get').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return toolGroup;
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     it('should fetch a single toolGroup', () => {
       const id = 7;
+      const expectedUrl = `${toolGroupsUrl}/${id}?include=rules-language,rules-praxis,rules-country,tools.tool`;
+
       service.getToolGroup(id);
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${id}?include=rules-language,rules-praxis,rules-country,tools.tool`,
-        headers,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should return tool group with only languages', () => {
       const id = 8;
       const includes = 'rules-language,rules-country';
+      const expectedUrl = `${toolGroupsUrl}/${id}?include=${includes}`;
+
       service.getToolGroup(id, includes);
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${id}?include=${includes}`,
-        headers,
-      );
+
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 
   describe('Get all Tool Groups', () => {
-    beforeEach(() => {
-      spyOn(mockHttp, 'get').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return [toolGroup, toolGroup];
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     it('should fetch all toolGroups', () => {
       service.getToolGroups();
-      expect(mockHttp.get).toHaveBeenCalledWith(`${toolGroupsUrl}`, headers);
+
+      const req = httpMock.expectOne(`${toolGroupsUrl}`);
+      expect(req.request.method).toBe('GET');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 
   describe('Create/Edit/Delete Tool Groups', () => {
-    beforeEach(() => {
-      spyOn(mockHttp, 'post').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return toolGroup;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'put').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return toolGroup;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'delete').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return {
-                status: 'success',
-              };
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     it('should create a toolGroup', () => {
       const newToolGroup = new ToolGroup();
       newToolGroup.name = 'New Tool Group';
       newToolGroup.suggestedWeight = '12';
-      service.createOrUpdateToolGroup(newToolGroup, false);
 
-      expect(mockHttp.post).toHaveBeenCalledWith(
-        toolGroupsUrl,
-        {
-          data: {
-            type: 'tool-group',
-            attributes: {
-              name: newToolGroup.name,
-              suggestions_weight: newToolGroup.suggestedWeight,
-            },
+      const expectedBody = {
+        data: {
+          type: 'tool-group',
+          attributes: {
+            name: newToolGroup.name,
+            suggestions_weight: newToolGroup.suggestedWeight,
           },
         },
-        headers,
-      );
+      };
+
+      service.createOrUpdateToolGroup(newToolGroup, false);
+
+      const req = httpMock.expectOne(toolGroupsUrl);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should edit a toolGroup', () => {
@@ -166,101 +103,62 @@ describe('ToolGroupService', () => {
       newToolGroup.id = 8;
       newToolGroup.name = 'New Tool Group';
       newToolGroup.suggestedWeight = '12';
-      service.createOrUpdateToolGroup(newToolGroup, true);
 
-      expect(mockHttp.put).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${newToolGroup.id}`,
-        {
-          data: {
-            type: 'tool-group',
-            attributes: {
-              name: newToolGroup.name,
-              suggestions_weight: newToolGroup.suggestedWeight,
-            },
+      const expectedBody = {
+        data: {
+          type: 'tool-group',
+          attributes: {
+            name: newToolGroup.name,
+            suggestions_weight: newToolGroup.suggestedWeight,
           },
         },
-        headers,
-      );
+      };
+
+      service.createOrUpdateToolGroup(newToolGroup, true);
+
+      const req = httpMock.expectOne(`${toolGroupsUrl}/${newToolGroup.id}`);
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should delete a toolGroup', () => {
       const id = 8;
       service.deleteToolGroup(id);
 
-      expect(mockHttp.delete).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${id}`,
-        headers,
-      );
+      const req = httpMock.expectOne(`${toolGroupsUrl}/${id}`);
+      expect(req.request.method).toBe('DELETE');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 
   describe('Create/Edit/Delete Rules', () => {
-    const rule = new ToolGroupRule();
-
-    beforeEach(() => {
-      spyOn(mockHttp, 'post').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return rule;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'put').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return rule;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'delete').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return {
-                status: 'success',
-              };
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     const toolGroupId = 8;
     const ruleId = 1;
 
     it('should create a Country Rule', () => {
       const negativeRule = false;
       const data = ['string', 'string2'];
-      const type = 'country';
+      const type = RuleTypeEnum.COUNTRY;
 
-      service.createOrUpdateRule(
-        toolGroupId,
-        null,
-        negativeRule,
-        data,
-        type as RuleTypeEnum.COUNTRY,
-      );
-
-      expect(mockHttp.post).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${toolGroupId}/rules-country`,
-        {
-          data: {
-            type: 'tool-group-rules-country',
-            attributes: {
-              countries: data,
-              'negative-rule': negativeRule,
-            },
+      const expectedBody = {
+        data: {
+          type: 'tool-group-rules-country',
+          attributes: {
+            countries: data,
+            'negative-rule': negativeRule,
           },
         },
-        headers,
+      };
+
+      service.createOrUpdateRule(toolGroupId, null, negativeRule, data, type);
+
+      const req = httpMock.expectOne(
+        `${toolGroupsUrl}/${toolGroupId}/rules-country`,
       );
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should create a Praxis Rule', () => {
@@ -271,6 +169,16 @@ describe('ToolGroupService', () => {
       };
       const type = 'praxis';
 
+      const expectedBody = {
+        data: {
+          type: 'tool-group-rules-praxis',
+          attributes: {
+            ...data,
+            'negative-rule': negativeRule,
+          },
+        },
+      };
+
       service.createOrUpdateRule(
         toolGroupId,
         null,
@@ -279,25 +187,28 @@ describe('ToolGroupService', () => {
         type as RuleTypeEnum.PRAXIS,
       );
 
-      expect(mockHttp.post).toHaveBeenCalledWith(
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/rules-praxis`,
-        {
-          data: {
-            type: 'tool-group-rules-praxis',
-            attributes: {
-              ...data,
-              'negative-rule': negativeRule,
-            },
-          },
-        },
-        headers,
       );
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should edit a Language Rule', () => {
       const negativeRule = true;
       const data = ['string', 'string2'];
       const type = 'language';
+
+      const expectedBody = {
+        data: {
+          type: 'tool-group-rules-language',
+          attributes: {
+            languages: data,
+            'negative-rule': negativeRule,
+          },
+        },
+      };
 
       service.createOrUpdateRule(
         toolGroupId,
@@ -307,19 +218,12 @@ describe('ToolGroupService', () => {
         type as RuleTypeEnum.LANGUAGE,
       );
 
-      expect(mockHttp.put).toHaveBeenCalledWith(
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/rules-language/${ruleId}`,
-        {
-          data: {
-            type: 'tool-group-rules-language',
-            attributes: {
-              languages: data,
-              'negative-rule': negativeRule,
-            },
-          },
-        },
-        headers,
       );
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should delete a country rule', () => {
@@ -328,72 +232,40 @@ describe('ToolGroupService', () => {
         ruleId,
         'country' as RuleTypeEnum.COUNTRY,
       );
-      expect(mockHttp.delete).toHaveBeenCalledWith(
+
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/rules-country/${ruleId}`,
-        headers,
       );
+      expect(req.request.method).toBe('DELETE');
+      requestHasAuthenticatedHeaders(req);
     });
+
     it('should delete a praxis rule', () => {
       service.deleteRule(toolGroupId, ruleId, 'praxis' as RuleTypeEnum.PRAXIS);
-      expect(mockHttp.delete).toHaveBeenCalledWith(
+
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/rules-praxis/${ruleId}`,
-        headers,
       );
+      expect(req.request.method).toBe('DELETE');
+      requestHasAuthenticatedHeaders(req);
     });
+
     it('should delete a language rule', () => {
       service.deleteRule(
         toolGroupId,
         ruleId,
         'language' as RuleTypeEnum.LANGUAGE,
       );
-      expect(mockHttp.delete).toHaveBeenCalledWith(
+
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/rules-language/${ruleId}`,
-        headers,
       );
+      expect(req.request.method).toBe('DELETE');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 
   describe('Create/Edit/Delete Tools', () => {
-    const tool = {
-      id: '1',
-      suggestionsWeight: 2.5,
-    };
-
-    beforeEach(() => {
-      spyOn(mockHttp, 'post').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return tool;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'put').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return tool;
-            },
-          });
-          observer.complete();
-        }),
-      );
-      spyOn(mockHttp, 'delete').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return {
-                status: 'success',
-              };
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     const toolGroupId = 8;
     const id = '1';
     const toolId = '1';
@@ -401,6 +273,23 @@ describe('ToolGroupService', () => {
     it('should create a Tool', () => {
       const suggestionsWeight = '2.0';
       const isUpdate = false;
+
+      const expectedBody = {
+        data: {
+          type: 'tool-group-tool',
+          attributes: {
+            'suggestions-weight': suggestionsWeight,
+          },
+          relationships: {
+            tool: {
+              data: {
+                type: 'resource',
+                id: toolId,
+              },
+            },
+          },
+        },
+      };
 
       service.addOrUpdateTool(
         toolGroupId,
@@ -410,31 +299,32 @@ describe('ToolGroupService', () => {
         isUpdate,
       );
 
-      expect(mockHttp.post).toHaveBeenCalledWith(
-        `${toolGroupsUrl}/${toolGroupId}/tools`,
-        {
-          data: {
-            type: 'tool-group-tool',
-            attributes: {
-              'suggestions-weight': suggestionsWeight,
-            },
-            relationships: {
-              tool: {
-                data: {
-                  type: 'resource',
-                  id: toolId,
-                },
-              },
-            },
-          },
-        },
-        headers,
-      );
+      const req = httpMock.expectOne(`${toolGroupsUrl}/${toolGroupId}/tools`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should edit a Tool', () => {
       const suggestionsWeight = '2.0';
       const isUpdate = true;
+
+      const expectedBody = {
+        data: {
+          type: 'tool-group-tool',
+          attributes: {
+            'suggestions-weight': suggestionsWeight,
+          },
+          relationships: {
+            tool: {
+              data: {
+                type: 'resource',
+                id: toolId,
+              },
+            },
+          },
+        },
+      };
 
       service.addOrUpdateTool(
         toolGroupId,
@@ -444,51 +334,26 @@ describe('ToolGroupService', () => {
         isUpdate,
       );
 
-      expect(mockHttp.put).toHaveBeenCalledWith(
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/tools/${id}`,
-        {
-          data: {
-            type: 'tool-group-tool',
-            attributes: {
-              'suggestions-weight': suggestionsWeight,
-            },
-            relationships: {
-              tool: {
-                data: {
-                  type: 'resource',
-                  id: toolId,
-                },
-              },
-            },
-          },
-        },
-        headers,
       );
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual(expectedBody);
+      requestHasAuthenticatedHeaders(req);
     });
 
     it('should delete a Tool', () => {
       service.deleteTool(toolGroupId, toolId);
-      expect(mockHttp.delete).toHaveBeenCalledWith(
+
+      const req = httpMock.expectOne(
         `${toolGroupsUrl}/${toolGroupId}/tools/${id}`,
-        headers,
       );
+      expect(req.request.method).toBe('DELETE');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 
   describe('Suggested Tools', () => {
-    beforeEach(() => {
-      spyOn(mockHttp, 'get').and.returnValue(
-        Observable.create((observer) => {
-          observer.next({
-            json() {
-              return [toolGroup, toolGroup];
-            },
-          });
-          observer.complete();
-        }),
-      );
-    });
-
     it('should fetch all toolGroups', () => {
       const languageRule = new ToolGroupRule();
       languageRule.languages = ['UK', 'US'];
@@ -498,12 +363,13 @@ describe('ToolGroupService', () => {
       praxisRule.openness = ['1'];
       praxisRule.confidence = ['2'];
 
+      const expectedUrl = `${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`;
+
       service.getToolGroupSuggestions(countryRule, languageRule, praxisRule);
 
-      expect(mockHttp.get).toHaveBeenCalledWith(
-        `${environment.base_url}resources/suggestions?filter[country]=en&filter[language][]=UK&filter[language][]=US&filter[confidence]=2&filter[openness]=1`,
-        headers,
-      );
+      const req = httpMock.expectOne(expectedUrl);
+      expect(req.request.method).toBe('GET');
+      requestHasAuthenticatedHeaders(req);
     });
   });
 });
