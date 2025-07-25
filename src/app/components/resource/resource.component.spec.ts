@@ -1,17 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LanguageService } from '../../service/language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { TranslationComponent } from '../translation/translation.component';
+import { By } from '@angular/platform-browser';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
 import { Translation } from '../../models/translation';
-import { Language } from '../../models/language';
-import anything = jasmine.anything;
-import { By } from '@angular/platform-browser';
 import { DraftService } from '../../service/draft.service';
-import { ResourceComponent } from './resource.component';
+import { LanguageService } from '../../service/language.service';
 import { ResourcesComponent } from '../resources/resources.component';
 import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
+import { TranslationComponent } from '../translation/translation.component';
+import { ResourceComponent } from './resource.component';
+import anything = jasmine.anything;
 
 describe('ResourceComponent', () => {
   let comp: ResourceComponent;
@@ -35,26 +36,28 @@ describe('ResourceComponent', () => {
 
   const resource: Resource = new Resource();
 
-  beforeEach(async(() => {
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-      Promise.resolve(languageStub),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+        Promise.resolve(languageStub),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        ResourcesComponent,
-        ResourceComponent,
-        TranslationComponent,
-        TranslationVersionBadgeComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-        { provide: DraftService },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          ResourcesComponent,
+          ResourceComponent,
+          TranslationComponent,
+          TranslationVersionBadgeComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+          { provide: DraftService },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceComponent);

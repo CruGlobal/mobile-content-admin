@@ -1,62 +1,73 @@
-import 'rxjs/add/operator/toPromise';
-import { Http, RequestOptionsArgs } from '@angular/http';
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs/Observable';
-import { WindowRefService } from '../../models/window-ref-service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { UUID } from 'angular2-uuid';
+import { environment } from '../../../environments/environment';
+import { WindowRefService } from '../../models/window-ref-service';
+import { AuthService } from './auth.service';
 
-let token: string;
-
+const token = UUID.UUID();
 const response = {
-  json() {
-    return {
-      data: {
-        attributes: {
-          token: token,
-        },
-      },
-    };
+  data: {
+    attributes: {
+      token,
+    },
   },
 };
 
-class MockHttp extends Http {
-  post() {
-    return Observable.create((observer) => {
-      observer.next(response);
-      observer.complete();
-    });
-  }
-}
-
 describe('AuthService', () => {
-  const mockHttp = new MockHttp(null, null);
-  const windowRef = new WindowRefService();
-
-  const service = new AuthService(mockHttp, windowRef);
+  let service: AuthService;
+  let httpMock: HttpTestingController;
+  let windowRef: WindowRefService;
 
   beforeEach(() => {
-    token = UUID.UUID();
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService, WindowRefService],
+    });
+
+    service = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
+    windowRef = TestBed.inject(WindowRefService);
   });
 
-  it('sets auth header', (done) => {
+  afterEach(() => {
+    // Verify that no unmatched requests are outstanding
+    httpMock.verify();
+    // Clean up session storage
+    windowRef.nativeWindow.sessionStorage.clear();
+  });
+
+  it('sets auth header', () => {
     windowRef.nativeWindow.sessionStorage.setItem('Authorization', token);
 
-    const result: RequestOptionsArgs = service.getAuthorizationAndOptions();
+    const result = service.getAuthorizationAndOptions();
 
-    setTimeout(() => {
-      expect(result.headers.get('Authorization')).toBe(token);
-      done();
-    });
+    expect(result.headers.get('Authorization')).toBe(token);
+    expect(result.headers.get('Content-Type')).toBe('application/vnd.api+json');
   });
 
-  it('saves auth code after successful authentication', (done) => {
-    service.createAuthToken('code');
+  it('saves auth code after successful authentication', async () => {
+    const accessCode = 'test-access-code';
+    const expectedUrl = environment.base_url + 'auth';
 
-    setTimeout(() => {
-      expect(
-        windowRef.nativeWindow.sessionStorage.getItem('Authorization'),
-      ).toBe(token);
-      done();
-    });
+    const promise = service.createAuthToken(accessCode);
+
+    const req = httpMock.expectOne(expectedUrl);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toContain(accessCode);
+    expect(req.request.headers.get('Content-Type')).toBe(
+      'application/vnd.api+json',
+    );
+
+    req.flush(response);
+
+    const result = await promise;
+    expect(result.token).toBe(token);
+    expect(windowRef.nativeWindow.sessionStorage.getItem('Authorization')).toBe(
+      token,
+    );
   });
 });

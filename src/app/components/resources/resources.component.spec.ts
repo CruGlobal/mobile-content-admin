@@ -1,17 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LanguageService } from '../../service/language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ResourcesComponent } from './resources.component';
-import { ResourceService } from '../../service/resource/resource.service';
-import { TranslationComponent } from '../translation/translation.component';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
 import { DraftService } from '../../service/draft.service';
-import { ResourceComponent } from '../resource/resource.component';
-import { Language } from '../../models/language';
-import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
 import { ResourceTypeService } from '../../service/resource-type.service';
 import { SystemService } from '../../service/system.service';
+import { ResourceComponent } from '../resource/resource.component';
+import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
+import { TranslationComponent } from '../translation/translation.component';
+import { ResourcesComponent } from './resources.component';
 
 describe('ResourcesComponent', () => {
   let comp: ResourcesComponent;
@@ -94,32 +95,34 @@ describe('ResourcesComponent', () => {
     },
   ];
 
-  beforeEach(async(() => {
-    spyOn(resourceServiceStub, 'getResources').and.returnValue(
-      Promise.resolve([resource]),
-    );
-    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-      Promise.resolve(languageStub),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(resourceServiceStub, 'getResources').and.returnValue(
+        Promise.resolve([resource]),
+      );
+      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+        Promise.resolve(languageStub),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        ResourcesComponent,
-        ResourceComponent,
-        TranslationComponent,
-        TranslationVersionBadgeComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: ResourceService, useValue: resourceServiceStub },
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-        { provide: DraftService },
-        { provide: ResourceTypeService },
-        { provide: SystemService },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          ResourcesComponent,
+          ResourceComponent,
+          TranslationComponent,
+          TranslationVersionBadgeComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: ResourceService, useValue: resourceServiceStub },
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+          { provide: DraftService },
+          { provide: ResourceTypeService },
+          { provide: SystemService },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   let localStore;
 

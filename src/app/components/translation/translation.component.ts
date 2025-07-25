@@ -8,30 +8,30 @@ import {
   EventEmitter,
   OnDestroy,
 } from '@angular/core';
-import { Translation } from '../../models/translation';
-import { DraftService } from '../../service/draft.service';
-import { CustomPage } from '../../models/custom-page';
-import { CustomTip } from '../../models/custom-tip';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { AbstractPage } from '../../models/abstract-page';
 import { AbstractTip } from '../../models/abstract-tip';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomManifest } from '../../models/custom-manifest';
+import { CustomPage } from '../../models/custom-page';
+import { CustomTip } from '../../models/custom-tip';
+import { Language } from '../../models/language';
+import { MessageType } from '../../models/message';
+import { Page } from '../../models/page';
+import { Resource } from '../../models/resource';
+import { Tip } from '../../models/tip';
+import { Translation } from '../../models/translation';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { CustomPageService } from '../../service/custom-page.service';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { DraftService } from '../../service/draft.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { CustomManifestComponent } from '../custom-manifest/custom-manifest.component';
 import { CustomPageComponent } from '../custom-page/custom-page.component';
 import { CustomTipComponent } from '../custom-tip/custom-tip.component';
 import { UpdateResourceLanguageComponent } from '../edit-resource-language/update-resource-language/update-resource-language.component';
-import { Page } from '../../models/page';
-import { Tip } from '../../models/tip';
-import { Language } from '../../models/language';
-import { CustomPageService } from '../../service/custom-page.service';
-import { CustomTipService } from '../../service/custom-tip.service';
-import { CustomManifest } from '../../models/custom-manifest';
-import { CustomManifestService } from '../../service/custom-manifest.service';
-import { CustomManifestComponent } from '../custom-manifest/custom-manifest.component';
-import { Resource } from '../../models/resource';
-import { Observable } from 'rxjs';
 import { getLatestTranslation } from './utilities';
-import { environment } from '../../../environments/environment';
-import { MessageType } from '../../models/message';
-import { ResourceService } from '../../service/resource/resource.service';
 
 @Component({
   selector: 'admin-translation',

@@ -1,13 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CustomManifestComponent } from './custom-manifest.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { CustomManifestService } from '../../service/custom-manifest.service';
 import { CustomManifest } from '../../models/custom-manifest';
 import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
+import { CustomManifestService } from '../../service/custom-manifest.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { CustomManifestComponent } from './custom-manifest.component';
 
 describe('CustomManifestComponent', () => {
   let comp: CustomManifestComponent;
@@ -19,24 +20,29 @@ describe('CustomManifestComponent', () => {
     delete() {},
   } as unknown) as CustomManifestService;
 
-  beforeEach(async(() => {
-    spyOn(customManifestServiceStub, 'upsert').and.returnValue(
-      Promise.resolve<CustomManifest>(null),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(customManifestServiceStub, 'upsert').and.returnValue(
+        Promise.resolve<CustomManifest>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        CustomManifestComponent,
-        XmlEditorComponent,
-        AceEditorDirective,
-      ],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: CustomManifestService, useValue: customManifestServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          CustomManifestComponent,
+          XmlEditorComponent,
+          AceEditorDirective,
+        ],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          {
+            provide: CustomManifestService,
+            useValue: customManifestServiceStub,
+          },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomManifestComponent);

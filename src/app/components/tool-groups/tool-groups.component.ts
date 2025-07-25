@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { LanguageService } from '../../service/language.service';
 import { Language } from '../../models/language';
-import { ToolGroup } from '../../models/tool-group';
 import { Resource } from '../../models/resource';
-import { CreateToolGroupComponent } from '../edit-tool-group/create-tool-group/create-tool-group.component';
 import {
+  ToolGroup,
   ToolGroupRule,
   CountriesType,
   RuleType,
@@ -16,6 +12,10 @@ import {
   RuleTypeEnum,
   PraxisTypeEnum,
 } from '../../models/tool-group';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { CreateToolGroupComponent } from '../edit-tool-group/create-tool-group/create-tool-group.component';
 
 @Component({
   selector: 'admin-tool-groups',

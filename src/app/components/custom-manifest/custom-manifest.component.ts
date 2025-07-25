@@ -1,8 +1,8 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 import { CustomManifest } from '../../models/custom-manifest';
 import { CustomManifestService } from '../../service/custom-manifest.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 
 @Component({
   selector: 'admin-custom-page', // this doesn't look right?

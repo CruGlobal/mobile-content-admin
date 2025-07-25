@@ -1,13 +1,13 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ResourceService } from '../../service/resource/resource.service';
-import { Resource } from '../../models/resource';
-import { Attachment } from '../../models/attachment';
-import { FileUploader } from 'ng2-file-upload';
-import { WindowRefService } from '../../models/window-ref-service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ImageComponent } from '../image/image.component';
+import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';
+import { Attachment } from '../../models/attachment';
+import { Resource } from '../../models/resource';
+import { WindowRefService } from '../../models/window-ref-service';
 import { AttachmentService } from '../../service/attachment.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ImageComponent } from '../image/image.component';
 
 @Component({
   selector: 'admin-attachments',

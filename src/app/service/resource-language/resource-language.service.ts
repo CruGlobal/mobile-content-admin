@@ -1,17 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ResourceLanguage } from '../../models/resource-language';
-import { Http } from '@angular/http';
-
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
+import { ResourceLanguage } from '../../models/resource-language';
 import { AbstractService } from '../abstract.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ResourceLanguageService extends AbstractService {
   private readonly resourcesUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -23,7 +22,7 @@ export class ResourceLanguageService extends AbstractService {
       .get(url)
       .toPromise()
       .then(function (response) {
-        return new JsonApiDataStore().sync(response.json());
+        return new JsonApiDataStore().sync(response);
       })
       .catch(this.handleError);
   }

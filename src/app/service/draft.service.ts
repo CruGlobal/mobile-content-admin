@@ -1,20 +1,20 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Translation } from '../models/translation';
-import { AuthService } from './auth/auth.service';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { Page } from '../models/page';
-import { Tip } from '../models/tip';
 import { environment } from '../../environments/environment';
-import { AbstractService } from './abstract.service';
+import { Page } from '../models/page';
 import { Resource } from '../models/resource';
+import { Tip } from '../models/tip';
+import { Translation } from '../models/translation';
+import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class DraftService extends AbstractService {
   private readonly draftsUrl = environment.base_url + 'drafts';
   private readonly resourcesUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -28,26 +28,26 @@ export class DraftService extends AbstractService {
 
   getPage(page: Page, translation: Translation): Promise<string> {
     return this.http
-      .get(
-        `${this.draftsUrl}/${translation.id}/?page_id=${page.id}`,
-        this.authService.getAuthorizationAndOptions(),
-      )
+      .get(`${this.draftsUrl}/${translation.id}/?page_id=${page.id}`, {
+        ...this.authService.getAuthorizationAndOptions(),
+        responseType: 'text',
+      })
       .toPromise()
       .then((response) => {
-        return response.text();
+        return response;
       })
       .catch(this.handleError);
   }
 
   getTip(tip: Tip, translation: Translation): Promise<string> {
     return this.http
-      .get(
-        `${this.draftsUrl}/${translation.id}/?tip_id=${tip.id}`,
-        this.authService.getAuthorizationAndOptions(),
-      )
+      .get(`${this.draftsUrl}/${translation.id}/?tip_id=${tip.id}`, {
+        ...this.authService.getAuthorizationAndOptions(),
+        responseType: 'text',
+      })
       .toPromise()
       .then((response) => {
-        return response.text();
+        return response;
       })
       .catch(this.handleError);
   }
@@ -88,7 +88,7 @@ export class DraftService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 }

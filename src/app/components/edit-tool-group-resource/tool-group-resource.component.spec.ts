@@ -1,14 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NgArrayPipesModule } from 'ngx-pipes';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { Resource } from '../../models/resource';
+import { NgArrayPipesModule } from 'ngx-pipes';
 import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
-import { ToolGroupResourceComponent } from './tool-group-resource.component';
-import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { Resource } from '../../models/resource';
 import { Tools } from '../../models/tool-group';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
+import { ToolGroupToolReuseableComponent } from '../edit-tool-group-tool-reuseable/tool-group-tool-reuseable.component';
+import { ToolGroupResourceComponent } from './tool-group-resource.component';
 
 describe('ToolGroupResourceComponent', () => {
   let comp: ToolGroupResourceComponent;
@@ -60,7 +61,12 @@ describe('ToolGroupResourceComponent', () => {
           ToolGroupResourceComponent,
           ToolGroupToolReuseableComponent,
         ],
-        imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+        imports: [
+          NgbModule,
+          FormsModule,
+          NgArrayPipesModule,
+          HttpClientTestingModule,
+        ],
         providers: [
           { provide: ToolGroupService, useValue: toolGroupServiceStub },
           { provide: ResourceService, useValue: resourceServiceStub },
@@ -76,6 +82,11 @@ describe('ToolGroupResourceComponent', () => {
     });
 
     describe('ngOnInit', () => {
+      beforeEach(() => {
+        // Deep clone to reset toolGroup.tools to avoid test interference
+        comp.toolGroup = JSON.parse(JSON.stringify(toolGroupFullDetails));
+      });
+
       it('should assign tools', () => {
         comp.ngOnInit();
         expect(comp.initialTools).toEqual(toolGroupFullDetails.tools);
@@ -86,6 +97,7 @@ describe('ToolGroupResourceComponent', () => {
         comp.toolGroup.tools = [];
         comp.ngOnInit();
         expect(comp.initialTools).toEqual([]);
+        expect(comp.tools.length).toEqual(1);
         expect(comp.tools[0].tool).toEqual(undefined);
       });
 
@@ -229,7 +241,12 @@ describe('ToolGroupResourceComponent', () => {
           ToolGroupResourceComponent,
           ToolGroupToolReuseableComponent,
         ],
-        imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+        imports: [
+          NgbModule,
+          FormsModule,
+          NgArrayPipesModule,
+          HttpClientTestingModule,
+        ],
         providers: [
           { provide: ToolGroupService, useValue: toolGroupServiceStub },
           { provide: ResourceService, useValue: resourceServiceStub },

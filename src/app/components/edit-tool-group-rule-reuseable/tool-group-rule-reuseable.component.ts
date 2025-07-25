@@ -1,4 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { countries } from 'countries-list';
+import { Language } from '../../models/language';
 import {
   CountriesType,
   CountryRule,
@@ -8,10 +10,8 @@ import {
   Praxis,
   PraxisTypeEnum,
 } from '../../models/tool-group';
-import { countries } from 'countries-list';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { LanguageService } from '../../service/language.service';
-import { Language } from '../../models/language';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 
 type Item =
   | (Language & CountriesType & Praxis)

@@ -1,20 +1,21 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { LanguageService } from '../../service/language.service';
+import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
+import { Language } from '../../models/language';
 import { Resource } from '../../models/resource';
 import {
   CountriesType,
   PraxisTypeEnum,
   ToolGroup,
 } from '../../models/tool-group';
-import { Language } from '../../models/language';
-import { ToolGroupMocks } from '../../_tests/toolGroupMocks';
-import { ToolGroupsComponent } from './tool-groups.component';
-import { ToolGroupComponent } from '../tool-group/tool-group.component';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
+import { ToolGroupService } from '../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from '../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
+import { ToolGroupComponent } from '../tool-group/tool-group.component';
+import { ToolGroupsComponent } from './tool-groups.component';
 
 describe('ToolGroupsComponent', () => {
   let comp: ToolGroupsComponent;
@@ -36,31 +37,33 @@ describe('ToolGroupsComponent', () => {
   const resource: Resource = new Resource();
   const toolGroup: ToolGroup = new ToolGroup();
 
-  beforeEach(async(() => {
-    spyOn(resourceServiceStub, 'getResources').and.returnValue(
-      Promise.resolve([resource]),
-    );
-    spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
-      Promise.resolve([toolGroup]),
-    );
-    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
-      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
-    );
-    TestBed.configureTestingModule({
-      declarations: [
-        ToolGroupsComponent,
-        ToolGroupComponent,
-        ToolGroupRuleReuseableComponent,
-      ],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [
-        { provide: ResourceService, useValue: resourceServiceStub },
-        { provide: ToolGroupService, useValue: toolGroupServiceStub },
-        { provide: LanguageService, useValue: languageServiceStub },
-        { provide: NgbModal },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(resourceServiceStub, 'getResources').and.returnValue(
+        Promise.resolve([resource]),
+      );
+      spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
+        Promise.resolve([toolGroup]),
+      );
+      spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+        Promise.resolve<Language[]>(mocks.getLanguagesResponse),
+      );
+      TestBed.configureTestingModule({
+        declarations: [
+          ToolGroupsComponent,
+          ToolGroupComponent,
+          ToolGroupRuleReuseableComponent,
+        ],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: ResourceService, useValue: resourceServiceStub },
+          { provide: ToolGroupService, useValue: toolGroupServiceStub },
+          { provide: LanguageService, useValue: languageServiceStub },
+          { provide: NgbModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolGroupsComponent);

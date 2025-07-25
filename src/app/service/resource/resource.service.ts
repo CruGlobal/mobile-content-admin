@@ -1,17 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Resource } from '../../models/resource';
-import { Http } from '@angular/http';
-
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
+import { Resource } from '../../models/resource';
 import { AbstractService } from '../abstract.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ResourceService extends AbstractService {
   private readonly resourcesUrl = environment.base_url + 'resources';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -22,7 +21,7 @@ export class ResourceService extends AbstractService {
       )
       .toPromise()
       .then((response) => {
-        return new JsonApiDataStore().sync(response.json());
+        return new JsonApiDataStore().sync(response);
       })
       .catch(this.handleError);
   }
@@ -36,7 +35,7 @@ export class ResourceService extends AbstractService {
       )
       .toPromise()
       .then((response) => {
-        return new JsonApiDataStore().sync(response.json());
+        return new JsonApiDataStore().sync(response);
       })
       .catch(this.handleError);
   }
@@ -49,7 +48,7 @@ export class ResourceService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 

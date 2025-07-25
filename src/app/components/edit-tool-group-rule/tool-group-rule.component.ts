@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Language } from '../../models/language';
 import {
   CountriesType,
   RulesType,
@@ -8,7 +9,6 @@ import {
   PraxisTypeEnum,
 } from '../../models/tool-group';
 import { ToolGroupService } from '../../service/tool-group/tool-group.service';
-import { Language } from '../../models/language';
 
 @Component({
   selector: 'admin-tool-group-rule',

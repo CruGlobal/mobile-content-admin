@@ -1,7 +1,7 @@
-import { Resource } from './resource';
-import { Language } from './language';
 import { CustomPage } from './custom-page';
 import { CustomTip } from './custom-tip';
+import { Language } from './language';
+import { Resource } from './resource';
 
 export class ResourceLanguage {
   id: string;

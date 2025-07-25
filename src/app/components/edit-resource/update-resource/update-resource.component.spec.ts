@@ -1,15 +1,16 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UpdateResourceComponent } from './update-resource.component';
-import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResourceService } from '../../../service/resource/resource.service';
-import { SystemService } from '../../../service/system.service';
-import { ResourceTypeService } from '../../../service/resource-type.service';
 import { FormsModule } from '@angular/forms';
-import { AceEditorDirective } from 'ng2-ace-editor';
 import { By } from '@angular/platform-browser';
-import { Resource } from '../../../models/resource';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AceEditorDirective } from 'ng2-ace-editor';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { Resource } from '../../../models/resource';
+import { ResourceService } from '../../../service/resource/resource.service';
+import { ResourceTypeService } from '../../../service/resource-type.service';
+import { SystemService } from '../../../service/system.service';
+import { XmlEditorComponent } from '../../xml-editor/xml-editor.component';
+import { UpdateResourceComponent } from './update-resource.component';
 
 describe('UpdateResourceComponent', () => {
   let comp: UpdateResourceComponent;
@@ -31,7 +32,12 @@ describe('UpdateResourceComponent', () => {
         XmlEditorComponent,
         AceEditorDirective,
       ],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: SystemService },

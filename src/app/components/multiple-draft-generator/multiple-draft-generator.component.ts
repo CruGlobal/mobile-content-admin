@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Resource } from '../../models/resource';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DraftService } from '../../service/draft.service';
-import { ResourceService } from '../../service/resource/resource.service';
-import { LanguageService } from '../../service/language.service';
-import { Translation } from '../../models/translation';
 import { MessageType } from '../../models/message';
+import { Resource } from '../../models/resource';
+import { Translation } from '../../models/translation';
+import { DraftService } from '../../service/draft.service';
+import { LanguageService } from '../../service/language.service';
+import { ResourceService } from '../../service/resource/resource.service';
 
 enum LanguageTypeEnum {
   draft = 'draft',

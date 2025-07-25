@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { Language } from '../../../models/language';
 import {
   CountriesType,
@@ -11,6 +10,7 @@ import {
   Praxis,
   PraxisTypeEnum,
 } from '../../../models/tool-group';
+import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
 
 interface PromisePayload {

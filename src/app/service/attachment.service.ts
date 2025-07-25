@@ -1,15 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
-import { AuthService } from './auth/auth.service';
 import { environment } from '../../environments/environment';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class AttachmentService extends AbstractService {
   private readonly attachmentsUrl = environment.base_url + 'attachments';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     super();
   }
 

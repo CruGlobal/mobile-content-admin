@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/toPromise';
-import { AuthGuardService } from './auth-guard.service';
-import { DraftService } from '../draft.service';
 import { UserAuthSessionService } from '../auth/user-auth-session.service';
+import { DraftService } from '../draft.service';
+import { AuthGuardService } from './auth-guard.service';
 
 class MockDraftService extends DraftService {
   canGetDrafts() {

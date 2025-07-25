@@ -1,11 +1,11 @@
-import { Translation } from './translation';
-import { Page } from './page';
-import { Tip } from './tip';
-import { System } from './system';
-import { ResourceType } from './resource-type';
 import { Attachment } from './attachment';
-import { CustomManifest } from './custom-manifest';
 import { AttributeTranslation } from './attribute-translation';
+import { CustomManifest } from './custom-manifest';
+import { Page } from './page';
+import { ResourceType } from './resource-type';
+import { System } from './system';
+import { Tip } from './tip';
+import { Translation } from './translation';
 
 export class Resource {
   id: number;

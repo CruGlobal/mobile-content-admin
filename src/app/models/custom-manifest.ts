@@ -1,6 +1,6 @@
 import { AbstractPage } from './abstract-page';
-import { Resource } from './resource';
 import { Language } from './language';
+import { Resource } from './resource';
 
 export class CustomManifest extends AbstractPage {
   resource: Resource;

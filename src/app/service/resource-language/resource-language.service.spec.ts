@@ -1,54 +1,58 @@
-import 'rxjs/add/operator/toPromise';
-import { ResourceService } from '../resource/resource.service';
-import { Http, RequestOptionsArgs } from '@angular/http';
-import { AuthService } from '../auth/auth.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { Resource } from '../../models/resource';
-import { Observable } from 'rxjs/Observable';
-import anything = jasmine.anything;
-
-const headers: RequestOptionsArgs = {};
-
-class MockHttp extends Http {}
-
-class MockAuthService extends AuthService {
-  getAuthorizationAndOptions() {
-    return headers;
-  }
-}
+import { AuthService } from '../auth/auth.service';
+import {
+  MockAuthService,
+  requestHasAuthenticatedHeaders,
+} from '../auth/mockAuthService';
+import { ResourceService } from '../resource/resource.service';
 
 describe('ResourceService', () => {
-  const mockHttp = new MockHttp(null, null);
-  const mockAuthService = new MockAuthService(null, null);
-  const service = new ResourceService(mockHttp, mockAuthService);
-
-  const resource = new Resource();
+  let service: ResourceService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    spyOn(mockHttp, 'post').and.returnValue(
-      Observable.create((observer) => {
-        observer.next({
-          json() {
-            return new Resource();
-          },
-        });
-        observer.complete();
-      }),
-    );
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        ResourceService,
+        { provide: AuthService, useClass: MockAuthService },
+      ],
+    });
 
-    spyOn(mockHttp, 'put').and.returnValue(
-      Observable.create((observer) => observer.complete()),
-    );
+    service = TestBed.inject(ResourceService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
+
+  afterEach(() => {
+    httpMock.verify(); // Verify that no unmatched requests are outstanding
+  });
+
+  const resource = new Resource();
 
   it('creating uses authorization code', () => {
     service.create(resource);
 
-    expect(mockHttp.post).toHaveBeenCalledWith(anything(), anything(), headers);
+    const req = httpMock.expectOne((request) => {
+      return request.method === 'POST' && request.headers.has('Authorization');
+    });
+
+    expect(req.request.method).toBe('POST');
+    requestHasAuthenticatedHeaders(req);
   });
 
   it('updating uses authorization code', () => {
     service.update(resource);
 
-    expect(mockHttp.put).toHaveBeenCalledWith(anything(), anything(), headers);
+    const req = httpMock.expectOne((request) => {
+      return request.method === 'PUT' && request.headers.has('Authorization');
+    });
+
+    expect(req.request.method).toBe('PUT');
+    requestHasAuthenticatedHeaders(req);
   });
 });

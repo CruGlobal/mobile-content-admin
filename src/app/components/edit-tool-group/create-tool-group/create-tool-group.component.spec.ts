@@ -1,19 +1,20 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { NgArrayPipesModule } from 'ngx-pipes';
+import { By } from '@angular/platform-browser';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
-import { LanguageService } from '../../../service/language.service';
+import { NgArrayPipesModule } from 'ngx-pipes';
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
+import { Language } from '../../../models/language';
 import {
   RuleTypeEnum,
   ToolGroup,
   ToolGroupRule,
 } from '../../../models/tool-group';
-import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
+import { LanguageService } from '../../../service/language.service';
+import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { ToolGroupRuleReuseableComponent } from '../../edit-tool-group-rule-reuseable/tool-group-rule-reuseable.component';
 import { CreateToolGroupComponent } from './create-tool-group.component';
-import { Language } from '../../../models/language';
 
 describe('CreateToolGroupComponent', () => {
   let comp: CreateToolGroupComponent;
@@ -48,7 +49,12 @@ describe('CreateToolGroupComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [CreateToolGroupComponent, ToolGroupRuleReuseableComponent],
-      imports: [NgbModule.forRoot(), FormsModule, NgArrayPipesModule],
+      imports: [
+        NgbModule,
+        FormsModule,
+        NgArrayPipesModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ToolGroupService, useValue: toolGroupServiceStub },
         { provide: LanguageService, useValue: languageServiceStub },

@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CustomTip } from '../../models/custom-tip';
-import { CustomTipService } from '../../service/custom-tip.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
-import { DraftService } from '../../service/draft.service';
+import { CustomTip } from '../../models/custom-tip';
 import { Translation } from '../../models/translation';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { DraftService } from '../../service/draft.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 
 @Component({
   selector: 'admin-custom-tip',

@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
-import { Tip } from '../../models/tip';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { TipService } from '../../service/tip.service';
 import { AceEditorDirective } from 'ng2-ace-editor';
+import { Tip } from '../../models/tip';
+import { TipService } from '../../service/tip.service';
 
 @Component({
   selector: 'admin-create-tip',
@@ -38,7 +38,7 @@ export class CreateTipComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     // HACK: workaround this bug: https://github.com/ajaxorg/ace/issues/4042
-    //       ng2-ace-editor bundles an older version of ace that doesn't have this fix
-    this.editor.editor.renderer.freeze();
+    //       ng2-ace-editor uses brace@0.11.1 which bundles an older version of ace without the fix
+    this.editor?.editor?.renderer?.freeze();
   }
 }

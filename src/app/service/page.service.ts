@@ -1,16 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Page } from '../models/page';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from './auth/auth.service';
 import { environment } from '../../environments/environment';
+import { Page } from '../models/page';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class PageService extends AbstractService {
   private readonly pagesUrl = environment.base_url + 'pages';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -35,8 +35,8 @@ export class PageService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
-      .catch((response) => Promise.reject(response.json().errors));
+      .then((response) => new JsonApiDataStore().sync(response))
+      .catch(this.handleError);
   }
 
   update(pageId: number, structure: string): Promise<Page> {
@@ -55,7 +55,7 @@ export class PageService extends AbstractService {
     return this.http
       .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 }

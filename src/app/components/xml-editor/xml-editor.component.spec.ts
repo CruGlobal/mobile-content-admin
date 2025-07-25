@@ -1,10 +1,11 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { XmlEditorComponent } from './xml-editor.component';
-import { DebugElement } from '@angular/core';
-import { Resource } from '../../models/resource';
-import { Language } from '../../models/language';
 import { AceEditorDirective } from 'ng2-ace-editor';
+import { Language } from '../../models/language';
+import { Resource } from '../../models/resource';
+import { XmlEditorComponent } from './xml-editor.component';
 
 describe('XmlEditorComponent', () => {
   let comp: XmlEditorComponent;
@@ -14,7 +15,7 @@ describe('XmlEditorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()],
+      imports: [NgbModule, HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(XmlEditorComponent);

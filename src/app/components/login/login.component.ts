@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '../../service/auth/auth.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from '../../service/auth/auth.service';
 
 @Component({
   selector: 'admin-login',
