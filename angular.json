@@ -97,6 +97,12 @@
             "styles": ["src/styles.css"],
             "assets": ["src/assets", "src/favicon.ico"]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
         }
       }
     },
@@ -110,6 +116,12 @@
           "options": {
             "protractorConfig": "./protractor.conf.js",
             "devServerTarget": "mobile-content-admin:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["e2e/**/*.ts"]
           }
         }
       }
