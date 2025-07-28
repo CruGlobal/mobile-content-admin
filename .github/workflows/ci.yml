@@ -58,7 +58,7 @@ jobs:
         run: yarn test:codecov
 
       - name: ✅ Code coverage test
-        uses: codecov/codecov-action@v3.1.6
+        uses: codecov/codecov-action@v5.4.3
 
   build:
     name: 🏗️ Build app
