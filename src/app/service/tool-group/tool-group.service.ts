@@ -1,15 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from '../auth/auth.service';
-import { AbstractService } from '../abstract.service';
+import { environment } from '../../../environments/environment';
 import { Resource } from '../../models/resource';
 import {
   ToolGroup,
   RuleTypeEnum,
   ToolGroupRule,
 } from '../../models/tool-group';
-import { environment } from '../../../environments/environment';
+import { AbstractService } from '../abstract.service';
+import { AuthService } from '../auth/auth.service';
 
 interface PraxisData {
   confidence: string[];
@@ -17,7 +17,7 @@ interface PraxisData {
 }
 @Injectable()
 export class ToolGroupService extends AbstractService {
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
   private readonly toolGroupsUrl = environment.base_url + 'tool-groups';
@@ -62,7 +62,7 @@ export class ToolGroupService extends AbstractService {
     return this.http
       .get(this.toolGroupsUrl, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -76,7 +76,7 @@ export class ToolGroupService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -102,7 +102,7 @@ export class ToolGroupService extends AbstractService {
           this.authService.getAuthorizationAndOptions(),
         )
         .toPromise()
-        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .then((response) => new JsonApiDataStore().sync(response))
         .catch(this.handleError);
     }
     return this.http
@@ -112,7 +112,7 @@ export class ToolGroupService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -185,13 +185,13 @@ export class ToolGroupService extends AbstractService {
       return this.http
         .put(url, payload, this.authService.getAuthorizationAndOptions())
         .toPromise()
-        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .then((response) => new JsonApiDataStore().sync(response))
         .catch(this.handleError);
     }
     return this.http
       .post(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -254,7 +254,7 @@ export class ToolGroupService extends AbstractService {
           this.authService.getAuthorizationAndOptions(),
         )
         .toPromise()
-        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .then((response) => new JsonApiDataStore().sync(response))
         .catch(this.handleError);
     } else {
       return this.http
@@ -264,7 +264,7 @@ export class ToolGroupService extends AbstractService {
           this.authService.getAuthorizationAndOptions(),
         )
         .toPromise()
-        .then((response) => new JsonApiDataStore().sync(response.json()))
+        .then((response) => new JsonApiDataStore().sync(response))
         .catch(this.handleError);
     }
   }
@@ -324,7 +324,7 @@ export class ToolGroupService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 }

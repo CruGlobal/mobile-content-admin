@@ -1,12 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { PageService } from '../../service/page.service';
 import { Page } from '../../models/page';
-import { PageComponent } from './page.component';
 import { Resource } from '../../models/resource';
+import { PageService } from '../../service/page.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { PageComponent } from './page.component';
 
 describe('PageComponent', () => {
   let comp: PageComponent;
@@ -17,20 +18,22 @@ describe('PageComponent', () => {
     update() {},
   } as unknown) as PageService;
 
-  beforeEach(async(() => {
-    spyOn(pageServiceStub, 'update').and.returnValue(
-      Promise.resolve<Page>(null),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(pageServiceStub, 'update').and.returnValue(
+        Promise.resolve<Page>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: PageService, useValue: pageServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: PageService, useValue: pageServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageComponent);

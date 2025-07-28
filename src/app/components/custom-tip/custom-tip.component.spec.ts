@@ -1,15 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CustomTipComponent } from './custom-tip.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { CustomTipService } from '../../service/custom-tip.service';
 import { CustomTip } from '../../models/custom-tip';
 import { Language } from '../../models/language';
-import { Tip } from '../../models/tip';
-import { DraftService } from '../../service/draft.service';
 import { Resource } from '../../models/resource';
+import { Tip } from '../../models/tip';
+import { CustomTipService } from '../../service/custom-tip.service';
+import { DraftService } from '../../service/draft.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { CustomTipComponent } from './custom-tip.component';
 
 describe('CustomTipComponent', () => {
   let comp: CustomTipComponent;
@@ -25,25 +26,27 @@ describe('CustomTipComponent', () => {
     },
   };
 
-  beforeEach(async(() => {
-    spyOn(customTipServiceStub, 'upsert').and.returnValue(
-      Promise.resolve<CustomTip>(null),
-    );
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(customTipServiceStub, 'upsert').and.returnValue(
+        Promise.resolve<CustomTip>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [
-        CustomTipComponent,
-        XmlEditorComponent,
-        AceEditorDirective,
-      ],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: CustomTipService, useValue: customTipServiceStub },
-        { provide: DraftService, useValue: draftServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [
+          CustomTipComponent,
+          XmlEditorComponent,
+          AceEditorDirective,
+        ],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: CustomTipService, useValue: customTipServiceStub },
+          { provide: DraftService, useValue: draftServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomTipComponent);

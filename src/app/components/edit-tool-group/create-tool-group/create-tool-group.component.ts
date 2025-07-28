@@ -1,6 +1,5 @@
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, Input, OnInit } from '@angular/core';
-import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Language } from '../../../models/language';
 import {
   CountriesType,
@@ -8,6 +7,7 @@ import {
   RuleTypeEnum,
   Praxis,
 } from '../../../models/tool-group';
+import { ToolGroupService } from '../../../service/tool-group/tool-group.service';
 import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.component';
 
 @Component({

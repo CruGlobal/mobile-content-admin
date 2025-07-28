@@ -1,32 +1,37 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { LanguagesComponent } from './languages.component';
-import { LanguageService } from '../../service/language.service';
-import { FormsModule } from '@angular/forms';
-import { Language } from '../../models/language';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NgbAlert, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Language } from '../../models/language';
+import { LanguageService } from '../../service/language.service';
+import { LanguagesComponent } from './languages.component';
 
 describe('LanguagesComponent', () => {
   let comp: LanguagesComponent;
   let fixture: ComponentFixture<LanguagesComponent>;
 
-  beforeEach(async(() => {
-    const languageServiceStub = {
-      deleteLanguage() {
-        return Promise.resolve();
-      },
-      getLanguages() {
-        return Promise.resolve([new Language()]);
-      },
-    };
+  beforeEach(
+    waitForAsync(() => {
+      const languageServiceStub = {
+        deleteLanguage() {
+          return Promise.resolve();
+        },
+        getLanguages() {
+          return Promise.resolve([new Language()]);
+        },
+      };
 
-    TestBed.configureTestingModule({
-      declarations: [LanguagesComponent],
-      imports: [NgbModule.forRoot(), FormsModule],
-      providers: [{ provide: LanguageService, useValue: languageServiceStub }],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [LanguagesComponent],
+        imports: [NgbModule, FormsModule, HttpClientTestingModule],
+        providers: [
+          { provide: LanguageService, useValue: languageServiceStub },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LanguagesComponent);

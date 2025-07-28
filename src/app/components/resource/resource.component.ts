@@ -7,25 +7,12 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { Resource } from '../../models/resource';
-import { Page } from '../../models/page';
 import {
   NgbModal,
   NgbModalRef,
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
-import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
-import { TranslateAttributesComponent } from '../translate-attributes/translate-attributes.component';
-import { MultipleDraftGeneratorComponent } from '../multiple-draft-generator/multiple-draft-generator.component';
-import { LanguageService } from '../../service/language.service';
-import { ResourcesComponent } from '../resources/resources.component';
-import { PageComponent } from '../page/page.component';
-import { CreatePageComponent } from '../create-page/create-page.component';
-import { Observable, Subject } from 'rxjs';
-import { Tip } from '../../models/tip';
-import { TipComponent } from '../tip/tip.component';
-import { CreateTipComponent } from '../create-tip/create-tip.component';
-import { merge } from 'rxjs';
+import { Observable, Subject, merge } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -33,7 +20,19 @@ import {
   map,
 } from 'rxjs/operators';
 import { Language } from '../../models/language';
+import { Page } from '../../models/page';
+import { Resource } from '../../models/resource';
+import { Tip } from '../../models/tip';
 import { Translation } from '../../models/translation';
+import { LanguageService } from '../../service/language.service';
+import { CreatePageComponent } from '../create-page/create-page.component';
+import { CreateTipComponent } from '../create-tip/create-tip.component';
+import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
+import { MultipleDraftGeneratorComponent } from '../multiple-draft-generator/multiple-draft-generator.component';
+import { PageComponent } from '../page/page.component';
+import { ResourcesComponent } from '../resources/resources.component';
+import { TipComponent } from '../tip/tip.component';
+import { TranslateAttributesComponent } from '../translate-attributes/translate-attributes.component';
 import { getLatestTranslation } from '../translation/utilities';
 
 interface LanguageSearchResult {

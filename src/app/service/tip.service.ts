@@ -1,16 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Tip } from '../models/tip';
 import { JsonApiDataStore } from 'jsonapi-datastore';
-import { AuthService } from './auth/auth.service';
 import { environment } from '../../environments/environment';
+import { Tip } from '../models/tip';
 import { AbstractService } from './abstract.service';
+import { AuthService } from './auth/auth.service';
 
 @Injectable()
 export class TipService extends AbstractService {
   private readonly tipsUrl = environment.base_url + 'tips';
 
-  constructor(private http: Http, private authService: AuthService) {
+  constructor(readonly http: HttpClient, readonly authService: AuthService) {
     super();
   }
 
@@ -35,7 +35,7 @@ export class TipService extends AbstractService {
         this.authService.getAuthorizationAndOptions(),
       )
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 
@@ -55,7 +55,7 @@ export class TipService extends AbstractService {
     return this.http
       .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
-      .then((response) => new JsonApiDataStore().sync(response.json()))
+      .then((response) => new JsonApiDataStore().sync(response))
       .catch(this.handleError);
   }
 }
