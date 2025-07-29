@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tip } from '../../models/tip';
 import { TipService } from '../../service/tip.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 
 @Component({

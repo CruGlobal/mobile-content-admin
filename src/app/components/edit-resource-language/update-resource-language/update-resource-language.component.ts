@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ResourceLanguage } from '../../../models/resource-language';
 import { ResourceLanguageService } from '../../../service/resource-language/resource-language.service';
 import { SystemService } from '../../../service/system.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractEditResourceLanguageComponent } from '../abstract-edit-resource-language.component';
 
 @Component({

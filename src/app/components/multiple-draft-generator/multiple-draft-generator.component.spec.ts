@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -5,24 +7,25 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import {
+  NgbButtonLabel,
   NgbActiveModal,
   NgbAlert,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { MultipleDraftGeneratorComponent } from './multiple-draft-generator.component';
-import { FormsModule } from '@angular/forms';
+import { Language } from '../../models/language';
+import { MessageType } from '../../models/message';
+import { Resource } from '../../models/resource';
+import { Translation } from '../../models/translation';
+import { WindowRefService } from '../../models/window-ref-service';
+import { AuthService } from '../../service/auth/auth.service';
 import { DraftService } from '../../service/draft.service';
 import { LanguageService } from '../../service/language.service';
 import { ResourceService } from '../../service/resource/resource.service';
-import { Resource } from '../../models/resource';
-import { Translation } from '../../models/translation';
-import { By } from '@angular/platform-browser';
-import { NgbButtonLabel } from '@ng-bootstrap/ng-bootstrap';
-import { Language } from '../../models/language';
-import { DebugElement } from '@angular/core';
 import { TranslationVersionBadgeComponent } from '../translation/translation-version-badge/translation-version-badge.component';
-import { MessageType } from '../../models/message';
+import { MultipleDraftGeneratorComponent } from './multiple-draft-generator.component';
 
 describe('MultipleDraftGeneratorComponent', () => {
   let comp: MultipleDraftGeneratorComponent;
@@ -85,12 +88,14 @@ describe('MultipleDraftGeneratorComponent', () => {
         MultipleDraftGeneratorComponent,
         TranslationVersionBadgeComponent,
       ],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
       providers: [
         { provide: DraftService, useValue: customDraftServiceStub },
         { provide: NgbActiveModal },
         { provide: ResourceService, useValue: customResourceServiceStub },
-        { provide: LanguageService },
+        WindowRefService,
+        AuthService,
+        LanguageService,
       ],
     }).compileComponents();
 
@@ -159,17 +164,15 @@ describe('MultipleDraftGeneratorComponent', () => {
       fixture.detectChanges();
       discardPeriodicTasks();
 
-      fixture.whenStable().then(() => {
-        expect(customDraftServiceStub.publishDraft).toHaveBeenCalledTimes(2);
-        expect(comp.errorMessage).toEqual([]);
-        expect(comp.isPublished).toHaveBeenCalledTimes(1);
+      expect(customDraftServiceStub.publishDraft).toHaveBeenCalledTimes(2);
+      expect(comp.errorMessage).toEqual([]);
+      expect(comp.isPublished).toHaveBeenCalledTimes(1);
 
-        tick(5500);
-        fixture.detectChanges();
-        discardPeriodicTasks();
+      tick(5500);
+      fixture.detectChanges();
+      discardPeriodicTasks();
 
-        expect(comp.isPublished).toHaveBeenCalledTimes(2);
-      });
+      expect(comp.isPublished).toHaveBeenCalledTimes(2);
     }));
 
     it('should return publishing errors and warn the user.', fakeAsync(() => {
@@ -192,12 +195,10 @@ describe('MultipleDraftGeneratorComponent', () => {
       fixture.detectChanges();
       discardPeriodicTasks();
 
-      fixture.whenStable().then(() => {
-        expect(comp.errorMessage).toEqual([
-          'Error publishing...',
-          'Error publishing...',
-        ]);
-      });
+      expect(comp.errorMessage).toEqual([
+        'Error publishing...',
+        'Error publishing...',
+      ]);
     }));
   });
 });

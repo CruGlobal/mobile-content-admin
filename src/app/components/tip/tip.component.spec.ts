@@ -1,12 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DebugElement } from '@angular/core';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
-import { TipService } from '../../service/tip.service';
-import { Tip } from '../../models/tip';
-import { TipComponent } from './tip.component';
 import { Resource } from '../../models/resource';
+import { Tip } from '../../models/tip';
+import { TipService } from '../../service/tip.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
+import { TipComponent } from './tip.component';
 
 describe('TipComponent', () => {
   let comp: TipComponent;
@@ -17,18 +18,22 @@ describe('TipComponent', () => {
     update() {},
   } as unknown) as TipService;
 
-  beforeEach(async(() => {
-    spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));
+  beforeEach(
+    waitForAsync(() => {
+      spyOn(tipServiceStub, 'update').and.returnValue(
+        Promise.resolve<Tip>(null),
+      );
 
-    TestBed.configureTestingModule({
-      declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
-      imports: [NgbModule.forRoot()],
-      providers: [
-        { provide: TipService, useValue: tipServiceStub },
-        { provide: NgbActiveModal },
-      ],
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
+        imports: [NgbModule, HttpClientTestingModule],
+        providers: [
+          { provide: TipService, useValue: tipServiceStub },
+          { provide: NgbActiveModal },
+        ],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TipComponent);

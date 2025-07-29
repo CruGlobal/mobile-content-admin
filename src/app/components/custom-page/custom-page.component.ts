@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { CustomPage } from '../../models/custom-page';
-import { CustomPageService } from '../../service/custom-page.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
-import { DraftService } from '../../service/draft.service';
+import { CustomPage } from '../../models/custom-page';
 import { Translation } from '../../models/translation';
+import { CustomPageService } from '../../service/custom-page.service';
+import { DraftService } from '../../service/draft.service';
+import { XmlEditorComponent } from '../xml-editor/xml-editor.component';
 
 @Component({
   selector: 'admin-custom-page',

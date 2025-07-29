@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Resource } from '../../../models/resource';
 import { ResourceType } from '../../../models/resource-type';
 import { System } from '../../../models/system';
 import { ResourceService } from '../../../service/resource/resource.service';
-import { SystemService } from '../../../service/system.service';
 import { ResourceTypeService } from '../../../service/resource-type.service';
+import { SystemService } from '../../../service/system.service';
 import { AbstractEditResourceComponent } from '../abstract-edit-resource.component';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'admin-create-resource',
