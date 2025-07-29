@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:stage": "ng build -c staging",
+    "build:prod": "ng build -c production",
     "test": "ng test",
     "test:codecov": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
     "lint": "ng lint",

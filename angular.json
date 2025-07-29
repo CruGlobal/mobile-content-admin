@@ -130,8 +130,7 @@
   "defaultProject": "mobile-content-admin",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
-      "style": "css"
+      "prefix": "app"
     },
     "@schematics/angular:directive": {
       "prefix": "app"
