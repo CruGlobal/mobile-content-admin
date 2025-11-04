@@ -40,7 +40,7 @@ export class UpdateResourceComponent
         )),
     );
 
-    this.resource.oneskyProjectId = this.resource['onesky-project-id'];
+    this.resource.crowdinProjectId = this.resource['crowdin-project-id'];
     this.resource.aboutOverviewVideoYoutube = this.resource[
       'attr-about-overview-video-youtube'
     ];
