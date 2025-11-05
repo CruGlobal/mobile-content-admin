@@ -13,7 +13,7 @@ export class Resource {
   abbreviation: string;
   system: System;
   resourceType: ResourceType;
-  oneskyProjectId: number;
+  crowdinProjectId: number;
   description: string;
   manifest: string;
   showTranslations: boolean;

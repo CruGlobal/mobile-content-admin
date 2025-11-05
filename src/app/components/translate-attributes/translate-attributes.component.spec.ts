@@ -62,7 +62,7 @@ describe('TranslateAttributesComponent', () => {
       {
         id: '123',
         key: 'test_key',
-        'onesky-phrase-id': 'test_onesky_phrase_id',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id',
         required: false,
       },
     ];
@@ -84,8 +84,8 @@ describe('TranslateAttributesComponent', () => {
 
   it('Create Remote Attribute', () => {
     comp.resource['translated-attributes'][0].key = 'test_key_for_testing';
-    comp.resource['translated-attributes'][0]['onesky-phrase-id'] =
-      'test_onesky_phrase_id';
+    comp.resource['translated-attributes'][0]['crowdin-phrase-id'] =
+      'test_crowdin_phrase_id';
 
     comp.mulitipleActionCreate({
       type: 'create',
@@ -131,31 +131,31 @@ describe('TranslateAttributesComponent', () => {
       {
         id: '111111',
         key: 'test_key_for_testing_one',
-        'onesky-phrase-id': 'test_onesky_phrase_id_one',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
         required: false,
       },
       {
         id: '222222',
         key: 'test_key_for_testing_two',
-        'onesky-phrase-id': 'test_onesky_phrase_id_two',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id_two',
         required: false,
       },
       {
         id: '333333',
         key: 'test_key_for_testing_three',
-        'onesky-phrase-id': 'test_onesky_phrase_id_three',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id_three',
         required: false,
       },
       {
         id: '444444',
         key: 'test_key_for_testing_four',
-        'onesky-phrase-id': 'test_onesky_phrase_id_four',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id_four',
         required: false,
       },
       {
         id: '555555',
         key: 'test_key_for_testing_five',
-        'onesky-phrase-id': 'test_onesky_phrase_id_five',
+        'crowdin-phrase-id': 'test_crowdin_phrase_id_five',
         required: false,
       },
     ];
@@ -235,19 +235,19 @@ describe('TranslateAttributesComponent', () => {
         {
           id: '111111',
           key: 'test_key_for_testing_one',
-          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
           required: false,
         },
         {
           id: '222222',
           key: 'test_key_for_testing_two',
-          'onesky-phrase-id': 'test_onesky_phrase_id_two',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_two',
           required: false,
         },
         {
           id: '444444',
           key: 'test_key_for_testing_four',
-          'onesky-phrase-id': 'test_onesky_phrase_id_four',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_four',
           required: false,
         },
       ];
@@ -256,19 +256,19 @@ describe('TranslateAttributesComponent', () => {
         {
           id: '111111',
           key: 'test_key_for_testing_One_OLD',
-          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
           required: false,
         },
         {
           id: '222222',
           key: 'test_key_for_testing_two',
-          'onesky-phrase-id': 'test_onesky_phrase_id_two_OLD',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_two_OLD',
           required: false,
         },
         {
           id: '333333',
           key: 'test_key_for_testing_three',
-          'onesky-phrase-id': 'test_key_for_testing_three',
+          'crowdin-phrase-id': 'test_key_for_testing_three',
           required: false,
         },
       ];
@@ -288,7 +288,7 @@ describe('TranslateAttributesComponent', () => {
         'test_key_for_testing_one',
       );
 
-      // Ensure test_key_for_testing_two is prepped for updating Onesky phase ID
+      // Ensure test_key_for_testing_two is prepped for updating crowdin phase ID
       expect(comp.multipleActionsPromises[2].type).toEqual('update');
       expect(comp.multipleActionsPromises[2].id).toEqual(
         'test_key_for_testing_two',
@@ -306,7 +306,7 @@ describe('TranslateAttributesComponent', () => {
         {
           id: '111111',
           key: '',
-          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
           required: false,
         },
       ];
@@ -320,17 +320,17 @@ describe('TranslateAttributesComponent', () => {
         'Please ensure all Keys have a value.',
       );
 
-      // Onesky key have value
+      // crowdin key have value
 
       // 2 or more keys aren't the same
     });
 
-    it('Ensure Errors if Onesky Phase ID is empty', async () => {
+    it('Ensure Errors if Crowdin Phase ID is empty', async () => {
       comp.resource['translated-attributes'] = [
         {
           id: '111111',
           key: 'test_key_for_testing_One',
-          'onesky-phrase-id': '',
+          'crowdin-phrase-id': '',
           required: false,
         },
       ];
@@ -342,7 +342,7 @@ describe('TranslateAttributesComponent', () => {
       // Ensure checkRemoteResourceForDifferences Errors
       expect(checkDifferences.successful).toEqual(false);
       expect(checkDifferences.message).toEqual(
-        'Please ensure all Onesky Phase IDs have a value.',
+        'Please ensure all Crowdin Phase IDs have a value.',
       );
     });
 
@@ -351,13 +351,13 @@ describe('TranslateAttributesComponent', () => {
         {
           id: '111111',
           key: 'test_key_for_testing_One',
-          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
           required: false,
         },
         {
           id: '222222',
           key: 'test_key_for_testing_One',
-          'onesky-phrase-id': 'test_onesky_phrase_id_one',
+          'crowdin-phrase-id': 'test_crowdin_phrase_id_one',
           required: false,
         },
       ];

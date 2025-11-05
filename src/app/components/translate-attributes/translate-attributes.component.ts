@@ -89,7 +89,9 @@ export class TranslateAttributesComponent implements OnInit {
           if (remoteVersion.key !== attr.key) {
             needsToBeUpdated = true;
           }
-          if (remoteVersion['onesky-phrase-id'] !== attr['onesky-phrase-id']) {
+          if (
+            remoteVersion['crowdin-phrase-id'] !== attr['crowdin-phrase-id']
+          ) {
             needsToBeUpdated = true;
           }
           if (remoteVersion.required !== attr.required) {
@@ -108,8 +110,10 @@ export class TranslateAttributesComponent implements OnInit {
           if (!attr.key) {
             throw new Error('Please ensure all Keys have a value.');
           }
-          if (!attr['onesky-phrase-id']) {
-            throw new Error('Please ensure all Onesky Phase IDs have a value.');
+          if (!attr['crowdin-phrase-id']) {
+            throw new Error(
+              'Please ensure all Crowdin Phase IDs have a value.',
+            );
           }
 
           this.multipleActionsPromises.push({
@@ -293,7 +297,7 @@ export class TranslateAttributesComponent implements OnInit {
     const attribute: AttributeTranslation = {
       id: generateId,
       key: '',
-      'onesky-phrase-id': '',
+      'crowdin-phrase-id': '',
       required: false,
     };
 

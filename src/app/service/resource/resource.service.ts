@@ -78,7 +78,7 @@ export class ResourceService extends AbstractService {
           default_variant_id:
             (resource['default-variant'] && resource['default-variant'].id) ||
             null,
-          onesky_project_id: resource.oneskyProjectId,
+          crowdin_project_id: resource.crowdinProjectId,
           description: resource.description,
           manifest: resource.manifest,
           'attr-banner': resource.banner || null,
