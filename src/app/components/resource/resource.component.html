@@ -58,17 +58,52 @@
               class="list-group-item d-flex justify-content-between align-items-center"
               *ngFor="let page of pages"
               cdkDrag
+              [cdkDragDisabled]="renamingPage === page"
             >
-              <span>
-                <i class="fa fa-bars mr-2 text-muted" cdkDragHandle></i>
-                {{ page.filename }}
-              </span>
-              <button
-                (click)="openPage(page)"
-                class="btn btn-outline-dark float-right"
-              >
-                <i class="fa fa-pencil"></i> Edit
-              </button>
+              <ng-container *ngIf="renamingPage !== page">
+                <span>
+                  <i
+                    class="fa fa-bars mr-2 text-muted"
+                    cdkDragHandle
+                    title="Drag to reorder"
+                  ></i>
+                  {{ page.filename }}
+                </span>
+                <span class="btn-group btn-group-sm">
+                  <button
+                    (click)="startRenamePage(page)"
+                    class="btn btn-outline-dark"
+                  >
+                    <i class="fa fa-i-cursor"></i> Rename
+                  </button>
+                  <button (click)="openPage(page)" class="btn btn-outline-dark">
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="renamingPage === page">
+                <input
+                  class="form-control form-control-sm mr-2"
+                  [(ngModel)]="renameValue"
+                  (keyup.enter)="saveRenamePage(page)"
+                  (keyup.escape)="cancelRenamePage()"
+                  aria-label="Page filename"
+                />
+                <span class="btn-group btn-group-sm">
+                  <button
+                    (click)="saveRenamePage(page)"
+                    class="btn btn-success"
+                  >
+                    <i class="fa fa-check"></i> Save
+                  </button>
+                  <button
+                    (click)="cancelRenamePage()"
+                    class="btn btn-secondary"
+                  >
+                    <i class="fa fa-times"></i> Cancel
+                  </button>
+                </span>
+              </ng-container>
             </li>
             <li class="list-group-item text-danger" *ngIf="pageErrorMessage">
               {{ pageErrorMessage }}

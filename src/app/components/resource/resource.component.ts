@@ -59,6 +59,8 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   errorMessage: string;
   pages: Page[] = [];
   pageErrorMessage: string = null;
+  renamingPage: Page = null;
+  renameValue = '';
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();
@@ -106,11 +108,38 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       )
       .then(() => {
         this.pages.forEach((page, index) => (page.position = index));
+        this.resource.pages = [...this.pages];
+        this.pageErrorMessage = null;
       })
       .catch((message) => {
         this.pages = previousOrder;
         this.pageErrorMessage = message;
       });
+  }
+
+  startRenamePage(page: Page): void {
+    this.renamingPage = page;
+    this.renameValue = page.filename;
+    this.pageErrorMessage = null;
+  }
+
+  cancelRenamePage(): void {
+    this.renamingPage = null;
+    this.pageErrorMessage = null;
+  }
+
+  saveRenamePage(page: Page): void {
+    const filename = this.renameValue.trim();
+    if (!filename) {
+      return;
+    }
+    this.pageService
+      .update(page.id, { filename })
+      .then(() => {
+        page.filename = filename;
+        this.renamingPage = null;
+      })
+      .catch((message) => (this.pageErrorMessage = message));
   }
 
   createPage(): void {

@@ -179,6 +179,7 @@ describe('ResourceComponent', () => {
         Promise.resolve(),
       );
 
+      comp.pageErrorMessage = 'stale error';
       comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
         Page[]
       >);
@@ -187,6 +188,8 @@ describe('ResourceComponent', () => {
         expect(pageServiceStub.reorder).toHaveBeenCalledWith(13, [2, 1]);
         expect(comp.pages.map((page) => page.id)).toEqual([2, 1]);
         expect(comp.pages.map((page) => page.position)).toEqual([0, 1]);
+        expect(comp.pageErrorMessage).toBeNull();
+        expect(comp.resource.pages.map((page) => page.id)).toEqual([2, 1]);
         done();
       });
     });
@@ -205,6 +208,80 @@ describe('ResourceComponent', () => {
         expect(comp.pageErrorMessage).toBe('the server said no');
         done();
       });
+    });
+  });
+
+  describe('page renaming', () => {
+    beforeEach(() => {
+      resource.id = 13;
+      resource['latest-drafts-translations'] = [];
+      resource['pages'] = [
+        buildPage(1, 'first.xml', 0),
+        buildPage(2, 'second.xml', 1),
+      ];
+      resource['tips'] = [];
+      comp.ngOnInit();
+    });
+
+    it('starts renaming with the current filename', () => {
+      comp.startRenamePage(comp.pages[0]);
+
+      expect(comp.renamingPage).toBe(comp.pages[0]);
+      expect(comp.renameValue).toBe('first.xml');
+    });
+
+    it('saves the new filename and closes the editor', (done) => {
+      (pageServiceStub.update as jasmine.Spy).and.returnValue(
+        Promise.resolve(null),
+      );
+
+      comp.startRenamePage(comp.pages[0]);
+      comp.renameValue = 'renamed.xml';
+      comp.saveRenamePage(comp.pages[0]);
+
+      setTimeout(() => {
+        expect(pageServiceStub.update).toHaveBeenCalledWith(1, {
+          filename: 'renamed.xml',
+        });
+        expect(comp.pages[0].filename).toBe('renamed.xml');
+        expect(comp.renamingPage).toBeNull();
+        done();
+      });
+    });
+
+    it('keeps the editor open and shows the error when renaming fails', (done) => {
+      (pageServiceStub.update as jasmine.Spy).and.returnValue(
+        Promise.reject('filename has already been taken'),
+      );
+
+      comp.startRenamePage(comp.pages[0]);
+      comp.renameValue = 'second.xml';
+      comp.saveRenamePage(comp.pages[0]);
+
+      setTimeout(() => {
+        expect(comp.pages[0].filename).toBe('first.xml');
+        expect(comp.renamingPage).toBe(comp.pages[0]);
+        expect(comp.pageErrorMessage).toBe('filename has already been taken');
+        done();
+      });
+    });
+
+    it('cancel closes the editor without saving', () => {
+      comp.startRenamePage(comp.pages[0]);
+
+      comp.cancelRenamePage();
+
+      expect(comp.renamingPage).toBeNull();
+      expect(pageServiceStub.update).not.toHaveBeenCalled();
+    });
+
+    it('does not save a blank filename', () => {
+      comp.startRenamePage(comp.pages[0]);
+      comp.renameValue = '   ';
+
+      comp.saveRenamePage(comp.pages[0]);
+
+      expect(pageServiceStub.update).not.toHaveBeenCalled();
     });
   });
 });
