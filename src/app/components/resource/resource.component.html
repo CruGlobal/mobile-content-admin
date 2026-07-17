@@ -49,12 +49,20 @@
               <i class="fa fa-file"></i> Add new page
             </button>
           </div>
-          <ul class="list-group list-group-flush">
+          <ul
+            class="list-group list-group-flush"
+            cdkDropList
+            (cdkDropListDropped)="onPageDrop($event)"
+          >
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let page of resource.pages"
+              *ngFor="let page of pages"
+              cdkDrag
             >
-              {{ page.filename }}
+              <span>
+                <i class="fa fa-bars mr-2 text-muted" cdkDragHandle></i>
+                {{ page.filename }}
+              </span>
               <button
                 (click)="openPage(page)"
                 class="btn btn-outline-dark float-right"
@@ -62,7 +70,10 @@
                 <i class="fa fa-pencil"></i> Edit
               </button>
             </li>
-            <li class="list-group-item" *ngIf="!(resource.pages.length > 0)">
+            <li class="list-group-item text-danger" *ngIf="pageErrorMessage">
+              {{ pageErrorMessage }}
+            </li>
+            <li class="list-group-item" *ngIf="!(pages.length > 0)">
               No pages added
             </li>
           </ul>
