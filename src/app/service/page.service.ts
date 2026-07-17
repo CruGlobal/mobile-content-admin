@@ -39,16 +39,17 @@ export class PageService extends AbstractService {
       .catch(this.handleError);
   }
 
-  update(pageId: number, structure: string): Promise<Page> {
+  update(
+    pageId: number,
+    attributes: { structure?: string; filename?: string },
+  ): Promise<Page> {
     const url = `${this.pagesUrl}/${pageId}`;
 
     const payload = {
       data: {
         id: pageId,
         type: 'page',
-        attributes: {
-          structure: structure,
-        },
+        attributes,
       },
     };
 
@@ -56,6 +57,23 @@ export class PageService extends AbstractService {
       .put(url, payload, this.authService.getAuthorizationAndOptions())
       .toPromise()
       .then((response) => new JsonApiDataStore().sync(response))
+      .catch(this.handleError);
+  }
+
+  reorder(resourceId: number, pageIds: number[]): Promise<void> {
+    const url = `${environment.base_url}resources/${resourceId}/pages/reorder`;
+
+    const payload = {
+      data: {
+        type: 'page',
+        attributes: { page_ids: pageIds },
+      },
+    };
+
+    return this.http
+      .post(url, payload, this.authService.getAuthorizationAndOptions())
+      .toPromise()
+      .then(() => undefined)
       .catch(this.handleError);
   }
 }

@@ -19,7 +19,7 @@ export class PageComponent {
 
   updatePage(): void {
     this.pageService
-      .update(this.page.id, this.page.structure)
+      .update(this.page.id, { structure: this.page.structure })
       .then(() => this.activeModal.close())
       .catch(this.handleError.bind(this));
   }
