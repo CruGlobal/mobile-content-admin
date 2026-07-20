@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
   Input,
@@ -25,6 +26,7 @@ import { Resource } from '../../models/resource';
 import { Tip } from '../../models/tip';
 import { Translation } from '../../models/translation';
 import { LanguageService } from '../../service/language.service';
+import { PageService } from '../../service/page.service';
 import { CreatePageComponent } from '../create-page/create-page.component';
 import { CreateTipComponent } from '../create-tip/create-tip.component';
 import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
@@ -55,6 +57,10 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   showDetails = false;
   selectedLanguage: LanguageSearchResult = undefined;
   errorMessage: string;
+  pages: Page[] = [];
+  pageErrorMessage: string = null;
+  renamingPage: Page = null;
+  renameValue = '';
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();
@@ -62,9 +68,11 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private languageService: LanguageService,
     private modalService: NgbModal,
+    private pageService: PageService,
   ) {}
 
   ngOnInit(): void {
+    this.sortPages();
     this.loadTranslations();
   }
 
@@ -74,6 +82,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       pChanges.resource.previousValue &&
       pChanges.resource.currentValue
     ) {
+      this.sortPages();
       this.loadTranslations();
     }
   }
@@ -84,6 +93,53 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   isMetaTool(): boolean {
     return Resource.isMetaTool(this.resource);
+  }
+
+  onPageDrop(event: CdkDragDrop<Page[]>): void {
+    if (event.previousIndex === event.currentIndex) {
+      return;
+    }
+    const previousOrder = [...this.pages];
+    moveItemInArray(this.pages, event.previousIndex, event.currentIndex);
+    this.pageService
+      .reorder(
+        this.resource.id,
+        this.pages.map((page) => page.id),
+      )
+      .then(() => {
+        this.pages.forEach((page, index) => (page.position = index));
+        this.resource.pages = [...this.pages];
+        this.pageErrorMessage = null;
+      })
+      .catch((message) => {
+        this.pages = previousOrder;
+        this.pageErrorMessage = message;
+      });
+  }
+
+  startRenamePage(page: Page): void {
+    this.renamingPage = page;
+    this.renameValue = page.filename;
+    this.pageErrorMessage = null;
+  }
+
+  cancelRenamePage(): void {
+    this.renamingPage = null;
+    this.pageErrorMessage = null;
+  }
+
+  saveRenamePage(page: Page): void {
+    const filename = this.renameValue.trim();
+    if (!filename) {
+      return;
+    }
+    this.pageService
+      .update(page.id, { filename })
+      .then(() => {
+        page.filename = filename;
+        this.renamingPage = null;
+      })
+      .catch((message) => (this.pageErrorMessage = message));
   }
 
   createPage(): void {
@@ -169,6 +225,12 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   private handleError(message): void {
     this.errorMessage = message;
+  }
+
+  private sortPages(): void {
+    this.pages = [...(this.resource.pages || [])].sort(
+      (a, b) => a.position - b.position,
+    );
   }
 
   languageSearch = (

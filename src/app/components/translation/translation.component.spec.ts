@@ -153,7 +153,7 @@ describe('TranslationComponent', () => {
     fixture = TestBed.createComponent(TranslationComponent);
     comp = fixture.componentInstance;
 
-    resourceComponent = new ResourceComponent(null, null);
+    resourceComponent = new ResourceComponent(null, null, null);
     comp.translationLoaded = resourceComponent.translationLoaded$;
     comp.errorMessage = '';
     comp.alertMessage = '';
