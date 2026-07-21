@@ -284,4 +284,54 @@ describe('ResourceComponent', () => {
       expect(pageServiceStub.update).not.toHaveBeenCalled();
     });
   });
+
+  describe('saving gate', () => {
+    beforeEach(() => {
+      resource.id = 13;
+      resource['latest-drafts-translations'] = [];
+      resource['pages'] = [
+        buildPage(1, 'first.xml', 0),
+        buildPage(2, 'second.xml', 1),
+      ];
+      resource['tips'] = [];
+      comp.ngOnInit();
+    });
+
+    it('ignores a second drop while a reorder is in flight', () => {
+      comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
+        Page[]
+      >);
+
+      expect(comp.saving).toBe(true);
+
+      comp.onPageDrop({ previousIndex: 1, currentIndex: 0 } as CdkDragDrop<
+        Page[]
+      >);
+
+      expect(pageServiceStub.reorder).toHaveBeenCalledTimes(1);
+    });
+
+    it('resets saving after success and after failure', (done) => {
+      comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
+        Page[]
+      >);
+
+      setTimeout(() => {
+        expect(comp.saving).toBe(false);
+
+        (pageServiceStub.reorder as jasmine.Spy).and.returnValue(
+          Promise.reject('the server said no'),
+        );
+        comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
+          Page[]
+        >);
+        expect(comp.saving).toBe(true);
+
+        setTimeout(() => {
+          expect(comp.saving).toBe(false);
+          done();
+        });
+      });
+    });
+  });
 });

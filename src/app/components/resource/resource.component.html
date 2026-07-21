@@ -49,9 +49,13 @@
               <i class="fa fa-file"></i> Add new page
             </button>
           </div>
+          <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+            Saving...
+          </ngb-alert>
           <ul
             class="list-group list-group-flush"
             cdkDropList
+            [cdkDropListDisabled]="saving"
             (cdkDropListDropped)="onPageDrop($event)"
           >
             <li
@@ -73,6 +77,7 @@
                   <button
                     (click)="startRenamePage(page)"
                     class="btn btn-outline-dark"
+                    [disabled]="saving"
                   >
                     <i class="fa fa-i-cursor"></i> Rename
                   </button>
@@ -93,12 +98,14 @@
                   <button
                     (click)="saveRenamePage(page)"
                     class="btn btn-success"
+                    [disabled]="saving"
                   >
                     <i class="fa fa-check"></i> Save
                   </button>
                   <button
                     (click)="cancelRenamePage()"
                     class="btn btn-secondary"
+                    [disabled]="saving"
                   >
                     <i class="fa fa-times"></i> Cancel
                   </button>
