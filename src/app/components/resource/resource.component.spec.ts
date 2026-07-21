@@ -162,6 +162,7 @@ describe('ResourceComponent', () => {
       resource['pages'] = [
         buildPage(2, 'second.xml', 1),
         buildPage(1, 'first.xml', 0),
+        buildPage(3, 'third.xml', 2),
       ];
       resource['tips'] = [];
       comp.ngOnInit();
@@ -171,6 +172,7 @@ describe('ResourceComponent', () => {
       expect(comp.pages.map((page) => page.filename)).toEqual([
         'first.xml',
         'second.xml',
+        'third.xml',
       ]);
     });
 
@@ -180,16 +182,16 @@ describe('ResourceComponent', () => {
       );
 
       comp.pageErrorMessage = 'stale error';
-      comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
+      comp.onPageDrop({ previousIndex: 0, currentIndex: 2 } as CdkDragDrop<
         Page[]
       >);
 
       setTimeout(() => {
-        expect(pageServiceStub.reorder).toHaveBeenCalledWith(13, [2, 1]);
-        expect(comp.pages.map((page) => page.id)).toEqual([2, 1]);
-        expect(comp.pages.map((page) => page.position)).toEqual([0, 1]);
+        expect(pageServiceStub.reorder).toHaveBeenCalledWith(13, [2, 3, 1]);
+        expect(comp.pages.map((page) => page.id)).toEqual([2, 3, 1]);
+        expect(comp.pages.map((page) => page.position)).toEqual([0, 1, 2]);
         expect(comp.pageErrorMessage).toBeNull();
-        expect(comp.resource.pages.map((page) => page.id)).toEqual([2, 1]);
+        expect(comp.resource.pages.map((page) => page.id)).toEqual([2, 3, 1]);
         done();
       });
     });
@@ -199,12 +201,13 @@ describe('ResourceComponent', () => {
         Promise.reject('the server said no'),
       );
 
-      comp.onPageDrop({ previousIndex: 0, currentIndex: 1 } as CdkDragDrop<
+      comp.onPageDrop({ previousIndex: 0, currentIndex: 2 } as CdkDragDrop<
         Page[]
       >);
 
       setTimeout(() => {
-        expect(comp.pages.map((page) => page.id)).toEqual([1, 2]);
+        expect(comp.pages.map((page) => page.id)).toEqual([1, 2, 3]);
+        expect(comp.resource.pages.map((page) => page.id)).toEqual([2, 1, 3]);
         expect(comp.pageErrorMessage).toBe('the server said no');
         done();
       });
