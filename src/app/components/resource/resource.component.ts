@@ -59,6 +59,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   errorMessage: string;
   pages: Page[] = [];
   pageErrorMessage: string = null;
+  saving = false;
   renamingPage: Page = null;
   renameValue = '';
 
@@ -96,11 +97,15 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onPageDrop(event: CdkDragDrop<Page[]>): void {
+    if (this.saving) {
+      return;
+    }
     if (event.previousIndex === event.currentIndex) {
       return;
     }
     const previousOrder = [...this.pages];
     moveItemInArray(this.pages, event.previousIndex, event.currentIndex);
+    this.saving = true;
     this.pageService
       .reorder(
         this.resource.id,
@@ -114,7 +119,8 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
       .catch((message) => {
         this.pages = previousOrder;
         this.pageErrorMessage = message;
-      });
+      })
+      .then(() => (this.saving = false));
   }
 
   startRenamePage(page: Page): void {
@@ -130,16 +136,19 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   saveRenamePage(page: Page): void {
     const filename = this.renameValue.trim();
-    if (!filename) {
+    if (!filename || filename === page.filename) {
+      this.cancelRenamePage();
       return;
     }
+    this.saving = true;
     this.pageService
       .update(page.id, { filename })
       .then(() => {
         page.filename = filename;
         this.renamingPage = null;
       })
-      .catch((message) => (this.pageErrorMessage = message));
+      .catch((message) => (this.pageErrorMessage = message))
+      .then(() => (this.saving = false));
   }
 
   createPage(): void {
