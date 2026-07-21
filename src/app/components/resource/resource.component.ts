@@ -136,7 +136,8 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
 
   saveRenamePage(page: Page): void {
     const filename = this.renameValue.trim();
-    if (!filename) {
+    if (!filename || filename === page.filename) {
+      this.cancelRenamePage();
       return;
     }
     this.saving = true;

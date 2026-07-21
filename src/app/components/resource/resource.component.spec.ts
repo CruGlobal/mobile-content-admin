@@ -283,6 +283,15 @@ describe('ResourceComponent', () => {
 
       expect(pageServiceStub.update).not.toHaveBeenCalled();
     });
+
+    it('does not save when the filename is unchanged', () => {
+      comp.startRenamePage(comp.pages[0]);
+
+      comp.saveRenamePage(comp.pages[0]);
+
+      expect(pageServiceStub.update).not.toHaveBeenCalled();
+      expect(comp.renamingPage).toBeNull();
+    });
   });
 
   describe('saving gate', () => {
