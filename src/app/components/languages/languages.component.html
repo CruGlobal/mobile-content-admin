@@ -92,7 +92,7 @@
         <input
           class="form-control form-control-sm"
           placeholder="Name"
-          [(ngModel)]="language.name"
+          [(ngModel)]="editedLanguage.name"
         />
       </div>
       <div class="col">
@@ -102,20 +102,23 @@
         <input
           class="form-control form-control-sm"
           placeholder="Crowdin code"
-          [(ngModel)]="language['crowdin-code']"
+          [(ngModel)]="editedLanguage['crowdin-code']"
         />
       </div>
       <div class="col">
-        <input type="checkbox" [(ngModel)]="language['force-language-name']" />
+        <input
+          type="checkbox"
+          [(ngModel)]="editedLanguage['force-language-name']"
+        />
       </div>
       <div class="col-2 text-right">
         <button
-          (click)="updateLanguage(language)"
+          (click)="updateLanguage(editedLanguage)"
           class="btn btn-success btn-sm"
         >
           Save
         </button>
-        <button (click)="cancelEdit()" class="btn btn-secondary btn-sm">
+        <button (click)="cancelEdit(language)" class="btn btn-secondary btn-sm">
           Cancel
         </button>
       </div>

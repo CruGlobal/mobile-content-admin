@@ -10,6 +10,7 @@ export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
   newLanguage: Language = new Language();
+  editedLanguage: Language;
   languages: Language[];
 
   loading = false;
@@ -53,11 +54,12 @@ export class LanguagesComponent implements OnInit {
 
   editLanguage(language: Language): void {
     this.languages.forEach((l) => (l.isEditing = false));
+    this.editedLanguage = { ...language };
     language.isEditing = true;
   }
 
-  cancelEdit(): void {
-    this.loadLanguages();
+  cancelEdit(language: Language): void {
+    language.isEditing = false;
   }
 
   updateLanguage(language: Language): void {
