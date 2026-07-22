@@ -51,6 +51,29 @@ export class LanguagesComponent implements OnInit {
       .then(() => (this.saving = false));
   }
 
+  editLanguage(language: Language): void {
+    this.languages.forEach((l) => (l.isEditing = false));
+    language.isEditing = true;
+  }
+
+  cancelEdit(): void {
+    this.loadLanguages();
+  }
+
+  updateLanguage(language: Language): void {
+    this.saving = true;
+    this.errorMessage = null;
+
+    this.languageService
+      .updateLanguage(language)
+      .then(() => {
+        this.showSuccess();
+        this.loadLanguages();
+      })
+      .catch(this.handleError.bind(this))
+      .then(() => (this.saving = false));
+  }
+
   deleteLanguage(language: Language): void {
     this.errorMessage = null;
     language.canConfirmDelete = false;

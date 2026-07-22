@@ -12,7 +12,22 @@
         placeholder="Code"
         [(ngModel)]="newLanguage.code"
       />
+      <input
+        class="form-control"
+        placeholder="Crowdin code"
+        [(ngModel)]="newLanguage['crowdin-code']"
+      />
       <div class="input-group-append">
+        <div class="input-group-text">
+          <input
+            type="checkbox"
+            id="new-language-force-language-name"
+            [(ngModel)]="newLanguage['force-language-name']"
+          />
+          <label class="mb-0 ml-1" for="new-language-force-language-name">
+            Force language name
+          </label>
+        </div>
         <button (click)="createLanguage()" class="btn btn-success">Save</button>
       </div>
     </div>
@@ -34,23 +49,74 @@
   <div class="row font-weight-bold">
     <div class="col">Language</div>
     <div class="col">Code</div>
+    <div class="col">Crowdin code</div>
+    <div class="col">Force language name</div>
     <div class="col-2 text-right">Actions</div>
   </div>
 
   <div *ngFor="let language of languages">
-    <div class="row">
+    <div class="row align-items-center" *ngIf="!language.isEditing">
       <div class="col">
         {{ language.name }}
       </div>
       <div class="col">
         {{ language.code }}
       </div>
+      <div class="col">
+        {{ language['crowdin-code'] }}
+      </div>
+      <div class="col">
+        <input
+          type="checkbox"
+          [checked]="language['force-language-name']"
+          disabled
+        />
+      </div>
       <div class="col-2 text-right">
+        <button
+          (click)="editLanguage(language)"
+          class="btn btn-secondary btn-sm"
+        >
+          Edit
+        </button>
         <button
           (click)="showConfirmButton(language)"
           class="btn btn-danger btn-sm"
         >
           Delete
+        </button>
+      </div>
+    </div>
+    <div class="row align-items-center" *ngIf="language.isEditing">
+      <div class="col">
+        <input
+          class="form-control form-control-sm"
+          placeholder="Name"
+          [(ngModel)]="language.name"
+        />
+      </div>
+      <div class="col">
+        {{ language.code }}
+      </div>
+      <div class="col">
+        <input
+          class="form-control form-control-sm"
+          placeholder="Crowdin code"
+          [(ngModel)]="language['crowdin-code']"
+        />
+      </div>
+      <div class="col">
+        <input type="checkbox" [(ngModel)]="language['force-language-name']" />
+      </div>
+      <div class="col-2 text-right">
+        <button
+          (click)="updateLanguage(language)"
+          class="btn btn-success btn-sm"
+        >
+          Save
+        </button>
+        <button (click)="cancelEdit()" class="btn btn-secondary btn-sm">
+          Cancel
         </button>
       </div>
     </div>
