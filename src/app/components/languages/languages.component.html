@@ -109,6 +109,7 @@
       <div class="col">
         <input
           type="checkbox"
+          aria-label="Force language name"
           [(ngModel)]="editedLanguage['force-language-name']"
         />
       </div>
@@ -116,10 +117,15 @@
         <button
           (click)="updateLanguage(editedLanguage)"
           class="btn btn-success btn-sm"
+          [disabled]="saving"
         >
           Save
         </button>
-        <button (click)="cancelEdit(language)" class="btn btn-secondary btn-sm">
+        <button
+          (click)="cancelEdit(language)"
+          class="btn btn-secondary btn-sm"
+          [disabled]="saving"
+        >
           Cancel
         </button>
       </div>
