@@ -59,6 +59,24 @@ describe('LanguagesComponent', () => {
     });
   });
 
+  it('should show error message when updating a language fails', (done) => {
+    const languageService = TestBed.inject(LanguageService);
+    spyOn(languageService, 'updateLanguage').and.returnValue(
+      Promise.reject('update failed'),
+    );
+    const language = new Language();
+    language.isEditing = true;
+
+    comp.updateLanguage(language);
+
+    setTimeout(() => {
+      expect(comp.errorMessage).toBe('update failed');
+      expect(comp.saving).toBe(false);
+      expect(language.isEditing).toBe(true);
+      done();
+    });
+  });
+
   it('should only allow editing one language at a time', () => {
     const languageOne = new Language();
     const languageTwo = new Language();
