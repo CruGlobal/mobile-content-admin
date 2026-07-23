@@ -30,7 +30,7 @@ export class AuthRefreshInterceptor implements HttpInterceptor {
           req.url.startsWith(environment.base_url) &&
           event instanceof HttpResponse
         ) {
-          const refreshed = event.headers.get('Authorization');
+          const refreshed = event.headers.get('X-Auth-Renewal');
           // Skip when there is no stored token: the user has logged out and an
           // in-flight response must not resurrect the cleared session.
           if (refreshed && this.authService.authToken) {

@@ -41,7 +41,7 @@ describe('AuthRefreshInterceptor', () => {
     windowRef.nativeWindow.localStorage.clear();
   });
 
-  it('stores a refreshed token from the Authorization response header of an active session', () => {
+  it('stores a refreshed token from the X-Auth-Renewal response header of an active session', () => {
     windowRef.nativeWindow.localStorage.setItem('Authorization', UUID.UUID());
     const refreshed = UUID.UUID();
 
@@ -49,14 +49,14 @@ describe('AuthRefreshInterceptor', () => {
 
     httpMock
       .expectOne(apiUrl)
-      .flush({}, { headers: { Authorization: refreshed } });
+      .flush({}, { headers: { 'X-Auth-Renewal': refreshed } });
 
     expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
       refreshed,
     );
   });
 
-  it('leaves the stored token untouched when no Authorization header is present', () => {
+  it('leaves the stored token untouched when no X-Auth-Renewal header is present', () => {
     const existing = UUID.UUID();
     windowRef.nativeWindow.localStorage.setItem('Authorization', existing);
 
@@ -76,14 +76,14 @@ describe('AuthRefreshInterceptor', () => {
 
     httpMock
       .expectOne(apiUrl)
-      .flush({}, { headers: { Authorization: refreshed } });
+      .flush({}, { headers: { 'X-Auth-Renewal': refreshed } });
 
     expect(
       windowRef.nativeWindow.localStorage.getItem('Authorization'),
     ).toBeNull();
   });
 
-  it('ignores Authorization headers from non-API (e.g. Okta) responses', () => {
+  it('ignores X-Auth-Renewal headers from non-API (e.g. Okta) responses', () => {
     const existing = UUID.UUID();
     windowRef.nativeWindow.localStorage.setItem('Authorization', existing);
     const foreign = UUID.UUID();
@@ -93,7 +93,7 @@ describe('AuthRefreshInterceptor', () => {
 
     httpMock
       .expectOne(oktaUrl)
-      .flush({}, { headers: { Authorization: foreign } });
+      .flush({}, { headers: { 'X-Auth-Renewal': foreign } });
 
     expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
       existing,
