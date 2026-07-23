@@ -8,19 +8,29 @@ import { AbstractService } from '../abstract.service';
 
 @Injectable()
 export class AuthService extends AbstractService {
+  private readonly authTokenKey = 'Authorization';
   private readonly authUrl = environment.base_url + 'auth';
 
   constructor(private http: HttpClient, private windowRef: WindowRefService) {
     super();
   }
 
+  get authToken(): string | null {
+    return this.windowRef.nativeWindow.localStorage.getItem(this.authTokenKey);
+  }
+
+  setAuthToken(token: string): void {
+    this.windowRef.nativeWindow.localStorage.setItem(this.authTokenKey, token);
+  }
+
+  clearAuthToken(): void {
+    this.windowRef.nativeWindow.localStorage.removeItem(this.authTokenKey);
+  }
+
   getAuthorizationAndOptions() {
-    const authToken = this.windowRef.nativeWindow.sessionStorage.getItem(
-      'Authorization',
-    );
     const headers = this.requestOptions.headers.set(
       'Authorization',
-      authToken || '',
+      this.authToken || '',
     );
     return { headers };
   }
@@ -35,10 +45,7 @@ export class AuthService extends AbstractService {
       .toPromise()
       .then((response) => {
         const token: AuthToken = new JsonApiDataStore().sync(response);
-        this.windowRef.nativeWindow.sessionStorage.setItem(
-          'Authorization',
-          token.token,
-        );
+        this.setAuthToken(token.token);
         return token;
       })
       .catch(this.handleError);

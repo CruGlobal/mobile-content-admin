@@ -116,8 +116,9 @@ export class UserAuthSessionService {
 
   clearSavedUserSessionData(): void {
     this._oauthUser.next({ sub: '' });
-    sessionStorage.clear();
-    localStorage.removeItem('Authorization');
+    this._authService.clearAuthToken();
+    // Clear auth tokens without redirecting to Okta's logout endpoint
+    this._oauthService.logOut(true);
     setTimeout(() => {
       this._sessionReady.next(false);
     }, 0);
