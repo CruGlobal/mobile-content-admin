@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -44,6 +44,7 @@ import { XmlEditorComponent } from './components/xml-editor/xml-editor.component
 import { WindowRefService } from './models/window-ref-service';
 import { AttachmentService } from './service/attachment.service';
 import { AttributeTranslationService } from './service/attribute-translation.service';
+import { AuthRefreshInterceptor } from './service/auth/auth-refresh.interceptor';
 import { AuthService } from './service/auth/auth.service';
 import { UserAuthSessionService } from './service/auth/user-auth-session.service';
 import { AuthGuardService } from './service/auth-guard/auth-guard.service';
@@ -127,6 +128,11 @@ import { ToolGroupService } from './service/tool-group/tool-group.service';
     UserAuthSessionService,
     AttributeTranslationService,
     ToolGroupService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthRefreshInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
