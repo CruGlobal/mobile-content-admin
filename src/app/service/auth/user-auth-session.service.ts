@@ -117,8 +117,7 @@ export class UserAuthSessionService {
   clearSavedUserSessionData(): void {
     this._oauthUser.next({ sub: '' });
     this._authService.clearAuthToken();
-    // Clear auth tokens without redirecting to Okta's logout endpoint
-    this._oauthService.logOut(true);
+    this._oauthService.logOut();
     setTimeout(() => {
       this._sessionReady.next(false);
     }, 0);

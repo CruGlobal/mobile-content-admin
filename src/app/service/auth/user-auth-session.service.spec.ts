@@ -38,7 +38,7 @@ describe('UserAuthSessionService', () => {
 
       service.clearSavedUserSessionData();
 
-      expect(oauthServiceStub.logOut).toHaveBeenCalledWith(true);
+      expect(oauthServiceStub.logOut).toHaveBeenCalledWith();
     });
   });
 });
