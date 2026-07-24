@@ -114,10 +114,20 @@ export class UserAuthSessionService {
     );
   }
 
+  // Clear the local session only.
   clearSavedUserSessionData(): void {
+    this.clearSession({ logOutOfOkta: false });
+  }
+
+  // Clear the local auth token and end the Okta SSO session.
+  logOutOfOkta(): void {
+    this.clearSession({ logOutOfOkta: true });
+  }
+
+  private clearSession({ logOutOfOkta = false } = {}): void {
     this._oauthUser.next({ sub: '' });
     this._authService.clearAuthToken();
-    this._oauthService.logOut();
+    this._oauthService.logOut(!logOutOfOkta);
     setTimeout(() => {
       this._sessionReady.next(false);
     }, 0);

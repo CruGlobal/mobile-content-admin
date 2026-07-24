@@ -29,7 +29,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.router.navigate(['/', 'auth', 'okta']);
     setTimeout(() => {
-      this.userSessionService.clearSavedUserSessionData();
+      this.userSessionService.logOutOfOkta();
     }, 0);
   }
 }
