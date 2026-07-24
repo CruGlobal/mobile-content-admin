@@ -116,8 +116,8 @@ export class UserAuthSessionService {
 
   clearSavedUserSessionData(): void {
     this._oauthUser.next({ sub: '' });
-    sessionStorage.clear();
-    localStorage.removeItem('Authorization');
+    this._authService.clearAuthToken();
+    this._oauthService.logOut();
     setTimeout(() => {
       this._sessionReady.next(false);
     }, 0);

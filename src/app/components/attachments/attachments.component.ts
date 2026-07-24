@@ -4,8 +4,8 @@ import { FileUploader } from 'ng2-file-upload';
 import { environment } from '../../../environments/environment';
 import { Attachment } from '../../models/attachment';
 import { Resource } from '../../models/resource';
-import { WindowRefService } from '../../models/window-ref-service';
 import { AttachmentService } from '../../service/attachment.service';
+import { AuthService } from '../../service/auth/auth.service';
 import { ResourceService } from '../../service/resource/resource.service';
 import { ImageComponent } from '../image/image.component';
 
@@ -31,9 +31,9 @@ export class AttachmentsComponent implements OnInit {
 
   constructor(
     private resourceService: ResourceService,
-    private windowRef: WindowRefService,
     private modalService: NgbModal,
     private attachmentService: AttachmentService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -73,9 +73,7 @@ export class AttachmentsComponent implements OnInit {
 
     const resourceId = this.selectedResource ? this.selectedResource.id : null;
 
-    this.uploader.authToken = this.windowRef.nativeWindow.sessionStorage.getItem(
-      'Authorization',
-    );
+    this.uploader.authToken = this.authService.authToken;
     this.uploader.options.additionalParameter = { resource_id: resourceId };
     this.uploader.uploadAll();
   }

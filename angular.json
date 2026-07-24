@@ -18,7 +18,8 @@
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": ["src/styles.css"],
-            "scripts": ["node_modules/ace-builds/src-min/ace.js"]
+            "scripts": ["node_modules/ace-builds/src-min/ace.js"],
+            "sourceMap": true
           },
           "configurations": {
             "staging": {
