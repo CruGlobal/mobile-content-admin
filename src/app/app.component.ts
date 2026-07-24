@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.oauthService.configure(oauthConfig);
-    this.oauthService.setStorage(sessionStorage);
+    this.oauthService.setStorage(localStorage);
     this.awaitOauthSessionError();
 
     this.router.events
