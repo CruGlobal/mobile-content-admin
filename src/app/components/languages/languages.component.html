@@ -68,7 +68,7 @@
       <div class="col">
         <input
           type="checkbox"
-          aria-label="Force language name for {{ language.name }}"
+          attr.aria-label="Force language name for {{ language.name }}"
           [checked]="language['force-language-name']"
           disabled
         />
@@ -109,7 +109,7 @@
       <div class="col">
         <input
           type="checkbox"
-          aria-label="Force language name"
+          attr.aria-label="Force language name for {{ language.name }}"
           [(ngModel)]="editedLanguage['force-language-name']"
         />
       </div>

@@ -77,6 +77,36 @@ describe('LanguagesComponent', () => {
     });
   });
 
+  it('should render an accessible name on the force-language-name checkboxes', (done) => {
+    fixture.detectChanges();
+
+    setTimeout(() => {
+      const language = comp.languages[0];
+      language.name = 'French';
+      fixture.detectChanges();
+
+      const viewCheckbox = fixture.debugElement.query(
+        By.css('.container input[type="checkbox"][disabled]'),
+      );
+      expect(viewCheckbox.nativeElement.getAttribute('aria-label')).toBe(
+        'Force language name for French',
+      );
+
+      language.isEditing = true;
+      comp.editedLanguage = { ...language };
+      fixture.detectChanges();
+
+      const editCheckbox = fixture.debugElement.query(
+        By.css('.container input[type="checkbox"]:not([disabled])'),
+      );
+      expect(editCheckbox.nativeElement.getAttribute('aria-label')).toBe(
+        'Force language name for French',
+      );
+
+      done();
+    });
+  });
+
   it('should only allow editing one language at a time', () => {
     const languageOne = new Language();
     const languageTwo = new Language();
