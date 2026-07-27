@@ -36,17 +36,35 @@ describe('AuthService', () => {
   afterEach(() => {
     // Verify that no unmatched requests are outstanding
     httpMock.verify();
-    // Clean up session storage
-    windowRef.nativeWindow.sessionStorage.clear();
+    // Clean up local storage
+    windowRef.nativeWindow.localStorage.clear();
   });
 
   it('sets auth header', () => {
-    windowRef.nativeWindow.sessionStorage.setItem('Authorization', token);
+    windowRef.nativeWindow.localStorage.setItem('Authorization', token);
 
     const result = service.getAuthorizationAndOptions();
 
     expect(result.headers.get('Authorization')).toBe(token);
     expect(result.headers.get('Content-Type')).toBe('application/vnd.api+json');
+  });
+
+  it('setAuthToken persists the token to local storage', () => {
+    service.setAuthToken(token);
+
+    expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
+      token,
+    );
+  });
+
+  it('clearAuthToken removes the token from local storage', () => {
+    windowRef.nativeWindow.localStorage.setItem('Authorization', token);
+
+    service.clearAuthToken();
+
+    expect(
+      windowRef.nativeWindow.localStorage.getItem('Authorization'),
+    ).toBeNull();
   });
 
   it('saves auth code after successful authentication', async () => {
@@ -66,7 +84,7 @@ describe('AuthService', () => {
 
     const result = await promise;
     expect(result.token).toBe(token);
-    expect(windowRef.nativeWindow.sessionStorage.getItem('Authorization')).toBe(
+    expect(windowRef.nativeWindow.localStorage.getItem('Authorization')).toBe(
       token,
     );
   });
