@@ -49,20 +49,77 @@
               <i class="fa fa-file"></i> Add new page
             </button>
           </div>
-          <ul class="list-group list-group-flush">
+          <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+            Saving...
+          </ngb-alert>
+          <ngb-alert
+            type="danger"
+            *ngIf="pageErrorMessage"
+            (closed)="pageErrorMessage = null"
+          >
+            {{ pageErrorMessage }}
+          </ngb-alert>
+          <ul
+            class="list-group list-group-flush"
+            cdkDropList
+            [cdkDropListDisabled]="saving"
+            (cdkDropListDropped)="onPageDrop($event)"
+          >
             <li
               class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let page of resource.pages"
+              *ngFor="let page of pages"
+              cdkDrag
+              [cdkDragDisabled]="renamingPage === page"
             >
-              {{ page.filename }}
-              <button
-                (click)="openPage(page)"
-                class="btn btn-outline-dark float-right"
-              >
-                <i class="fa fa-pencil"></i> Edit
-              </button>
+              <ng-container *ngIf="renamingPage !== page">
+                <span>
+                  <i
+                    class="fa fa-bars mr-2 text-muted drag-handle"
+                    cdkDragHandle
+                    title="Drag to reorder"
+                  ></i>
+                  {{ page.filename }}
+                </span>
+                <span class="btn-group btn-group-sm">
+                  <button
+                    (click)="startRenamePage(page)"
+                    class="btn btn-outline-dark"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-i-cursor"></i> Rename
+                  </button>
+                  <button (click)="openPage(page)" class="btn btn-outline-dark">
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="renamingPage === page">
+                <input
+                  class="form-control form-control-sm mr-2"
+                  [(ngModel)]="renameValue"
+                  (keyup.enter)="saveRenamePage(page)"
+                  (keyup.escape)="cancelRenamePage()"
+                  aria-label="Page filename"
+                />
+                <span class="btn-group btn-group-sm">
+                  <button
+                    (click)="saveRenamePage(page)"
+                    class="btn btn-success"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-check"></i> Save
+                  </button>
+                  <button
+                    (click)="cancelRenamePage()"
+                    class="btn btn-secondary"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-times"></i> Cancel
+                  </button>
+                </span>
+              </ng-container>
             </li>
-            <li class="list-group-item" *ngIf="!(resource.pages.length > 0)">
+            <li class="list-group-item" *ngIf="!(pages.length > 0)">
               No pages added
             </li>
           </ul>

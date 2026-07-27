@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -101,6 +102,7 @@ import { ToolGroupService } from './service/tool-group/tool-group.service';
   imports: [
     AceEditorModule,
     BrowserModule,
+    DragDropModule,
     FileUploadModule,
     FormsModule,
     AppRoutingModule,
