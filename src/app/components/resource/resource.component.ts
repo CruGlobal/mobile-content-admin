@@ -45,6 +45,7 @@ interface LanguageSearchResult {
 @Component({
   selector: 'admin-resource',
   templateUrl: './resource.component.html',
+  styleUrls: ['./resource.component.css'],
 })
 export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   @Input() resource: Resource;
@@ -112,7 +113,9 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
         this.pages.map((page) => page.id),
       )
       .then(() => {
-        this.pages.forEach((page, index) => (page.position = index));
+        this.pages.forEach((page, index) => {
+          page.position = index;
+        });
         this.resource.pages = [...this.pages];
         this.pageErrorMessage = null;
       })
@@ -120,7 +123,9 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
         this.pages = previousOrder;
         this.pageErrorMessage = message;
       })
-      .then(() => (this.saving = false));
+      .then(() => {
+        this.saving = false;
+      });
   }
 
   startRenamePage(page: Page): void {
@@ -147,8 +152,12 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
         page.filename = filename;
         this.renamingPage = null;
       })
-      .catch((message) => (this.pageErrorMessage = message))
-      .then(() => (this.saving = false));
+      .catch((message) => {
+        this.pageErrorMessage = message;
+      })
+      .then(() => {
+        this.saving = false;
+      });
   }
 
   createPage(): void {
@@ -240,6 +249,10 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     this.pages = [...(this.resource.pages || [])].sort(
       (a, b) => a.position - b.position,
     );
+    if (this.renamingPage) {
+      this.renamingPage =
+        this.pages.find((page) => page.id === this.renamingPage.id) || null;
+    }
   }
 
   languageSearch = (
