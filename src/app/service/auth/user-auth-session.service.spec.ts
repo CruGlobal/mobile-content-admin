@@ -38,7 +38,25 @@ describe('UserAuthSessionService', () => {
 
       service.clearSavedUserSessionData();
 
-      expect(oauthServiceStub.logOut).toHaveBeenCalledWith();
+      expect(oauthServiceStub.logOut).toHaveBeenCalledWith(true);
+    });
+  });
+
+  describe('logOutOfOkta', () => {
+    it('clears the stored app auth token', () => {
+      spyOn(authServiceStub, 'clearAuthToken');
+
+      service.logOutOfOkta();
+
+      expect(authServiceStub.clearAuthToken).toHaveBeenCalled();
+    });
+
+    it('clears the OIDC tokens and redirects to the logout endpoint', () => {
+      spyOn(oauthServiceStub, 'logOut');
+
+      service.logOutOfOkta();
+
+      expect(oauthServiceStub.logOut).toHaveBeenCalledWith(false);
     });
   });
 });
