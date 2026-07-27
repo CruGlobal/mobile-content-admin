@@ -28,14 +28,16 @@ export class LanguagesComponent implements OnInit {
     this.errorMessage = message;
   }
 
-  private loadLanguages(): void {
+  private loadLanguages(): Promise<void> {
     this.loading = true;
 
-    this.languageService
+    return this.languageService
       .getLanguages()
       .then((languages) => (this.languages = languages))
       .catch(this.handleError.bind(this))
-      .then(() => (this.loading = false));
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   createLanguage(): void {
@@ -70,7 +72,7 @@ export class LanguagesComponent implements OnInit {
       .updateLanguage(language)
       .then(() => {
         this.showSuccess();
-        this.loadLanguages();
+        return this.loadLanguages();
       })
       .catch(this.handleError.bind(this))
       .then(() => (this.saving = false));

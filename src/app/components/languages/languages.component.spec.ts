@@ -59,6 +59,31 @@ describe('LanguagesComponent', () => {
     });
   });
 
+  it('should keep saving true and close the edit row once the reload completes', (done) => {
+    const languageService = TestBed.inject(LanguageService);
+    let resolveReload: (languages: Language[]) => void;
+    spyOn(languageService, 'getLanguages').and.returnValue(
+      new Promise((resolve) => (resolveReload = resolve)),
+    );
+    const language = new Language();
+    language.isEditing = true;
+    comp.languages = [language];
+
+    comp.updateLanguage({ ...language });
+
+    setTimeout(() => {
+      expect(comp.saving).toBe(true);
+
+      resolveReload([new Language()]);
+
+      setTimeout(() => {
+        expect(comp.saving).toBe(false);
+        expect(comp.languages.some((l) => l.isEditing)).toBe(false);
+        done();
+      });
+    });
+  });
+
   it('should show error message when updating a language fails', (done) => {
     const languageService = TestBed.inject(LanguageService);
     spyOn(languageService, 'updateLanguage').and.returnValue(
