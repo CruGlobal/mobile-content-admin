@@ -119,6 +119,37 @@ describe('LanguagesComponent', () => {
     expect(languageTwo.isEditing).toBe(true);
   });
 
+  it('should edit a clone so typing does not mutate the original row', () => {
+    const languageOne = new Language();
+    languageOne.name = 'French';
+    const languageTwo = new Language();
+    languageTwo.name = 'German';
+    comp.languages = [languageOne, languageTwo];
+
+    comp.editLanguage(languageOne);
+    comp.editedLanguage.name = 'Français';
+
+    expect(comp.editedLanguage).not.toBe(languageOne);
+    expect(languageOne.name).toBe('French');
+
+    comp.editLanguage(languageTwo);
+
+    expect(comp.editedLanguage.name).toBe('German');
+  });
+
+  it('should discard unsaved edits when cancelling', () => {
+    const language = new Language();
+    language.name = 'French';
+    comp.languages = [language];
+
+    comp.editLanguage(language);
+    comp.editedLanguage.name = 'Français';
+    comp.cancelEdit(language);
+
+    expect(language.isEditing).toBe(false);
+    expect(language.name).toBe('French');
+  });
+
   it('should show success alert after successfully deleting a language', (done) => {
     comp.deleteLanguage(new Language());
 
