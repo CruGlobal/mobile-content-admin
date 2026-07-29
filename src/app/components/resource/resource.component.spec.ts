@@ -1,5 +1,6 @@
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -293,6 +294,33 @@ describe('ResourceComponent', () => {
       comp.saveRenamePage(comp.pages[0]);
 
       expect(pageServiceStub.update).not.toHaveBeenCalled();
+      expect(comp.renamingPage).toBeNull();
+    });
+
+    it('keeps the rename editor anchored when the resource reloads', () => {
+      comp.startRenamePage(comp.pages[0]);
+      comp.renameValue = 'draft-name.xml';
+
+      resource['pages'] = [
+        buildPage(1, 'first.xml', 0),
+        buildPage(2, 'second.xml', 1),
+      ];
+      comp.ngOnChanges({
+        resource: new SimpleChange(resource, resource, false),
+      });
+
+      expect(comp.renamingPage).toBe(comp.pages[0]);
+      expect(comp.renameValue).toBe('draft-name.xml');
+    });
+
+    it('cancels the rename when the page no longer exists after a reload', () => {
+      comp.startRenamePage(comp.pages[0]);
+
+      resource['pages'] = [buildPage(2, 'second.xml', 1)];
+      comp.ngOnChanges({
+        resource: new SimpleChange(resource, resource, false),
+      });
+
       expect(comp.renamingPage).toBeNull();
     });
   });
