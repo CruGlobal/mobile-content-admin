@@ -54,9 +54,7 @@ export class ResourcesComponent implements OnInit {
 
   loadResources(): void {
     this.resourceService
-      .getResources(
-        'latest-drafts-translations,pages,custom-manifests,tips,attachments,variants',
-      )
+      .getResources()
       .then((resources) => {
         this.unfilteredResources = resources;
         this.filterAndSort();

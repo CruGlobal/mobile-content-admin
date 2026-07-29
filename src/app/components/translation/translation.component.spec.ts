@@ -153,7 +153,7 @@ describe('TranslationComponent', () => {
     fixture = TestBed.createComponent(TranslationComponent);
     comp = fixture.componentInstance;
 
-    resourceComponent = new ResourceComponent(null, null, null);
+    resourceComponent = new ResourceComponent(null, null, null, null);
     comp.translationLoaded = resourceComponent.translationLoaded$;
     comp.errorMessage = '';
     comp.alertMessage = '';
@@ -183,7 +183,7 @@ describe('TranslationComponent', () => {
   describe('language does not have existing translations', () => {
     beforeEach(() => {
       comp.resource['latest-drafts-translations'] = [];
-      comp.reloadTranslation();
+      comp.onDetailsReloaded();
       fixture.detectChanges();
     });
 
@@ -211,7 +211,7 @@ describe('TranslationComponent', () => {
         translation.resource = comp.resource;
 
         comp.resource['latest-drafts-translations'] = [translation];
-        comp.reloadTranslation();
+        comp.onDetailsReloaded();
         fixture.detectChanges();
       });
 
@@ -262,7 +262,7 @@ describe('TranslationComponent', () => {
       translation.resource = comp.resource;
       comp.translation = translation;
       comp.resource['latest-drafts-translations'] = [translation];
-      comp.reloadTranslation();
+      comp.onDetailsReloaded();
       fixture.detectChanges();
     });
 
@@ -335,6 +335,22 @@ describe('TranslationComponent', () => {
     }));
   });
 
+  describe('onDetailsReloaded()', () => {
+    beforeEach(() => {
+      comp.resource['latest-drafts-translations'] = [];
+      fixture.detectChanges();
+    });
+
+    it('should recompute the custom manifest, which the resource reloads in place', () => {
+      expect(comp.customManifest).toBeDefined();
+
+      comp.resource['custom-manifests'] = [];
+      comp.onDetailsReloaded();
+
+      expect(comp.customManifest).toBeUndefined();
+    });
+  });
+
   describe('language has existing translation(s)', () => {
     let translation: Translation;
 
@@ -345,7 +361,7 @@ describe('TranslationComponent', () => {
       translation.resource = comp.resource;
 
       comp.resource['latest-drafts-translations'] = [translation];
-      comp.reloadTranslation();
+      comp.onDetailsReloaded();
       fixture.detectChanges();
     });
 
