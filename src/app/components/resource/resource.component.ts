@@ -2,7 +2,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
   Input,
-  OnInit,
   OnChanges,
   SimpleChanges,
   OnDestroy,
@@ -27,6 +26,7 @@ import { Tip } from '../../models/tip';
 import { Translation } from '../../models/translation';
 import { LanguageService } from '../../service/language.service';
 import { PageService } from '../../service/page.service';
+import { ResourceService } from '../../service/resource/resource.service';
 import { CreatePageComponent } from '../create-page/create-page.component';
 import { CreateTipComponent } from '../create-tip/create-tip.component';
 import { UpdateResourceComponent } from '../edit-resource/update-resource/update-resource.component';
@@ -47,7 +47,7 @@ interface LanguageSearchResult {
   templateUrl: './resource.component.html',
   styleUrls: ['./resource.component.css'],
 })
-export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
+export class ResourceComponent implements OnChanges, OnDestroy {
   @Input() resource: Resource;
   @Input() resourcesComponent: ResourcesComponent;
 
@@ -56,13 +56,24 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   click$ = new Subject<string>();
 
   showDetails = false;
+  detailsLoaded = false;
+  loadingDetails = false;
   selectedLanguage: LanguageSearchResult = undefined;
-  errorMessage: string;
+  errorMessage: string | null = null;
   pages: Page[] = [];
   pageErrorMessage: string = null;
   saving = false;
   renamingPage: Page = null;
   renameValue = '';
+
+  private static readonly DETAIL_RELATIONSHIPS = [
+    'latest-drafts-translations',
+    'pages',
+    'custom-manifests',
+    'tips',
+    'attachments',
+    'variants',
+  ];
 
   private _translationLoaded = new Subject<number>();
   translationLoaded$ = this._translationLoaded.asObservable();
@@ -71,26 +82,117 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     private languageService: LanguageService,
     private modalService: NgbModal,
     private pageService: PageService,
+    private resourceService: ResourceService,
   ) {}
 
-  ngOnInit(): void {
-    this.sortPages();
-    this.loadTranslations();
-  }
-
   ngOnChanges(pChanges: SimpleChanges): void {
-    if (
-      pChanges.resource &&
-      pChanges.resource.previousValue &&
-      pChanges.resource.currentValue
-    ) {
-      this.sortPages();
-      this.loadTranslations();
+    const change = pChanges.resource;
+    if (!change || !change.previousValue || !change.currentValue) {
+      return;
+    }
+
+    if (this.isMetaTool()) {
+      // Metatools have no detail body to load.
+      this.showDetails = false;
+      this.detailsLoaded = false;
+      return;
+    }
+    if (!this.detailsLoaded) {
+      return;
+    }
+    if (this.showDetails) {
+      // Carry the details we already have onto the new resource so the open
+      // panel keeps rendering while the fresh details are fetched, instead of
+      // blanking out for the length of the request.
+      ResourceComponent.copyDetails(change.previousValue, this.resource);
+      this.loadDetails();
+    } else {
+      // Nothing is rendered, so drop the stale details and reload on next expand.
+      this.detailsLoaded = false;
     }
   }
 
   ngOnDestroy(): void {
     this._translationLoaded.complete();
+  }
+
+  toggleDetails(): void {
+    if (this.isMetaTool()) {
+      return;
+    }
+    if (this.showDetails) {
+      this.showDetails = false;
+      return;
+    }
+    if (this.detailsLoaded) {
+      // Don't reload the details if they have already been loaded
+      this.showDetails = true;
+      return;
+    }
+    this.loadDetails().then((loaded) => {
+      if (!loaded) {
+        // loadDetails has expanded the resource to show the error
+        return;
+      }
+
+      // The content is rendered but still collapsed, so open on the next
+      // animation frame — after the body has laid out — so ngbCollapse measures
+      // a fully-rendered element and slides smoothly instead of measuring it
+      // mid-render and snapping.
+      requestAnimationFrame(() => {
+        this.showDetails = true;
+      });
+    });
+  }
+
+  /**
+   * Resolves to whether the details are available: a failed load leaves them
+   * unloaded, and callers must not act on a resource without its details.
+   */
+  loadDetails(): Promise<boolean> {
+    this.loadingDetails = true;
+    this.errorMessage = null;
+    return this.resourceService
+      .getResource(
+        this.resource.id,
+        ResourceComponent.DETAIL_RELATIONSHIPS.join(','),
+      )
+      .then((resource) =>
+        // Hydrate the draft translations' languages before publishing the
+        // details, so the detail body is never rendered against the
+        // relationship stubs the resource response contains.
+        this.loadTranslations(resource).then(() => {
+          Object.assign(this.resource, resource);
+          this.sortPages();
+          this.detailsLoaded = true;
+          if (this.selectedLanguage) {
+            this._translationLoaded.next(this.selectedLanguage.language.id);
+          }
+        }),
+      )
+      .catch((message) => {
+        this.handleError(message);
+        this.showDetails = true;
+        this.detailsLoaded = false;
+      })
+      .then(() => {
+        this.loadingDetails = false;
+        return this.detailsLoaded;
+      });
+  }
+
+  reloadDetails(): Promise<boolean> {
+    return this.loadDetails();
+  }
+
+  private ensureDetailsLoaded(): Promise<boolean> {
+    return this.detailsLoaded ? Promise.resolve(true) : this.loadDetails();
+  }
+
+  private static copyDetails(from: Resource, to: Resource): void {
+    ResourceComponent.DETAIL_RELATIONSHIPS.forEach((relationship) => {
+      to[relationship] = from[relationship];
+    });
   }
 
   isMetaTool(): boolean {
@@ -164,7 +266,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     const modal = this.modalService.open(CreatePageComponent, { size: 'lg' });
     modal.componentInstance.page.resource = this.resource;
     modal.result
-      .then(() => this.resourcesComponent.loadResources())
+      .then(() => this.reloadDetails())
       .catch(this.handleError.bind(this));
   }
 
@@ -177,7 +279,7 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     const modal = this.modalService.open(CreateTipComponent, { size: 'lg' });
     modal.componentInstance.tip.resource = this.resource;
     modal.result
-      .then(() => this.resourcesComponent.loadResources())
+      .then(() => this.reloadDetails())
       .catch(this.handleError.bind(this));
   }
 
@@ -187,15 +289,21 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   openUpdateModal(resource: Resource): void {
-    const modalRef: NgbModalRef = this.modalService.open(
-      UpdateResourceComponent,
-      { size: 'lg' },
-    );
-    modalRef.componentInstance.resource = resource;
-    modalRef.result.then(
-      () => this.resourcesComponent.loadResources(),
-      console.log,
-    );
+    this.ensureDetailsLoaded().then((loaded) => {
+      if (!loaded) {
+        // The resource will expand and show the error message
+        return;
+      }
+      const modalRef: NgbModalRef = this.modalService.open(
+        UpdateResourceComponent,
+        { size: 'lg' },
+      );
+      modalRef.componentInstance.resource = resource;
+      modalRef.result.then(
+        () => this.resourcesComponent.loadResources(),
+        console.log,
+      );
+    });
   }
 
   openAttributeTranslationsModal(resource: Resource): void {
@@ -205,40 +313,45 @@ export class ResourceComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     modalRef.componentInstance.resourceId = resource.id;
-    modalRef.result.then(
-      () => this.resourcesComponent.loadResources(),
-      console.log,
-    );
+    modalRef.result.then(() => {
+      // Only refresh open panels
+      if (this.detailsLoaded) {
+        this.reloadDetails();
+      }
+    }, console.log);
   }
 
   openGenerateModal(resource: Resource): void {
-    const modalRef: NgbModalRef = this.modalService.open(
-      MultipleDraftGeneratorComponent,
-    );
-    modalRef.componentInstance.resource = resource;
-    modalRef.result.then(
-      () => this.resourcesComponent.loadResources(),
-      console.log,
-    );
+    this.ensureDetailsLoaded().then((loaded) => {
+      if (!loaded) {
+        // The resource will expand and show the error message
+        return;
+      }
+      const modalRef: NgbModalRef = this.modalService.open(
+        MultipleDraftGeneratorComponent,
+      );
+      modalRef.componentInstance.resource = resource;
+      modalRef.result.then(() => this.reloadDetails(), console.log);
+    });
   }
 
   onLoadResources(): void {
-    this.resourcesComponent.loadResources();
+    this.reloadDetails();
   }
 
-  private loadTranslations(): void {
-    this.resource['latest-drafts-translations'].forEach((translation) => {
-      this.languageService
-        .getLanguage(translation.language.id, 'custom_pages,custom_tips')
-        .then((language) => {
-          translation.language = language;
-          translation.is_published = translation['is-published'];
-          setTimeout(() => {
-            this._translationLoaded.next(translation.language.id);
-          }, 0);
-        })
-        .catch(this.handleError.bind(this));
-    });
+  private loadTranslations(resource: Resource): Promise<void> {
+    const translations = resource['latest-drafts-translations'] || [];
+    return Promise.all(
+      translations.map((translation) =>
+        this.languageService
+          .getLanguage(translation.language.id, 'custom_pages,custom_tips')
+          .then((language) => {
+            translation.language = language;
+            translation.is_published = translation['is-published'];
+          })
+          .catch(this.handleError.bind(this)),
+      ),
+    ).then(() => undefined);
   }
 
   private handleError(message): void {

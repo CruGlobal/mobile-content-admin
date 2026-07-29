@@ -145,13 +145,11 @@ describe('ResourcesComponent', () => {
     comp.clearFilters();
   });
 
-  it('should include pages when loading resources', (done) => {
+  it('should load resources without eager includes', (done) => {
     comp.loadResources();
 
     setTimeout(() => {
-      expect(resourceServiceStub.getResources).toHaveBeenCalledWith(
-        'latest-drafts-translations,pages,custom-manifests,tips,attachments,variants',
-      );
+      expect(resourceServiceStub.getResources).toHaveBeenCalledWith();
       done();
     });
   });
