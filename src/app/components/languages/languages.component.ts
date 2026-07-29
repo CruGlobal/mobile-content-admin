@@ -72,10 +72,8 @@ export class LanguagesComponent implements OnInit {
 
     this.languageService
       .updateLanguage(language)
-      .then(() => {
-        this.showSuccess();
-        return this.loadLanguages();
-      })
+      .then(() => this.loadLanguages())
+      .then(() => this.showSuccess())
       .catch(this.handleError.bind(this))
       .then(() => {
         this.saving = false;
