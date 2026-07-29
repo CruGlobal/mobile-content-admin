@@ -42,7 +42,7 @@
 <ngb-alert type="danger" [dismissible]="false" *ngIf="errorMessage">
   {{ errorMessage }}
 </ngb-alert>
-<ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
+<ngb-alert type="warning" [dismissible]="false" *ngIf="loading && !saving">
   Loading...
 </ngb-alert>
 <div class="container mt-3">
