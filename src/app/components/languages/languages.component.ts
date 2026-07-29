@@ -10,6 +10,7 @@ export class LanguagesComponent implements OnInit {
   @Input() name: string;
   @Input() code: string;
   newLanguage: Language = new Language();
+  editedLanguage: Language;
   languages: Language[];
 
   loading = false;
@@ -27,14 +28,16 @@ export class LanguagesComponent implements OnInit {
     this.errorMessage = message;
   }
 
-  private loadLanguages(): void {
+  private loadLanguages(): Promise<void> {
     this.loading = true;
 
-    this.languageService
+    return this.languageService
       .getLanguages()
       .then((languages) => (this.languages = languages))
       .catch(this.handleError.bind(this))
-      .then(() => (this.loading = false));
+      .then(() => {
+        this.loading = false;
+      });
   }
 
   createLanguage(): void {
@@ -46,6 +49,30 @@ export class LanguagesComponent implements OnInit {
       .then(() => {
         this.showSuccess();
         this.loadLanguages();
+      })
+      .catch(this.handleError.bind(this))
+      .then(() => (this.saving = false));
+  }
+
+  editLanguage(language: Language): void {
+    this.languages.forEach((l) => (l.isEditing = false));
+    this.editedLanguage = { ...language };
+    language.isEditing = true;
+  }
+
+  cancelEdit(language: Language): void {
+    language.isEditing = false;
+  }
+
+  updateLanguage(language: Language): void {
+    this.saving = true;
+    this.errorMessage = null;
+
+    this.languageService
+      .updateLanguage(language)
+      .then(() => {
+        this.showSuccess();
+        return this.loadLanguages();
       })
       .catch(this.handleError.bind(this))
       .then(() => (this.saving = false));

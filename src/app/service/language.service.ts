@@ -39,6 +39,8 @@ export class LanguageService extends AbstractService {
         attributes: {
           name: language.name,
           code: language.code,
+          'crowdin-code': language['crowdin-code'] || null,
+          'force-language-name': language['force-language-name'] || false,
         },
       },
     };
@@ -46,6 +48,30 @@ export class LanguageService extends AbstractService {
     return this.http
       .post(
         this.languagesUrl,
+        payload,
+        this.authService.getAuthorizationAndOptions(),
+      )
+      .toPromise()
+      .then((response) => new JsonApiDataStore().sync(response))
+      .catch(this.handleError);
+  }
+
+  updateLanguage(language: Language): Promise<Language> {
+    const payload = {
+      data: {
+        id: language.id,
+        type: 'language',
+        attributes: {
+          name: language.name,
+          'crowdin-code': language['crowdin-code'] || null,
+          'force-language-name': language['force-language-name'] || false,
+        },
+      },
+    };
+
+    return this.http
+      .put(
+        `${this.languagesUrl}/${language.id}`,
         payload,
         this.authService.getAuthorizationAndOptions(),
       )
