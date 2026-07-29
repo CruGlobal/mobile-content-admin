@@ -55,7 +55,9 @@ export class LanguagesComponent implements OnInit {
   }
 
   editLanguage(language: Language): void {
-    this.languages.forEach((l) => (l.isEditing = false));
+    this.languages.forEach((l) => {
+      l.isEditing = false;
+    });
     this.editedLanguage = { ...language };
     language.isEditing = true;
   }
@@ -75,7 +77,9 @@ export class LanguagesComponent implements OnInit {
         return this.loadLanguages();
       })
       .catch(this.handleError.bind(this))
-      .then(() => (this.saving = false));
+      .then(() => {
+        this.saving = false;
+      });
   }
 
   deleteLanguage(language: Language): void {
