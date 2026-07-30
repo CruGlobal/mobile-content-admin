@@ -436,6 +436,22 @@ describe('ResourceComponent', () => {
     });
   });
 
+  it('should dedupe overlapping detail loads into a single request', (done) => {
+    let resolveResource;
+    (resourceServiceStub.getResource as jasmine.Spy).and.returnValue(
+      new Promise((resolve) => (resolveResource = resolve)),
+    );
+
+    const first = comp.loadDetails();
+    const second = comp.loadDetails(); // concurrent request
+
+    expect(resourceServiceStub.getResource).toHaveBeenCalledTimes(1);
+    expect(second).toBe(first);
+
+    resolveResource(buildDetailResource());
+    first.then(() => done());
+  });
+
   it('should not expand metatools', (done) => {
     resource.resourceType = ({
       id: 9,
