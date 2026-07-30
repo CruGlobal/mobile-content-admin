@@ -66,7 +66,7 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
     this.customManifest = this.getCustomManifest();
     this.translationLoaded.subscribe((langId) => {
       if (langId === this.language.id) {
-        this.reloadTranslation();
+        this.onDetailsReloaded();
       }
     });
   }
@@ -115,8 +115,14 @@ export class TranslationComponent implements OnInit, OnChanges, OnDestroy {
     return _tTips;
   }
 
-  reloadTranslation(): void {
+  /**
+   * Re-derive everything this component reads off the resource. The resource's
+   * details are reloaded in place, so its identity never changes and
+   * ngOnChanges does not fire — the derived state has to be recomputed here.
+   */
+  onDetailsReloaded(): void {
     this.translation = getLatestTranslation(this.resource, this.language);
+    this.customManifest = this.getCustomManifest();
   }
 
   pagesTrackBy(pIx: number, pItem: AbstractPage): any {

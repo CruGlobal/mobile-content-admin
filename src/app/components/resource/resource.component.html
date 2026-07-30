@@ -3,10 +3,11 @@
     class="card-header bg-dark text-white d-flex justify-content-between align-items-center {{
       !isMetaTool() && 'pointer'
     }}"
-    (click)="showDetails = !showDetails"
+    (click)="toggleDetails()"
   >
     <span class="h4 mb-0">
       {{ resource.name }}
+      <i class="fa fa-spinner fa-spin ml-2" *ngIf="loadingDetails"></i>
     </span>
     <div
       class="btn-group btn-group-sm justify-content-end flex-wrap"
@@ -37,184 +38,192 @@
     </div>
   </div>
   <div class="card-body bg-dark" [ngbCollapse]="!showDetails || isMetaTool()">
-    <div class="row mt-3">
-      <div class="col">
-        <!-- Pages UI -->
-        <div class="card">
-          <div
-            class="card-header d-flex justify-content-between align-items-center"
-          >
-            <span class="h5 mb-0">Default Pages</span>
-            <button class="btn btn-secondary" (click)="createPage()">
-              <i class="fa fa-file"></i> Add new page
-            </button>
-          </div>
-          <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
-            Saving...
-          </ngb-alert>
-          <ngb-alert
-            type="danger"
-            *ngIf="pageErrorMessage"
-            (closed)="pageErrorMessage = null"
-          >
-            {{ pageErrorMessage }}
-          </ngb-alert>
-          <ul
-            class="list-group list-group-flush"
-            cdkDropList
-            [cdkDropListDisabled]="saving"
-            (cdkDropListDropped)="onPageDrop($event)"
-          >
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let page of pages"
-              cdkDrag
-              [cdkDragDisabled]="renamingPage === page"
+    <div *ngIf="detailsLoaded && !isMetaTool()">
+      <div class="row mt-3">
+        <div class="col">
+          <!-- Pages UI -->
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
             >
-              <ng-container *ngIf="renamingPage !== page">
-                <span>
-                  <i
-                    class="fa fa-bars mr-2 text-muted drag-handle"
-                    cdkDragHandle
-                    title="Drag to reorder"
-                  ></i>
-                  {{ page.filename }}
-                </span>
-                <span class="btn-group btn-group-sm">
-                  <button
-                    (click)="startRenamePage(page)"
-                    class="btn btn-outline-dark"
-                    [disabled]="saving"
-                  >
-                    <i class="fa fa-i-cursor"></i> Rename
-                  </button>
-                  <button (click)="openPage(page)" class="btn btn-outline-dark">
-                    <i class="fa fa-pencil"></i> Edit
-                  </button>
-                </span>
-              </ng-container>
-              <ng-container *ngIf="renamingPage === page">
-                <input
-                  class="form-control form-control-sm mr-2"
-                  [(ngModel)]="renameValue"
-                  (keyup.enter)="saveRenamePage(page)"
-                  (keyup.escape)="cancelRenamePage()"
-                  aria-label="Page filename"
-                />
-                <span class="btn-group btn-group-sm">
-                  <button
-                    (click)="saveRenamePage(page)"
-                    class="btn btn-success"
-                    [disabled]="saving"
-                  >
-                    <i class="fa fa-check"></i> Save
-                  </button>
-                  <button
-                    (click)="cancelRenamePage()"
-                    class="btn btn-secondary"
-                    [disabled]="saving"
-                  >
-                    <i class="fa fa-times"></i> Cancel
-                  </button>
-                </span>
-              </ng-container>
-            </li>
-            <li class="list-group-item" *ngIf="!(pages.length > 0)">
-              No pages added
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <!-- Tips UI -->
-        <div class="card">
-          <div
-            class="card-header d-flex justify-content-between align-items-center"
-          >
-            <span class="h5 mb-0">Default Tips</span>
-            <button class="btn btn-secondary" (click)="createTip()">
-              <i class="fa fa-file"></i> Add new tip
-            </button>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let tip of resource.tips"
-            >
-              {{ tip.name }}
-              <button
-                (click)="openTip(tip)"
-                class="btn btn-outline-dark float-right"
-              >
-                <i class="fa fa-pencil"></i> Edit
+              <span class="h5 mb-0">Default Pages</span>
+              <button class="btn btn-secondary" (click)="createPage()">
+                <i class="fa fa-file"></i> Add new page
               </button>
-            </li>
-            <li class="list-group-item" *ngIf="!(resource.tips.length > 0)">
-              No tips added
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Customize Languages UI -->
-    <div class="card mt-3">
-      <div
-        class="card-header d-flex justify-content-between align-items-center"
-      >
-        <span class="h5 mb-0 text-nowrap mr-2">Customize Languages</span>
-        <ng-template #rt let-r="result" let-t="term">
-          <div class="d-flex justify-content-between">
-            <div class="mr-2">
-              <ngb-highlight [result]="r.language.name" [term]="t.split(' ')">
-              </ngb-highlight>
-              (<ngb-highlight [result]="r.language.code" [term]="t.split(' ')">
-              </ngb-highlight
-              >)
             </div>
-            <admin-translation-version-badge
-              [translation]="r.latestTranslation"
+            <ngb-alert type="info" [dismissible]="false" *ngIf="saving">
+              Saving...
+            </ngb-alert>
+            <ngb-alert
+              type="danger"
+              *ngIf="pageErrorMessage"
+              (closed)="pageErrorMessage = null"
             >
-            </admin-translation-version-badge>
+              {{ pageErrorMessage }}
+            </ngb-alert>
+            <ul
+              class="list-group list-group-flush"
+              cdkDropList
+              [cdkDropListDisabled]="saving"
+              (cdkDropListDropped)="onPageDrop($event)"
+            >
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let page of pages"
+                cdkDrag
+                [cdkDragDisabled]="renamingPage === page"
+              >
+                <ng-container *ngIf="renamingPage !== page">
+                  <span>
+                    <i
+                      class="fa fa-bars mr-2 text-muted drag-handle"
+                      cdkDragHandle
+                      title="Drag to reorder"
+                    ></i>
+                    {{ page.filename }}
+                  </span>
+                  <span class="btn-group btn-group-sm">
+                    <button
+                      (click)="startRenamePage(page)"
+                      class="btn btn-outline-dark"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-i-cursor"></i> Rename
+                    </button>
+                    <button
+                      (click)="openPage(page)"
+                      class="btn btn-outline-dark"
+                    >
+                      <i class="fa fa-pencil"></i> Edit
+                    </button>
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="renamingPage === page">
+                  <input
+                    class="form-control form-control-sm mr-2"
+                    [(ngModel)]="renameValue"
+                    (keyup.enter)="saveRenamePage(page)"
+                    (keyup.escape)="cancelRenamePage()"
+                    aria-label="Page filename"
+                  />
+                  <span class="btn-group btn-group-sm">
+                    <button
+                      (click)="saveRenamePage(page)"
+                      class="btn btn-success"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i> Save
+                    </button>
+                    <button
+                      (click)="cancelRenamePage()"
+                      class="btn btn-secondary"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-times"></i> Cancel
+                    </button>
+                  </span>
+                </ng-container>
+              </li>
+              <li class="list-group-item" *ngIf="!(pages.length > 0)">
+                No pages added
+              </li>
+            </ul>
           </div>
-        </ng-template>
+        </div>
 
-        <div class="input-group">
-          <input
-            type="text"
-            placeholder="Choose a language"
-            class="form-control language-search-typeahead"
-            [(ngModel)]="selectedLanguage"
-            [ngbTypeahead]="languageSearch"
-            [resultTemplate]="rt"
-            [inputFormatter]="languageFormatter"
-            (focus)="focus$.next($any($event).target.value)"
-            (click)="click$.next($any($event).target.value)"
-            #instance="ngbTypeahead"
-            [editable]="false"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-secondary"
-              type="button"
-              (click)="selectedLanguage = undefined"
+        <div class="col">
+          <!-- Tips UI -->
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
             >
-              <i class="fa fa-close"></i>
-            </button>
+              <span class="h5 mb-0">Default Tips</span>
+              <button class="btn btn-secondary" (click)="createTip()">
+                <i class="fa fa-file"></i> Add new tip
+              </button>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let tip of resource.tips"
+              >
+                {{ tip.name }}
+                <button
+                  (click)="openTip(tip)"
+                  class="btn btn-outline-dark float-right"
+                >
+                  <i class="fa fa-pencil"></i> Edit
+                </button>
+              </li>
+              <li class="list-group-item" *ngIf="!(resource.tips?.length > 0)">
+                No tips added
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <div class="card-body" *ngIf="selectedLanguage">
-        <admin-translation
-          [language]="selectedLanguage.language"
-          [resource]="resource"
-          [translationLoaded]="translationLoaded$"
-          (loadResources)="onLoadResources()"
-        ></admin-translation>
-      </div>
-      <div class="card-body" *ngIf="!selectedLanguage">
-        To customize a language, search or select a language above
+
+      <!-- Customize Languages UI -->
+      <div class="card mt-3">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <span class="h5 mb-0 text-nowrap mr-2">Customize Languages</span>
+          <ng-template #rt let-r="result" let-t="term">
+            <div class="d-flex justify-content-between">
+              <div class="mr-2">
+                <ngb-highlight [result]="r.language.name" [term]="t.split(' ')">
+                </ngb-highlight>
+                (<ngb-highlight
+                  [result]="r.language.code"
+                  [term]="t.split(' ')"
+                >
+                </ngb-highlight
+                >)
+              </div>
+              <admin-translation-version-badge
+                [translation]="r.latestTranslation"
+              >
+              </admin-translation-version-badge>
+            </div>
+          </ng-template>
+
+          <div class="input-group">
+            <input
+              type="text"
+              placeholder="Choose a language"
+              class="form-control language-search-typeahead"
+              [(ngModel)]="selectedLanguage"
+              [ngbTypeahead]="languageSearch"
+              [resultTemplate]="rt"
+              [inputFormatter]="languageFormatter"
+              (focus)="focus$.next($any($event).target.value)"
+              (click)="click$.next($any($event).target.value)"
+              #instance="ngbTypeahead"
+              [editable]="false"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-secondary"
+                type="button"
+                (click)="selectedLanguage = undefined"
+              >
+                <i class="fa fa-close"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" *ngIf="selectedLanguage">
+          <admin-translation
+            [language]="selectedLanguage.language"
+            [resource]="resource"
+            [translationLoaded]="translationLoaded$"
+            (loadResources)="onLoadResources()"
+          ></admin-translation>
+        </div>
+        <div class="card-body" *ngIf="!selectedLanguage">
+          To customize a language, search or select a language above
+        </div>
       </div>
     </div>
 
