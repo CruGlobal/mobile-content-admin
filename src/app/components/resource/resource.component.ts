@@ -58,6 +58,8 @@ export class ResourceComponent implements OnChanges, OnDestroy {
   showDetails = false;
   detailsLoaded = false;
   loadingDetails = false;
+  // The in-flight detail request, shared by every caller.
+  private detailsLoad: Promise<boolean> | null = null;
   selectedLanguage: LanguageSearchResult = undefined;
   errorMessage: string | null = null;
   pages: Page[] = [];
@@ -150,9 +152,14 @@ export class ResourceComponent implements OnChanges, OnDestroy {
    * unloaded, and callers must not act on a resource without its details.
    */
   loadDetails(): Promise<boolean> {
+    if (this.detailsLoad) {
+      // The details are already loading, so reuse the promise.
+      return this.detailsLoad;
+    }
+
     this.loadingDetails = true;
     this.errorMessage = null;
-    return this.resourceService
+    this.detailsLoad = this.resourceService
       .getResource(
         this.resource.id,
         ResourceComponent.DETAIL_RELATIONSHIPS.join(','),
@@ -177,8 +184,10 @@ export class ResourceComponent implements OnChanges, OnDestroy {
       })
       .then(() => {
         this.loadingDetails = false;
+        this.detailsLoad = null;
         return this.detailsLoaded;
       });
+    return this.detailsLoad;
   }
 
   reloadDetails(): Promise<boolean> {
