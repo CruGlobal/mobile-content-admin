@@ -175,7 +175,33 @@
       &nbsp;
       <label for="hidden">Hidden</label>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">
+      <label for="default_language">Default Language</label>
+      <select
+        id="default_language"
+        class="custom-select"
+        [(ngModel)]="resource['attr-default-locale']"
+      >
+        <option value=""></option>
+        <option
+          *ngIf="hasUnknownDefaultLocale()"
+          [value]="resource['attr-default-locale']"
+        >
+          {{ resource['attr-default-locale'] }} (unknown)
+        </option>
+        <option
+          *ngFor="let language of languages | orderBy: 'name'"
+          [value]="language.code"
+        >
+          {{ language.name }} ({{ language.code }})
+        </option>
+      </select>
+      <small class="form-text text-muted">
+        Language this tool falls back to when a user's language isn't available.
+        This list includes all system languages, not just this tool's
+        translations.
+      </small>
+    </div>
     <div class="col-3" *ngIf="!isMetaTool()">
       <label for="crowdin">Crowdin Project ID</label>
       <input

@@ -88,6 +88,7 @@ export class ResourceService extends AbstractService {
           'attr-about-overview-video-youtube':
             resource.aboutOverviewVideoYoutube || null,
           'attr-category': resource['attr-category'] || null,
+          'attr-default-locale': resource['attr-default-locale'] || null,
           'attr-default-order': resource['attr-default-order'] || null,
           'attr-hidden': resource['attr-hidden'] || null,
           'attr-spotlight': resource['attr-spotlight'] || null,

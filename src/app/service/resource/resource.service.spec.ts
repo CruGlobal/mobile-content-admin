@@ -58,6 +58,39 @@ describe('ResourceService', () => {
     requestHasAuthenticatedHeaders(req);
   });
 
+  it('updating sends the default language attribute', () => {
+    const localizedResource = new Resource();
+    localizedResource.id = 13;
+    localizedResource['attr-default-locale'] = 'fr';
+
+    service.update(localizedResource);
+
+    const req = httpMock.expectOne((request) => request.method === 'PUT');
+    expect(req.request.body.data.attributes['attr-default-locale']).toBe('fr');
+  });
+
+  it('updating sends a null default language attribute when unset', () => {
+    const localizedResource = new Resource();
+    localizedResource.id = 13;
+
+    service.update(localizedResource);
+
+    const req = httpMock.expectOne((request) => request.method === 'PUT');
+    expect(req.request.body.data.attributes['attr-default-locale']).toBeNull();
+  });
+
+  it('updating sends null when the default language is cleared', () => {
+    const localizedResource = new Resource();
+    localizedResource.id = 13;
+    // the blank <option value=""> in edit-resource.component.html yields '', not undefined
+    localizedResource['attr-default-locale'] = '';
+
+    service.update(localizedResource);
+
+    const req = httpMock.expectOne((request) => request.method === 'PUT');
+    expect(req.request.body.data.attributes['attr-default-locale']).toBeNull();
+  });
+
   describe('GetResources()', () => {
     it('should include "include"', () => {
       const expectedUrl = `${environment.base_url}resources?include=test-data`;

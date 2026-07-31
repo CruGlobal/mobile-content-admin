@@ -5,7 +5,11 @@ import { By } from '@angular/platform-browser';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AceEditorDirective } from 'ng2-ace-editor';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { ToolGroupMocks } from '../../../_tests/toolGroupMocks';
+import { Language } from '../../../models/language';
 import { Resource } from '../../../models/resource';
+import { System } from '../../../models/system';
+import { LanguageService } from '../../../service/language.service';
 import { ResourceService } from '../../../service/resource/resource.service';
 import { ResourceTypeService } from '../../../service/resource-type.service';
 import { SystemService } from '../../../service/system.service';
@@ -16,13 +20,36 @@ describe('CreateResourceComponent', () => {
   let comp: CreateResourceComponent;
   let fixture: ComponentFixture<CreateResourceComponent>;
 
+  const mocks = new ToolGroupMocks();
   const resourceServiceStub = ({
     create() {},
+    getResources() {},
   } as unknown) as ResourceService;
+  const systemServiceStub = ({
+    getSystems() {},
+  } as unknown) as SystemService;
+  const resourceTypeServiceStub = ({
+    getResourceTypes() {},
+  } as unknown) as ResourceTypeService;
+  const languageServiceStub = ({
+    getLanguages() {},
+  } as unknown) as LanguageService;
 
   beforeEach(() => {
     spyOn(resourceServiceStub, 'create').and.returnValue(
       Promise.resolve<Resource>(null),
+    );
+    spyOn(resourceServiceStub, 'getResources').and.returnValue(
+      Promise.resolve<Resource[]>([]),
+    );
+    spyOn(systemServiceStub, 'getSystems').and.returnValue(
+      Promise.resolve<System[]>([{ id: 1 } as System]),
+    );
+    spyOn(resourceTypeServiceStub, 'getResourceTypes').and.returnValue(
+      Promise.resolve([]),
+    );
+    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
     );
 
     TestBed.configureTestingModule({
@@ -39,8 +66,9 @@ describe('CreateResourceComponent', () => {
       ],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
-        { provide: SystemService },
-        { provide: ResourceTypeService },
+        { provide: SystemService, useValue: systemServiceStub },
+        { provide: ResourceTypeService, useValue: resourceTypeServiceStub },
+        { provide: LanguageService, useValue: languageServiceStub },
         { provide: NgbActiveModal },
       ],
     }).compileComponents();
@@ -56,5 +84,21 @@ describe('CreateResourceComponent', () => {
       .nativeElement.click();
 
     expect(resourceServiceStub.create).toHaveBeenCalledWith(comp.resource);
+  });
+
+  it('loads languages for the Default Language dropdown', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(languageServiceStub.getLanguages).toHaveBeenCalled();
+    expect(comp.languages).toEqual(mocks.getLanguagesResponse);
+
+    const options = fixture.debugElement.queryAll(
+      By.css('#default_language option'),
+    );
+    expect(
+      options.map((o) => (o.nativeElement as HTMLOptionElement).value),
+    ).toEqual(['', 'ar-SA', 'en-US', 'en-GB']);
   });
 });
