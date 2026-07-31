@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Resource } from '../../../models/resource';
 import { ResourceType } from '../../../models/resource-type';
 import { System } from '../../../models/system';
+import { LanguageService } from '../../../service/language.service';
 import { ResourceService } from '../../../service/resource/resource.service';
 import { ResourceTypeService } from '../../../service/resource-type.service';
 import { SystemService } from '../../../service/system.service';
@@ -20,12 +21,19 @@ export class CreateResourceComponent
   systems: System[];
 
   constructor(
-    resourceService: ResourceService,
     systemService: SystemService,
     resourceTypeService: ResourceTypeService,
+    resourceService: ResourceService,
+    languageService: LanguageService,
     activeModal: NgbActiveModal,
   ) {
-    super(systemService, resourceTypeService, resourceService, activeModal);
+    super(
+      systemService,
+      resourceTypeService,
+      resourceService,
+      languageService,
+      activeModal,
+    );
   }
 
   ngOnInit(): void {
