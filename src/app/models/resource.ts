@@ -37,6 +37,7 @@ export class Resource {
     | 'gospel'
     | 'growth'
     | 'training';
+  'attr-default-locale'?: string;
   'attr-default-order'?: number;
   'attr-hidden'?: boolean;
   'attr-spotlight'?: boolean;
