@@ -21,7 +21,7 @@ export abstract class AbstractEditResourceComponent implements OnDestroy {
   metatools: Resource[];
   resourceTypes: ResourceType[];
   systems: System[];
-  languages: Language[];
+  languages: Language[] | null = null;
 
   protected constructor(
     protected systemService: SystemService,
