@@ -15,12 +15,12 @@ describe('TranslateAttributesComponent', () => {
   let fixture: ComponentFixture<TranslateAttributesComponent>;
 
   const resource = new Resource();
-  const attributeTranslationStub = ({
+  const attributeTranslationStub = {
     getAttributes() {},
     create() {},
     update() {},
     delete() {},
-  } as unknown) as AttributeTranslationService;
+  } as unknown as AttributeTranslationService;
 
   beforeEach(() => {
     spyOn(attributeTranslationStub, 'getAttributes').and.returnValue(

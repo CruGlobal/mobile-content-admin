@@ -88,7 +88,7 @@
             <strong>{{ item?.file?.name }}</strong>
           </td>
           <td *ngIf="uploader.options.isHTML5" nowrap>
-            {{ item?.file?.size / 1024 / 1024 | number: '.2' }} MB
+            {{ item?.file?.size / 1024 / 1024 | number : '.2' }} MB
           </td>
           <td *ngIf="uploader.options.isHTML5">
             <div class="progress" style="margin-bottom: 0">
@@ -186,7 +186,7 @@
 <ngb-alert type="warning" [dismissible]="false" *ngIf="loading">
   Loading...
 </ngb-alert>
-<div *ngFor="let resource of resources | orderBy: 'name'" class="card mb-3">
+<div *ngFor="let resource of resources | orderBy : 'name'" class="card mb-3">
   <div
     class="card-header"
     (click)="resource.showAttachments = !resource.showAttachments"
@@ -215,7 +215,7 @@
       </strong>
       <div
         *ngFor="
-          let attachment of resource.attachments | orderBy: 'file-file-name'
+          let attachment of resource.attachments | orderBy : 'file-file-name'
         "
       >
         <div class="row">

@@ -20,7 +20,7 @@ describe('ToolGroupRuleReuseableComponent', () => {
   let comp: ToolGroupRuleReuseableComponent;
   let fixture: ComponentFixture<ToolGroupRuleReuseableComponent>;
 
-  const toolGroupServiceStub = ({
+  const toolGroupServiceStub = {
     praxisConfidentData: {
       0: {
         name: 'Confidence 1',
@@ -43,14 +43,14 @@ describe('ToolGroupRuleReuseableComponent', () => {
         name: 'Openness 3',
       },
     },
-  } as unknown) as ToolGroupService;
+  } as unknown as ToolGroupService;
   const mocks = new ToolGroupMocks();
 
-  const languageServiceStub = ({
+  const languageServiceStub = {
     getLanguages() {
       return mocks.getLanguagesResponse;
     },
-  } as unknown) as LanguageService;
+  } as unknown as LanguageService;
 
   const toolGroup = new ToolGroup();
   toolGroup.id = 4;

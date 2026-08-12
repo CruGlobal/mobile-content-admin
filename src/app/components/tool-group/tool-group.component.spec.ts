@@ -22,10 +22,10 @@ describe('ToolGroupComponent', () => {
   let comp: ToolGroupComponent;
   let fixture: ComponentFixture<ToolGroupComponent>;
   const mocks = new ToolGroupMocks();
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     getResources() {},
-  } as unknown) as ResourceService;
-  const toolGroupServiceStub = ({
+  } as unknown as ResourceService;
+  const toolGroupServiceStub = {
     getToolGroup() {},
     getToolGroups() {},
     praxisConfidentData: {
@@ -38,15 +38,15 @@ describe('ToolGroupComponent', () => {
         name: 'Openness',
       },
     },
-  } as unknown) as ToolGroupService;
-  const languageServiceStub = ({
+  } as unknown as ToolGroupService;
+  const languageServiceStub = {
     getLanguages() {
       return mocks.getLanguagesResponse;
     },
-  } as unknown) as LanguageService;
-  const modalServiceStub = ({
+  } as unknown as LanguageService;
+  const modalServiceStub = {
     open() {},
-  } as unknown) as NgbModal;
+  } as unknown as NgbModal;
 
   const toolGroup: ToolGroup = new ToolGroup();
   toolGroup.id = 8;
@@ -60,45 +60,43 @@ describe('ToolGroupComponent', () => {
     ...toolGroup,
   };
   const toolGroupFullDetails = mocks.toolGroupFullDetails();
-  const modalRef = ({
+  const modalRef = {
     componentInstance: {
       source: null,
     },
     result: Promise.resolve(),
-  } as unknown) as NgbModalRef;
+  } as unknown as NgbModalRef;
   const resource = new Resource();
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(languageServiceStub, 'getLanguages').and.returnValue(
-        Promise.resolve<Language[]>(mocks.getLanguagesResponse),
-      );
-      spyOn(toolGroupServiceStub, 'getToolGroup').and.returnValue(
-        Promise.resolve(toolGroupFullDetails),
-      );
-      spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
-        Promise.resolve([toolGroupFullDetails]),
-      );
-      spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
+  beforeEach(waitForAsync(() => {
+    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
+    );
+    spyOn(toolGroupServiceStub, 'getToolGroup').and.returnValue(
+      Promise.resolve(toolGroupFullDetails),
+    );
+    spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
+      Promise.resolve([toolGroupFullDetails]),
+    );
+    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
 
-      spyOn(resourceServiceStub, 'getResources').and.returnValue(
-        Promise.resolve([resource]),
-      );
-      TestBed.configureTestingModule({
-        declarations: [
-          ToolGroupsComponent,
-          ToolGroupComponent,
-          ToolGroupRuleReuseableComponent,
-        ],
-        imports: [NgbModule, FormsModule, HttpClientTestingModule],
-        providers: [
-          { provide: ToolGroupService, useValue: toolGroupServiceStub },
-          { provide: LanguageService, useValue: languageServiceStub },
-          { provide: NgbModal, useValue: modalServiceStub },
-        ],
-      }).compileComponents();
-    }),
-  );
+    spyOn(resourceServiceStub, 'getResources').and.returnValue(
+      Promise.resolve([resource]),
+    );
+    TestBed.configureTestingModule({
+      declarations: [
+        ToolGroupsComponent,
+        ToolGroupComponent,
+        ToolGroupRuleReuseableComponent,
+      ],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
+      providers: [
+        { provide: ToolGroupService, useValue: toolGroupServiceStub },
+        { provide: LanguageService, useValue: languageServiceStub },
+        { provide: NgbModal, useValue: modalServiceStub },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolGroupComponent);

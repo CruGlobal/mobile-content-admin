@@ -61,9 +61,9 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
           } as CountriesType;
         });
         if (this.rule.countries) {
-          this.selectedItems = (this.rule.countries.map((countryCode) => {
+          this.selectedItems = this.rule.countries.map((countryCode) => {
             return this.items.find((country) => country.code === countryCode);
-          }) as unknown) as CountriesType[];
+          }) as unknown as CountriesType[];
         }
         this.selectedItemsEmit.emit(this.selectedItems);
         break;
@@ -75,7 +75,7 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
             this.selectedItems = this.rule.languages.map((langCode) => {
               return (
                 this.items.find((item) => item.code === langCode) ||
-                ((langCode as unknown) as Language)
+                (langCode as unknown as Language)
               );
             });
           }
@@ -138,9 +138,9 @@ export class ToolGroupRuleReuseableComponent implements OnInit {
   }
 
   handleDeleteSelectedItem(selecteditem: Item): void {
-    this.selectedItems = (this.selectedItems.filter(
+    this.selectedItems = this.selectedItems.filter(
       (item) => item.code !== selecteditem.code,
-    ) as unknown) as Language[] | CountriesType[];
+    ) as unknown as Language[] | CountriesType[];
     this.selectedItemsEmit.emit(this.selectedItems);
   }
 

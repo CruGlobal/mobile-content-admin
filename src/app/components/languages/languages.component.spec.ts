@@ -12,29 +12,25 @@ describe('LanguagesComponent', () => {
   let comp: LanguagesComponent;
   let fixture: ComponentFixture<LanguagesComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const languageServiceStub = {
-        deleteLanguage() {
-          return Promise.resolve();
-        },
-        getLanguages() {
-          return Promise.resolve([new Language()]);
-        },
-        updateLanguage() {
-          return Promise.resolve(new Language());
-        },
-      };
+  beforeEach(waitForAsync(() => {
+    const languageServiceStub = {
+      deleteLanguage() {
+        return Promise.resolve();
+      },
+      getLanguages() {
+        return Promise.resolve([new Language()]);
+      },
+      updateLanguage() {
+        return Promise.resolve(new Language());
+      },
+    };
 
-      TestBed.configureTestingModule({
-        declarations: [LanguagesComponent],
-        imports: [NgbModule, FormsModule, HttpClientTestingModule],
-        providers: [
-          { provide: LanguageService, useValue: languageServiceStub },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [LanguagesComponent],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
+      providers: [{ provide: LanguageService, useValue: languageServiceStub }],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LanguagesComponent);

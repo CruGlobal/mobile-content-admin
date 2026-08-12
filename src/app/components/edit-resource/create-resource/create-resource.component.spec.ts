@@ -21,19 +21,19 @@ describe('CreateResourceComponent', () => {
   let fixture: ComponentFixture<CreateResourceComponent>;
 
   const mocks = new ToolGroupMocks();
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     create() {},
     getResources() {},
-  } as unknown) as ResourceService;
-  const systemServiceStub = ({
+  } as unknown as ResourceService;
+  const systemServiceStub = {
     getSystems() {},
-  } as unknown) as SystemService;
-  const resourceTypeServiceStub = ({
+  } as unknown as SystemService;
+  const resourceTypeServiceStub = {
     getResourceTypes() {},
-  } as unknown) as ResourceTypeService;
-  const languageServiceStub = ({
+  } as unknown as ResourceTypeService;
+  const languageServiceStub = {
     getLanguages() {},
-  } as unknown) as LanguageService;
+  } as unknown as LanguageService;
 
   beforeEach(() => {
     spyOn(resourceServiceStub, 'create').and.returnValue(

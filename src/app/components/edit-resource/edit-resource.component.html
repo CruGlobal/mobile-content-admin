@@ -94,7 +94,7 @@
             <option
               *ngFor="
                 let attachment of resource.attachments
-                  | orderBy: 'file-file-name'
+                  | orderBy : 'file-file-name'
               "
               [ngValue]="attachment.id"
             >
@@ -114,7 +114,7 @@
             <option
               *ngFor="
                 let attachment of resource.attachments
-                  | orderBy: 'file-file-name'
+                  | orderBy : 'file-file-name'
               "
               [ngValue]="attachment.id"
             >
@@ -141,7 +141,7 @@
             <option
               *ngFor="
                 let attachment of resource.attachments
-                  | orderBy: 'file-file-name'
+                  | orderBy : 'file-file-name'
               "
               [ngValue]="attachment.id"
             >
@@ -190,7 +190,7 @@
           {{ resource['attr-default-locale'] }} (unknown)
         </option>
         <option
-          *ngFor="let language of languages | orderBy: 'name'"
+          *ngFor="let language of languages | orderBy : 'name'"
           [value]="language.code"
         >
           {{ language.name }} ({{ language.code }})

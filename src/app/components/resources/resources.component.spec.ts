@@ -18,15 +18,15 @@ describe('ResourcesComponent', () => {
   let comp: ResourcesComponent;
   let fixture: ComponentFixture<ResourcesComponent>;
 
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     getResources() {},
-  } as unknown) as ResourceService;
-  const languageServiceStub = ({
+  } as unknown as ResourceService;
+  const languageServiceStub = {
     getLanguage() {},
-  } as unknown) as LanguageService;
-  const languageStub = ({
+  } as unknown as LanguageService;
+  const languageStub = {
     _placeHolder: true,
-  } as unknown) as Language;
+  } as unknown as Language;
 
   const resource: Resource = new Resource();
   const unfilteredResources = [
@@ -95,34 +95,32 @@ describe('ResourcesComponent', () => {
     },
   ];
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(resourceServiceStub, 'getResources').and.returnValue(
-        Promise.resolve([resource]),
-      );
-      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-        Promise.resolve(languageStub),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(resourceServiceStub, 'getResources').and.returnValue(
+      Promise.resolve([resource]),
+    );
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+      Promise.resolve(languageStub),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [
-          ResourcesComponent,
-          ResourceComponent,
-          TranslationComponent,
-          TranslationVersionBadgeComponent,
-        ],
-        imports: [NgbModule, FormsModule, HttpClientTestingModule],
-        providers: [
-          { provide: ResourceService, useValue: resourceServiceStub },
-          { provide: LanguageService, useValue: languageServiceStub },
-          { provide: NgbModal },
-          { provide: DraftService },
-          { provide: ResourceTypeService },
-          { provide: SystemService },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        ResourcesComponent,
+        ResourceComponent,
+        TranslationComponent,
+        TranslationVersionBadgeComponent,
+      ],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
+      providers: [
+        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: LanguageService, useValue: languageServiceStub },
+        { provide: NgbModal },
+        { provide: DraftService },
+        { provide: ResourceTypeService },
+        { provide: SystemService },
+      ],
+    }).compileComponents();
+  }));
 
   let localStore;
 

@@ -15,16 +15,16 @@ describe('ToolGroupResourceComponent', () => {
   let comp: ToolGroupResourceComponent;
   let fixture: ComponentFixture<ToolGroupResourceComponent>;
 
-  const toolGroupServiceStub = ({
+  const toolGroupServiceStub = {
     deleteRule() {},
     addOrUpdateTool() {},
-  } as unknown) as ToolGroupService;
-  const resourceServiceStub = ({
+  } as unknown as ToolGroupService;
+  const resourceServiceStub = {
     getResources() {},
-  } as unknown) as ResourceService;
-  const activeModalStub = ({
+  } as unknown as ResourceService;
+  const activeModalStub = {
     close() {},
-  } as unknown) as NgbActiveModal;
+  } as unknown as NgbActiveModal;
   const resources = [
     {
       ...new Resource(),
@@ -109,7 +109,7 @@ describe('ToolGroupResourceComponent', () => {
     });
 
     describe('updateTool() & deleteTool()', () => {
-      const tool = (toolGroupFullDetails.tools[0] as unknown) as Tools;
+      const tool = toolGroupFullDetails.tools[0] as unknown as Tools;
       beforeEach(() => {
         comp.ngOnInit();
         comp.tools = [
@@ -140,7 +140,7 @@ describe('ToolGroupResourceComponent', () => {
     });
 
     describe('createOrUpdate()', () => {
-      const tool = (toolGroupFullDetails.tools[0] as unknown) as Tools;
+      const tool = toolGroupFullDetails.tools[0] as unknown as Tools;
       beforeEach(() => {
         comp.ngOnInit();
       });
@@ -261,7 +261,7 @@ describe('ToolGroupResourceComponent', () => {
       comp.resources = resources;
     });
 
-    const tool = (toolGroupFullDetails.tools[0] as unknown) as Tools;
+    const tool = toolGroupFullDetails.tools[0] as unknown as Tools;
     beforeEach(() => {
       comp.ngOnInit();
     });

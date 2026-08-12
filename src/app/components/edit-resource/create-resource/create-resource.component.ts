@@ -15,7 +15,8 @@ import { AbstractEditResourceComponent } from '../abstract-edit-resource.compone
 })
 export class CreateResourceComponent
   extends AbstractEditResourceComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() resource: Resource = new Resource();
   resourceTypes: ResourceType[];
   systems: System[];

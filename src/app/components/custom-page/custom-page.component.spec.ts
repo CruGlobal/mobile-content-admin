@@ -17,36 +17,34 @@ describe('CustomPageComponent', () => {
   let fixture: ComponentFixture<CustomPageComponent>;
   let xmlEditor: DebugElement;
 
-  const customPageServiceStub = ({
+  const customPageServiceStub = {
     upsert() {},
-  } as unknown) as CustomPageService;
+  } as unknown as CustomPageService;
   const draftServiceStub = {
     getPage() {
       return Promise.resolve('xml response');
     },
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(customPageServiceStub, 'upsert').and.returnValue(
-        Promise.resolve<CustomPage>(null),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(customPageServiceStub, 'upsert').and.returnValue(
+      Promise.resolve<CustomPage>(null),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [
-          CustomPageComponent,
-          XmlEditorComponent,
-          AceEditorDirective,
-        ],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          { provide: CustomPageService, useValue: customPageServiceStub },
-          { provide: DraftService, useValue: draftServiceStub },
-          { provide: NgbActiveModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        CustomPageComponent,
+        XmlEditorComponent,
+        AceEditorDirective,
+      ],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        { provide: CustomPageService, useValue: customPageServiceStub },
+        { provide: DraftService, useValue: draftServiceStub },
+        { provide: NgbActiveModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomPageComponent);

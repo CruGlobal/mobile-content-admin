@@ -17,36 +17,34 @@ describe('CustomTipComponent', () => {
   let fixture: ComponentFixture<CustomTipComponent>;
   let xmlEditor: DebugElement;
 
-  const customTipServiceStub = ({
+  const customTipServiceStub = {
     upsert() {},
-  } as unknown) as CustomTipService;
+  } as unknown as CustomTipService;
   const draftServiceStub = {
     getTip() {
       return Promise.resolve('xml response');
     },
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(customTipServiceStub, 'upsert').and.returnValue(
-        Promise.resolve<CustomTip>(null),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(customTipServiceStub, 'upsert').and.returnValue(
+      Promise.resolve<CustomTip>(null),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [
-          CustomTipComponent,
-          XmlEditorComponent,
-          AceEditorDirective,
-        ],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          { provide: CustomTipService, useValue: customTipServiceStub },
-          { provide: DraftService, useValue: draftServiceStub },
-          { provide: NgbActiveModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        CustomTipComponent,
+        XmlEditorComponent,
+        AceEditorDirective,
+      ],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        { provide: CustomTipService, useValue: customTipServiceStub },
+        { provide: DraftService, useValue: draftServiceStub },
+        { provide: NgbActiveModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomTipComponent);

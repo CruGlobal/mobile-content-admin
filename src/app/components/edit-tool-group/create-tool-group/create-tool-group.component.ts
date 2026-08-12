@@ -16,7 +16,8 @@ import { AbstractEditToolGroupComponent } from '../abstract-edit-tool-group.comp
 })
 export class CreateToolGroupComponent
   extends AbstractEditToolGroupComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() toolGroup: ToolGroup = new ToolGroup();
   @Input() selectedCountries: CountriesType[] = [];
   @Input() selectedLanguages: Language[] = [];
