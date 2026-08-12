@@ -52,10 +52,10 @@ describe('ResourceComponent', () => {
     const r = new Resource();
     r.id = 5;
     r.name = 'Test Tool';
-    r.resourceType = ({
+    r.resourceType = {
       id: typeName === 'metatool' ? 9 : 1,
       name: typeName,
-    } as unknown) as ResourceType;
+    } as unknown as ResourceType;
     return r;
   };
 
@@ -80,20 +80,20 @@ describe('ResourceComponent', () => {
     return previous;
   };
 
-  const languageServiceStub = ({
+  const languageServiceStub = {
     getLanguage() {},
-  } as unknown) as LanguageService;
-  const languageStub = ({
+  } as unknown as LanguageService;
+  const languageStub = {
     _placeHolder: true,
-  } as unknown) as Language;
-  const pageServiceStub = ({
+  } as unknown as Language;
+  const pageServiceStub = {
     update() {},
     reorder() {},
-  } as unknown) as PageService;
+  } as unknown as PageService;
 
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     getResource() {},
-  } as unknown) as ResourceService;
+  } as unknown as ResourceService;
   let resource: Resource;
 
   const buildPage = (id: number, filename: string, position: number): Page => {
@@ -117,40 +117,38 @@ describe('ResourceComponent', () => {
     });
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(languageServiceStub, 'getLanguage').and.returnValue(
-        Promise.resolve(languageStub),
-      );
-      spyOn(pageServiceStub, 'reorder').and.returnValue(Promise.resolve());
-      spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve(null));
-      spyOn(resourceServiceStub, 'getResource').and.callFake(() =>
-        Promise.resolve(buildDetailResource()),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(languageServiceStub, 'getLanguage').and.returnValue(
+      Promise.resolve(languageStub),
+    );
+    spyOn(pageServiceStub, 'reorder').and.returnValue(Promise.resolve());
+    spyOn(pageServiceStub, 'update').and.returnValue(Promise.resolve(null));
+    spyOn(resourceServiceStub, 'getResource').and.callFake(() =>
+      Promise.resolve(buildDetailResource()),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [
-          ResourcesComponent,
-          ResourceComponent,
-          TranslationComponent,
-          TranslationVersionBadgeComponent,
-        ],
-        imports: [
-          NgbModule,
-          FormsModule,
-          HttpClientTestingModule,
-          DragDropModule,
-        ],
-        providers: [
-          { provide: LanguageService, useValue: languageServiceStub },
-          { provide: PageService, useValue: pageServiceStub },
-          { provide: ResourceService, useValue: resourceServiceStub },
-          { provide: NgbModal },
-          { provide: DraftService },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        ResourcesComponent,
+        ResourceComponent,
+        TranslationComponent,
+        TranslationVersionBadgeComponent,
+      ],
+      imports: [
+        NgbModule,
+        FormsModule,
+        HttpClientTestingModule,
+        DragDropModule,
+      ],
+      providers: [
+        { provide: LanguageService, useValue: languageServiceStub },
+        { provide: PageService, useValue: pageServiceStub },
+        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: NgbModal },
+        { provide: DraftService },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceComponent);
@@ -453,10 +451,10 @@ describe('ResourceComponent', () => {
   });
 
   it('should not expand metatools', (done) => {
-    resource.resourceType = ({
+    resource.resourceType = {
       id: 9,
       name: 'metatool',
-    } as unknown) as ResourceType;
+    } as unknown as ResourceType;
     comp.toggleDetails();
 
     setTimeout(() => {
@@ -493,10 +491,10 @@ describe('ResourceComponent', () => {
 
   it('should preload details before opening the Bulk Actions modal for an unexpanded tool', (done) => {
     const modalService = TestBed.inject(NgbModal);
-    const openSpy = spyOn(modalService, 'open').and.returnValue(({
+    const openSpy = spyOn(modalService, 'open').and.returnValue({
       componentInstance: {},
       result: Promise.resolve(),
-    } as unknown) as NgbModalRef);
+    } as unknown as NgbModalRef);
 
     comp.openGenerateModal(comp.resource);
 
@@ -512,10 +510,10 @@ describe('ResourceComponent', () => {
 
   it('should preload details before opening the Details modal', (done) => {
     const modalService = TestBed.inject(NgbModal);
-    const openSpy = spyOn(modalService, 'open').and.returnValue(({
+    const openSpy = spyOn(modalService, 'open').and.returnValue({
       componentInstance: {},
       result: Promise.resolve(),
-    } as unknown) as NgbModalRef);
+    } as unknown as NgbModalRef);
     spyOn(comp.resourcesComponent, 'loadResources');
 
     comp.openUpdateModal(comp.resource);
@@ -533,10 +531,10 @@ describe('ResourceComponent', () => {
   it('should not refetch details for the modal when already loaded', (done) => {
     comp.detailsLoaded = true;
     const modalService = TestBed.inject(NgbModal);
-    spyOn(modalService, 'open').and.returnValue(({
+    spyOn(modalService, 'open').and.returnValue({
       componentInstance: {},
       result: Promise.resolve(),
-    } as unknown) as NgbModalRef);
+    } as unknown as NgbModalRef);
     spyOn(comp.resourcesComponent, 'loadResources');
 
     comp.openUpdateModal(comp.resource);

@@ -21,10 +21,10 @@ describe('ToolGroupRuleComponent', () => {
   let comp: ToolGroupRuleComponent;
   let fixture: ComponentFixture<ToolGroupRuleComponent>;
 
-  const toolGroupServiceStub = ({
+  const toolGroupServiceStub = {
     deleteRule() {},
     createOrUpdateRule() {},
-  } as unknown) as ToolGroupService;
+  } as unknown as ToolGroupService;
 
   const mocks = new ToolGroupMocks();
   const toolGroupRule = new ToolGroupRule();
@@ -80,7 +80,7 @@ describe('ToolGroupRuleComponent', () => {
   describe('updateSelected()', () => {
     it('should set Countries data', () => {
       comp.ngOnInit();
-      const selectedItems = ([
+      const selectedItems = [
         {
           code: '5',
           'negative-rule': true,
@@ -97,7 +97,7 @@ describe('ToolGroupRuleComponent', () => {
           },
           countries: [mocks.countryUSMock.code],
         },
-      ] as unknown) as CountriesType[];
+      ] as unknown as CountriesType[];
       comp.updateSelected(selectedItems, null);
 
       expect(comp.rule.countries).toEqual(['5', '9']);
@@ -107,7 +107,7 @@ describe('ToolGroupRuleComponent', () => {
     it('should set Praxis - confidence data', () => {
       comp.ruleType = RuleTypeEnum.PRAXIS;
       comp.ngOnInit();
-      const selectedItems = ([
+      const selectedItems = [
         {
           code: '1',
           name: 'test one',
@@ -116,7 +116,7 @@ describe('ToolGroupRuleComponent', () => {
           code: '3',
           name: 'test three',
         },
-      ] as unknown) as Praxis[];
+      ] as unknown as Praxis[];
       comp.updateSelected(selectedItems, PraxisTypeEnum.CONFIDENCE);
 
       expect(comp.rule.confidence).toEqual(['1', '3']);
@@ -126,7 +126,7 @@ describe('ToolGroupRuleComponent', () => {
     it('should set Praxis - openness data', () => {
       comp.ruleType = RuleTypeEnum.PRAXIS;
       comp.ngOnInit();
-      const selectedItems = ([
+      const selectedItems = [
         {
           code: '2',
           name: 'test two',
@@ -135,7 +135,7 @@ describe('ToolGroupRuleComponent', () => {
           code: '4',
           name: 'test four',
         },
-      ] as unknown) as Praxis[];
+      ] as unknown as Praxis[];
       comp.updateSelected(selectedItems, PraxisTypeEnum.OPENNESS);
 
       expect(comp.rule.openness).toEqual(['2', '4']);

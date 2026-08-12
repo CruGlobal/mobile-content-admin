@@ -15,7 +15,8 @@ import { AbstractEditResourceComponent } from '../abstract-edit-resource.compone
 })
 export class UpdateResourceComponent
   extends AbstractEditResourceComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() resource: Resource;
   resourceTypes: ResourceType[];
   systems: System[];
@@ -49,9 +50,8 @@ export class UpdateResourceComponent
     );
 
     this.resource.crowdinProjectId = this.resource['crowdin-project-id'];
-    this.resource.aboutOverviewVideoYoutube = this.resource[
-      'attr-about-overview-video-youtube'
-    ];
+    this.resource.aboutOverviewVideoYoutube =
+      this.resource['attr-about-overview-video-youtube'];
     this.resource.banner = this.resource['attr-banner'];
     this.resource.bannerAbout = this.resource['attr-banner-about'];
   }

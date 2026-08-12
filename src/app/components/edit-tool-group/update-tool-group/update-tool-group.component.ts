@@ -30,7 +30,8 @@ interface HasMadeChangesProps {
 })
 export class UpdateToolGroupComponent
   extends AbstractEditToolGroupComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() toolGroup: ToolGroup;
   @Input() selectedCountries: CountriesType[] = [];
   @Input() selectedLanguages: Language[] = [];

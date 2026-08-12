@@ -15,34 +15,32 @@ describe('CustomManifestComponent', () => {
   let fixture: ComponentFixture<CustomManifestComponent>;
   let xmlEditor: DebugElement;
 
-  const customManifestServiceStub = ({
+  const customManifestServiceStub = {
     upsert() {},
     delete() {},
-  } as unknown) as CustomManifestService;
+  } as unknown as CustomManifestService;
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(customManifestServiceStub, 'upsert').and.returnValue(
-        Promise.resolve<CustomManifest>(null),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(customManifestServiceStub, 'upsert').and.returnValue(
+      Promise.resolve<CustomManifest>(null),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [
-          CustomManifestComponent,
-          XmlEditorComponent,
-          AceEditorDirective,
-        ],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          {
-            provide: CustomManifestService,
-            useValue: customManifestServiceStub,
-          },
-          { provide: NgbActiveModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [
+        CustomManifestComponent,
+        XmlEditorComponent,
+        AceEditorDirective,
+      ],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        {
+          provide: CustomManifestService,
+          useValue: customManifestServiceStub,
+        },
+        { provide: NgbActiveModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomManifestComponent);

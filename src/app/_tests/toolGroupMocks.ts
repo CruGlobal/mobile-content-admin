@@ -69,7 +69,7 @@ export class ToolGroupMocks {
     resource.id = 13;
     resource.name = 'Test Resource';
 
-    return ({
+    return {
       id: 8,
       'suggestions-weight': '3.0',
       name: 'Test Tool Group',
@@ -119,6 +119,6 @@ export class ToolGroupMocks {
           },
         },
       ],
-    } as unknown) as ToolGroup;
+    } as unknown as ToolGroup;
   };
 }

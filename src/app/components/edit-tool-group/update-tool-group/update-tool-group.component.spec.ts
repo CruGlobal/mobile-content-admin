@@ -20,13 +20,13 @@ describe('UpdateToolGroupComponent', () => {
   let comp: UpdateToolGroupComponent;
   let fixture: ComponentFixture<UpdateToolGroupComponent>;
 
-  const toolGroupServiceStub = ({
+  const toolGroupServiceStub = {
     createOrUpdateToolGroup() {},
     createOrUpdateRule() {},
-  } as unknown) as ToolGroupService;
-  const languageServiceStub = ({
+  } as unknown as ToolGroupService;
+  const languageServiceStub = {
     getLanguages() {},
-  } as unknown) as LanguageService;
+  } as unknown as LanguageService;
 
   const mocks = new ToolGroupMocks();
 

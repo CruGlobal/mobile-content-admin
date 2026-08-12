@@ -14,26 +14,22 @@ describe('TipComponent', () => {
   let fixture: ComponentFixture<TipComponent>;
   let xmlEditor: DebugElement;
 
-  const tipServiceStub = ({
+  const tipServiceStub = {
     update() {},
-  } as unknown) as TipService;
+  } as unknown as TipService;
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(tipServiceStub, 'update').and.returnValue(
-        Promise.resolve<Tip>(null),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(tipServiceStub, 'update').and.returnValue(Promise.resolve<Tip>(null));
 
-      TestBed.configureTestingModule({
-        declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          { provide: TipService, useValue: tipServiceStub },
-          { provide: NgbActiveModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [TipComponent, XmlEditorComponent, AceEditorDirective],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        { provide: TipService, useValue: tipServiceStub },
+        { provide: NgbActiveModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TipComponent);

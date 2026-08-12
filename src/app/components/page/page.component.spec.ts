@@ -14,26 +14,24 @@ describe('PageComponent', () => {
   let fixture: ComponentFixture<PageComponent>;
   let xmlEditor: DebugElement;
 
-  const pageServiceStub = ({
+  const pageServiceStub = {
     update() {},
-  } as unknown) as PageService;
+  } as unknown as PageService;
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(pageServiceStub, 'update').and.returnValue(
-        Promise.resolve<Page>(null),
-      );
+  beforeEach(waitForAsync(() => {
+    spyOn(pageServiceStub, 'update').and.returnValue(
+      Promise.resolve<Page>(null),
+    );
 
-      TestBed.configureTestingModule({
-        declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          { provide: PageService, useValue: pageServiceStub },
-          { provide: NgbActiveModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+    TestBed.configureTestingModule({
+      declarations: [PageComponent, XmlEditorComponent, AceEditorDirective],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        { provide: PageService, useValue: pageServiceStub },
+        { provide: NgbActiveModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageComponent);

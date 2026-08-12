@@ -22,48 +22,46 @@ describe('ToolGroupsComponent', () => {
   let fixture: ComponentFixture<ToolGroupsComponent>;
   const mocks = new ToolGroupMocks();
 
-  const resourceServiceStub = ({
+  const resourceServiceStub = {
     getResources() {},
-  } as unknown) as ResourceService;
-  const toolGroupServiceStub = ({
+  } as unknown as ResourceService;
+  const toolGroupServiceStub = {
     getToolGroups() {},
-  } as unknown) as ToolGroupService;
-  const languageServiceStub = ({
+  } as unknown as ToolGroupService;
+  const languageServiceStub = {
     getLanguages() {
       return mocks.getLanguagesResponse;
     },
-  } as unknown) as LanguageService;
+  } as unknown as LanguageService;
 
   const resource: Resource = new Resource();
   const toolGroup: ToolGroup = new ToolGroup();
 
-  beforeEach(
-    waitForAsync(() => {
-      spyOn(resourceServiceStub, 'getResources').and.returnValue(
-        Promise.resolve([resource]),
-      );
-      spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
-        Promise.resolve([toolGroup]),
-      );
-      spyOn(languageServiceStub, 'getLanguages').and.returnValue(
-        Promise.resolve<Language[]>(mocks.getLanguagesResponse),
-      );
-      TestBed.configureTestingModule({
-        declarations: [
-          ToolGroupsComponent,
-          ToolGroupComponent,
-          ToolGroupRuleReuseableComponent,
-        ],
-        imports: [NgbModule, FormsModule, HttpClientTestingModule],
-        providers: [
-          { provide: ResourceService, useValue: resourceServiceStub },
-          { provide: ToolGroupService, useValue: toolGroupServiceStub },
-          { provide: LanguageService, useValue: languageServiceStub },
-          { provide: NgbModal },
-        ],
-      }).compileComponents();
-    }),
-  );
+  beforeEach(waitForAsync(() => {
+    spyOn(resourceServiceStub, 'getResources').and.returnValue(
+      Promise.resolve([resource]),
+    );
+    spyOn(toolGroupServiceStub, 'getToolGroups').and.returnValue(
+      Promise.resolve([toolGroup]),
+    );
+    spyOn(languageServiceStub, 'getLanguages').and.returnValue(
+      Promise.resolve<Language[]>(mocks.getLanguagesResponse),
+    );
+    TestBed.configureTestingModule({
+      declarations: [
+        ToolGroupsComponent,
+        ToolGroupComponent,
+        ToolGroupRuleReuseableComponent,
+      ],
+      imports: [NgbModule, FormsModule, HttpClientTestingModule],
+      providers: [
+        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: ToolGroupService, useValue: toolGroupServiceStub },
+        { provide: LanguageService, useValue: languageServiceStub },
+        { provide: NgbModal },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolGroupsComponent);
@@ -87,12 +85,12 @@ describe('ToolGroupsComponent', () => {
     });
   });
 
-  const itemOne = ({
+  const itemOne = {
     code: 'VN',
-  } as unknown) as CountriesType;
-  const itemTwo = ({
+  } as unknown as CountriesType;
+  const itemTwo = {
     code: 'UK',
-  } as unknown) as CountriesType;
+  } as unknown as CountriesType;
 
   it('should update countries', () => {
     comp.ngOnInit();

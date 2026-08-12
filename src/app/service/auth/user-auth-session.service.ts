@@ -10,19 +10,18 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UserAuthSessionService {
-  private _sessionReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false,
-  );
+  private _sessionReady: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
   private _oauthUser: BehaviorSubject<UserInfo> = new BehaviorSubject<UserInfo>(
     { sub: '' },
   );
-  private _erroredAt: BehaviorSubject<IOauthSessionCheckResult> = new BehaviorSubject<IOauthSessionCheckResult>(
-    {
+  private _erroredAt: BehaviorSubject<IOauthSessionCheckResult> =
+    new BehaviorSubject<IOauthSessionCheckResult>({
       hasValidSession: false,
-    },
-  );
+    });
 
-  oauthSessionError$: Observable<IOauthSessionCheckResult> = this._erroredAt.asObservable();
+  oauthSessionError$: Observable<IOauthSessionCheckResult> =
+    this._erroredAt.asObservable();
   oauthUser$: Observable<UserInfo> = this._oauthUser.asObservable();
   sessionReady$: Observable<boolean> = this._sessionReady.asObservable();
 

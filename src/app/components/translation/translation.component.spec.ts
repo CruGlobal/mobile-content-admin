@@ -76,78 +76,76 @@ describe('TranslationComponent', () => {
     return page.queryAll(By.css('button[data-action="delete"]'));
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      customPageServiceStub = {
-        delete() {},
-      };
-      customTipsServiceStub = {};
+  beforeEach(waitForAsync(() => {
+    customPageServiceStub = {
+      delete() {},
+    };
+    customTipsServiceStub = {};
 
-      modalServiceStub = {
-        open() {},
-      };
-      customDraftServiceStub = {
-        publishDraft() {},
-      };
-      customResourceServiceStub = {
-        getResource() {},
-      };
-      const modalRef = {
-        componentInstance: {},
-        result: Promise.resolve(),
-      };
+    modalServiceStub = {
+      open() {},
+    };
+    customDraftServiceStub = {
+      publishDraft() {},
+    };
+    customResourceServiceStub = {
+      getResource() {},
+    };
+    const modalRef = {
+      componentInstance: {},
+      result: Promise.resolve(),
+    };
 
-      customManifestServiceStub = {
-        delete() {},
-      };
+    customManifestServiceStub = {
+      delete() {},
+    };
 
-      spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
-      spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
-      spyOn(customManifestServiceStub, 'delete').and.returnValue(
-        Promise.resolve(),
-      );
-      spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
-        Promise.resolve([
+    spyOn(customPageServiceStub, 'delete').and.returnValue(Promise.resolve());
+    spyOn(modalServiceStub, 'open').and.returnValue(modalRef);
+    spyOn(customManifestServiceStub, 'delete').and.returnValue(
+      Promise.resolve(),
+    );
+    spyOn(customDraftServiceStub, 'publishDraft').and.returnValue(
+      Promise.resolve([
+        {
+          'publishing-errors': null,
+        },
+      ]),
+    );
+    spyOn(customResourceServiceStub, 'getResource').and.returnValue(
+      Promise.resolve({
+        'latest-drafts-translations': [
           {
+            language: { id: 1 },
             'publishing-errors': null,
+            'is-published': false,
           },
-        ]),
-      );
-      spyOn(customResourceServiceStub, 'getResource').and.returnValue(
-        Promise.resolve({
-          'latest-drafts-translations': [
-            {
-              language: { id: 1 },
-              'publishing-errors': null,
-              'is-published': false,
-            },
-          ],
-        }),
-      );
-
-      customPageServiceStub.delete();
-      modalServiceStub.open();
-      customManifestServiceStub.delete();
-      customDraftServiceStub.publishDraft();
-      customResourceServiceStub.getResource();
-
-      TestBed.configureTestingModule({
-        declarations: [TranslationComponent, TranslationVersionBadgeComponent],
-        imports: [NgbModule, HttpClientTestingModule],
-        providers: [
-          { provide: DraftService, useValue: customDraftServiceStub },
-          { provide: CustomPageService, useValue: customPageServiceStub },
-          { provide: CustomTipService, useValue: customTipsServiceStub },
-          {
-            provide: CustomManifestService,
-            useValue: customManifestServiceStub,
-          },
-          { provide: NgbModal, useValue: modalServiceStub },
-          { provide: ResourceService, useValue: customResourceServiceStub },
         ],
-      }).compileComponents();
-    }),
-  );
+      }),
+    );
+
+    customPageServiceStub.delete();
+    modalServiceStub.open();
+    customManifestServiceStub.delete();
+    customDraftServiceStub.publishDraft();
+    customResourceServiceStub.getResource();
+
+    TestBed.configureTestingModule({
+      declarations: [TranslationComponent, TranslationVersionBadgeComponent],
+      imports: [NgbModule, HttpClientTestingModule],
+      providers: [
+        { provide: DraftService, useValue: customDraftServiceStub },
+        { provide: CustomPageService, useValue: customPageServiceStub },
+        { provide: CustomTipService, useValue: customTipsServiceStub },
+        {
+          provide: CustomManifestService,
+          useValue: customManifestServiceStub,
+        },
+        { provide: NgbModal, useValue: modalServiceStub },
+        { provide: ResourceService, useValue: customResourceServiceStub },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TranslationComponent);
