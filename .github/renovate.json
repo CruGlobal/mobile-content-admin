@@ -1,5 +1,24 @@
 {
   "extends": ["config:recommended", ":preserveSemverRanges"],
   "labels": ["dependencies"],
-  "dependencyDashboard": true
+  "automergeStrategy": "squash",
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "automerge": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "automerge": true,
+  }
 }
